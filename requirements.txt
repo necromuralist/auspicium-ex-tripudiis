@@ -75,6 +75,8 @@ tornado==5.1              # via ipykernel, jupyter-client, notebook, terminado
 traitlets==4.3.2          # via ipykernel, ipython, ipywidgets, jupyter-client, jupyter-core, nbconvert, nbformat, notebook, qtconsole
 unidecode==1.0.22         # via nikola
 urllib3==1.23             # via requests
+virtualenv==16.0.0        # via virtualfish
+virtualfish==1.0.6
 wcwidth==0.1.7            # via prompt-toolkit
 webassets==0.12.1
 webencodings==0.5.1       # via html5lib
