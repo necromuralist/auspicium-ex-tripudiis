@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about gbdt basics)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/gbdt-basics.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Sun, 05 Aug 2018 02:28:39 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Will a GBDT performance drop if we remove the first tree?</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/will-a-gbdt-performance-drop-if-we-remove-the-first-tree/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;p&gt;
+We'll look at how &lt;b&gt;Gradient Boosting&lt;/b&gt; works and  answer the question:
+&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;
+Will the performance of a  GBDT model drop dramatically if we remove the first tree?
+&lt;/p&gt;
+&lt;/blockquote&gt;
+
+/home/dogen/.virtualenvs/kaggle-competitions/bin/python: No module named virtualfish
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# from pypi
+import numpy
+import matplotlib.pyplot as pyplot
+import seaborn
+
+from sklearn.metrics import log_loss
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.datasets import make_hastie_10_2
+from sklearn.model_selection import train_test_split
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;
+get&lt;sub&gt;ipython&lt;/sub&gt;().run&lt;sub&gt;line&lt;/sub&gt;&lt;sub&gt;magic&lt;/sub&gt;('matplotlib', 'inline')
+&lt;/p&gt;
+
+
+&lt;p&gt;
+def sigmoid(x):
+    return 1 / (1 + np.exp(-x))
+&lt;/p&gt;
+
+
+&lt;p&gt;
+X&lt;sub&gt;all&lt;/sub&gt; = np.random.randn(5000, 1)
+y&lt;sub&gt;all&lt;/sub&gt; = (X&lt;sub&gt;all&lt;/sub&gt;[:, 0] &amp;gt; 0)*2 - 1
+&lt;/p&gt;
+
+&lt;p&gt;
+X&lt;sub&gt;train&lt;/sub&gt;, X&lt;sub&gt;test&lt;/sub&gt;, y&lt;sub&gt;train&lt;/sub&gt;, y&lt;sub&gt;test&lt;/sub&gt; = train&lt;sub&gt;test&lt;/sub&gt;&lt;sub&gt;split&lt;/sub&gt;(X&lt;sub&gt;all&lt;/sub&gt;, y&lt;sub&gt;all&lt;/sub&gt;, test&lt;sub&gt;size&lt;/sub&gt;=0.5, random&lt;sub&gt;state&lt;/sub&gt;=42)
+&lt;/p&gt;
+
+
+&lt;p&gt;
+clf = DecisionTreeClassifier(max&lt;sub&gt;depth&lt;/sub&gt;=1)
+clf.fit(X&lt;sub&gt;train&lt;/sub&gt;, y&lt;sub&gt;train&lt;/sub&gt;)
+&lt;/p&gt;
+
+&lt;p&gt;
+print ('Accuracy for a single decision stump: {}'.format(clf.score(X&lt;sub&gt;test&lt;/sub&gt;, y&lt;sub&gt;test&lt;/sub&gt;)))
+&lt;/p&gt;
+
+
+&lt;p&gt;
+clf = GradientBoostingClassifier(n&lt;sub&gt;estimators&lt;/sub&gt;=5000, learning&lt;sub&gt;rate&lt;/sub&gt;=0.01, max&lt;sub&gt;depth&lt;/sub&gt;=3, random&lt;sub&gt;state&lt;/sub&gt;=0)
+clf.fit(X&lt;sub&gt;train&lt;/sub&gt;, y&lt;sub&gt;train&lt;/sub&gt;)
+&lt;/p&gt;
+
+&lt;p&gt;
+y&lt;sub&gt;pred&lt;/sub&gt; = clf.predict&lt;sub&gt;proba&lt;/sub&gt;(X&lt;sub&gt;test&lt;/sub&gt;)[:, 1]
+print("Test logloss: {}".format(log&lt;sub&gt;loss&lt;/sub&gt;(y&lt;sub&gt;test&lt;/sub&gt;, y&lt;sub&gt;pred&lt;/sub&gt;)))
+&lt;/p&gt;
+
+
+&lt;p&gt;
+def compute&lt;sub&gt;loss&lt;/sub&gt;(y&lt;sub&gt;true&lt;/sub&gt;, scores&lt;sub&gt;pred&lt;/sub&gt;):
+    '''
+        Since we use raw scores we will wrap log&lt;sub&gt;loss&lt;/sub&gt; 
+        and apply sigmoid to our predictions before computing log&lt;sub&gt;loss&lt;/sub&gt; itself
+    '''
+    return log&lt;sub&gt;loss&lt;/sub&gt;(y&lt;sub&gt;true&lt;/sub&gt;, sigmoid(scores&lt;sub&gt;pred&lt;/sub&gt;))
+&lt;/p&gt;
+
+
+&lt;p&gt;
+'''
+    Get cummulative sum of &lt;b&gt;decision function&lt;/b&gt; for trees. i-th element is a sum of trees 0…i-1.
+    We cannot use staged&lt;sub&gt;predict&lt;/sub&gt;&lt;sub&gt;proba&lt;/sub&gt;, since we want to maniputate raw scores
+    (not probabilities). And only in the end convert the scores to probabilities using sigmoid
+'''
+cum&lt;sub&gt;preds&lt;/sub&gt; = np.array([x for x in clf.staged&lt;sub&gt;decision&lt;/sub&gt;&lt;sub&gt;function&lt;/sub&gt;(X&lt;sub&gt;test&lt;/sub&gt;)])[:, :, 0] 
+&lt;/p&gt;
+
+&lt;p&gt;
+print ("Logloss using all trees:           {}".format(compute&lt;sub&gt;loss&lt;/sub&gt;(y&lt;sub&gt;test&lt;/sub&gt;, cum&lt;sub&gt;preds&lt;/sub&gt;[-1, :])))
+print ("Logloss using all trees but last:  {}".format(compute&lt;sub&gt;loss&lt;/sub&gt;(y&lt;sub&gt;test&lt;/sub&gt;, cum&lt;sub&gt;preds&lt;/sub&gt;[-2, :])))
+print ("Logloss using all trees but first: {}".format(compute&lt;sub&gt;loss&lt;/sub&gt;(y&lt;sub&gt;test&lt;/sub&gt;, cum&lt;sub&gt;preds&lt;/sub&gt;[-1, :] - cum&lt;sub&gt;preds&lt;/sub&gt;[0, :])))
+&lt;/p&gt;
+
+
+&lt;p&gt;
+plt.plot(cum&lt;sub&gt;preds&lt;/sub&gt;[:, y&lt;sub&gt;test&lt;/sub&gt; == 1][:, 0])
+&lt;/p&gt;
+
+&lt;p&gt;
+plt.xlabel('n&lt;sub&gt;trees&lt;/sub&gt;')
+plt.ylabel('Cumulative decision score');
+&lt;/p&gt;
+
+
+&lt;p&gt;
+clf = GradientBoostingClassifier(n&lt;sub&gt;estimators&lt;/sub&gt;=5000, learning&lt;sub&gt;rate&lt;/sub&gt;=8, max&lt;sub&gt;depth&lt;/sub&gt;=3, random&lt;sub&gt;state&lt;/sub&gt;=0)
+clf.fit(X&lt;sub&gt;train&lt;/sub&gt;, y&lt;sub&gt;train&lt;/sub&gt;)
+&lt;/p&gt;
+
+&lt;p&gt;
+y&lt;sub&gt;pred&lt;/sub&gt; = clf.predict&lt;sub&gt;proba&lt;/sub&gt;(X&lt;sub&gt;test&lt;/sub&gt;)[:, 1]
+print("Test logloss: {}".format(log&lt;sub&gt;loss&lt;/sub&gt;(y&lt;sub&gt;test&lt;/sub&gt;, y&lt;sub&gt;pred&lt;/sub&gt;)))
+&lt;/p&gt;
+
+
+&lt;p&gt;
+cum&lt;sub&gt;preds&lt;/sub&gt; = np.array([x for x in clf.staged&lt;sub&gt;decision&lt;/sub&gt;&lt;sub&gt;function&lt;/sub&gt;(X&lt;sub&gt;test&lt;/sub&gt;)])[:, :, 0] 
+&lt;/p&gt;
+
+&lt;p&gt;
+print ("Logloss using all trees:           {}".format(compute&lt;sub&gt;loss&lt;/sub&gt;(y&lt;sub&gt;test&lt;/sub&gt;, cum&lt;sub&gt;preds&lt;/sub&gt;[-1, :])))
+print ("Logloss using all trees but last:  {}".format(compute&lt;sub&gt;loss&lt;/sub&gt;(y&lt;sub&gt;test&lt;/sub&gt;, cum&lt;sub&gt;preds&lt;/sub&gt;[-2, :])))
+print ("Logloss using all trees but first: {}".format(compute&lt;sub&gt;loss&lt;/sub&gt;(y&lt;sub&gt;test&lt;/sub&gt;, cum&lt;sub&gt;preds&lt;/sub&gt;[-1, :] - cum&lt;sub&gt;preds&lt;/sub&gt;[0, :])))
+&lt;/p&gt;</description><category>gbdt basics</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/will-a-gbdt-performance-drop-if-we-remove-the-first-tree/</guid><pubDate>Sun, 05 Aug 2018 02:02:32 GMT</pubDate></item></channel></rss>

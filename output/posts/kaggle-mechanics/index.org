@@ -1,0 +1,35 @@
+#+BEGIN_COMMENT
+.. title: Kaggle Mechanics
+.. slug: kaggle-mechanics
+.. date: 2018-08-04 17:18:12 UTC-07:00
+.. tags: basics rules
+.. category: basics
+.. link: 
+.. description: The mechanics of a kaggle competition.
+.. type: text
+#+END_COMMENT
+
+* The Basics
+** Data
+   Every competition provides data so you can create a model, but there isn't a standardized format. Sometimes it will be CSVz, sometimes excel spreadsheets, sometimes image files, the sources can vary so you should read the data descriptions and adapt what you do to the competition. You aren't always limited to the data that is provided. If you were creating an image recognition model, for instance, it might be okay to include outside images or pre-trained models, it depends on the particulars of the competition.
+** Models
+   This is what you are trying to create - a representation of the population based on the data you are given that will allow you to predict outcomes based on inputs not given in the data. The model needs two main features:
+   - accuracy
+   - reproducibility
+
+   Note that a model is not the same as an algorithm. You might have to combine multiple algorithms in order to build your model. The key to a model is that it maps inputs to outputs.
+** Submission
+   Your submission is typically your predictions on a test set. This isn't always the case but it is the most common way that the competitions are run.
+** Evaluation
+   How can you tell how well your model does? You need a function that maps your model and a data set to a score that evaluates how well the model does. There are many different metrics to use (accuracy, precision, recall, etc.) but the competition will choose one and tell you what it is in the description so make sure you read the description to get it.
+** Leaderboard
+   This is the relative ranking of the participants in the competition. This is what makes it a competition. Even if your metric tells you your model is doing well, if you are ranked at the bottom, you still won't win. There are actually two leaderboards - public and private. The evaluation dataset is split by kaggle into two sets, public and private, and during the competition the results of testing on the public data are shown on the leaderborad. Once the competition is over the leaderboard is displayed using the evaluations using the private data.
+* Other Competitions
+  [[https://www.kaggle.com/][Kaggle]] isn't the only one running data-science competititons. Here are some others.
+
+  - [[https://www.drivendata.org/][Driven Data]]: Data Science competititons aimed at social problems
+  - [[http://codalab.org/][Coda Lab]]: Competitions using research datasets
+  - [[https://www.datasciencechallenge.org/][Data Science Challenge]]: Using data-science to solve government-scale problems.
+  - [[https://www.datascience.net/fr/challenge#][Data Science dot net]]: A european data-science competition site.
+
+  

@@ -1,0 +1,120 @@
+<p>
+We'll look at how <b>Gradient Boosting</b> works and  answer the question:
+</p>
+
+<blockquote>
+<p>
+Will the performance of a  GBDT model drop dramatically if we remove the first tree?
+</p>
+</blockquote>
+
+/home/dogen/.virtualenvs/kaggle-competitions/bin/python: No module named virtualfish
+<div class="highlight"><pre><span></span># from pypi
+import numpy
+import matplotlib.pyplot as pyplot
+import seaborn
+
+from sklearn.metrics import log_loss
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.datasets import make_hastie_10_2
+from sklearn.model_selection import train_test_split
+</pre></div>
+<p>
+get<sub>ipython</sub>().run<sub>line</sub><sub>magic</sub>('matplotlib', 'inline')
+</p>
+
+
+<p>
+def sigmoid(x):
+    return 1 / (1 + np.exp(-x))
+</p>
+
+
+<p>
+X<sub>all</sub> = np.random.randn(5000, 1)
+y<sub>all</sub> = (X<sub>all</sub>[:, 0] &gt; 0)*2 - 1
+</p>
+
+<p>
+X<sub>train</sub>, X<sub>test</sub>, y<sub>train</sub>, y<sub>test</sub> = train<sub>test</sub><sub>split</sub>(X<sub>all</sub>, y<sub>all</sub>, test<sub>size</sub>=0.5, random<sub>state</sub>=42)
+</p>
+
+
+<p>
+clf = DecisionTreeClassifier(max<sub>depth</sub>=1)
+clf.fit(X<sub>train</sub>, y<sub>train</sub>)
+</p>
+
+<p>
+print ('Accuracy for a single decision stump: {}'.format(clf.score(X<sub>test</sub>, y<sub>test</sub>)))
+</p>
+
+
+<p>
+clf = GradientBoostingClassifier(n<sub>estimators</sub>=5000, learning<sub>rate</sub>=0.01, max<sub>depth</sub>=3, random<sub>state</sub>=0)
+clf.fit(X<sub>train</sub>, y<sub>train</sub>)
+</p>
+
+<p>
+y<sub>pred</sub> = clf.predict<sub>proba</sub>(X<sub>test</sub>)[:, 1]
+print("Test logloss: {}".format(log<sub>loss</sub>(y<sub>test</sub>, y<sub>pred</sub>)))
+</p>
+
+
+<p>
+def compute<sub>loss</sub>(y<sub>true</sub>, scores<sub>pred</sub>):
+    '''
+        Since we use raw scores we will wrap log<sub>loss</sub> 
+        and apply sigmoid to our predictions before computing log<sub>loss</sub> itself
+    '''
+    return log<sub>loss</sub>(y<sub>true</sub>, sigmoid(scores<sub>pred</sub>))
+</p>
+
+
+<p>
+'''
+    Get cummulative sum of <b>decision function</b> for trees. i-th element is a sum of trees 0&#x2026;i-1.
+    We cannot use staged<sub>predict</sub><sub>proba</sub>, since we want to maniputate raw scores
+    (not probabilities). And only in the end convert the scores to probabilities using sigmoid
+'''
+cum<sub>preds</sub> = np.array([x for x in clf.staged<sub>decision</sub><sub>function</sub>(X<sub>test</sub>)])[:, :, 0] 
+</p>
+
+<p>
+print ("Logloss using all trees:           {}".format(compute<sub>loss</sub>(y<sub>test</sub>, cum<sub>preds</sub>[-1, :])))
+print ("Logloss using all trees but last:  {}".format(compute<sub>loss</sub>(y<sub>test</sub>, cum<sub>preds</sub>[-2, :])))
+print ("Logloss using all trees but first: {}".format(compute<sub>loss</sub>(y<sub>test</sub>, cum<sub>preds</sub>[-1, :] - cum<sub>preds</sub>[0, :])))
+</p>
+
+
+<p>
+plt.plot(cum<sub>preds</sub>[:, y<sub>test</sub> == 1][:, 0])
+</p>
+
+<p>
+plt.xlabel('n<sub>trees</sub>')
+plt.ylabel('Cumulative decision score');
+</p>
+
+
+<p>
+clf = GradientBoostingClassifier(n<sub>estimators</sub>=5000, learning<sub>rate</sub>=8, max<sub>depth</sub>=3, random<sub>state</sub>=0)
+clf.fit(X<sub>train</sub>, y<sub>train</sub>)
+</p>
+
+<p>
+y<sub>pred</sub> = clf.predict<sub>proba</sub>(X<sub>test</sub>)[:, 1]
+print("Test logloss: {}".format(log<sub>loss</sub>(y<sub>test</sub>, y<sub>pred</sub>)))
+</p>
+
+
+<p>
+cum<sub>preds</sub> = np.array([x for x in clf.staged<sub>decision</sub><sub>function</sub>(X<sub>test</sub>)])[:, :, 0] 
+</p>
+
+<p>
+print ("Logloss using all trees:           {}".format(compute<sub>loss</sub>(y<sub>test</sub>, cum<sub>preds</sub>[-1, :])))
+print ("Logloss using all trees but last:  {}".format(compute<sub>loss</sub>(y<sub>test</sub>, cum<sub>preds</sub>[-2, :])))
+print ("Logloss using all trees but first: {}".format(compute<sub>loss</sub>(y<sub>test</sub>, cum<sub>preds</sub>[-1, :] - cum<sub>preds</sub>[0, :])))
+</p>

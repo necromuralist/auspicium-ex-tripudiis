@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="Notes on studying kaggle.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Notes on Kaggle</title>
+<link href="assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="rss.xml">
+<link rel="canonical" href="https://necromuralist.github.io/Kaggle-Competitions/">
+<!--[if lt IE 9]><script src="assets/js/html5.js"></script><![endif]--><script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script><link rel="prefetch" href="posts/will-a-gbdt-performance-drop-if-we-remove-the-first-tree/" type="text/html">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-default navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://necromuralist.github.io/Kaggle-Competitions/">
+
+                <span id="blog-title">Notes on Kaggle</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li class="active">
+<a href=".">The Cloistered Monkey <span class="sr-only">(active)</span></a>
+                </li>
+<li>
+<a href="archive.html">Archive</a>
+                </li>
+<li>
+<a href="categories/">Tags</a>
+                </li>
+<li>
+<a href="rss.xml">RSS feed</a>
+                </li>
+<li>
+<a href="sphinx/index.html">Documentation</a>
+
+                
+            </li>
+</ul>
+<!-- Google custom search --><form method="get" action="https://www.google.com/search" class="navbar-form navbar-right" role="search">
+<div class="form-group">
+<input type="text" name="q" class="form-control" placeholder="Search">
+</div>
+<button type="submit" class="btn btn-primary">
+	<span class="glyphicon glyphicon-search"></span>
+</button>
+<input type="hidden" name="sitesearch" value="https://necromuralist.github.io/Kaggle-Competitions/">
+</form>
+<!-- End of custom search -->
+
+
+            <ul class="nav navbar-nav navbar-right"></ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+            
+
+    
+
+
+    
+<div class="postindex">
+    <article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/will-a-gbdt-performance-drop-if-we-remove-the-first-tree/" class="u-url">Will a GBDT performance drop if we remove the first tree?</a></h1>
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                Cloistered Monkey
+            </span></p>
+            <p class="dateline"><a href="posts/will-a-gbdt-performance-drop-if-we-remove-the-first-tree/" rel="bookmark"><time class="published dt-published" datetime="2018-08-04T19:02:32-07:00" title="2018-08-04 19:02">2018-08-04 19:02</time></a></p>
+        </div>
+    </header><div class="e-content entry-content">
+    <p>
+We'll look at how <b>Gradient Boosting</b> works and  answer the question:
+</p>
+
+<blockquote>
+<p>
+Will the performance of a  GBDT model drop dramatically if we remove the first tree?
+</p>
+</blockquote>
+
+/home/dogen/.virtualenvs/kaggle-competitions/bin/python: No module named virtualfish
+<div class="highlight"><pre><span></span># from pypi
+import numpy
+import matplotlib.pyplot as pyplot
+import seaborn
+
+from sklearn.metrics import log_loss
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.datasets import make_hastie_10_2
+from sklearn.model_selection import train_test_split
+</pre></div>
+<p>
+get<sub>ipython</sub>().run<sub>line</sub><sub>magic</sub>('matplotlib', 'inline')
+</p>
+
+
+<p>
+def sigmoid(x):
+    return 1 / (1 + np.exp(-x))
+</p>
+
+
+<p>
+X<sub>all</sub> = np.random.randn(5000, 1)
+y<sub>all</sub> = (X<sub>all</sub>[:, 0] &gt; 0)*2 - 1
+</p>
+
+<p>
+X<sub>train</sub>, X<sub>test</sub>, y<sub>train</sub>, y<sub>test</sub> = train<sub>test</sub><sub>split</sub>(X<sub>all</sub>, y<sub>all</sub>, test<sub>size</sub>=0.5, random<sub>state</sub>=42)
+</p>
+
+
+<p>
+clf = DecisionTreeClassifier(max<sub>depth</sub>=1)
+clf.fit(X<sub>train</sub>, y<sub>train</sub>)
+</p>
+
+<p>
+print ('Accuracy for a single decision stump: {}'.format(clf.score(X<sub>test</sub>, y<sub>test</sub>)))
+</p>
+
+
+<p>
+clf = GradientBoostingClassifier(n<sub>estimators</sub>=5000, learning<sub>rate</sub>=0.01, max<sub>depth</sub>=3, random<sub>state</sub>=0)
+clf.fit(X<sub>train</sub>, y<sub>train</sub>)
+</p>
+
+<p>
+y<sub>pred</sub> = clf.predict<sub>proba</sub>(X<sub>test</sub>)[:, 1]
+print("Test logloss: {}".format(log<sub>loss</sub>(y<sub>test</sub>, y<sub>pred</sub>)))
+</p>
+
+
+<p>
+def compute<sub>loss</sub>(y<sub>true</sub>, scores<sub>pred</sub>):
+    '''
+        Since we use raw scores we will wrap log<sub>loss</sub> 
+        and apply sigmoid to our predictions before computing log<sub>loss</sub> itself
+    '''
+    return log<sub>loss</sub>(y<sub>true</sub>, sigmoid(scores<sub>pred</sub>))
+</p>
+
+
+<p>
+'''
+    Get cummulative sum of <b>decision function</b> for trees. i-th element is a sum of trees 0…i-1.
+    We cannot use staged<sub>predict</sub><sub>proba</sub>, since we want to maniputate raw scores
+    (not probabilities). And only in the end convert the scores to probabilities using sigmoid
+'''
+cum<sub>preds</sub> = np.array([x for x in clf.staged<sub>decision</sub><sub>function</sub>(X<sub>test</sub>)])[:, :, 0] 
+</p>
+
+<p>
+print ("Logloss using all trees:           {}".format(compute<sub>loss</sub>(y<sub>test</sub>, cum<sub>preds</sub>[-1, :])))
+print ("Logloss using all trees but last:  {}".format(compute<sub>loss</sub>(y<sub>test</sub>, cum<sub>preds</sub>[-2, :])))
+print ("Logloss using all trees but first: {}".format(compute<sub>loss</sub>(y<sub>test</sub>, cum<sub>preds</sub>[-1, :] - cum<sub>preds</sub>[0, :])))
+</p>
+
+
+<p>
+plt.plot(cum<sub>preds</sub>[:, y<sub>test</sub> == 1][:, 0])
+</p>
+
+<p>
+plt.xlabel('n<sub>trees</sub>')
+plt.ylabel('Cumulative decision score');
+</p>
+
+
+<p>
+clf = GradientBoostingClassifier(n<sub>estimators</sub>=5000, learning<sub>rate</sub>=8, max<sub>depth</sub>=3, random<sub>state</sub>=0)
+clf.fit(X<sub>train</sub>, y<sub>train</sub>)
+</p>
+
+<p>
+y<sub>pred</sub> = clf.predict<sub>proba</sub>(X<sub>test</sub>)[:, 1]
+print("Test logloss: {}".format(log<sub>loss</sub>(y<sub>test</sub>, y<sub>pred</sub>)))
+</p>
+
+
+<p>
+cum<sub>preds</sub> = np.array([x for x in clf.staged<sub>decision</sub><sub>function</sub>(X<sub>test</sub>)])[:, :, 0] 
+</p>
+
+<p>
+print ("Logloss using all trees:           {}".format(compute<sub>loss</sub>(y<sub>test</sub>, cum<sub>preds</sub>[-1, :])))
+print ("Logloss using all trees but last:  {}".format(compute<sub>loss</sub>(y<sub>test</sub>, cum<sub>preds</sub>[-2, :])))
+print ("Logloss using all trees but first: {}".format(compute<sub>loss</sub>(y<sub>test</sub>, cum<sub>preds</sub>[-1, :] - cum<sub>preds</sub>[0, :])))
+</p>
+    </div>
+    </article><article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/machine-learning-recap/" class="u-url">Machine Learning Recap</a></h1>
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                Cloistered Monkey
+            </span></p>
+            <p class="dateline"><a href="posts/machine-learning-recap/" rel="bookmark"><time class="published dt-published" datetime="2018-08-04T18:13:44-07:00" title="2018-08-04 18:13">2018-08-04 18:13</time></a></p>
+        </div>
+    </header><div class="e-content entry-content">
+    <div id="outline-container-org255f5b7" class="outline-2">
+<h2 id="org255f5b7">The Main Categories</h2>
+<div class="outline-text-2" id="text-org255f5b7">
+<p>
+These are the four main categories of supervised machine learning algorithms that you'll encounter in kaggle competitions.
+</p>
+
+<ul class="org-ul">
+<li>Linear Models
+<ul class="org-ul">
+<li>sklearn</li>
+<li>vowpal rabbit (for really large datasets)</li>
+</ul>
+</li>
+<li>Tree-Based Models
+<ul class="org-ul">
+<li>sklearn</li>
+<li>xgboost: faster than sklearn</li>
+</ul>
+</li>
+<li>k-Nearest Neighbors
+<ul class="org-ul">
+<li>sklearn</li>
+</ul>
+</li>
+<li>Neural Networks</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org6a65f91" class="outline-2">
+<h2 id="org6a65f91">The No Free Lunch Theorem</h2>
+<div class="outline-text-2" id="text-org6a65f91">
+<blockquote>
+<p>
+There is no method which outperforms all others for all tasks.
+</p>
+</blockquote>
+
+<p>
+You cannot assume that an algorithm that did well on one set of data will do well on another. All algorithms have weaknesses, so you have to test multiple algorithms on each data set.
+</p>
+</div>
+</div>
+<div id="outline-container-orge14962d" class="outline-2">
+<h2 id="orge14962d">Summary</h2>
+<div class="outline-text-2" id="text-orge14962d">
+<ul class="org-ul">
+<li>there is no one algorithm to rule them all</li>
+<li>Linear models split spaces into two sub-spaces</li>
+<li>tree-based models spit spaces into boxes</li>
+<li>kNN relies on measuring the 'closeness' between points</li>
+<li>Neural Networks provide non-linear decision boundaries</li>
+</ul>
+<p>
+In general the two most powerful methods are <b>Gradient Boosted Decision Trees</b> and <b>Neural Networks</b>, but this won't always be the case.
+</p>
+</div>
+</div>
+    </div>
+    </article><article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/real-world-vs-kaggle/" class="u-url">Real-World vs Kaggle</a></h1>
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                Cloistered Monkey
+            </span></p>
+            <p class="dateline"><a href="posts/real-world-vs-kaggle/" rel="bookmark"><time class="published dt-published" datetime="2018-08-04T18:02:24-07:00" title="2018-08-04 18:02">2018-08-04 18:02</time></a></p>
+        </div>
+    </header><div class="e-content entry-content">
+    <div id="outline-container-org5ac0b00" class="outline-2">
+<h2 id="org5ac0b00">A Real World Pipeline</h2>
+<div class="outline-text-2" id="text-org5ac0b00">
+<ul class="org-ul">
+<li>What is the business problem that you are trying to solve?</li>
+<li>What is the formal version of the problem?</li>
+<li>How do you collect data?</li>
+<li>How do you preprocess the data?</li>
+<li>How do you create the model?
+<ul class="org-ul">
+<li>what is the appropriate algorithm?</li>
+<li>what is the correct metric?</li>
+</ul>
+</li>
+<li>How do you evaluate the model in a real world situation?</li>
+<li>How do you deploy the model?
+<ul class="org-ul">
+<li>How do you monitor its performance?</li>
+<li>How do you update it over time?</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org9ed4319" class="outline-2">
+<h2 id="org9ed4319">A Competition Pipeline</h2>
+<div class="outline-text-2" id="text-org9ed4319">
+<ul class="org-ul">
+<li>How do you pre-process the data?</li>
+<li>How do you create the model?</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgeec38f0" class="outline-2">
+<h2 id="orgeec38f0">So, how do you use a competition then?</h2>
+<div class="outline-text-2" id="text-orgeec38f0">
+<ul class="org-ul">
+<li>It's good to learn about machine learning</li>
+<li>It' not just about the algorithms, let the data guide what you do</li>
+<li>Try to be creative and do things that haven't been done before</li>
+</ul>
+</div>
+</div>
+    </div>
+    </article><article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/kaggle-mechanics/" class="u-url">Kaggle Mechanics</a></h1>
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                Cloistered Monkey
+            </span></p>
+            <p class="dateline"><a href="posts/kaggle-mechanics/" rel="bookmark"><time class="published dt-published" datetime="2018-08-04T17:18:12-07:00" title="2018-08-04 17:18">2018-08-04 17:18</time></a></p>
+        </div>
+    </header><div class="e-content entry-content">
+    <div id="outline-container-orgce3f9e2" class="outline-2">
+<h2 id="orgce3f9e2">The Basics</h2>
+<div class="outline-text-2" id="text-orgce3f9e2">
+</div>
+<div id="outline-container-org7f26de2" class="outline-3">
+<h3 id="org7f26de2">Data</h3>
+<div class="outline-text-3" id="text-org7f26de2">
+<p>
+Every competition provides data so you can create a model, but there isn't a standardized format. Sometimes it will be CSVz, sometimes excel spreadsheets, sometimes image files, the sources can vary so you should read the data descriptions and adapt what you do to the competition. You aren't always limited to the data that is provided. If you were creating an image recognition model, for instance, it might be okay to include outside images or pre-trained models, it depends on the particulars of the competition.
+</p>
+</div>
+</div>
+<div id="outline-container-orgbecc6e6" class="outline-3">
+<h3 id="orgbecc6e6">Models</h3>
+<div class="outline-text-3" id="text-orgbecc6e6">
+<p>
+This is what you are trying to create - a representation of the population based on the data you are given that will allow you to predict outcomes based on inputs not given in the data. The model needs two main features:
+</p>
+<ul class="org-ul">
+<li>accuracy</li>
+<li>reproducibility</li>
+</ul>
+<p>
+Note that a model is not the same as an algorithm. You might have to combine multiple algorithms in order to build your model. The key to a model is that it maps inputs to outputs.
+</p>
+</div>
+</div>
+<div id="outline-container-orgcb52dec" class="outline-3">
+<h3 id="orgcb52dec">Submission</h3>
+<div class="outline-text-3" id="text-orgcb52dec">
+<p>
+Your submission is typically your predictions on a test set. This isn't always the case but it is the most common way that the competitions are run.
+</p>
+</div>
+</div>
+<div id="outline-container-orgfcbfdce" class="outline-3">
+<h3 id="orgfcbfdce">Evaluation</h3>
+<div class="outline-text-3" id="text-orgfcbfdce">
+<p>
+How can you tell how well your model does? You need a function that maps your model and a data set to a score that evaluates how well the model does. There are many different metrics to use (accuracy, precision, recall, etc.) but the competition will choose one and tell you what it is in the description so make sure you read the description to get it.
+</p>
+</div>
+</div>
+<div id="outline-container-org813331e" class="outline-3">
+<h3 id="org813331e">Leaderboard</h3>
+<div class="outline-text-3" id="text-org813331e">
+<p>
+This is the relative ranking of the participants in the competition. This is what makes it a competition. Even if your metric tells you your model is doing well, if you are ranked at the bottom, you still won't win. There are actually two leaderboards - public and private. The evaluation dataset is split by kaggle into two sets, public and private, and during the competition the results of testing on the public data are shown on the leaderborad. Once the competition is over the leaderboard is displayed using the evaluations using the private data.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org4a5b81d" class="outline-2">
+<h2 id="org4a5b81d">Other Competitions</h2>
+<div class="outline-text-2" id="text-org4a5b81d">
+<p>
+<a href="https://www.kaggle.com/">Kaggle</a> isn't the only one running data-science competititons. Here are some others.
+</p>
+
+<ul class="org-ul">
+<li>
+<a href="https://www.drivendata.org/">Driven Data</a>: Data Science competititons aimed at social problems</li>
+<li>
+<a href="http://codalab.org/">Coda Lab</a>: Competitions using research datasets</li>
+<li>
+<a href="https://www.datasciencechallenge.org/">Data Science Challenge</a>: Using data-science to solve government-scale problems.</li>
+<li>
+<a href="https://www.datascience.net/fr/challenge#">Data Science dot net</a>: A european data-science competition site.</li>
+</ul>
+</div>
+</div>
+    </div>
+    </article>
+</div>
+
+
+
+
+
+
+
+        </div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            Contents © 2018         <a href="mailto:necromuralist@protonmail.com">Cloistered Monkey</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png"></a><br>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+            
+        </footer>
+</div>
+</div>
+
+
+            <script src="assets/js/all-nocdn.js"></script><script>$('a.image-reference:not(.islink) img:not(.islink)').parent().colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates -->
+</body>
+</html>
