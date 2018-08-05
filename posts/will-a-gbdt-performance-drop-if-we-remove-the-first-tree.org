@@ -1,5 +1,5 @@
 #+BEGIN_COMMENT
-.. title: Will a GBDT performance drop if we remove the first tree?
+.. title: Will a GBDT's performance drop if we remove the first tree?
 .. slug: will-a-gbdt-performance-drop-if-we-remove-the-first-tree
 .. date: 2018-08-04 19:02:32 UTC-07:00
 .. tags: gbdt basics
@@ -8,14 +8,15 @@
 .. description: What happens if you remove the first tree in a Gradient Boosted Decision Tree?
 .. type: text
 #+END_COMMENT
+#+OPTIONS: ^:{}
 
-We'll look at how *Gradient Boosting* works and  answer the question:
+We'll look at how [[http://blog.kaggle.com/2017/01/23/a-kaggle-master-explains-gradient-boosting/][*Gradient Boosting*]] works and  answer the question:
 
 #+BEGIN_QUOTE
 Will the performance of a  GBDT model drop dramatically if we remove the first tree?
 #+END_QUOTE
 
-#+BEGIN_SRC ipython :session gbdt :results none
+#+BEGIN_SRC python :session gbdt :results none
 # from pypi
 import numpy
 import matplotlib.pyplot as pyplot
@@ -26,126 +27,347 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.datasets import make_hastie_10_2
 from sklearn.model_selection import train_test_split
+
+from xgboost import XGBClassifier
 #+END_SRC
-get_ipython().run_line_magic('matplotlib', 'inline')
+
+#+BEGIN_SRC python :session gbdt :results none :exports none
+% matplotlib inline
+#+END_SRC
 
 
+* Define the Sigmoid
+  This is a function to calculate the [[https://en.wikipedia.org/wiki/Sigmoid_function][sigmoid]] which we'll use to convert probabilities to classifications.
+
+#+BEGIN_SRC python :session gbdt :results none
 def sigmoid(x):
-    return 1 / (1 + np.exp(-x))
+    return 1 / (1 + numpy.exp(-x))
+#+END_SRC
+
+* Make the dataset
+  This will be a very simple synthetic dataset. We'll use numpy's [[https://docs.scipy.org/doc/numpy/reference/generated/numpy.random.randn.html][randn]] function to generate a dataset of random values that come from a normal distribution and then predict that the class is /1/ if the value is positive and that it is /0/ otherwise.
+
+** Generating the Random Data
+   First we'll generate an array of 5000 random numbers taken from a normal distribution.
+
+#+BEGIN_SRC python :session gbdt :results none
+X_all = numpy.random.randn(5000, 1)
+#+END_SRC
+
+Next we'll create a target array which will have 1's for all non-negative numbers and 0's otherwise.
+
+#+BEGIN_SRC python :session gbdt :results none
+y_all = (X_all[:, 0] > 0) * 2 - 1
+#+END_SRC
+
+Now we'll use sklearn's [[http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html][train_test_split]] function to create the training and testing data, with half the data using for training and half for testing.
+
+#+BEGIN_SRC python :session gbdt :results none
+X_train, X_test, y_train, y_test = train_test_split(X_all, y_all,
+                                                    test_size=0.5,
+                                                    random_state=42)
+#+END_SRC
+
+* A Decision Tree Classifier
+  We'll build a [[https://en.wikipedia.org/wiki/Decision_tree][Decision Tree]] using sklearn's [[http://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html][Decision Tree Classifier]] for this model.
+
+** Building and Training the Model
+   This will be a very simple tree with a depth of 1 (a [[https://en.wikipedia.org/wiki/Decision_stump][decision stump]]).
+   
+#+BEGIN_SRC python :session gbdt :results none
+model = DecisionTreeClassifier(max_depth=1)
+model.fit(X_train, y_train)
+#+END_SRC
+
+** Measuring the Accuracy
+
+#+BEGIN_SRC python :session gbdt :results output raw :exports both
+print('Accuracy for a single decision stump: {}'.format(model.score(X_test, y_test)))
+#+END_SRC
+
+#+RESULTS:
+Accuracy for a single decision stump: 1.0
 
 
-# # Make dataset
-# We will use a very simple dataset: objects will come from 1D normal distribution, we will need to predict class $1$ if the object is positive and 0 otherwise.
+The 'tree' was able to classify all the testing data correctly.
 
-# In[2]:
+* A Gradient Boosting Classifier
 
+ While the Decision Tree Classifier only needed 1 layer, We will need 800 trees in the Gradient Boosting Classifier for it to classify the data correctly.
 
-X_all = np.random.randn(5000, 1)
-y_all = (X_all[:, 0] > 0)*2 - 1
+For convenience we will use sklearn's [[http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingClassifier.html][GradientBoostingClassifier]], the situation will be similar if you use [[https://xgboost.readthedocs.io/en/latest/][XGBoost]] or other Gradient Boosting implementations.
 
-X_train, X_test, y_train, y_test = train_test_split(X_all, y_all, test_size=0.5, random_state=42)
+** Training and Fitting the Model
+#+BEGIN_SRC python :session gbdt :results none
+gbc_model = GradientBoostingClassifier(n_estimators=5000, learning_rate=0.01,
+                                 max_depth=3,
+                                 random_state=0)
+gbc_model.fit(X_train, y_train)
+#+END_SRC
 
+#+BEGIN_SRC python :session gbdt :results output raw :exports both
+print('Accuracy for Gradient Booing: {}'.format(gbc_model.score(X_test, y_test)))
+#+END_SRC
 
-# The datast is really simple and can be solved with a single decision stump.
+#+RESULTS:
+Accuracy for Gradient Booing: 1.0
 
-# In[3]:
+** Checking the log Loss Metric
+   The [[http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingClassifier.html#sklearn.ensemble.GradientBoostingClassifier.predict_proba][=predict_proba=]] method will give us the probabilities that a data-point belongs to a class.
 
+#+BEGIN_SRC python :session gbdt :results none
+y_pred = gbc_model.predict_proba(X_test)[:, 1]
+#+END_SRC
 
-clf = DecisionTreeClassifier(max_depth=1)
-clf.fit(X_train, y_train)
+We'll use [[http://scikit-learn.org/stable/modules/generated/sklearn.metrics.log_loss.html][log loss]] as our metric to see how the model did.
 
-print ('Accuracy for a single decision stump: {}'.format(clf.score(X_test, y_test)))
-
-
-# # Learn GBM
-
-# But we will need 800 trees in GBM to classify it correctly.
-
-# In[4]:
-
-
-# For convenience we will use sklearn's GBM, the situation will be similar with XGBoost and others
-clf = GradientBoostingClassifier(n_estimators=5000, learning_rate=0.01, max_depth=3, random_state=0)
-clf.fit(X_train, y_train)
-
-y_pred = clf.predict_proba(X_test)[:, 1]
+#+BEGIN_SRC python :session gbdt :results output raw :exports both
 print("Test logloss: {}".format(log_loss(y_test, y_pred)))
+#+END_SRC
 
+#+RESULTS:
+Test logloss: 0.0003138777469167194
 
-# In[5]:
+** Some Helper Functions
+#+BEGIN_SRC python :session gbdt :results none
+def compute_loss(y_true, predicted_probabilities):
+    """applies sigmoid to predictions before calling log_loss
 
+    Args:
+     y_true: the actual classifications
+     predicted_probabilities: probabilities that class was 1
+    """
+    return log_loss(y_true, sigmoid(predicted_probabilities))
+#+END_SRC    
 
-def compute_loss(y_true, scores_pred):
-    '''
-        Since we use raw scores we will wrap log_loss 
-        and apply sigmoid to our predictions before computing log_loss itself
-    '''
-    return log_loss(y_true, sigmoid(scores_pred))
+#+BEGIN_SRC python :session gbdt :results none
+def print_loss(cumulative_predictions, y_test):
+    """prints the log-loss for the predictions
+
+    Args:
+     cumulative_predictions (numpy.Array): The cumulative predictions for the model
+    """
+    print(" - Logloss using all trees:           {}".format(
+        compute_loss(y_test, cumulative_predictions[-1, :])))
+    print(" - Logloss using all trees but last:  {}".format(
+        compute_loss(y_test, cumulative_predictions[-2, :])))
+    print(" - Logloss using all trees but first: {}".format(
+        compute_loss(y_test, cumulative_predictions[-1, :] - cumulative_predictions[0, :])))
+    return
+#+END_SRC
+
+** Checking The loss
+Now we get the cummulative sum of the *decision function* ([[http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingClassifier.html#sklearn.ensemble.GradientBoostingClassifier.staged_decision_function][=staged_decision_function=]]) for our trees. The /i/-th element is a sum of trees \[0 \ldots i-1\]. We cannot use [[http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingClassifier.html#sklearn.ensemble.GradientBoostingClassifier.staged_predict_proba][staged_predict_proba]], since we want to maniputate raw scores
+(not probabilities). And only in the end convert the scores to probabilities using the =sigmoid=.
+
+#+BEGIN_SRC python :session gbdt :results none
+gbc_cumulative_predictions = numpy.array(
+    [x for x in gbc_model.staged_decision_function(X_test)])[:, :, 0] 
+#+END_SRC
+
+Here we'll use the =compute_loss= function that we defined above to find the log loss with and without some trees.
+
+#+BEGIN_SRC python :session gbdt :results output raw :exports both
+print_loss(gbc_cumulative_predictions, y_test)
+#+END_SRC
+
+#+RESULTS:
+ - Logloss using all trees:           0.0003138777469167194
+ - Logloss using all trees but last:  0.0003138777469168316
+ - Logloss using all trees but first: 0.0003202438533122706
+
+You can see that when you remove the first tree there is a difference, but not as much as you might expect. Of particular note is that if we get rid of the last tree the model performs the same as is does with it. 
+
+Let's take a look at the plot of the cummulative decision function with differing numbers of trees. We'll plot the Cumulative Decision Score when predicting the classification of 1 as the number of stages (trees?) increases.
+
+#+BEGIN_SRC python :session gbdt :results none
+def plot_predictions(cumulative_predictions, identifier):
+    """plots the cumulative predictions
+
+    Args:
+     identifier (str): something to identify the model
+     cumulative_predictions: predictions from trees
+    """
+    figure = pyplot.figure(figsize=(10, 6))
+    axe = figure.gca()
+    axe.plot(cumulative_predictions[:, y_test == 1][:, 0])
     
+    axe.set_title("({}) Score vs Trees".format(identifier))
+    axe.set_xlabel('Number of Trees')
+    label = axe.set_ylabel('Cumulative Decision Score')
+    return
+#+END_SRC
 
-'''
-    Get cummulative sum of *decision function* for trees. i-th element is a sum of trees 0...i-1.
-    We cannot use staged_predict_proba, since we want to maniputate raw scores
-    (not probabilities). And only in the end convert the scores to probabilities using sigmoid
-'''
-cum_preds = np.array([x for x in clf.staged_decision_function(X_test)])[:, :, 0] 
+#+BEGIN_SRC python :session gbdt :results none :ipyfile ../files/posts/will-a-gbdt-performance-drop-if-we-remove-the-first-tree/cumulative_plot.png
+plot_predictions(gbc_cumulative_predictions, "eta=0.01")
+#+END_SRC
 
-print ("Logloss using all trees:           {}".format(compute_loss(y_test, cum_preds[-1, :])))
-print ("Logloss using all trees but last:  {}".format(compute_loss(y_test, cum_preds[-2, :])))
-print ("Logloss using all trees but first: {}".format(compute_loss(y_test, cum_preds[-1, :] - cum_preds[0, :])))
-
-
-# You can see that there is a difference, but not as huge as one could expect! Moreover, if we get rid of the first tree — overall model still works! 
-# 
-# If this is supprising for you — take a look at the plot of cummulative decision function depending on the number of trees.
-
-# In[6]:
+[[file: cumulative_plot.png]]
 
 
-# Pick an object of class 1 for visualisation
-plt.plot(cum_preds[:, y_test == 1][:, 0])
+You can see that the decision function improves almost linearly until about the 800th iteration and then the improvement stops. The slope of this line is connected to the learning rate, which we set in the Gradient Boosting Model.
 
-plt.xlabel('n_trees')
-plt.ylabel('Cumulative decision score');
+If you remember the main formula for boosting, it is written something like this:
 
+     $$ F(x) = const + \sum\limits_{i=1}^{n}\gamma_i h_i(x) $$
 
-# See, the decision function improves almost linearly untill about 800 iteration and then stops. And the slope of this line is connected with the learning rate, that we have set in GBM! 
-# 
-# If you remember the main formula of boosting, you can write something like:
-#     $$ F(x) = const + \sum\limits_{i=1}^{n}\gamma_i h_i(x) $$
-# 
-# In our case, $\gamma_i$ are constant and equal to learning rate $\eta = 0.01$. And look, it takes about $800$ iterations to get the score $8$, which means at every iteration score goes up for about $0.01$. It means that first 800 terms are approximately equal to $0.01$, and the following are almost $0$. 
-# 
-# We see, that if we drop the last tree, we lower $F(x)$ by $0$ and if we drop the first tree we lower $F(x)$ by $0.01$, which results in a very very little performance drop.  
-# 
-# So, even in the case of simple dataset which can be solved with single decision stump, in GBM we need to sum a lot of trees (roughly $\frac{1}{\eta}$) to approximate this golden single decision stump.
+In our case, \(\gamma_i\) are constant and equal to the learning rate \[\eta = 0.01\] It takes about /800/ iterations to get a score of /8/, which means at every iteration the score goes up about /0.01/. This means that the first 800 terms are approximately equal to /0.01/, and the rest are almost /0/. 
 
-# **To prove the point**, let's try a larger learning rate of $8$.
+Which in turn means that if we drop the last tree we lower \(F(x)\) by /0/ and if we drop the first tree we lower \(F(x)\) by /0.01/, which results in a very, very small performance drop. So, even in the case of a simple dataset which can be solved with a single decision stump, with a Gradient Boosting Model we need to sum a lot of trees (roughly \(\frac{1}{\eta}\)) to approximate our golden single decision stump.
 
-# In[7]:
+*** A Bigger \(\eta\)
+To prove that last point let's try a larger learning rate of /8/.
 
+#+BEGIN_SRC python :session gbdt :results none
+big_eta = GradientBoostingClassifier(n_estimators=5000, learning_rate=8,
+                                     max_depth=3, random_state=0)
+big_eta.fit(X_train, y_train)
+#+END_SRC
 
-clf = GradientBoostingClassifier(n_estimators=5000, learning_rate=8, max_depth=3, random_state=0)
-clf.fit(X_train, y_train)
-
-y_pred = clf.predict_proba(X_test)[:, 1]
+#+BEGIN_SRC python :session gbdt :results output raw :exports both
+y_pred = big_eta.predict_proba(X_test)[:, 1]
 print("Test logloss: {}".format(log_loss(y_test, y_pred)))
+#+END_SRC
 
+#+RESULTS:
+Test logloss: 3.0443902682648675e-06
 
-# In[8]:
+#+BEGIN_SRC python :session gbdt :results output raw :exports both
+print('Accuracy for Big Eta: {}'.format(big_eta.score(X_test, y_test)))
+#+END_SRC
 
+#+RESULTS:
+Accuracy for Big Eta: 1.0
 
-cum_preds = np.array([x for x in clf.staged_decision_function(X_test)])[:, :, 0] 
+#+BEGIN_SRC python :session gbdt :results none
+big_eta_cumulative_predictions = numpy.array(
+    [x for x in big_eta.staged_decision_function(X_test)])[:, :, 0] 
+#+END_SRC
 
-print ("Logloss using all trees:           {}".format(compute_loss(y_test, cum_preds[-1, :])))
-print ("Logloss using all trees but last:  {}".format(compute_loss(y_test, cum_preds[-2, :])))
-print ("Logloss using all trees but first: {}".format(compute_loss(y_test, cum_preds[-1, :] - cum_preds[0, :])))
+#+BEGIN_SRC python :session gbdt :results output raw :exports both
+print_loss(big_eta_cumulative_predictions, y_test)
+#+END_SRC
 
+#+RESULTS:
+ - Logloss using all trees:           3.0443902682648675e-06
+ - Logloss using all trees but last:  3.0836959336434695e-06
+ - Logloss using all trees but first: 2.0247047109196954
 
-# That is it! Now we see, that it is crucial to have the first tree in the ensemble!
+#+BEGIN_SRC python :session gbdt :results none :ipyfile ../files/posts/will-a-gbdt-performance-drop-if-we-remove-the-first-tree/big_eta_plot.png
+plot_predictions(big_eta_cumulative_predictions, "eta=8")
+#+END_SRC
 
-# Even though the dataset is synthetic, the similar intuition will work with the real data, except GBM can diverge with high learning rates for a more complex dataset. If you want to play with a little bit more realistic dataset, you can generate it in this notebook with the following code:
-# 
-# `X_all, y_all = make_hastie_10_2(random_state=0)` 
-# 
-# and run the code starting from "Learn GBM".
+[[file:big_eta_plot.png]]
+
+Now we see that it is crucial to have the first tree in the ensemble, the last one maybe not so much.
+
+Even though the dataset is synthetic, a similar intuition will work with real data, except the Gradient Boosting Model can diverge with higher learning rates and a more complex dataset. 
+* A More Realistic Data Set
+  Sklearn's [[http://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_hastie_10_2.html][make_hastie_10_2]] function makes a ten-dimensional data set with two classifications as targets.
+** Building the Data Set
+#+BEGIN_SRC python :session gbdt :results none
+X_hastie, y_hastie = make_hastie_10_2(random_state=0)
+X_train_hastie, X_test_hastie, y_train_hastie, y_test_hastie = train_test_split(
+    X_hastie,
+    y_hastie,
+    test_size=0.5,
+    random_state=42)
+#+END_SRC
+
+** Our Decision Stump Again
+   Let's try the decision stump on the new dataset.
+#+BEGIN_SRC python :session gbdt :results none
+stump = DecisionTreeClassifier(max_depth=1)
+stump.fit(X_train_hastie, y_train_hastie)
+#+END_SRC
+
+#+BEGIN_SRC python :session gbdt :results output raw :exports both
+print('Accuracy for a single decision stump: {}'.format(
+    stump.score(X_test_hastie, y_test_hastie)))
+#+END_SRC
+
+#+RESULTS:
+Accuracy for a single decision stump: 0.5405
+
+It dids't do quite so well, what about a decision tree in general?
+
+#+BEGIN_SRC python :session gbdt :results output raw :exports both
+tree = DecisionTreeClassifier()
+tree.fit(X_train_hastie, y_train_hastie)
+print('Accuracy for the Decision Tree: {}'.format(
+    tree.score(X_test_hastie, y_test_hastie)))
+#+END_SRC
+
+#+RESULTS:
+Accuracy for the Decision Tree: 0.7765
+
+It does a little better, anyway.
+
+** The Gradient Boosting Model
+
+#+BEGIN_SRC python :session gbdt :results none
+gbc2_model = GradientBoostingClassifier(n_estimators=5000, learning_rate=0.01,
+                                        max_depth=3,
+                                        random_state=0)
+gbc2_model.fit(X_train_hastie, y_train_hastie)
+y_pred = gbc2_model.predict_proba(X_test_hastie)[:, 1]
+#+END_SRC
+
+#+BEGIN_SRC python :session gbdt :results output raw :exports both
+print('Accuracy for Gradient Boosting: {}'.format(
+    gbc2_model.score(X_test_hastie, y_test_hastie)))
+#+END_SRC
+
+#+RESULTS:
+Accuracy for Gradient Boosting: 0.9436666666666667
+
+#+BEGIN_SRC python :session gbdt :results output raw :exports both
+gbc2_cumulative_predictions = numpy.array(
+    [x for x in gbc2_model.staged_decision_function(X_test_hastie)])[:, :, 0]
+print_loss(gbc2_cumulative_predictions, y_test_hastie)
+#+END_SRC
+
+#+RESULTS:
+ - Logloss using all trees:           0.18059661273530772
+ - Logloss using all trees but last:  0.180624604367416
+ - Logloss using all trees but first: 0.18064882642423313
+
+In this case, although there is a difference, removing the last doesn't seem to be much better than removing the first.
+
+** XGBoost
+   We stated earlier that the result should be the same with other implementations of Gradient Boosting so let's see what happens if we use XGBoost instead.
+
+#+BEGIN_SRC python :session gbdt :results output :exports both
+xg_model = XGBClassifier(n_estimators=5000, learning_rate=0.01)
+print(xg_model)
+xg_model.fit(X_train_hastie, y_train_hastie)
+#+END_SRC
+
+#+RESULTS:
+: XGBClassifier(base_score=0.5, booster='gbtree', colsample_bylevel=1,
+:        colsample_bytree=1, gamma=0, learning_rate=0.01, max_delta_step=0,
+:        max_depth=3, min_child_weight=1, missing=None, n_estimators=5000,
+:        n_jobs=1, nthread=None, objective='binary:logistic', random_state=0,
+:        reg_alpha=0, reg_lambda=1, scale_pos_weight=1, seed=None,
+:        silent=True, subsample=1)
+
+#+BEGIN_SRC python :session gbdt :results output raw :exports both
+print('Accuracy for XGBoost: {}'.format(xg_model.score(X_test_hastie, y_test_hastie)))
+#+END_SRC
+
+#+RESULTS:
+Accuracy for XGBoost: 0.9408333333333333
+
+#+BEGIN_SRC python :session gbdt raw :exports both
+
+y_pred = xg_model.predict_proba(X_test_hastie)[:, 1]
+xg_cumulative_predictions = numpy.array(
+    [x for x in xg_model.staged_decision_function(X_test_hastie)])[:, :, 0]
+print_loss(xg_cumulative_loss)
+#+END_SRC
+
+If you read the documentation for the python package for [[https://xgboost.readthedocs.io/en/latest/python/index.html][xgboost]] you'll see that they didn't implement the =staged_decision_function= for the =XGBClassifier= so you can't actually run the previous block. The XGBoost classifier ran much faster than the sklearn version did, and did almost as well in accuracy.
+
+* Source
+
+ - “Will Performance of GBDT Model Drop Dramatically If We Remove the First Tree?” Coursera. Accessed August 5, 2018. https://www.coursera.org/learn/competitive-data-science/home/welcome.
