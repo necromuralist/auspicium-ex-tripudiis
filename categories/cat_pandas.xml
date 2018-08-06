@@ -1,0 +1,703 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about pandas)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/cat_pandas.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Mon, 06 Aug 2018 17:39:04 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Pandas Basics</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/pandas-basics/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-orga8006d5" class="outline-2"&gt;
+&lt;h2 id="orga8006d5"&gt;Description&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orga8006d5"&gt;
+&lt;p&gt;
+This is a chance to refresh your &lt;b&gt;pandas&lt;/b&gt; knowledge. You will need to do several &lt;a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.groupby.html"&gt;&lt;code&gt;groupby&lt;/code&gt;&lt;/a&gt;s and &lt;a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.join.html"&gt;&lt;code&gt;join&lt;/code&gt;&lt;/a&gt;`s to solve the task. 
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-orga70badc" class="outline-2"&gt;
+&lt;h2 id="orga70badc"&gt;Imports&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orga70badc"&gt;
+&lt;p&gt;
+This first block is necessary for the code.
+&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# pandas standard library
+import os
+import re
+
+# from pypi
+import pandas
+import numpy
+import matplotlib.pyplot as plt
+
+from tabulate import tabulate
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;get_ipython().run_line_magic('matplotlib', 'inline')
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;
+This next block is only relevant on Coursera's server.
+&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;from grader import Grader
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-orgd8847a3" class="outline-2"&gt;
+&lt;h2 id="orgd8847a3"&gt;The Data&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgd8847a3"&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;DATA_FOLDER = '../readonly/final_project_data/'
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;transactions    = pandas.read_csv(os.path.join(DATA_FOLDER,
+					       'sales_train.csv.gz'))
+items           = pandas.read_csv(os.path.join(DATA_FOLDER,
+					       'items.csv'))
+item_categories = pandas.read_csv(os.path.join(DATA_FOLDER,
+					       'item_categories.csv'))
+shops           = pandas.read_csv(os.path.join(DATA_FOLDER,
+					       'shops.csv'))
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;frames = dict(transactions=transactions,
+	      items=items,
+	      item_categories=item_categories,
+	      shops=shops)
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-org77d5eb2" class="outline-2"&gt;
+&lt;h2 id="org77d5eb2"&gt;Data Description&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org77d5eb2"&gt;
+&lt;p&gt;
+The dataset we loaded is taken from a kaggle competititon. You can find complete data description at the &lt;a href="https://www.kaggle.com/c/competitive-data-science-final-project/data"&gt;competition web page&lt;/a&gt;. To join the competition use &lt;a href="https://www.kaggle.com/t/1ea93815dca248e99221df42ebde3540"&gt;this link&lt;/a&gt;.
+&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;
+You are provided with daily historical sales data. The task is to forecast the total amount of products sold in every shop for the test set. Note that the list of shops and products slightly changes every month. Creating a robust model that can handle such situations is part of the challenge.
+&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-org3777004" class="outline-3"&gt;
+&lt;h3 id="org3777004"&gt;File descriptions&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org3777004"&gt;
+&lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
+
+
+&lt;colgroup&gt;
+&lt;col class="org-left"&gt;
+
+&lt;col class="org-left"&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope="col" class="org-left"&gt;File Name&lt;/th&gt;
+&lt;th scope="col" class="org-left"&gt;Description&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class="org-left"&gt;sales_train.csv&lt;/td&gt;
+&lt;td class="org-left"&gt;the training set. Daily historical data from January 2013 to October 2015.&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;test.csv&lt;/td&gt;
+&lt;td class="org-left"&gt;the test set. You need to forecast the sales for these shops and products for November 2015.&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;sample_submission.csv&lt;/td&gt;
+&lt;td class="org-left"&gt;a sample submission file in the correct format.&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;items.csv&lt;/td&gt;
+&lt;td class="org-left"&gt;supplemental information about the items/products.&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;item_categories.csv&lt;/td&gt;
+&lt;td class="org-left"&gt;supplemental information about the items categories.&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;shops.csv&lt;/td&gt;
+&lt;td class="org-left"&gt;supplemental information about the shops.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-orgf6d51b5" class="outline-3"&gt;
+&lt;h3 id="orgf6d51b5"&gt;Data Fields&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgf6d51b5"&gt;
+&lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
+
+
+&lt;colgroup&gt;
+&lt;col class="org-left"&gt;
+
+&lt;col class="org-left"&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope="col" class="org-left"&gt;Column&lt;/th&gt;
+&lt;th scope="col" class="org-left"&gt;Description&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class="org-left"&gt;ID&lt;/td&gt;
+&lt;td class="org-left"&gt;an Id that represents a (Shop, Item) tuple within the test set&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;shop_id&lt;/td&gt;
+&lt;td class="org-left"&gt;unique identifier of a shop&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;item_id&lt;/td&gt;
+&lt;td class="org-left"&gt;unique identifier of a product&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;item_category_id&lt;/td&gt;
+&lt;td class="org-left"&gt;unique identifier of item category&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;item_cnt_day&lt;/td&gt;
+&lt;td class="org-left"&gt;number of products sold. You are predicting a monthly amount of this measure&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;item_price&lt;/td&gt;
+&lt;td class="org-left"&gt;current price of an item&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;date&lt;/td&gt;
+&lt;td class="org-left"&gt;date in format dd/mm/yyyy&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;date_block_num&lt;/td&gt;
+&lt;td class="org-left"&gt;a consecutive month number, used for convenience. January 2013 is 0, February 2013 is 1,…, October 2015 is 33&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;item_name&lt;/td&gt;
+&lt;td class="org-left"&gt;name of item&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;shop_name&lt;/td&gt;
+&lt;td class="org-left"&gt;name of shop&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;item_category_name&lt;/td&gt;
+&lt;td class="org-left"&gt;name of item category&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+
+&lt;div id="outline-container-orgc16edbe" class="outline-2"&gt;
+&lt;h2 id="orgc16edbe"&gt;The First Problem&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgc16edbe"&gt;
+&lt;p&gt;
+Let's start with a simple task. 
+&lt;/p&gt;
+
+
+&lt;p&gt;
+Print the shape of the loaded dataframes and use the &lt;a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.head.html"&gt;&lt;code&gt;df.head&lt;/code&gt;&lt;/a&gt; function to print several rows. Examine the features you are given.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;print("| DataFrame | Rows| Columns|")
+print("|-+-+-|")
+for name, frame in frames.items():
+    rows, columns = frame.shape
+    print("|{}| {}|{}|".format(name, rows, columns))
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
+
+
+&lt;colgroup&gt;
+&lt;col class="org-left"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope="col" class="org-left"&gt;DataFrame&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;Rows&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;Columns&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class="org-left"&gt;transactions&lt;/td&gt;
+&lt;td class="org-right"&gt;2935849&lt;/td&gt;
+&lt;td class="org-right"&gt;6&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;items&lt;/td&gt;
+&lt;td class="org-right"&gt;22170&lt;/td&gt;
+&lt;td class="org-right"&gt;3&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;item_categories&lt;/td&gt;
+&lt;td class="org-right"&gt;84&lt;/td&gt;
+&lt;td class="org-right"&gt;2&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;shops&lt;/td&gt;
+&lt;td class="org-right"&gt;60&lt;/td&gt;
+&lt;td class="org-right"&gt;2&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;for name, frame in frames.items():
+    print("** {}".format(name))
+    head = frame.head()
+    print(tabulate(head, headers="keys", tablefmt="orgtbl", showindex=False))
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org960dcf5" class="outline-3"&gt;
+&lt;h3 id="org960dcf5"&gt;transactions&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org960dcf5"&gt;
+&lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
+
+
+&lt;colgroup&gt;
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope="col" class="org-right"&gt;date&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;date_block_num&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;shop_id&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;item_id&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;item_price&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;item_cnt_day&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class="org-right"&gt;02.01.2013&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;59&lt;/td&gt;
+&lt;td class="org-right"&gt;22154&lt;/td&gt;
+&lt;td class="org-right"&gt;999&lt;/td&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;03.01.2013&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;25&lt;/td&gt;
+&lt;td class="org-right"&gt;2552&lt;/td&gt;
+&lt;td class="org-right"&gt;899&lt;/td&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;05.01.2013&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;25&lt;/td&gt;
+&lt;td class="org-right"&gt;2552&lt;/td&gt;
+&lt;td class="org-right"&gt;899&lt;/td&gt;
+&lt;td class="org-right"&gt;-1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;06.01.2013&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;25&lt;/td&gt;
+&lt;td class="org-right"&gt;2554&lt;/td&gt;
+&lt;td class="org-right"&gt;1709.05&lt;/td&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;15.01.2013&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;25&lt;/td&gt;
+&lt;td class="org-right"&gt;2555&lt;/td&gt;
+&lt;td class="org-right"&gt;1099&lt;/td&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgb6a8fbf" class="outline-3"&gt;
+&lt;h3 id="orgb6a8fbf"&gt;items&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgb6a8fbf"&gt;
+&lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
+
+
+&lt;colgroup&gt;
+&lt;col class="org-left"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope="col" class="org-left"&gt;item_name&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;item_id&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;item_category_id&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class="org-left"&gt;! ВО ВЛАСТИ НАВАЖДЕНИЯ (ПЛАСТ.)         D&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;40&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;!ABBYY FineReader 12 Professional Edition Full [PC, Цифровая версия]&lt;/td&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;td class="org-right"&gt;76&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;***В ЛУЧАХ СЛАВЫ   (UNV)                    D&lt;/td&gt;
+&lt;td class="org-right"&gt;2&lt;/td&gt;
+&lt;td class="org-right"&gt;40&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;***ГОЛУБАЯ ВОЛНА  (Univ)                      D&lt;/td&gt;
+&lt;td class="org-right"&gt;3&lt;/td&gt;
+&lt;td class="org-right"&gt;40&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;***КОРОБКА (СТЕКЛО)                       D&lt;/td&gt;
+&lt;td class="org-right"&gt;4&lt;/td&gt;
+&lt;td class="org-right"&gt;40&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org7900a2e" class="outline-3"&gt;
+&lt;h3 id="org7900a2e"&gt;item_categories&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org7900a2e"&gt;
+&lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
+
+
+&lt;colgroup&gt;
+&lt;col class="org-left"&gt;
+
+&lt;col class="org-right"&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope="col" class="org-left"&gt;item_category_name&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;item_category_id&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class="org-left"&gt;PC - Гарнитуры/Наушники&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;Аксессуары - PS2&lt;/td&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;Аксессуары - PS3&lt;/td&gt;
+&lt;td class="org-right"&gt;2&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;Аксессуары - PS4&lt;/td&gt;
+&lt;td class="org-right"&gt;3&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;Аксессуары - PSP&lt;/td&gt;
+&lt;td class="org-right"&gt;4&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org964e870" class="outline-3"&gt;
+&lt;h3 id="org964e870"&gt;shops&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org964e870"&gt;
+&lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
+
+
+&lt;colgroup&gt;
+&lt;col class="org-left"&gt;
+
+&lt;col class="org-right"&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope="col" class="org-left"&gt;shop_name&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;shop_id&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class="org-left"&gt;!Якутск Орджоникидзе, 56 фран&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;!Якутск ТЦ "Центральный" фран&lt;/td&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;Адыгея ТЦ "Мега"&lt;/td&gt;
+&lt;td class="org-right"&gt;2&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;Балашиха ТРК "Октябрь-Киномир"&lt;/td&gt;
+&lt;td class="org-right"&gt;3&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;Волжский ТЦ "Волга Молл"&lt;/td&gt;
+&lt;td class="org-right"&gt;4&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;
+Unexpectedly, the names are all in &lt;a href="https://en.wikipedia.org/wiki/Cyrillic_script"&gt;cyrillic&lt;/a&gt;, so I guess this will be a black-box in more ways than is usual
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-orgf6c6dcc" class="outline-2"&gt;
+&lt;h2 id="orgf6c6dcc"&gt;Questions&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgf6c6dcc"&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org1111c6c" class="outline-3"&gt;
+&lt;h3 id="org1111c6c"&gt;Question 1: &lt;b&gt;What was the maximum total revenue among all the shops in September, 2014?&lt;/b&gt;&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org1111c6c"&gt;
+&lt;p&gt;
+From here on out &lt;b&gt;revenue&lt;/b&gt; refers to total sales minus value of goods returned.
+&lt;/p&gt;
+
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;Sometimes items are returned, find such examples in the dataset.&lt;/li&gt;
+&lt;li&gt;It is handy to split `date` field into [`day`, `month`, `year`] components and use ` df.year &lt;code&gt;= 14` and `df.month =&lt;/code&gt; 9` in order to select target subset of dates.&lt;/li&gt;
+&lt;li&gt;You may work with `date` feature as with srings, or you may first convert it to ` pd.datetime` type with `pd.to_datetime` function, but do not forget to set correct ` ormat` argument.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-org7011516" class="outline-4"&gt;
+&lt;h4 id="org7011516"&gt;Answer&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org7011516"&gt;
+&lt;/div&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;&lt;a id="orga93108f"&gt;&lt;/a&gt;Sales Per Item&lt;br&gt;
+&lt;div class="outline-text-5" id="text-orga93108f"&gt;
+&lt;p&gt;
+First I'll add a column with the total revenue for each item (the price times the number sold).
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;transactions["item_revenue"] = transactions.item_price * transactions.item_cnt_day
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;print(transactions.describe())
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;
+       date_block_num       shop_id       item_id    item_price  item_cnt_day  \
+count    2.935849e+06  2.935849e+06  2.935849e+06  2.935849e+06  2.935849e+06   
+mean     1.456991e+01  3.300173e+01  1.019723e+04  8.908532e+02  1.242641e+00   
+std      9.422988e+00  1.622697e+01  6.324297e+03  1.729800e+03  2.618834e+00   
+min      0.000000e+00  0.000000e+00  0.000000e+00 -1.000000e+00 -2.200000e+01   
+25%      7.000000e+00  2.200000e+01  4.476000e+03  2.490000e+02  1.000000e+00   
+50%      1.400000e+01  3.100000e+01  9.343000e+03  3.990000e+02  1.000000e+00   
+75%      2.300000e+01  4.700000e+01  1.568400e+04  9.990000e+02  1.000000e+00   
+max      3.300000e+01  5.900000e+01  2.216900e+04  3.079800e+05  2.169000e+03   
+&lt;/p&gt;
+
+&lt;p&gt;
+       item_revenue  
+count  2.935849e+06  
+mean   1.157732e+03  
+std    5.683604e+03  
+min   -6.897000e+04  
+25%    2.490000e+02  
+50%    4.490000e+02  
+75%    1.078200e+03  
+max    1.829990e+06  
+&lt;/p&gt;
+
+&lt;p&gt;
+I don't know why one item lost 68970 in whatever currency this represents (presumably rubles), but I assume this means the item had some returns.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+
+&lt;li&gt;&lt;a id="org7d1b9a7"&gt;&lt;/a&gt;Filter Out the Month&lt;br&gt;
+&lt;div class="outline-text-5" id="text-org7d1b9a7"&gt;
+&lt;p&gt;
+We could convert the dates to datetime objects, but in this case it might be easier to match the &lt;code&gt;mm.yyyy&lt;/code&gt; date format instead.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;expression = r"\d{2}\.09\.2014"
+
+def matched(date, expression=expression):
+    """checks if the string matches our expected date
+
+    Args:
+     date: date string formatted dd.mm.yyyy
+     expression: regular expression to match
+
+    Returns:
+     bool: True if it matches the expression
+    """
+    return re.match(expression, date) is not None
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;
+First, as a sanity check, we'll make sure that all the date cells have values.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;assert not transactions.date.hasnans
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;
+Naw let's filter on the date-expression we created for september.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;september = transactions[transactions.date.apply(matched)]
+print(matching.shape)
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;
+(73157, 7)
+&lt;/p&gt;
+
+&lt;p&gt;
+That seems like a lot of transactions. What fraction of the total is it?
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;rows, columns = september.shape
+print("{:.2f} %".format(100 * rows/transactions.shape[0]))
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;
+2.49 %
+&lt;/p&gt;
+
+&lt;p&gt;
+Not as much as I would have thought, &lt;code&gt;transactions&lt;/code&gt; is much larger than I first took it to be.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;grouped = september.groupby(["shop_id", "item_id"])
+summed = grouped.item_revenue.agg(numpy.sum)
+print(summed.head())
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;
+shop_id  item_id
+2        32          298.0
+         33          199.0
+         482        6600.0
+         485         300.0
+         486         300.0
+Name: item_revenue, dtype: float64
+&lt;/p&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;max_revenue = # PUT YOUR ANSWER IN THIS VARIABLE
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;
+grader.submit_tag('max_revenue', max_revenue)
+&lt;/p&gt;
+
+
+&lt;p&gt;
+category_id_with_max_revenue = # PUT YOUR ANSWER IN THIS VARIABLE
+grader.submit_tag('category_id_with_max_revenue', category_id_with_max_revenue)
+&lt;/p&gt;
+
+
+&lt;p&gt;
+num_items_constant_price = # PUT YOUR ANSWER IN THIS VARIABLE
+grader.submit_tag('num_items_constant_price', num_items_constant_price)
+&lt;/p&gt;
+
+
+&lt;p&gt;
+shop_id = 25
+&lt;/p&gt;
+
+&lt;p&gt;
+total_num_items_sold = # YOUR CODE GOES HERE
+days = # YOUR CODE GOES HERE
+&lt;/p&gt;
+
+&lt;p&gt;
+plt.plot(days, total_num_items_sold)
+plt.ylabel('Num items')
+plt.xlabel('Day')
+plt.title("Daily revenue for shop_id = 25")
+plt.show()
+&lt;/p&gt;
+
+&lt;p&gt;
+total_num_items_sold_var = # PUT YOUR ANSWER IN THIS VARIABLE
+grader.submit_tag('total_num_items_sold_var', total_num_items_sold_var)
+&lt;/p&gt;
+
+
+&lt;p&gt;
+STUDENT_EMAIL = # EMAIL HERE
+STUDENT_TOKEN = # TOKEN HERE
+grader.status()
+&lt;/p&gt;
+
+
+&lt;p&gt;
+grader.submit(STUDENT_EMAIL, STUDENT_TOKEN)
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description><category>pandas basics</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/pandas-basics/</guid><pubDate>Sun, 05 Aug 2018 19:56:23 GMT</pubDate></item></channel></rss>

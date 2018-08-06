@@ -23,18 +23,26 @@
  </sitemap>
  <sitemap>
   <loc>https://necromuralist.github.io/Kaggle-Competitions/categories/cat_gbdt.xml</loc>
-  <lastmod>2018-08-05T18:03:00Z</lastmod>
+  <lastmod>2018-08-06T14:08:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://necromuralist.github.io/Kaggle-Competitions/categories/cat_pandas.xml</loc>
+  <lastmod>2018-08-06T14:08:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://necromuralist.github.io/Kaggle-Competitions/categories/gbdt-basics.xml</loc>
-  <lastmod>2018-08-05T18:03:00Z</lastmod>
+  <lastmod>2018-08-06T14:08:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://necromuralist.github.io/Kaggle-Competitions/categories/pandas-basics.xml</loc>
+  <lastmod>2018-08-06T14:08:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://necromuralist.github.io/Kaggle-Competitions/rss.xml</loc>
-  <lastmod>2018-08-05T18:03:00Z</lastmod>
+  <lastmod>2018-08-06T14:08:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://necromuralist.github.io/Kaggle-Competitions/sitemap.xml</loc>
-  <lastmod>2018-08-05T18:04:00Z</lastmod>
+  <lastmod>2018-08-06T14:08:00Z</lastmod>
  </sitemap>
 </sitemapindex>

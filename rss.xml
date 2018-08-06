@@ -1,5 +1,706 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description>Notes on studying kaggle.</description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Sun, 05 Aug 2018 19:33:58 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Will a GBDT's performance drop if we remove the first tree?</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/will-a-gbdt-performance-drop-if-we-remove-the-first-tree/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;p&gt;
+<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description>Notes on studying kaggle.</description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Mon, 06 Aug 2018 17:39:04 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Pandas Basics</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/pandas-basics/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-orga8006d5" class="outline-2"&gt;
+&lt;h2 id="orga8006d5"&gt;Description&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orga8006d5"&gt;
+&lt;p&gt;
+This is a chance to refresh your &lt;b&gt;pandas&lt;/b&gt; knowledge. You will need to do several &lt;a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.groupby.html"&gt;&lt;code&gt;groupby&lt;/code&gt;&lt;/a&gt;s and &lt;a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.join.html"&gt;&lt;code&gt;join&lt;/code&gt;&lt;/a&gt;`s to solve the task. 
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-orga70badc" class="outline-2"&gt;
+&lt;h2 id="orga70badc"&gt;Imports&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orga70badc"&gt;
+&lt;p&gt;
+This first block is necessary for the code.
+&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# pandas standard library
+import os
+import re
+
+# from pypi
+import pandas
+import numpy
+import matplotlib.pyplot as plt
+
+from tabulate import tabulate
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;get_ipython().run_line_magic('matplotlib', 'inline')
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;
+This next block is only relevant on Coursera's server.
+&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;from grader import Grader
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-orgd8847a3" class="outline-2"&gt;
+&lt;h2 id="orgd8847a3"&gt;The Data&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgd8847a3"&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;DATA_FOLDER = '../readonly/final_project_data/'
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;transactions    = pandas.read_csv(os.path.join(DATA_FOLDER,
+					       'sales_train.csv.gz'))
+items           = pandas.read_csv(os.path.join(DATA_FOLDER,
+					       'items.csv'))
+item_categories = pandas.read_csv(os.path.join(DATA_FOLDER,
+					       'item_categories.csv'))
+shops           = pandas.read_csv(os.path.join(DATA_FOLDER,
+					       'shops.csv'))
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;frames = dict(transactions=transactions,
+	      items=items,
+	      item_categories=item_categories,
+	      shops=shops)
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-org77d5eb2" class="outline-2"&gt;
+&lt;h2 id="org77d5eb2"&gt;Data Description&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org77d5eb2"&gt;
+&lt;p&gt;
+The dataset we loaded is taken from a kaggle competititon. You can find complete data description at the &lt;a href="https://www.kaggle.com/c/competitive-data-science-final-project/data"&gt;competition web page&lt;/a&gt;. To join the competition use &lt;a href="https://www.kaggle.com/t/1ea93815dca248e99221df42ebde3540"&gt;this link&lt;/a&gt;.
+&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;
+You are provided with daily historical sales data. The task is to forecast the total amount of products sold in every shop for the test set. Note that the list of shops and products slightly changes every month. Creating a robust model that can handle such situations is part of the challenge.
+&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-org3777004" class="outline-3"&gt;
+&lt;h3 id="org3777004"&gt;File descriptions&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org3777004"&gt;
+&lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
+
+
+&lt;colgroup&gt;
+&lt;col class="org-left"&gt;
+
+&lt;col class="org-left"&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope="col" class="org-left"&gt;File Name&lt;/th&gt;
+&lt;th scope="col" class="org-left"&gt;Description&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class="org-left"&gt;sales_train.csv&lt;/td&gt;
+&lt;td class="org-left"&gt;the training set. Daily historical data from January 2013 to October 2015.&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;test.csv&lt;/td&gt;
+&lt;td class="org-left"&gt;the test set. You need to forecast the sales for these shops and products for November 2015.&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;sample_submission.csv&lt;/td&gt;
+&lt;td class="org-left"&gt;a sample submission file in the correct format.&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;items.csv&lt;/td&gt;
+&lt;td class="org-left"&gt;supplemental information about the items/products.&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;item_categories.csv&lt;/td&gt;
+&lt;td class="org-left"&gt;supplemental information about the items categories.&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;shops.csv&lt;/td&gt;
+&lt;td class="org-left"&gt;supplemental information about the shops.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-orgf6d51b5" class="outline-3"&gt;
+&lt;h3 id="orgf6d51b5"&gt;Data Fields&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgf6d51b5"&gt;
+&lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
+
+
+&lt;colgroup&gt;
+&lt;col class="org-left"&gt;
+
+&lt;col class="org-left"&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope="col" class="org-left"&gt;Column&lt;/th&gt;
+&lt;th scope="col" class="org-left"&gt;Description&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class="org-left"&gt;ID&lt;/td&gt;
+&lt;td class="org-left"&gt;an Id that represents a (Shop, Item) tuple within the test set&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;shop_id&lt;/td&gt;
+&lt;td class="org-left"&gt;unique identifier of a shop&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;item_id&lt;/td&gt;
+&lt;td class="org-left"&gt;unique identifier of a product&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;item_category_id&lt;/td&gt;
+&lt;td class="org-left"&gt;unique identifier of item category&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;item_cnt_day&lt;/td&gt;
+&lt;td class="org-left"&gt;number of products sold. You are predicting a monthly amount of this measure&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;item_price&lt;/td&gt;
+&lt;td class="org-left"&gt;current price of an item&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;date&lt;/td&gt;
+&lt;td class="org-left"&gt;date in format dd/mm/yyyy&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;date_block_num&lt;/td&gt;
+&lt;td class="org-left"&gt;a consecutive month number, used for convenience. January 2013 is 0, February 2013 is 1,…, October 2015 is 33&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;item_name&lt;/td&gt;
+&lt;td class="org-left"&gt;name of item&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;shop_name&lt;/td&gt;
+&lt;td class="org-left"&gt;name of shop&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;item_category_name&lt;/td&gt;
+&lt;td class="org-left"&gt;name of item category&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+
+&lt;div id="outline-container-orgc16edbe" class="outline-2"&gt;
+&lt;h2 id="orgc16edbe"&gt;The First Problem&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgc16edbe"&gt;
+&lt;p&gt;
+Let's start with a simple task. 
+&lt;/p&gt;
+
+
+&lt;p&gt;
+Print the shape of the loaded dataframes and use the &lt;a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.head.html"&gt;&lt;code&gt;df.head&lt;/code&gt;&lt;/a&gt; function to print several rows. Examine the features you are given.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;print("| DataFrame | Rows| Columns|")
+print("|-+-+-|")
+for name, frame in frames.items():
+    rows, columns = frame.shape
+    print("|{}| {}|{}|".format(name, rows, columns))
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
+
+
+&lt;colgroup&gt;
+&lt;col class="org-left"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope="col" class="org-left"&gt;DataFrame&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;Rows&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;Columns&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class="org-left"&gt;transactions&lt;/td&gt;
+&lt;td class="org-right"&gt;2935849&lt;/td&gt;
+&lt;td class="org-right"&gt;6&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;items&lt;/td&gt;
+&lt;td class="org-right"&gt;22170&lt;/td&gt;
+&lt;td class="org-right"&gt;3&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;item_categories&lt;/td&gt;
+&lt;td class="org-right"&gt;84&lt;/td&gt;
+&lt;td class="org-right"&gt;2&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;shops&lt;/td&gt;
+&lt;td class="org-right"&gt;60&lt;/td&gt;
+&lt;td class="org-right"&gt;2&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;for name, frame in frames.items():
+    print("** {}".format(name))
+    head = frame.head()
+    print(tabulate(head, headers="keys", tablefmt="orgtbl", showindex=False))
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org960dcf5" class="outline-3"&gt;
+&lt;h3 id="org960dcf5"&gt;transactions&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org960dcf5"&gt;
+&lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
+
+
+&lt;colgroup&gt;
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope="col" class="org-right"&gt;date&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;date_block_num&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;shop_id&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;item_id&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;item_price&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;item_cnt_day&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class="org-right"&gt;02.01.2013&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;59&lt;/td&gt;
+&lt;td class="org-right"&gt;22154&lt;/td&gt;
+&lt;td class="org-right"&gt;999&lt;/td&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;03.01.2013&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;25&lt;/td&gt;
+&lt;td class="org-right"&gt;2552&lt;/td&gt;
+&lt;td class="org-right"&gt;899&lt;/td&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;05.01.2013&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;25&lt;/td&gt;
+&lt;td class="org-right"&gt;2552&lt;/td&gt;
+&lt;td class="org-right"&gt;899&lt;/td&gt;
+&lt;td class="org-right"&gt;-1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;06.01.2013&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;25&lt;/td&gt;
+&lt;td class="org-right"&gt;2554&lt;/td&gt;
+&lt;td class="org-right"&gt;1709.05&lt;/td&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;15.01.2013&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;25&lt;/td&gt;
+&lt;td class="org-right"&gt;2555&lt;/td&gt;
+&lt;td class="org-right"&gt;1099&lt;/td&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgb6a8fbf" class="outline-3"&gt;
+&lt;h3 id="orgb6a8fbf"&gt;items&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgb6a8fbf"&gt;
+&lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
+
+
+&lt;colgroup&gt;
+&lt;col class="org-left"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope="col" class="org-left"&gt;item_name&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;item_id&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;item_category_id&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class="org-left"&gt;! ВО ВЛАСТИ НАВАЖДЕНИЯ (ПЛАСТ.)         D&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;40&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;!ABBYY FineReader 12 Professional Edition Full [PC, Цифровая версия]&lt;/td&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;td class="org-right"&gt;76&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;***В ЛУЧАХ СЛАВЫ   (UNV)                    D&lt;/td&gt;
+&lt;td class="org-right"&gt;2&lt;/td&gt;
+&lt;td class="org-right"&gt;40&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;***ГОЛУБАЯ ВОЛНА  (Univ)                      D&lt;/td&gt;
+&lt;td class="org-right"&gt;3&lt;/td&gt;
+&lt;td class="org-right"&gt;40&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;***КОРОБКА (СТЕКЛО)                       D&lt;/td&gt;
+&lt;td class="org-right"&gt;4&lt;/td&gt;
+&lt;td class="org-right"&gt;40&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org7900a2e" class="outline-3"&gt;
+&lt;h3 id="org7900a2e"&gt;item_categories&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org7900a2e"&gt;
+&lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
+
+
+&lt;colgroup&gt;
+&lt;col class="org-left"&gt;
+
+&lt;col class="org-right"&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope="col" class="org-left"&gt;item_category_name&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;item_category_id&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class="org-left"&gt;PC - Гарнитуры/Наушники&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;Аксессуары - PS2&lt;/td&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;Аксессуары - PS3&lt;/td&gt;
+&lt;td class="org-right"&gt;2&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;Аксессуары - PS4&lt;/td&gt;
+&lt;td class="org-right"&gt;3&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;Аксессуары - PSP&lt;/td&gt;
+&lt;td class="org-right"&gt;4&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org964e870" class="outline-3"&gt;
+&lt;h3 id="org964e870"&gt;shops&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org964e870"&gt;
+&lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
+
+
+&lt;colgroup&gt;
+&lt;col class="org-left"&gt;
+
+&lt;col class="org-right"&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope="col" class="org-left"&gt;shop_name&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;shop_id&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class="org-left"&gt;!Якутск Орджоникидзе, 56 фран&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;!Якутск ТЦ "Центральный" фран&lt;/td&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;Адыгея ТЦ "Мега"&lt;/td&gt;
+&lt;td class="org-right"&gt;2&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;Балашиха ТРК "Октябрь-Киномир"&lt;/td&gt;
+&lt;td class="org-right"&gt;3&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;Волжский ТЦ "Волга Молл"&lt;/td&gt;
+&lt;td class="org-right"&gt;4&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;
+Unexpectedly, the names are all in &lt;a href="https://en.wikipedia.org/wiki/Cyrillic_script"&gt;cyrillic&lt;/a&gt;, so I guess this will be a black-box in more ways than is usual
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-orgf6c6dcc" class="outline-2"&gt;
+&lt;h2 id="orgf6c6dcc"&gt;Questions&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgf6c6dcc"&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org1111c6c" class="outline-3"&gt;
+&lt;h3 id="org1111c6c"&gt;Question 1: &lt;b&gt;What was the maximum total revenue among all the shops in September, 2014?&lt;/b&gt;&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org1111c6c"&gt;
+&lt;p&gt;
+From here on out &lt;b&gt;revenue&lt;/b&gt; refers to total sales minus value of goods returned.
+&lt;/p&gt;
+
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;Sometimes items are returned, find such examples in the dataset.&lt;/li&gt;
+&lt;li&gt;It is handy to split `date` field into [`day`, `month`, `year`] components and use ` df.year &lt;code&gt;= 14` and `df.month =&lt;/code&gt; 9` in order to select target subset of dates.&lt;/li&gt;
+&lt;li&gt;You may work with `date` feature as with srings, or you may first convert it to ` pd.datetime` type with `pd.to_datetime` function, but do not forget to set correct ` ormat` argument.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-org7011516" class="outline-4"&gt;
+&lt;h4 id="org7011516"&gt;Answer&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org7011516"&gt;
+&lt;/div&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;&lt;a id="orga93108f"&gt;&lt;/a&gt;Sales Per Item&lt;br&gt;
+&lt;div class="outline-text-5" id="text-orga93108f"&gt;
+&lt;p&gt;
+First I'll add a column with the total revenue for each item (the price times the number sold).
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;transactions["item_revenue"] = transactions.item_price * transactions.item_cnt_day
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;print(transactions.describe())
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;
+       date_block_num       shop_id       item_id    item_price  item_cnt_day  \
+count    2.935849e+06  2.935849e+06  2.935849e+06  2.935849e+06  2.935849e+06   
+mean     1.456991e+01  3.300173e+01  1.019723e+04  8.908532e+02  1.242641e+00   
+std      9.422988e+00  1.622697e+01  6.324297e+03  1.729800e+03  2.618834e+00   
+min      0.000000e+00  0.000000e+00  0.000000e+00 -1.000000e+00 -2.200000e+01   
+25%      7.000000e+00  2.200000e+01  4.476000e+03  2.490000e+02  1.000000e+00   
+50%      1.400000e+01  3.100000e+01  9.343000e+03  3.990000e+02  1.000000e+00   
+75%      2.300000e+01  4.700000e+01  1.568400e+04  9.990000e+02  1.000000e+00   
+max      3.300000e+01  5.900000e+01  2.216900e+04  3.079800e+05  2.169000e+03   
+&lt;/p&gt;
+
+&lt;p&gt;
+       item_revenue  
+count  2.935849e+06  
+mean   1.157732e+03  
+std    5.683604e+03  
+min   -6.897000e+04  
+25%    2.490000e+02  
+50%    4.490000e+02  
+75%    1.078200e+03  
+max    1.829990e+06  
+&lt;/p&gt;
+
+&lt;p&gt;
+I don't know why one item lost 68970 in whatever currency this represents (presumably rubles), but I assume this means the item had some returns.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+
+&lt;li&gt;&lt;a id="org7d1b9a7"&gt;&lt;/a&gt;Filter Out the Month&lt;br&gt;
+&lt;div class="outline-text-5" id="text-org7d1b9a7"&gt;
+&lt;p&gt;
+We could convert the dates to datetime objects, but in this case it might be easier to match the &lt;code&gt;mm.yyyy&lt;/code&gt; date format instead.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;expression = r"\d{2}\.09\.2014"
+
+def matched(date, expression=expression):
+    """checks if the string matches our expected date
+
+    Args:
+     date: date string formatted dd.mm.yyyy
+     expression: regular expression to match
+
+    Returns:
+     bool: True if it matches the expression
+    """
+    return re.match(expression, date) is not None
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;
+First, as a sanity check, we'll make sure that all the date cells have values.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;assert not transactions.date.hasnans
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;
+Naw let's filter on the date-expression we created for september.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;september = transactions[transactions.date.apply(matched)]
+print(matching.shape)
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;
+(73157, 7)
+&lt;/p&gt;
+
+&lt;p&gt;
+That seems like a lot of transactions. What fraction of the total is it?
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;rows, columns = september.shape
+print("{:.2f} %".format(100 * rows/transactions.shape[0]))
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;
+2.49 %
+&lt;/p&gt;
+
+&lt;p&gt;
+Not as much as I would have thought, &lt;code&gt;transactions&lt;/code&gt; is much larger than I first took it to be.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;grouped = september.groupby(["shop_id", "item_id"])
+summed = grouped.item_revenue.agg(numpy.sum)
+print(summed.head())
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;
+shop_id  item_id
+2        32          298.0
+         33          199.0
+         482        6600.0
+         485         300.0
+         486         300.0
+Name: item_revenue, dtype: float64
+&lt;/p&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;max_revenue = # PUT YOUR ANSWER IN THIS VARIABLE
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;
+grader.submit_tag('max_revenue', max_revenue)
+&lt;/p&gt;
+
+
+&lt;p&gt;
+category_id_with_max_revenue = # PUT YOUR ANSWER IN THIS VARIABLE
+grader.submit_tag('category_id_with_max_revenue', category_id_with_max_revenue)
+&lt;/p&gt;
+
+
+&lt;p&gt;
+num_items_constant_price = # PUT YOUR ANSWER IN THIS VARIABLE
+grader.submit_tag('num_items_constant_price', num_items_constant_price)
+&lt;/p&gt;
+
+
+&lt;p&gt;
+shop_id = 25
+&lt;/p&gt;
+
+&lt;p&gt;
+total_num_items_sold = # YOUR CODE GOES HERE
+days = # YOUR CODE GOES HERE
+&lt;/p&gt;
+
+&lt;p&gt;
+plt.plot(days, total_num_items_sold)
+plt.ylabel('Num items')
+plt.xlabel('Day')
+plt.title("Daily revenue for shop_id = 25")
+plt.show()
+&lt;/p&gt;
+
+&lt;p&gt;
+total_num_items_sold_var = # PUT YOUR ANSWER IN THIS VARIABLE
+grader.submit_tag('total_num_items_sold_var', total_num_items_sold_var)
+&lt;/p&gt;
+
+
+&lt;p&gt;
+STUDENT_EMAIL = # EMAIL HERE
+STUDENT_TOKEN = # TOKEN HERE
+grader.status()
+&lt;/p&gt;
+
+
+&lt;p&gt;
+grader.submit(STUDENT_EMAIL, STUDENT_TOKEN)
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description><category>pandas basics</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/pandas-basics/</guid><pubDate>Sun, 05 Aug 2018 19:56:23 GMT</pubDate></item><item><title>Will a GBDT's performance drop if we remove the first tree?</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/will-a-gbdt-performance-drop-if-we-remove-the-first-tree/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;p&gt;
 We'll look at how &lt;a href="http://blog.kaggle.com/2017/01/23/a-kaggle-master-explains-gradient-boosting/"&gt;&lt;b&gt;Gradient Boosting&lt;/b&gt;&lt;/a&gt; works and  answer the question:
 &lt;/p&gt;
 
@@ -23,9 +724,9 @@ Will the performance of a  GBDT model drop dramatically if we remove the first t
 &lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;xgboost&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;XGBClassifier&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
-&lt;div id="outline-container-org89591f4" class="outline-2"&gt;
-&lt;h2 id="org89591f4"&gt;Define the Sigmoid&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org89591f4"&gt;
+&lt;div id="outline-container-orgce58354" class="outline-2"&gt;
+&lt;h2 id="orgce58354"&gt;Define the Sigmoid&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgce58354"&gt;
 &lt;p&gt;
 This is a function to calculate the &lt;a href="https://en.wikipedia.org/wiki/Sigmoid_function"&gt;sigmoid&lt;/a&gt; which we'll use to convert probabilities to classifications.
 &lt;/p&gt;
@@ -36,17 +737,17 @@ This is a function to calculate the &lt;a href="https://en.wikipedia.org/wiki/Si
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org4faadf2" class="outline-2"&gt;
-&lt;h2 id="org4faadf2"&gt;Make the dataset&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org4faadf2"&gt;
+&lt;div id="outline-container-orgfd26fe2" class="outline-2"&gt;
+&lt;h2 id="orgfd26fe2"&gt;Make the dataset&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgfd26fe2"&gt;
 &lt;p&gt;
 This will be a very simple synthetic dataset. We'll use numpy's &lt;a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.random.randn.html"&gt;randn&lt;/a&gt; function to generate a dataset of random values that come from a normal distribution and then predict that the class is &lt;i&gt;1&lt;/i&gt; if the value is positive and that it is &lt;i&gt;0&lt;/i&gt; otherwise.
 &lt;/p&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org57f0ff0" class="outline-3"&gt;
-&lt;h3 id="org57f0ff0"&gt;Generating the Random Data&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org57f0ff0"&gt;
+&lt;div id="outline-container-org2302fd3" class="outline-3"&gt;
+&lt;h3 id="org2302fd3"&gt;Generating the Random Data&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org2302fd3"&gt;
 &lt;p&gt;
 First we'll generate an array of 5000 random numbers taken from a normal distribution.
 &lt;/p&gt;
@@ -73,17 +774,17 @@ Now we'll use sklearn's &lt;a href="http://scikit-learn.org/stable/modules/gener
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org62c188c" class="outline-2"&gt;
-&lt;h2 id="org62c188c"&gt;A Decision Tree Classifier&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org62c188c"&gt;
+&lt;div id="outline-container-org00b481f" class="outline-2"&gt;
+&lt;h2 id="org00b481f"&gt;A Decision Tree Classifier&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org00b481f"&gt;
 &lt;p&gt;
 We'll build a &lt;a href="https://en.wikipedia.org/wiki/Decision_tree"&gt;Decision Tree&lt;/a&gt; using sklearn's &lt;a href="http://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html"&gt;Decision Tree Classifier&lt;/a&gt; for this model.
 &lt;/p&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org455de52" class="outline-3"&gt;
-&lt;h3 id="org455de52"&gt;Building and Training the Model&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org455de52"&gt;
+&lt;div id="outline-container-org82c6c1f" class="outline-3"&gt;
+&lt;h3 id="org82c6c1f"&gt;Building and Training the Model&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org82c6c1f"&gt;
 &lt;p&gt;
 This will be a very simple tree with a depth of 1 (a &lt;a href="https://en.wikipedia.org/wiki/Decision_stump"&gt;decision stump&lt;/a&gt;).
 &lt;/p&gt;
@@ -94,9 +795,9 @@ This will be a very simple tree with a depth of 1 (a &lt;a href="https://en.wiki
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgf501bcb" class="outline-3"&gt;
-&lt;h3 id="orgf501bcb"&gt;Measuring the Accuracy&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgf501bcb"&gt;
+&lt;div id="outline-container-orgcfe25b2" class="outline-3"&gt;
+&lt;h3 id="orgcfe25b2"&gt;Measuring the Accuracy&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgcfe25b2"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'Accuracy for a single decision stump: {}'&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;model&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;score&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;X_test&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y_test&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -112,9 +813,9 @@ The 'tree' was able to classify all the testing data correctly.
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orge3095d6" class="outline-2"&gt;
-&lt;h2 id="orge3095d6"&gt;A Gradient Boosting Classifier&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orge3095d6"&gt;
+&lt;div id="outline-container-org0e79b35" class="outline-2"&gt;
+&lt;h2 id="org0e79b35"&gt;A Gradient Boosting Classifier&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org0e79b35"&gt;
 &lt;p&gt;
 While the Decision Tree Classifier only needed 1 layer, We will need 800 trees in the Gradient Boosting Classifier for it to classify the data correctly.
 &lt;/p&gt;
@@ -124,9 +825,9 @@ For convenience we will use sklearn's &lt;a href="http://scikit-learn.org/stable
 &lt;/p&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org8b68ce0" class="outline-3"&gt;
-&lt;h3 id="org8b68ce0"&gt;Training and Fitting the Model&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org8b68ce0"&gt;
+&lt;div id="outline-container-org74e7231" class="outline-3"&gt;
+&lt;h3 id="org74e7231"&gt;Training and Fitting the Model&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org74e7231"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;gbc_model&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;GradientBoostingClassifier&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;n_estimators&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;5000&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;learning_rate&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mf"&gt;0.01&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
 				 &lt;span class="n"&gt;max_depth&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
 				 &lt;span class="n"&gt;random_state&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
@@ -142,9 +843,9 @@ Accuracy for Gradient Booing: 1.0
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org8323da9" class="outline-3"&gt;
-&lt;h3 id="org8323da9"&gt;Checking the log Loss Metric&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org8323da9"&gt;
+&lt;div id="outline-container-org8ebdd4c" class="outline-3"&gt;
+&lt;h3 id="org8ebdd4c"&gt;Checking the log Loss Metric&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org8ebdd4c"&gt;
 &lt;p&gt;
 The &lt;a href="http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingClassifier.html#sklearn.ensemble.GradientBoostingClassifier.predict_proba"&gt;&lt;code&gt;predict_proba&lt;/code&gt;&lt;/a&gt; method will give us the probabilities that a data-point belongs to a class.
 &lt;/p&gt;
@@ -165,9 +866,9 @@ Test logloss: 0.0003138777469167194
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org3f968b2" class="outline-3"&gt;
-&lt;h3 id="org3f968b2"&gt;Some Helper Functions&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org3f968b2"&gt;
+&lt;div id="outline-container-org0b00057" class="outline-3"&gt;
+&lt;h3 id="org0b00057"&gt;Some Helper Functions&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org0b00057"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;compute_loss&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;y_true&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;predicted_probabilities&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="sd"&gt;"""applies sigmoid to predictions before calling log_loss&lt;/span&gt;
 
@@ -195,9 +896,9 @@ Test logloss: 0.0003138777469167194
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org7ee3f5a" class="outline-3"&gt;
-&lt;h3 id="org7ee3f5a"&gt;Checking The loss&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org7ee3f5a"&gt;
+&lt;div id="outline-container-orgfa30106" class="outline-3"&gt;
+&lt;h3 id="orgfa30106"&gt;Checking The loss&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgfa30106"&gt;
 &lt;p&gt;
 Now we get the cummulative sum of the &lt;b&gt;decision function&lt;/b&gt; (&lt;a href="http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingClassifier.html#sklearn.ensemble.GradientBoostingClassifier.staged_decision_function"&gt;&lt;code&gt;staged_decision_function&lt;/code&gt;&lt;/a&gt;) for our trees. The &lt;i&gt;i&lt;/i&gt;-th element is a sum of trees \[0 \ldots i-1\]. We cannot use &lt;a href="http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingClassifier.html#sklearn.ensemble.GradientBoostingClassifier.staged_predict_proba"&gt;staged_predict_proba&lt;/a&gt;, since we want to maniputate raw scores
 (not probabilities). And only in the end convert the scores to probabilities using the &lt;code&gt;sigmoid&lt;/code&gt;.
@@ -256,7 +957,7 @@ Let's take a look at the plot of the cummulative decision function with differin
 
 
 &lt;p&gt;
-You can see that the decision function improves almost linearly until about the 800th iteration and then the improvement stops. The slope of this line is connected to the learning rate, which we set in the Gradient Boosting Model.
+You can see that the decision function improves almost linearly until about the 800th iteration and then the improvement stops. The slope of this line is connected to the learning rate, which we set in the Gradient Boosting machine.
 &lt;/p&gt;
 
 &lt;p&gt;
@@ -272,13 +973,13 @@ In our case, \(\gamma_i\) are constant and equal to the learning rate \[\eta = 0
 &lt;/p&gt;
 
 &lt;p&gt;
-Which in turn means that if we drop the last tree we lower \(F(x)\) by &lt;i&gt;0&lt;/i&gt; and if we drop the first tree we lower \(F(x)\) by &lt;i&gt;0.01&lt;/i&gt;, which results in a very, very small performance drop. So, even in the case of a simple dataset which can be solved with a single decision stump, with a Gradient Boosting Model we need to sum a lot of trees (roughly \(\frac{1}{\eta}\)) to approximate our golden single decision stump.
+Which in turn means that if we drop the last tree we lower \(F(x)\) by &lt;i&gt;0&lt;/i&gt; and if we drop the first tree we lower \(F(x)\) by &lt;i&gt;0.01&lt;/i&gt;, which results in a very, very small performance drop. So, even in the case of a simple dataset which can be solved with a single decision stump, with a Gradient Boosting Machine we need to sum a lot of trees (roughly \(\frac{1}{\eta}\)) to approximate our golden single decision stump.
 &lt;/p&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org5d4d792" class="outline-4"&gt;
-&lt;h4 id="org5d4d792"&gt;A Bigger \(\eta\)&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org5d4d792"&gt;
+&lt;div id="outline-container-org726177a" class="outline-4"&gt;
+&lt;h4 id="org726177a"&gt;A Bigger \(\eta\)&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org726177a"&gt;
 &lt;p&gt;
 To prove that last point let's try a larger learning rate of &lt;i&gt;8&lt;/i&gt;.
 &lt;/p&gt;
@@ -330,22 +1031,22 @@ Now we see that it is crucial to have the first tree in the ensemble, the last o
 &lt;/p&gt;
 
 &lt;p&gt;
-Even though the dataset is synthetic, a similar intuition will work with real data, except the Gradient Boosting Model can diverge with higher learning rates and a more complex dataset. 
+Even though the dataset is synthetic, a similar intuition will work with real data, except the Gradient Boosting Machine can diverge with higher learning rates and a more complex dataset. 
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org7dfacbe" class="outline-2"&gt;
-&lt;h2 id="org7dfacbe"&gt;A More Realistic Data Set&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org7dfacbe"&gt;
+&lt;div id="outline-container-orgdc00e00" class="outline-2"&gt;
+&lt;h2 id="orgdc00e00"&gt;A More Realistic Data Set&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgdc00e00"&gt;
 &lt;p&gt;
 Sklearn's &lt;a href="http://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_hastie_10_2.html"&gt;make_hastie_10_2&lt;/a&gt; function makes a ten-dimensional data set with two classifications as targets.
 &lt;/p&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orga146d40" class="outline-3"&gt;
-&lt;h3 id="orga146d40"&gt;Building the Data Set&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orga146d40"&gt;
+&lt;div id="outline-container-org12936fd" class="outline-3"&gt;
+&lt;h3 id="org12936fd"&gt;Building the Data Set&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org12936fd"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;X_hastie&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y_hastie&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;make_hastie_10_2&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;random_state&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;X_train_hastie&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;X_test_hastie&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y_train_hastie&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y_test_hastie&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;train_test_split&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
     &lt;span class="n"&gt;X_hastie&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
@@ -356,9 +1057,9 @@ Sklearn's &lt;a href="http://scikit-learn.org/stable/modules/generated/sklearn.d
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgd26d240" class="outline-3"&gt;
-&lt;h3 id="orgd26d240"&gt;Our Decision Stump Again&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgd26d240"&gt;
+&lt;div id="outline-container-orgb2775fd" class="outline-3"&gt;
+&lt;h3 id="orgb2775fd"&gt;Our Decision Stump Again&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgb2775fd"&gt;
 &lt;p&gt;
 Let's try the decision stump on the new dataset.
 &lt;/p&gt;
@@ -394,9 +1095,9 @@ It does a little better, anyway.
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgd302037" class="outline-3"&gt;
-&lt;h3 id="orgd302037"&gt;The Gradient Boosting Model&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgd302037"&gt;
+&lt;div id="outline-container-orgb047c7e" class="outline-3"&gt;
+&lt;h3 id="orgb047c7e"&gt;The Gradient Boosting Classifier&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgb047c7e"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;gbc2_model&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;GradientBoostingClassifier&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;n_estimators&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;5000&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;learning_rate&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mf"&gt;0.01&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
 					&lt;span class="n"&gt;max_depth&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
 					&lt;span class="n"&gt;random_state&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
@@ -429,9 +1130,9 @@ In this case, although there is a difference, removing the last doesn't seem to 
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org0b93572" class="outline-3"&gt;
-&lt;h3 id="org0b93572"&gt;XGBoost&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org0b93572"&gt;
+&lt;div id="outline-container-orge25269d" class="outline-3"&gt;
+&lt;h3 id="orge25269d"&gt;XGBoost&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orge25269d"&gt;
 &lt;p&gt;
 We stated earlier that the result should be the same with other implementations of Gradient Boosting so let's see what happens if we use XGBoost instead.
 &lt;/p&gt;
@@ -471,9 +1172,9 @@ If you read the documentation for the python package for &lt;a href="https://xgb
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orge02c380" class="outline-2"&gt;
-&lt;h2 id="orge02c380"&gt;Source&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orge02c380"&gt;
+&lt;div id="outline-container-orgc5e0f3e" class="outline-2"&gt;
+&lt;h2 id="orgc5e0f3e"&gt;Source&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgc5e0f3e"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;“Will Performance of GBDT Model Drop Dramatically If We Remove the First Tree?” Coursera. Accessed August 5, 2018. &lt;a href="https://www.coursera.org/learn/competitive-data-science/home/welcome"&gt;https://www.coursera.org/learn/competitive-data-science/home/welcome&lt;/a&gt;.&lt;/li&gt;
 &lt;/ul&gt;

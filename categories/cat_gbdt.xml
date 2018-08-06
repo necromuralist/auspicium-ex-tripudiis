@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about gbdt)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/cat_gbdt.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Sun, 05 Aug 2018 19:33:58 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Will a GBDT's performance drop if we remove the first tree?</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/will-a-gbdt-performance-drop-if-we-remove-the-first-tree/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;p&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about gbdt)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/cat_gbdt.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Mon, 06 Aug 2018 14:08:34 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Will a GBDT's performance drop if we remove the first tree?</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/will-a-gbdt-performance-drop-if-we-remove-the-first-tree/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;p&gt;
 We'll look at how &lt;a href="http://blog.kaggle.com/2017/01/23/a-kaggle-master-explains-gradient-boosting/"&gt;&lt;b&gt;Gradient Boosting&lt;/b&gt;&lt;/a&gt; works and  answer the question:
 &lt;/p&gt;
 
@@ -23,9 +23,9 @@ Will the performance of a  GBDT model drop dramatically if we remove the first t
 &lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;xgboost&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;XGBClassifier&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
-&lt;div id="outline-container-org89591f4" class="outline-2"&gt;
-&lt;h2 id="org89591f4"&gt;Define the Sigmoid&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org89591f4"&gt;
+&lt;div id="outline-container-orgce58354" class="outline-2"&gt;
+&lt;h2 id="orgce58354"&gt;Define the Sigmoid&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgce58354"&gt;
 &lt;p&gt;
 This is a function to calculate the &lt;a href="https://en.wikipedia.org/wiki/Sigmoid_function"&gt;sigmoid&lt;/a&gt; which we'll use to convert probabilities to classifications.
 &lt;/p&gt;
@@ -36,17 +36,17 @@ This is a function to calculate the &lt;a href="https://en.wikipedia.org/wiki/Si
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org4faadf2" class="outline-2"&gt;
-&lt;h2 id="org4faadf2"&gt;Make the dataset&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org4faadf2"&gt;
+&lt;div id="outline-container-orgfd26fe2" class="outline-2"&gt;
+&lt;h2 id="orgfd26fe2"&gt;Make the dataset&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgfd26fe2"&gt;
 &lt;p&gt;
 This will be a very simple synthetic dataset. We'll use numpy's &lt;a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.random.randn.html"&gt;randn&lt;/a&gt; function to generate a dataset of random values that come from a normal distribution and then predict that the class is &lt;i&gt;1&lt;/i&gt; if the value is positive and that it is &lt;i&gt;0&lt;/i&gt; otherwise.
 &lt;/p&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org57f0ff0" class="outline-3"&gt;
-&lt;h3 id="org57f0ff0"&gt;Generating the Random Data&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org57f0ff0"&gt;
+&lt;div id="outline-container-org2302fd3" class="outline-3"&gt;
+&lt;h3 id="org2302fd3"&gt;Generating the Random Data&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org2302fd3"&gt;
 &lt;p&gt;
 First we'll generate an array of 5000 random numbers taken from a normal distribution.
 &lt;/p&gt;
@@ -73,17 +73,17 @@ Now we'll use sklearn's &lt;a href="http://scikit-learn.org/stable/modules/gener
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org62c188c" class="outline-2"&gt;
-&lt;h2 id="org62c188c"&gt;A Decision Tree Classifier&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org62c188c"&gt;
+&lt;div id="outline-container-org00b481f" class="outline-2"&gt;
+&lt;h2 id="org00b481f"&gt;A Decision Tree Classifier&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org00b481f"&gt;
 &lt;p&gt;
 We'll build a &lt;a href="https://en.wikipedia.org/wiki/Decision_tree"&gt;Decision Tree&lt;/a&gt; using sklearn's &lt;a href="http://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html"&gt;Decision Tree Classifier&lt;/a&gt; for this model.
 &lt;/p&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org455de52" class="outline-3"&gt;
-&lt;h3 id="org455de52"&gt;Building and Training the Model&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org455de52"&gt;
+&lt;div id="outline-container-org82c6c1f" class="outline-3"&gt;
+&lt;h3 id="org82c6c1f"&gt;Building and Training the Model&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org82c6c1f"&gt;
 &lt;p&gt;
 This will be a very simple tree with a depth of 1 (a &lt;a href="https://en.wikipedia.org/wiki/Decision_stump"&gt;decision stump&lt;/a&gt;).
 &lt;/p&gt;
@@ -94,9 +94,9 @@ This will be a very simple tree with a depth of 1 (a &lt;a href="https://en.wiki
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgf501bcb" class="outline-3"&gt;
-&lt;h3 id="orgf501bcb"&gt;Measuring the Accuracy&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgf501bcb"&gt;
+&lt;div id="outline-container-orgcfe25b2" class="outline-3"&gt;
+&lt;h3 id="orgcfe25b2"&gt;Measuring the Accuracy&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgcfe25b2"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'Accuracy for a single decision stump: {}'&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;model&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;score&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;X_test&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y_test&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -112,9 +112,9 @@ The 'tree' was able to classify all the testing data correctly.
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orge3095d6" class="outline-2"&gt;
-&lt;h2 id="orge3095d6"&gt;A Gradient Boosting Classifier&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orge3095d6"&gt;
+&lt;div id="outline-container-org0e79b35" class="outline-2"&gt;
+&lt;h2 id="org0e79b35"&gt;A Gradient Boosting Classifier&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org0e79b35"&gt;
 &lt;p&gt;
 While the Decision Tree Classifier only needed 1 layer, We will need 800 trees in the Gradient Boosting Classifier for it to classify the data correctly.
 &lt;/p&gt;
@@ -124,9 +124,9 @@ For convenience we will use sklearn's &lt;a href="http://scikit-learn.org/stable
 &lt;/p&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org8b68ce0" class="outline-3"&gt;
-&lt;h3 id="org8b68ce0"&gt;Training and Fitting the Model&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org8b68ce0"&gt;
+&lt;div id="outline-container-org74e7231" class="outline-3"&gt;
+&lt;h3 id="org74e7231"&gt;Training and Fitting the Model&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org74e7231"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;gbc_model&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;GradientBoostingClassifier&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;n_estimators&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;5000&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;learning_rate&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mf"&gt;0.01&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
 				 &lt;span class="n"&gt;max_depth&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
 				 &lt;span class="n"&gt;random_state&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
@@ -142,9 +142,9 @@ Accuracy for Gradient Booing: 1.0
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org8323da9" class="outline-3"&gt;
-&lt;h3 id="org8323da9"&gt;Checking the log Loss Metric&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org8323da9"&gt;
+&lt;div id="outline-container-org8ebdd4c" class="outline-3"&gt;
+&lt;h3 id="org8ebdd4c"&gt;Checking the log Loss Metric&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org8ebdd4c"&gt;
 &lt;p&gt;
 The &lt;a href="http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingClassifier.html#sklearn.ensemble.GradientBoostingClassifier.predict_proba"&gt;&lt;code&gt;predict_proba&lt;/code&gt;&lt;/a&gt; method will give us the probabilities that a data-point belongs to a class.
 &lt;/p&gt;
@@ -165,9 +165,9 @@ Test logloss: 0.0003138777469167194
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org3f968b2" class="outline-3"&gt;
-&lt;h3 id="org3f968b2"&gt;Some Helper Functions&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org3f968b2"&gt;
+&lt;div id="outline-container-org0b00057" class="outline-3"&gt;
+&lt;h3 id="org0b00057"&gt;Some Helper Functions&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org0b00057"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;compute_loss&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;y_true&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;predicted_probabilities&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="sd"&gt;"""applies sigmoid to predictions before calling log_loss&lt;/span&gt;
 
@@ -195,9 +195,9 @@ Test logloss: 0.0003138777469167194
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org7ee3f5a" class="outline-3"&gt;
-&lt;h3 id="org7ee3f5a"&gt;Checking The loss&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org7ee3f5a"&gt;
+&lt;div id="outline-container-orgfa30106" class="outline-3"&gt;
+&lt;h3 id="orgfa30106"&gt;Checking The loss&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgfa30106"&gt;
 &lt;p&gt;
 Now we get the cummulative sum of the &lt;b&gt;decision function&lt;/b&gt; (&lt;a href="http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingClassifier.html#sklearn.ensemble.GradientBoostingClassifier.staged_decision_function"&gt;&lt;code&gt;staged_decision_function&lt;/code&gt;&lt;/a&gt;) for our trees. The &lt;i&gt;i&lt;/i&gt;-th element is a sum of trees \[0 \ldots i-1\]. We cannot use &lt;a href="http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingClassifier.html#sklearn.ensemble.GradientBoostingClassifier.staged_predict_proba"&gt;staged_predict_proba&lt;/a&gt;, since we want to maniputate raw scores
 (not probabilities). And only in the end convert the scores to probabilities using the &lt;code&gt;sigmoid&lt;/code&gt;.
@@ -256,7 +256,7 @@ Let's take a look at the plot of the cummulative decision function with differin
 
 
 &lt;p&gt;
-You can see that the decision function improves almost linearly until about the 800th iteration and then the improvement stops. The slope of this line is connected to the learning rate, which we set in the Gradient Boosting Model.
+You can see that the decision function improves almost linearly until about the 800th iteration and then the improvement stops. The slope of this line is connected to the learning rate, which we set in the Gradient Boosting machine.
 &lt;/p&gt;
 
 &lt;p&gt;
@@ -272,13 +272,13 @@ In our case, \(\gamma_i\) are constant and equal to the learning rate \[\eta = 0
 &lt;/p&gt;
 
 &lt;p&gt;
-Which in turn means that if we drop the last tree we lower \(F(x)\) by &lt;i&gt;0&lt;/i&gt; and if we drop the first tree we lower \(F(x)\) by &lt;i&gt;0.01&lt;/i&gt;, which results in a very, very small performance drop. So, even in the case of a simple dataset which can be solved with a single decision stump, with a Gradient Boosting Model we need to sum a lot of trees (roughly \(\frac{1}{\eta}\)) to approximate our golden single decision stump.
+Which in turn means that if we drop the last tree we lower \(F(x)\) by &lt;i&gt;0&lt;/i&gt; and if we drop the first tree we lower \(F(x)\) by &lt;i&gt;0.01&lt;/i&gt;, which results in a very, very small performance drop. So, even in the case of a simple dataset which can be solved with a single decision stump, with a Gradient Boosting Machine we need to sum a lot of trees (roughly \(\frac{1}{\eta}\)) to approximate our golden single decision stump.
 &lt;/p&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org5d4d792" class="outline-4"&gt;
-&lt;h4 id="org5d4d792"&gt;A Bigger \(\eta\)&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org5d4d792"&gt;
+&lt;div id="outline-container-org726177a" class="outline-4"&gt;
+&lt;h4 id="org726177a"&gt;A Bigger \(\eta\)&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org726177a"&gt;
 &lt;p&gt;
 To prove that last point let's try a larger learning rate of &lt;i&gt;8&lt;/i&gt;.
 &lt;/p&gt;
@@ -330,22 +330,22 @@ Now we see that it is crucial to have the first tree in the ensemble, the last o
 &lt;/p&gt;
 
 &lt;p&gt;
-Even though the dataset is synthetic, a similar intuition will work with real data, except the Gradient Boosting Model can diverge with higher learning rates and a more complex dataset. 
+Even though the dataset is synthetic, a similar intuition will work with real data, except the Gradient Boosting Machine can diverge with higher learning rates and a more complex dataset. 
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org7dfacbe" class="outline-2"&gt;
-&lt;h2 id="org7dfacbe"&gt;A More Realistic Data Set&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org7dfacbe"&gt;
+&lt;div id="outline-container-orgdc00e00" class="outline-2"&gt;
+&lt;h2 id="orgdc00e00"&gt;A More Realistic Data Set&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgdc00e00"&gt;
 &lt;p&gt;
 Sklearn's &lt;a href="http://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_hastie_10_2.html"&gt;make_hastie_10_2&lt;/a&gt; function makes a ten-dimensional data set with two classifications as targets.
 &lt;/p&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orga146d40" class="outline-3"&gt;
-&lt;h3 id="orga146d40"&gt;Building the Data Set&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orga146d40"&gt;
+&lt;div id="outline-container-org12936fd" class="outline-3"&gt;
+&lt;h3 id="org12936fd"&gt;Building the Data Set&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org12936fd"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;X_hastie&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y_hastie&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;make_hastie_10_2&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;random_state&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;X_train_hastie&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;X_test_hastie&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y_train_hastie&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y_test_hastie&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;train_test_split&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
     &lt;span class="n"&gt;X_hastie&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
@@ -356,9 +356,9 @@ Sklearn's &lt;a href="http://scikit-learn.org/stable/modules/generated/sklearn.d
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgd26d240" class="outline-3"&gt;
-&lt;h3 id="orgd26d240"&gt;Our Decision Stump Again&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgd26d240"&gt;
+&lt;div id="outline-container-orgb2775fd" class="outline-3"&gt;
+&lt;h3 id="orgb2775fd"&gt;Our Decision Stump Again&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgb2775fd"&gt;
 &lt;p&gt;
 Let's try the decision stump on the new dataset.
 &lt;/p&gt;
@@ -394,9 +394,9 @@ It does a little better, anyway.
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgd302037" class="outline-3"&gt;
-&lt;h3 id="orgd302037"&gt;The Gradient Boosting Model&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgd302037"&gt;
+&lt;div id="outline-container-orgb047c7e" class="outline-3"&gt;
+&lt;h3 id="orgb047c7e"&gt;The Gradient Boosting Classifier&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgb047c7e"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;gbc2_model&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;GradientBoostingClassifier&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;n_estimators&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;5000&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;learning_rate&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mf"&gt;0.01&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
 					&lt;span class="n"&gt;max_depth&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
 					&lt;span class="n"&gt;random_state&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
@@ -429,9 +429,9 @@ In this case, although there is a difference, removing the last doesn't seem to 
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org0b93572" class="outline-3"&gt;
-&lt;h3 id="org0b93572"&gt;XGBoost&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org0b93572"&gt;
+&lt;div id="outline-container-orge25269d" class="outline-3"&gt;
+&lt;h3 id="orge25269d"&gt;XGBoost&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orge25269d"&gt;
 &lt;p&gt;
 We stated earlier that the result should be the same with other implementations of Gradient Boosting so let's see what happens if we use XGBoost instead.
 &lt;/p&gt;
@@ -471,9 +471,9 @@ If you read the documentation for the python package for &lt;a href="https://xgb
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orge02c380" class="outline-2"&gt;
-&lt;h2 id="orge02c380"&gt;Source&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orge02c380"&gt;
+&lt;div id="outline-container-orgc5e0f3e" class="outline-2"&gt;
+&lt;h2 id="orgc5e0f3e"&gt;Source&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgc5e0f3e"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;“Will Performance of GBDT Model Drop Dramatically If We Remove the First Tree?” Coursera. Accessed August 5, 2018. &lt;a href="https://www.coursera.org/learn/competitive-data-science/home/welcome"&gt;https://www.coursera.org/learn/competitive-data-science/home/welcome&lt;/a&gt;.&lt;/li&gt;
 &lt;/ul&gt;

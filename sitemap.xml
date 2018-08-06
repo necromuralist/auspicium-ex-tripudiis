@@ -15,11 +15,11 @@
  </url>
  <url>
   <loc>https://necromuralist.github.io/Kaggle-Competitions/archive.html</loc>
-  <lastmod>2018-08-05T18:04:00Z</lastmod>
+  <lastmod>2018-08-06T14:08:00Z</lastmod>
  </url>
  <url>
   <loc>https://necromuralist.github.io/Kaggle-Competitions/categories/</loc>
-  <lastmod>2018-08-05T02:28:00Z</lastmod>
+  <lastmod>2018-08-06T14:08:00Z</lastmod>
  </url>
  <url>
   <loc>https://necromuralist.github.io/Kaggle-Competitions/categories/basics-algorithms/</loc>
@@ -42,8 +42,16 @@
   <lastmod>2018-08-05T02:28:00Z</lastmod>
  </url>
  <url>
+  <loc>https://necromuralist.github.io/Kaggle-Competitions/categories/cat_pandas/</loc>
+  <lastmod>2018-08-06T14:08:00Z</lastmod>
+ </url>
+ <url>
   <loc>https://necromuralist.github.io/Kaggle-Competitions/categories/gbdt-basics/</loc>
   <lastmod>2018-08-05T02:28:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://necromuralist.github.io/Kaggle-Competitions/categories/pandas-basics/</loc>
+  <lastmod>2018-08-06T14:08:00Z</lastmod>
  </url>
  <url>
   <loc>https://necromuralist.github.io/Kaggle-Competitions/posts/kaggle-mechanics/</loc>
@@ -52,6 +60,10 @@
  <url>
   <loc>https://necromuralist.github.io/Kaggle-Competitions/posts/machine-learning-recap/</loc>
   <lastmod>2018-08-05T02:28:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://necromuralist.github.io/Kaggle-Competitions/posts/pandas-basics/</loc>
+  <lastmod>2018-08-06T14:08:00Z</lastmod>
  </url>
  <url>
   <loc>https://necromuralist.github.io/Kaggle-Competitions/posts/real-world-vs-kaggle/</loc>
