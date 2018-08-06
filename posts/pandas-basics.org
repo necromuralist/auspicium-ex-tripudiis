@@ -1,0 +1,364 @@
+#+BEGIN_COMMENT
+.. title: Pandas Basics
+.. slug: pandas-basics
+.. date: 2018-08-05 12:56:23 UTC-07:00
+.. tags: pandas basics
+.. category: pandas
+.. link: 
+.. description: Some introductory pandas stuff.
+.. type: text
+#+END_COMMENT
+#+OPTIONS: ^:{}
+
+* Description
+
+This is a chance to refresh your *pandas* knowledge. You will need to do several [[https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.groupby.html][=groupby=]]s and [[https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.join.html][=join=]]`s to solve the task. 
+
+* Imports
+  This first block is necessary for the code.
+#+BEGIN_SRC ipython :session basics :results none
+# pandas standard library
+import os
+import re
+
+# from pypi
+import pandas
+import numpy
+import matplotlib.pyplot as plt
+
+from tabulate import tabulate
+#+END_SRC
+
+#+BEGIN_SRC ipython :session basics :results none
+get_ipython().run_line_magic('matplotlib', 'inline')
+#+END_SRC
+
+ This next block is only relevant on Coursera's server.
+#+BEGIN_SRC ipython :session basics :results none
+from grader import Grader
+#+END_SRC
+
+* The Data
+#+BEGIN_SRC ipython :session basics :results none
+DATA_FOLDER = '../readonly/final_project_data/'
+#+END_SRC
+
+#+BEGIN_SRC ipython :session basics :results none
+transactions    = pandas.read_csv(os.path.join(DATA_FOLDER,
+                                               'sales_train.csv.gz'))
+items           = pandas.read_csv(os.path.join(DATA_FOLDER,
+                                               'items.csv'))
+item_categories = pandas.read_csv(os.path.join(DATA_FOLDER,
+                                               'item_categories.csv'))
+shops           = pandas.read_csv(os.path.join(DATA_FOLDER,
+                                               'shops.csv'))
+#+END_SRC
+
+#+BEGIN_SRC ipython :session basics :results none
+frames = dict(transactions=transactions,
+              items=items,
+              item_categories=item_categories,
+              shops=shops)
+#+END_SRC
+
+* Data Description
+
+The dataset we loaded is taken from a kaggle competititon. You can find complete data description at the [[https://www.kaggle.com/c/competitive-data-science-final-project/data][competition web page]]. To join the competition use [[https://www.kaggle.com/t/1ea93815dca248e99221df42ebde3540][this link]].
+
+#+BEGIN_QUOTE
+You are provided with daily historical sales data. The task is to forecast the total amount of products sold in every shop for the test set. Note that the list of shops and products slightly changes every month. Creating a robust model that can handle such situations is part of the challenge.
+#+END_QUOTE
+
+** File descriptions
+
+| File Name             | Description                                                                                  |
+|-----------------------+----------------------------------------------------------------------------------------------|
+| sales_train.csv       | the training set. Daily historical data from January 2013 to October 2015.                   |
+| test.csv              | the test set. You need to forecast the sales for these shops and products for November 2015. |
+| sample_submission.csv | a sample submission file in the correct format.                                              |
+| items.csv             | supplemental information about the items/products.                                           |
+| item_categories.csv   | supplemental information about the items categories.                                         |
+| shops.csv             | supplemental information about the shops.                                                    |
+
+** Data Fields
+
+| Column             | Description                                                                                                     |
+|--------------------+-----------------------------------------------------------------------------------------------------------------|
+| ID                 | an Id that represents a (Shop, Item) tuple within the test set                                                  |
+| shop_id            | unique identifier of a shop                                                                                     |
+| item_id            | unique identifier of a product                                                                                  |
+| item_category_id   | unique identifier of item category                                                                              |
+| item_cnt_day       | number of products sold. You are predicting a monthly amount of this measure                                    |
+| item_price         | current price of an item                                                                                        |
+| date               | date in format dd/mm/yyyy                                                                                       |
+| date_block_num     | a consecutive month number, used for convenience. January 2013 is 0, February 2013 is 1,..., October 2015 is 33 |
+| item_name          | name of item                                                                                                    |
+| shop_name          | name of shop                                                                                                    |
+| item_category_name | name of item category                                                                                           |
+
+
+* The First Problem
+
+Let's start with a simple task. 
+
+
+Print the shape of the loaded dataframes and use the [[https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.head.html][=df.head=]] function to print several rows. Examine the features you are given.
+
+#+BEGIN_SRC ipython :session basics :results output raw :exports both
+print("| DataFrame | Rows| Columns|")
+print("|-+-+-|")
+for name, frame in frames.items():
+    rows, columns = frame.shape
+    print("|{}| {}|{}|".format(name, rows, columns))
+#+END_SRC
+
+#+RESULTS:
+| DataFrame       |    Rows | Columns |
+|-----------------+---------+---------|
+| transactions    | 2935849 |       6 |
+| items           |   22170 |       3 |
+| item_categories |      84 |       2 |
+| shops           |      60 |       2 |
+
+#+BEGIN_SRC ipython :session basics :results output raw :exports both
+for name, frame in frames.items():
+    print("** {}".format(name))
+    head = frame.head()
+    print(tabulate(head, headers="keys", tablefmt="orgtbl", showindex=False))
+#+END_SRC
+
+#+RESULTS:
+** transactions
+| date       |   date_block_num |   shop_id |   item_id |   item_price |   item_cnt_day |
+|------------+------------------+-----------+-----------+--------------+----------------|
+| 02.01.2013 |                0 |        59 |     22154 |       999    |              1 |
+| 03.01.2013 |                0 |        25 |      2552 |       899    |              1 |
+| 05.01.2013 |                0 |        25 |      2552 |       899    |             -1 |
+| 06.01.2013 |                0 |        25 |      2554 |      1709.05 |              1 |
+| 15.01.2013 |                0 |        25 |      2555 |      1099    |              1 |
+** items
+| item_name                                                            |   item_id |   item_category_id |
+|----------------------------------------------------------------------+-----------+--------------------|
+| ! ВО ВЛАСТИ НАВАЖДЕНИЯ (ПЛАСТ.)         D                            |         0 |                 40 |
+| !ABBYY FineReader 12 Professional Edition Full [PC, Цифровая версия] |         1 |                 76 |
+| ***В ЛУЧАХ СЛАВЫ   (UNV)                    D                        |         2 |                 40 |
+| ***ГОЛУБАЯ ВОЛНА  (Univ)                      D                      |         3 |                 40 |
+| ***КОРОБКА (СТЕКЛО)                       D                          |         4 |                 40 |
+** item_categories
+| item_category_name      |   item_category_id |
+|-------------------------+--------------------|
+| PC - Гарнитуры/Наушники |                  0 |
+| Аксессуары - PS2        |                  1 |
+| Аксессуары - PS3        |                  2 |
+| Аксессуары - PS4        |                  3 |
+| Аксессуары - PSP        |                  4 |
+** shops
+| shop_name                      |   shop_id |
+|--------------------------------+-----------|
+| !Якутск Орджоникидзе, 56 фран  |         0 |
+| !Якутск ТЦ "Центральный" фран  |         1 |
+| Адыгея ТЦ "Мега"               |         2 |
+| Балашиха ТРК "Октябрь-Киномир" |         3 |
+| Волжский ТЦ "Волга Молл"       |         4 |
+
+Unexpectedly, the names are all in [[https://en.wikipedia.org/wiki/Cyrillic_script][cyrillic]], so I guess this will be a black-box in more ways than is usual
+
+* Questions
+** Question 1: *What was the maximum total revenue among all the shops in September, 2014?*
+
+From here on out *revenue* refers to total sales minus value of goods returned.
+
+   - Sometimes items are returned, find such examples in the dataset. 
+   - It is handy to split `date` field into [`day`, `month`, `year`] components and use ` df.year == 14` and `df.month == 9` in order to select target subset of dates.
+   - You may work with `date` feature as with srings, or you may first convert it to ` pd.datetime` type with `pd.to_datetime` function, but do not forget to set correct ` ormat` argument.
+
+*** Answer
+**** Sales Per Item
+
+First I'll add a column with the total revenue for each item (the price times the number sold).
+
+#+BEGIN_SRC ipython :session basics :results none
+transactions["item_revenue"] = transactions.item_price * transactions.item_cnt_day
+#+END_SRC
+
+#+BEGIN_SRC ipython :session basics :results output raw :exports both
+print(transactions.describe())
+#+END_SRC
+
+#+RESULTS:
+       date_block_num       shop_id       item_id    item_price  item_cnt_day  \
+count    2.935849e+06  2.935849e+06  2.935849e+06  2.935849e+06  2.935849e+06   
+mean     1.456991e+01  3.300173e+01  1.019723e+04  8.908532e+02  1.242641e+00   
+std      9.422988e+00  1.622697e+01  6.324297e+03  1.729800e+03  2.618834e+00   
+min      0.000000e+00  0.000000e+00  0.000000e+00 -1.000000e+00 -2.200000e+01   
+25%      7.000000e+00  2.200000e+01  4.476000e+03  2.490000e+02  1.000000e+00   
+50%      1.400000e+01  3.100000e+01  9.343000e+03  3.990000e+02  1.000000e+00   
+75%      2.300000e+01  4.700000e+01  1.568400e+04  9.990000e+02  1.000000e+00   
+max      3.300000e+01  5.900000e+01  2.216900e+04  3.079800e+05  2.169000e+03   
+
+       item_revenue  
+count  2.935849e+06  
+mean   1.157732e+03  
+std    5.683604e+03  
+min   -6.897000e+04  
+25%    2.490000e+02  
+50%    4.490000e+02  
+75%    1.078200e+03  
+max    1.829990e+06  
+
+I don't know why one item lost 68970 in whatever currency this represents (presumably rubles), but I assume this means the item had some returns.
+
+**** Filter Out the Month
+    We could convert the dates to datetime objects, but in this case it might be easier to match the =mm.yyyy= date format instead.
+
+#+BEGIN_SRC ipython :session basics :results none
+expression = r"\d{2}\.09\.2014"
+
+def matched(date, expression=expression):
+    """checks if the string matches our expected date
+
+    Args:
+     date: date string formatted dd.mm.yyyy
+     expression: regular expression to match
+
+    Returns:
+     bool: True if it matches the expression
+    """
+    return re.match(expression, date) is not None
+#+END_SRC
+
+First, as a sanity check, we'll make sure that all the date cells have values.
+
+#+BEGIN_SRC ipython :session basics :results none
+assert not transactions.date.hasnans
+#+END_SRC
+
+Naw let's filter on the date-expression we created for september.
+
+#+BEGIN_SRC ipython :session basics :results output raw :exports both
+september = transactions[transactions.date.apply(matched)]
+print(matching.shape)
+#+END_SRC
+
+#+RESULTS:
+(73157, 7)
+
+That seems like a lot of transactions. What fraction of the total is it?
+
+#+BEGIN_SRC ipython :session basics :results output raw :exports both
+rows, columns = september.shape
+print("{:.2f} %".format(100 * rows/transactions.shape[0]))
+#+END_SRC
+
+#+RESULTS:
+2.49 %
+
+Not as much as I would have thought, =transactions= is much larger than I first took it to be.
+
+#+BEGIN_SRC ipython :session basics :results output raw :exports both
+grouped = september.groupby(["shop_id", "item_id"])
+summed = grouped.item_revenue.agg(numpy.sum)
+print(summed.head())
+#+END_SRC
+
+#+RESULTS:
+shop_id  item_id
+2        32          298.0
+         33          199.0
+         482        6600.0
+         485         300.0
+         486         300.0
+Name: item_revenue, dtype: float64
+
+
+#+BEGIN_SRC ipython :session basics :results none
+max_revenue = # PUT YOUR ANSWER IN THIS VARIABLE
+#+END_SRC
+
+grader.submit_tag('max_revenue', max_revenue)
+
+
+# Great! Let's move on and answer another question:
+# 
+# <ol start="2">
+#   <li><b>What item category generated the highest revenue in summer 2014?</b></li>
+# </ol>
+# 
+# * Submit `id` of the category found.
+#     
+# * Here we call "summer" the period from June to August.
+# 
+# *Hints:*
+# 
+# * Note, that for an object `x` of type `pd.Series`: `x.argmax()` returns **index** of the maximum element. `pd.Series` can have non-trivial index (not `[1, 2, 3, ... ]`).
+
+# In[ ]:
+
+
+# YOUR CODE GOES HERE
+
+category_id_with_max_revenue = # PUT YOUR ANSWER IN THIS VARIABLE
+grader.submit_tag('category_id_with_max_revenue', category_id_with_max_revenue)
+
+
+# <ol start="3">
+#   <li><b>How many items are there, such that their price stays constant (to the best of our knowledge) during the whole period of time?</b></li>
+# </ol>
+# 
+# * Let's assume, that the items are returned for the same price as they had been sold.
+
+# In[ ]:
+
+
+# YOUR CODE GOES HERE
+
+num_items_constant_price = # PUT YOUR ANSWER IN THIS VARIABLE
+grader.submit_tag('num_items_constant_price', num_items_constant_price)
+
+
+# Remember, the data can sometimes be noisy.
+
+# <ol start="4">
+#   <li><b>What was the variance of the number of sold items per day sequence for the shop with `shop_id = 25` in December, 2014? Do not count the items, that were sold but returned back later.</b></li>
+# </ol>
+# 
+# * Fill `total_num_items_sold` and `days` arrays, and plot the sequence with the code below.
+# * Then compute variance. Remember, there can be differences in how you normalize variance (biased or unbiased estimate, see [link](https://math.stackexchange.com/questions/496627/the-difference-between-unbiased-biased-estimator-variance)). Compute ***unbiased*** estimate (use the right value for `ddof` argument in `pd.var` or `np.var`). 
+
+# In[ ]:
+
+
+shop_id = 25
+
+total_num_items_sold = # YOUR CODE GOES HERE
+days = # YOUR CODE GOES HERE
+
+# Plot it
+plt.plot(days, total_num_items_sold)
+plt.ylabel('Num items')
+plt.xlabel('Day')
+plt.title("Daily revenue for shop_id = 25")
+plt.show()
+
+total_num_items_sold_var = # PUT YOUR ANSWER IN THIS VARIABLE
+grader.submit_tag('total_num_items_sold_var', total_num_items_sold_var)
+
+
+# ## Authorization & Submission
+# To submit assignment to Cousera platform, please, enter your e-mail and token into the variables below. You can generate token on the programming assignment page. *Note:* Token expires 30 minutes after generation.
+
+# In[ ]:
+
+
+STUDENT_EMAIL = # EMAIL HERE
+STUDENT_TOKEN = # TOKEN HERE
+grader.status()
+
+
+# In[ ]:
+
+
+grader.submit(STUDENT_EMAIL, STUDENT_TOKEN)
+
+
+# Well done! :)
