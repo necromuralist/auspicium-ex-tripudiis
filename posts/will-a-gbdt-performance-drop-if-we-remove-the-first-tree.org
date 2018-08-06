@@ -205,7 +205,7 @@ plot_predictions(gbc_cumulative_predictions, "eta=0.01")
 [[file: cumulative_plot.png]]
 
 
-You can see that the decision function improves almost linearly until about the 800th iteration and then the improvement stops. The slope of this line is connected to the learning rate, which we set in the Gradient Boosting Model.
+You can see that the decision function improves almost linearly until about the 800th iteration and then the improvement stops. The slope of this line is connected to the learning rate, which we set in the Gradient Boosting machine.
 
 If you remember the main formula for boosting, it is written something like this:
 
@@ -213,7 +213,7 @@ If you remember the main formula for boosting, it is written something like this
 
 In our case, \(\gamma_i\) are constant and equal to the learning rate \[\eta = 0.01\] It takes about /800/ iterations to get a score of /8/, which means at every iteration the score goes up about /0.01/. This means that the first 800 terms are approximately equal to /0.01/, and the rest are almost /0/. 
 
-Which in turn means that if we drop the last tree we lower \(F(x)\) by /0/ and if we drop the first tree we lower \(F(x)\) by /0.01/, which results in a very, very small performance drop. So, even in the case of a simple dataset which can be solved with a single decision stump, with a Gradient Boosting Model we need to sum a lot of trees (roughly \(\frac{1}{\eta}\)) to approximate our golden single decision stump.
+Which in turn means that if we drop the last tree we lower \(F(x)\) by /0/ and if we drop the first tree we lower \(F(x)\) by /0.01/, which results in a very, very small performance drop. So, even in the case of a simple dataset which can be solved with a single decision stump, with a Gradient Boosting Machine we need to sum a lot of trees (roughly \(\frac{1}{\eta}\)) to approximate our golden single decision stump.
 
 *** A Bigger \(\eta\)
 To prove that last point let's try a larger learning rate of /8/.
@@ -261,7 +261,7 @@ plot_predictions(big_eta_cumulative_predictions, "eta=8")
 
 Now we see that it is crucial to have the first tree in the ensemble, the last one maybe not so much.
 
-Even though the dataset is synthetic, a similar intuition will work with real data, except the Gradient Boosting Model can diverge with higher learning rates and a more complex dataset. 
+Even though the dataset is synthetic, a similar intuition will work with real data, except the Gradient Boosting Machine can diverge with higher learning rates and a more complex dataset. 
 * A More Realistic Data Set
   Sklearn's [[http://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_hastie_10_2.html][make_hastie_10_2]] function makes a ten-dimensional data set with two classifications as targets.
 ** Building the Data Set
@@ -303,7 +303,7 @@ Accuracy for the Decision Tree: 0.7765
 
 It does a little better, anyway.
 
-** The Gradient Boosting Model
+** The Gradient Boosting Classifier
 
 #+BEGIN_SRC python :session gbdt :results none
 gbc2_model = GradientBoostingClassifier(n_estimators=5000, learning_rate=0.01,
