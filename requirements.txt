@@ -69,6 +69,7 @@ send2trash==1.5.0         # via notebook
 simplegeneric==0.8.1      # via ipython
 six==1.11.0               # via bleach, cycler, html5lib, matplotlib, prompt-toolkit, python-dateutil, traitlets
 sklearn==0.0
+tabulate==0.8.2
 terminado==0.8.1          # via notebook
 testpath==0.3.1           # via nbconvert
 tornado==5.1              # via ipykernel, jupyter-client, notebook, terminado
