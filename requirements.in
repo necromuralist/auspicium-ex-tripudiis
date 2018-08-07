@@ -3,5 +3,6 @@ jupyter
 Nikola
 seaborn
 sklearn
+tabulate
 virtualfish
 webassets
