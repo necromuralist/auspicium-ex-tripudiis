@@ -89,18 +89,18 @@
             <p class="dateline"><a href="posts/pandas-basics/" rel="bookmark"><time class="published dt-published" datetime="2018-08-05T12:56:23-07:00" title="2018-08-05 12:56">2018-08-05 12:56</time></a></p>
         </div>
     </header><div class="e-content entry-content">
-    <div id="outline-container-orga8006d5" class="outline-2">
-<h2 id="orga8006d5">Description</h2>
-<div class="outline-text-2" id="text-orga8006d5">
+    <div id="outline-container-orgf11083d" class="outline-2">
+<h2 id="orgf11083d">Description</h2>
+<div class="outline-text-2" id="text-orgf11083d">
 <p>
 This is a chance to refresh your <b>pandas</b> knowledge. You will need to do several <a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.groupby.html"><code>groupby</code></a>s and <a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.join.html"><code>join</code></a>`s to solve the task. 
 </p>
 </div>
 </div>
 
-<div id="outline-container-orga70badc" class="outline-2">
-<h2 id="orga70badc">Imports</h2>
-<div class="outline-text-2" id="text-orga70badc">
+<div id="outline-container-org84f94be" class="outline-2">
+<h2 id="org84f94be">Imports</h2>
+<div class="outline-text-2" id="text-org84f94be">
 <p>
 This first block is necessary for the code.
 </p>
@@ -127,9 +127,9 @@ This next block is only relevant on Coursera's server.
 </div>
 </div>
 
-<div id="outline-container-orgd8847a3" class="outline-2">
-<h2 id="orgd8847a3">The Data</h2>
-<div class="outline-text-2" id="text-orgd8847a3">
+<div id="outline-container-org8746356" class="outline-2">
+<h2 id="org8746356">The Data</h2>
+<div class="outline-text-2" id="text-org8746356">
 <div class="highlight"><pre><span></span>DATA_FOLDER = '../readonly/final_project_data/'
 </pre></div>
 
@@ -151,9 +151,9 @@ shops           = pandas.read_csv(os.path.join(DATA_FOLDER,
 </div>
 </div>
 
-<div id="outline-container-org77d5eb2" class="outline-2">
-<h2 id="org77d5eb2">Data Description</h2>
-<div class="outline-text-2" id="text-org77d5eb2">
+<div id="outline-container-org5a81419" class="outline-2">
+<h2 id="org5a81419">Data Description</h2>
+<div class="outline-text-2" id="text-org5a81419">
 <p>
 The dataset we loaded is taken from a kaggle competititon. You can find complete data description at the <a href="https://www.kaggle.com/c/competitive-data-science-final-project/data">competition web page</a>. To join the competition use <a href="https://www.kaggle.com/t/1ea93815dca248e99221df42ebde3540">this link</a>.
 </p>
@@ -165,9 +165,9 @@ You are provided with daily historical sales data. The task is to forecast the t
 </blockquote>
 </div>
 
-<div id="outline-container-org3777004" class="outline-3">
-<h3 id="org3777004">File descriptions</h3>
-<div class="outline-text-3" id="text-org3777004">
+<div id="outline-container-orgc9854f1" class="outline-3">
+<h3 id="orgc9854f1">File descriptions</h3>
+<div class="outline-text-3" id="text-orgc9854f1">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-left">
@@ -207,9 +207,9 @@ You are provided with daily historical sales data. The task is to forecast the t
 </div>
 </div>
 
-<div id="outline-container-orgf6d51b5" class="outline-3">
-<h3 id="orgf6d51b5">Data Fields</h3>
-<div class="outline-text-3" id="text-orgf6d51b5">
+<div id="outline-container-orgcc40546" class="outline-3">
+<h3 id="orgcc40546">Data Fields</h3>
+<div class="outline-text-3" id="text-orgcc40546">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-left">
@@ -271,9 +271,9 @@ You are provided with daily historical sales data. The task is to forecast the t
 </div>
 
 
-<div id="outline-container-orgc16edbe" class="outline-2">
-<h2 id="orgc16edbe">The First Problem</h2>
-<div class="outline-text-2" id="text-orgc16edbe">
+<div id="outline-container-orgf2be066" class="outline-2">
+<h2 id="orgf2be066">The First Problem</h2>
+<div class="outline-text-2" id="text-orgf2be066">
 <p>
 Let's start with a simple task. 
 </p>
@@ -330,9 +330,9 @@ for name, frame in frames.items():
     print(tabulate(head, headers="keys", tablefmt="orgtbl", showindex=False))
 </pre></div>
 </div>
-<div id="outline-container-org960dcf5" class="outline-3">
-<h3 id="org960dcf5">transactions</h3>
-<div class="outline-text-3" id="text-org960dcf5">
+<div id="outline-container-org4cec204" class="outline-3">
+<h3 id="org4cec204">transactions</h3>
+<div class="outline-text-3" id="text-org4cec204">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-right">
@@ -395,9 +395,9 @@ for name, frame in frames.items():
 </table>
 </div>
 </div>
-<div id="outline-container-orgb6a8fbf" class="outline-3">
-<h3 id="orgb6a8fbf">items</h3>
-<div class="outline-text-3" id="text-orgb6a8fbf">
+<div id="outline-container-org8f18b68" class="outline-3">
+<h3 id="org8f18b68">items</h3>
+<div class="outline-text-3" id="text-org8f18b68">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-left">
@@ -439,9 +439,9 @@ for name, frame in frames.items():
 </table>
 </div>
 </div>
-<div id="outline-container-org7900a2e" class="outline-3">
-<h3 id="org7900a2e">item_categories</h3>
-<div class="outline-text-3" id="text-org7900a2e">
+<div id="outline-container-org8c30921" class="outline-3">
+<h3 id="org8c30921">item_categories</h3>
+<div class="outline-text-3" id="text-org8c30921">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-left">
@@ -476,9 +476,375 @@ for name, frame in frames.items():
 </table>
 </div>
 </div>
-<div id="outline-container-org964e870" class="outline-3">
-<h3 id="org964e870">shops</h3>
-<div class="outline-text-3" id="text-org964e870">
+<div id="outline-container-orgaa56a37" class="outline-3">
+<h3 id="orgaa56a37">shops</h3>
+<div class="outline-text-3" id="text-orgaa56a37">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-left">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-left">shop_name</th>
+<th scope="col" class="org-right">shop_id</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-left">!Якутск Орджоникидзе, 56 фран</td>
+<td class="org-right">0</td>
+</tr>
+<tr>
+<td class="org-left">!Якутск ТЦ "Центральный" фран</td>
+<td class="org-right">1</td>
+</tr>
+<tr>
+<td class="org-left">Адыгея ТЦ "Мега"</td>
+<td class="org-right">2</td>
+</tr>
+<tr>
+<td class="org-left">Балашиха ТРК "Октябрь-Киномир"</td>
+<td class="org-right">3</td>
+</tr>
+<tr>
+<td class="org-left">Волжский ТЦ "Волга Молл"</td>
+<td class="org-right">4</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="outline-container-orgc827108" class="outline-3">
+<h3 id="orgc827108">transactions</h3>
+<div class="outline-text-3" id="text-orgc827108">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-right">date</th>
+<th scope="col" class="org-right">date_block_num</th>
+<th scope="col" class="org-right">shop_id</th>
+<th scope="col" class="org-right">item_id</th>
+<th scope="col" class="org-right">item_price</th>
+<th scope="col" class="org-right">item_cnt_day</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-right">02.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">59</td>
+<td class="org-right">22154</td>
+<td class="org-right">999</td>
+<td class="org-right">1</td>
+</tr>
+<tr>
+<td class="org-right">03.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2552</td>
+<td class="org-right">899</td>
+<td class="org-right">1</td>
+</tr>
+<tr>
+<td class="org-right">05.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2552</td>
+<td class="org-right">899</td>
+<td class="org-right">-1</td>
+</tr>
+<tr>
+<td class="org-right">06.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2554</td>
+<td class="org-right">1709.05</td>
+<td class="org-right">1</td>
+</tr>
+<tr>
+<td class="org-right">15.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2555</td>
+<td class="org-right">1099</td>
+<td class="org-right">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="outline-container-org1d9cd0b" class="outline-3">
+<h3 id="org1d9cd0b">items</h3>
+<div class="outline-text-3" id="text-org1d9cd0b">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-left">
+<col class="org-right">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-left">item_name</th>
+<th scope="col" class="org-right">item_id</th>
+<th scope="col" class="org-right">item_category_id</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-left">! ВО ВЛАСТИ НАВАЖДЕНИЯ (ПЛАСТ.)         D</td>
+<td class="org-right">0</td>
+<td class="org-right">40</td>
+</tr>
+<tr>
+<td class="org-left">!ABBYY FineReader 12 Professional Edition Full [PC, Цифровая версия]</td>
+<td class="org-right">1</td>
+<td class="org-right">76</td>
+</tr>
+<tr>
+<td class="org-left">***В ЛУЧАХ СЛАВЫ   (UNV)                    D</td>
+<td class="org-right">2</td>
+<td class="org-right">40</td>
+</tr>
+<tr>
+<td class="org-left">***ГОЛУБАЯ ВОЛНА  (Univ)                      D</td>
+<td class="org-right">3</td>
+<td class="org-right">40</td>
+</tr>
+<tr>
+<td class="org-left">***КОРОБКА (СТЕКЛО)                       D</td>
+<td class="org-right">4</td>
+<td class="org-right">40</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="outline-container-orgcc4e2bc" class="outline-3">
+<h3 id="orgcc4e2bc">item_categories</h3>
+<div class="outline-text-3" id="text-orgcc4e2bc">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-left">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-left">item_category_name</th>
+<th scope="col" class="org-right">item_category_id</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-left">PC - Гарнитуры/Наушники</td>
+<td class="org-right">0</td>
+</tr>
+<tr>
+<td class="org-left">Аксессуары - PS2</td>
+<td class="org-right">1</td>
+</tr>
+<tr>
+<td class="org-left">Аксессуары - PS3</td>
+<td class="org-right">2</td>
+</tr>
+<tr>
+<td class="org-left">Аксессуары - PS4</td>
+<td class="org-right">3</td>
+</tr>
+<tr>
+<td class="org-left">Аксессуары - PSP</td>
+<td class="org-right">4</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="outline-container-orga8b9728" class="outline-3">
+<h3 id="orga8b9728">shops</h3>
+<div class="outline-text-3" id="text-orga8b9728">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-left">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-left">shop_name</th>
+<th scope="col" class="org-right">shop_id</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-left">!Якутск Орджоникидзе, 56 фран</td>
+<td class="org-right">0</td>
+</tr>
+<tr>
+<td class="org-left">!Якутск ТЦ "Центральный" фран</td>
+<td class="org-right">1</td>
+</tr>
+<tr>
+<td class="org-left">Адыгея ТЦ "Мега"</td>
+<td class="org-right">2</td>
+</tr>
+<tr>
+<td class="org-left">Балашиха ТРК "Октябрь-Киномир"</td>
+<td class="org-right">3</td>
+</tr>
+<tr>
+<td class="org-left">Волжский ТЦ "Волга Молл"</td>
+<td class="org-right">4</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="outline-container-org62ef115" class="outline-3">
+<h3 id="org62ef115">transactions</h3>
+<div class="outline-text-3" id="text-org62ef115">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-right">date</th>
+<th scope="col" class="org-right">date_block_num</th>
+<th scope="col" class="org-right">shop_id</th>
+<th scope="col" class="org-right">item_id</th>
+<th scope="col" class="org-right">item_price</th>
+<th scope="col" class="org-right">item_cnt_day</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-right">02.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">59</td>
+<td class="org-right">22154</td>
+<td class="org-right">999</td>
+<td class="org-right">1</td>
+</tr>
+<tr>
+<td class="org-right">03.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2552</td>
+<td class="org-right">899</td>
+<td class="org-right">1</td>
+</tr>
+<tr>
+<td class="org-right">05.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2552</td>
+<td class="org-right">899</td>
+<td class="org-right">-1</td>
+</tr>
+<tr>
+<td class="org-right">06.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2554</td>
+<td class="org-right">1709.05</td>
+<td class="org-right">1</td>
+</tr>
+<tr>
+<td class="org-right">15.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2555</td>
+<td class="org-right">1099</td>
+<td class="org-right">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="outline-container-orga63decd" class="outline-3">
+<h3 id="orga63decd">items</h3>
+<div class="outline-text-3" id="text-orga63decd">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-left">
+<col class="org-right">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-left">item_name</th>
+<th scope="col" class="org-right">item_id</th>
+<th scope="col" class="org-right">item_category_id</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-left">! ВО ВЛАСТИ НАВАЖДЕНИЯ (ПЛАСТ.)         D</td>
+<td class="org-right">0</td>
+<td class="org-right">40</td>
+</tr>
+<tr>
+<td class="org-left">!ABBYY FineReader 12 Professional Edition Full [PC, Цифровая версия]</td>
+<td class="org-right">1</td>
+<td class="org-right">76</td>
+</tr>
+<tr>
+<td class="org-left">***В ЛУЧАХ СЛАВЫ   (UNV)                    D</td>
+<td class="org-right">2</td>
+<td class="org-right">40</td>
+</tr>
+<tr>
+<td class="org-left">***ГОЛУБАЯ ВОЛНА  (Univ)                      D</td>
+<td class="org-right">3</td>
+<td class="org-right">40</td>
+</tr>
+<tr>
+<td class="org-left">***КОРОБКА (СТЕКЛО)                       D</td>
+<td class="org-right">4</td>
+<td class="org-right">40</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="outline-container-org9b4e8bf" class="outline-3">
+<h3 id="org9b4e8bf">item_categories</h3>
+<div class="outline-text-3" id="text-org9b4e8bf">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-left">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-left">item_category_name</th>
+<th scope="col" class="org-right">item_category_id</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-left">PC - Гарнитуры/Наушники</td>
+<td class="org-right">0</td>
+</tr>
+<tr>
+<td class="org-left">Аксессуары - PS2</td>
+<td class="org-right">1</td>
+</tr>
+<tr>
+<td class="org-left">Аксессуары - PS3</td>
+<td class="org-right">2</td>
+</tr>
+<tr>
+<td class="org-left">Аксессуары - PS4</td>
+<td class="org-right">3</td>
+</tr>
+<tr>
+<td class="org-left">Аксессуары - PSP</td>
+<td class="org-right">4</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="outline-container-org0f5f693" class="outline-3">
+<h3 id="org0f5f693">shops</h3>
+<div class="outline-text-3" id="text-org0f5f693">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-left">
@@ -518,14 +884,14 @@ Unexpectedly, the names are all in <a href="https://en.wikipedia.org/wiki/Cyrill
 </div>
 </div>
 
-<div id="outline-container-orgf6c6dcc" class="outline-2">
-<h2 id="orgf6c6dcc">Questions</h2>
-<div class="outline-text-2" id="text-orgf6c6dcc">
+<div id="outline-container-orgaccaad4" class="outline-2">
+<h2 id="orgaccaad4">Questions</h2>
+<div class="outline-text-2" id="text-orgaccaad4">
 </div>
-<div id="outline-container-org1111c6c" class="outline-3">
-<h3 id="org1111c6c">Question 1: <b>What was the maximum total revenue among all the shops in September, 2014?</b>
+<div id="outline-container-org168aad2" class="outline-3">
+<h3 id="org168aad2">Question 1: <b>What was the maximum total revenue among all the shops in September, 2014?</b>
 </h3>
-<div class="outline-text-3" id="text-org1111c6c">
+<div class="outline-text-3" id="text-org168aad2">
 <p>
 From here on out <b>revenue</b> refers to total sales minus value of goods returned.
 </p>
@@ -537,13 +903,13 @@ From here on out <b>revenue</b> refers to total sales minus value of goods retur
 </ul>
 </div>
 
-<div id="outline-container-org7011516" class="outline-4">
-<h4 id="org7011516">Answer</h4>
-<div class="outline-text-4" id="text-org7011516">
+<div id="outline-container-org2c10ee5" class="outline-4">
+<h4 id="org2c10ee5">Answer</h4>
+<div class="outline-text-4" id="text-org2c10ee5">
 </div>
 <ul class="org-ul">
 <li>
-<a id="orga93108f"></a>Sales Per Item<br><div class="outline-text-5" id="text-orga93108f">
+<a id="orgdc70bb5"></a>Sales Per Item<br><div class="outline-text-5" id="text-orgdc70bb5">
 <p>
 First I'll add a column with the total revenue for each item (the price times the number sold).
 </p>
@@ -577,33 +943,65 @@ min   -6.897000e+04
 75%    1.078200e+03  
 max    1.829990e+06  
 </p>
-
-<p>
-I don't know why one item lost 68970 in whatever currency this represents (presumably rubles), but I assume this means the item had some returns.
-</p>
 </div>
 </li>
 
 <li>
-<a id="org7d1b9a7"></a>Filter Out the Month<br><div class="outline-text-5" id="text-org7d1b9a7">
+<a id="orgfca0dad"></a>Filter Out the Month<br><div class="outline-text-5" id="text-orgfca0dad">
 <p>
-We could convert the dates to datetime objects, but in this case it might be easier to match the <code>mm.yyyy</code> date format instead.
+I was originally filtering using a regular expression, but the other questions use date-filtering too so I decided to create the extra day, month, and year columns once to avoid the extra regular expression overhead later on.
 </p>
 
-<div class="highlight"><pre><span></span>expression = r"\d{2}\.09\.2014"
-
-def matched(date, expression=expression):
-    """checks if the string matches our expected date
-
-    Args:
-     date: date string formatted dd.mm.yyyy
-     expression: regular expression to match
-
-    Returns:
-     bool: True if it matches the expression
-    """
-    return re.match(expression, date) is not None
+<div class="highlight"><pre><span></span>class Dates:
+    date_expression = r'(?P&lt;day&gt;\d{2})\.(?P&lt;month&gt;\d{2})\.(?P&lt;year&gt;\d{4})'
+    september = '09'
+    summer = ['06', '07', '08']
 </pre></div>
+
+<div class="highlight"><pre><span></span>dates = transactions.date.str.extract(Dates.date_expression)
+print(dates.head())
+</pre></div>
+
+<p>
+  day month  year
+0  02    01  2013
+1  03    01  2013
+2  05    01  2013
+3  06    01  2013
+4  15    01  2013
+  day month  year
+0  02    01  2013
+1  03    01  2013
+2  05    01  2013
+3  06    01  2013
+4  15    01  2013
+</p>
+
+<p>
+Now we can smash our new data frame to the transactions using the <a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.concat.html">concat</a> function. By default it will try to add the rows from the second data frame to the rows of the first, but since we're adding new columns we need to pass in the <code>axis='columns'</code> argument.
+</p>
+
+<div class="highlight"><pre><span></span>transactions = pandas.concat((transactions, dates), axis='columns')
+print(transactions.head())
+</pre></div>
+
+<p>
+         date  date_block_num  shop_id  item_id  item_price  item_cnt_day  \
+0  02.01.2013               0       59    22154      999.00           1.0   
+1  03.01.2013               0       25     2552      899.00           1.0   
+2  05.01.2013               0       25     2552      899.00          -1.0   
+3  06.01.2013               0       25     2554     1709.05           1.0   
+4  15.01.2013               0       25     2555     1099.00           1.0   
+</p>
+
+<p>
+   item_revenue day month  year  
+0        999.00  02    01  2013  
+1        899.00  03    01  2013  
+2       -899.00  05    01  2013  
+3       1709.05  06    01  2013  
+4       1099.00  15    01  2013  
+</p>
 
 <p>
 First, as a sanity check, we'll make sure that all the date cells have values.
@@ -613,16 +1011,37 @@ First, as a sanity check, we'll make sure that all the date cells have values.
 </pre></div>
 
 <p>
-Naw let's filter on the date-expression we created for september.
+Now let's filter on the date-expression we created for september. The next problem also uses 2014 so save that as a separate sub-set.
 </p>
 
-<div class="highlight"><pre><span></span>september = transactions[transactions.date.apply(matched)]
-print(matching.shape)
+<div class="highlight"><pre><span></span>twenty_fourteen = transactions[transactions.year.isin(["2014"])]
+september = twenty_fourteen[twenty_fourteen.month.isin([Dates.september])]
+print(september.shape)
+print(september.head())
 </pre></div>
 
 <p>
-(73157, 7)
+(73157, 10)
+               date  date_block_num  shop_id  item_id  item_price  \
+1953691  24.09.2014              20        5     1039       899.0   
+1953692  27.09.2014              20        5     1015       449.0   
+1953693  07.09.2014              20        5     1329       399.0   
+1953694  27.09.2014              20        5      984       399.0   
+1953695  08.09.2014              20        5      984       399.0   
 </p>
+
+<p>
+         item_cnt_day  item_revenue day month  year  
+1953691           1.0         899.0  24    09  2014  
+1953692           1.0         449.0  27    09  2014  
+1953693           1.0         399.0  07    09  2014  
+1953694           1.0         399.0  27    09  2014  
+1953695           1.0         399.0  08    09  2014  
+</p>
+
+<div class="highlight"><pre><span></span>assert all(twenty_fourteen.year == "2014")
+assert all(september.month == "09")
+</pre></div>
 
 <p>
 That seems like a lot of transactions. What fraction of the total is it?
@@ -640,32 +1059,126 @@ print("{:.2f} %".format(100 * rows/transactions.shape[0]))
 Not as much as I would have thought, <code>transactions</code> is much larger than I first took it to be.
 </p>
 
-<div class="highlight"><pre><span></span>grouped = september.groupby(["shop_id", "item_id"])
+<div class="highlight"><pre><span></span>grouped = september.groupby(["shop_id"])
 summed = grouped.item_revenue.agg(numpy.sum)
 print(summed.head())
 </pre></div>
 
 <p>
-shop_id  item_id
-2        32          298.0
-         33          199.0
-         482        6600.0
-         485         300.0
-         486         300.0
+shop_id
+2    1473540.00
+3    1228425.00
+4    1211556.00
+5    1350828.02
+6    3480397.00
 Name: item_revenue, dtype: float64
 </p>
 
-
-<div class="highlight"><pre><span></span>max_revenue = # PUT YOUR ANSWER IN THIS VARIABLE
+<div class="highlight"><pre><span></span>max_revenue = summed.loc[summed.idxmax()]
+print("Highest Revenue Earned by a shop in September of 2014: $ {:,.2f}".format(max_revenue))
 </pre></div>
 
 <p>
-grader.submit_tag('max_revenue', max_revenue)
+Highest Revenue Earned by a shop in September of 2014: $ 7,982,852.20
 </p>
+</div>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org59f72a4" class="outline-3">
+<h3 id="org59f72a4">Question 2: What item category generated the highest revenue in the Summer of 2014?</h3>
+<div class="outline-text-3" id="text-org59f72a4">
+<ul class="org-ul">
+<li>Submit the <code>id</code> of the category found.</li>
+<li>Here we call "summer" the period from June to August.</li>
+</ul>
+<p>
+<b>Hints:</b>
+</p>
+
+<p>
+Note, that for an object `x` of type `pd.Series`: `x.argmax()` returns <b><b>index</b></b> of the maximum element. `pd.Series` can have non-trivial index (not `[1, 2, 3, … ]`).
+</p>
+</div>
+<div id="outline-container-orgb1458f4" class="outline-4">
+<h4 id="orgb1458f4">Get the Summer months</h4>
+<div class="outline-text-4" id="text-orgb1458f4">
+<div class="highlight"><pre><span></span>summer = twenty_fourteen[twenty_fourteen.month.isin(Dates.summer)]
+print(summer.head())
+for month in summer.month.unique():
+    assert month in Dates.summer
+print(summer.shape)
+</pre></div>
+
+<p>
+               date  date_block_num  shop_id  item_id  item_price  \
+1705909  15.06.2014              17       26     9532      399.00   
+1705910  10.06.2014              17       26     9507      149.00   
+1705911  13.06.2014              17       26     9509      246.32   
+1705912  03.06.2014              17       26     9532      399.00   
+1705913  08.06.2014              17       26     9532      399.00   
+</p>
+
+<p>
+         item_cnt_day  item_revenue day month  year  
+1705909           1.0        399.00  15    06  2014  
+1705910           1.0        149.00  10    06  2014  
+1705911           1.0        246.32  13    06  2014  
+1705912           1.0        399.00  03    06  2014  
+1705913           1.0        399.00  08    06  2014  
+(247782, 10)
+</p>
+</div>
+</div>
+
+<div id="outline-container-org80079d9" class="outline-4">
+<h4 id="org80079d9">Map in the Category IDs</h4>
+<div class="outline-text-4" id="text-org80079d9">
+<p>
+If you look at <code>items.item_id</code> you can see that the id's are really just the numerical index to the <code>items.item_category_id</code> series. I was originally add the category ids for all the transactions but it takes a long time so I'm just adding it to this group.
+</p>
+
+<div class="highlight"><pre><span></span>assert all(items.item_id == range(len(items)))
+</pre></div>
+
+<p>
+So we can map them back into our summer transactions.
+</p>
+
+<div class="highlight"><pre><span></span>summer["item_category_id"] = summer.item_id.apply(lambda item: items.item_category_id.loc[item])
+</pre></div>
+
+<div class="highlight"><pre><span></span>print(summer.head())
+</pre></div>
+
+<p>
+               date  date_block_num  shop_id  item_id  item_price  \
+1705909  15.06.2014              17       26     9532      399.00   
+1705910  10.06.2014              17       26     9507      149.00   
+1705911  13.06.2014              17       26     9509      246.32   
+1705912  03.06.2014              17       26     9532      399.00   
+1705913  08.06.2014              17       26     9532      399.00   
+</p>
+
+<p>
+         item_cnt_day  item_revenue day month  year  item_category_id  
+1705909           1.0        399.00  15    06  2014                30  
+1705910           1.0        149.00  10    06  2014                40  
+1705911           1.0        246.32  13    06  2014                37  
+1705912           1.0        399.00  03    06  2014                30  
+1705913           1.0        399.00  08    06  2014                30  
+</p>
+
+<div class="highlight"><pre><span></span>
+</pre></div>
+
+<div class="highlight"><pre><span></span>category_id_with_max_revenue = # PUT YOUR ANSWER IN THIS VARIABLE
+</pre></div>
 
 
 <p>
-category_id_with_max_revenue = # PUT YOUR ANSWER IN THIS VARIABLE
 grader.submit_tag('category_id_with_max_revenue', category_id_with_max_revenue)
 </p>
 
@@ -710,8 +1223,6 @@ grader.status()
 grader.submit(STUDENT_EMAIL, STUDENT_TOKEN)
 </p>
 </div>
-</li>
-</ul>
 </div>
 </div>
 </div>
@@ -748,9 +1259,9 @@ Will the performance of a  GBDT model drop dramatically if we remove the first t
 <span class="kn">from</span> <span class="nn">xgboost</span> <span class="kn">import</span> <span class="n">XGBClassifier</span>
 </pre></div>
 
-<div id="outline-container-orgce58354" class="outline-2">
-<h2 id="orgce58354">Define the Sigmoid</h2>
-<div class="outline-text-2" id="text-orgce58354">
+<div id="outline-container-orgc0e28ca" class="outline-2">
+<h2 id="orgc0e28ca">Define the Sigmoid</h2>
+<div class="outline-text-2" id="text-orgc0e28ca">
 <p>
 This is a function to calculate the <a href="https://en.wikipedia.org/wiki/Sigmoid_function">sigmoid</a> which we'll use to convert probabilities to classifications.
 </p>
@@ -761,17 +1272,17 @@ This is a function to calculate the <a href="https://en.wikipedia.org/wiki/Sigmo
 </div>
 </div>
 
-<div id="outline-container-orgfd26fe2" class="outline-2">
-<h2 id="orgfd26fe2">Make the dataset</h2>
-<div class="outline-text-2" id="text-orgfd26fe2">
+<div id="outline-container-orgf0134b4" class="outline-2">
+<h2 id="orgf0134b4">Make the dataset</h2>
+<div class="outline-text-2" id="text-orgf0134b4">
 <p>
 This will be a very simple synthetic dataset. We'll use numpy's <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.random.randn.html">randn</a> function to generate a dataset of random values that come from a normal distribution and then predict that the class is <i>1</i> if the value is positive and that it is <i>0</i> otherwise.
 </p>
 </div>
 
-<div id="outline-container-org2302fd3" class="outline-3">
-<h3 id="org2302fd3">Generating the Random Data</h3>
-<div class="outline-text-3" id="text-org2302fd3">
+<div id="outline-container-org4c358bc" class="outline-3">
+<h3 id="org4c358bc">Generating the Random Data</h3>
+<div class="outline-text-3" id="text-org4c358bc">
 <p>
 First we'll generate an array of 5000 random numbers taken from a normal distribution.
 </p>
@@ -798,17 +1309,17 @@ Now we'll use sklearn's <a href="http://scikit-learn.org/stable/modules/generate
 </div>
 </div>
 
-<div id="outline-container-org00b481f" class="outline-2">
-<h2 id="org00b481f">A Decision Tree Classifier</h2>
-<div class="outline-text-2" id="text-org00b481f">
+<div id="outline-container-orgac6ac0f" class="outline-2">
+<h2 id="orgac6ac0f">A Decision Tree Classifier</h2>
+<div class="outline-text-2" id="text-orgac6ac0f">
 <p>
 We'll build a <a href="https://en.wikipedia.org/wiki/Decision_tree">Decision Tree</a> using sklearn's <a href="http://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html">Decision Tree Classifier</a> for this model.
 </p>
 </div>
 
-<div id="outline-container-org82c6c1f" class="outline-3">
-<h3 id="org82c6c1f">Building and Training the Model</h3>
-<div class="outline-text-3" id="text-org82c6c1f">
+<div id="outline-container-org8e84a01" class="outline-3">
+<h3 id="org8e84a01">Building and Training the Model</h3>
+<div class="outline-text-3" id="text-org8e84a01">
 <p>
 This will be a very simple tree with a depth of 1 (a <a href="https://en.wikipedia.org/wiki/Decision_stump">decision stump</a>).
 </p>
@@ -819,9 +1330,9 @@ This will be a very simple tree with a depth of 1 (a <a href="https://en.wikiped
 </div>
 </div>
 
-<div id="outline-container-orgcfe25b2" class="outline-3">
-<h3 id="orgcfe25b2">Measuring the Accuracy</h3>
-<div class="outline-text-3" id="text-orgcfe25b2">
+<div id="outline-container-org34ad3ec" class="outline-3">
+<h3 id="org34ad3ec">Measuring the Accuracy</h3>
+<div class="outline-text-3" id="text-org34ad3ec">
 <div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s1">'Accuracy for a single decision stump: {}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)))</span>
 </pre></div>
 
@@ -837,9 +1348,9 @@ The 'tree' was able to classify all the testing data correctly.
 </div>
 </div>
 
-<div id="outline-container-org0e79b35" class="outline-2">
-<h2 id="org0e79b35">A Gradient Boosting Classifier</h2>
-<div class="outline-text-2" id="text-org0e79b35">
+<div id="outline-container-org2c19050" class="outline-2">
+<h2 id="org2c19050">A Gradient Boosting Classifier</h2>
+<div class="outline-text-2" id="text-org2c19050">
 <p>
 While the Decision Tree Classifier only needed 1 layer, We will need 800 trees in the Gradient Boosting Classifier for it to classify the data correctly.
 </p>
@@ -849,9 +1360,9 @@ For convenience we will use sklearn's <a href="http://scikit-learn.org/stable/mo
 </p>
 </div>
 
-<div id="outline-container-org74e7231" class="outline-3">
-<h3 id="org74e7231">Training and Fitting the Model</h3>
-<div class="outline-text-3" id="text-org74e7231">
+<div id="outline-container-orga852a7b" class="outline-3">
+<h3 id="orga852a7b">Training and Fitting the Model</h3>
+<div class="outline-text-3" id="text-orga852a7b">
 <div class="highlight"><pre><span></span><span class="n">gbc_model</span> <span class="o">=</span> <span class="n">GradientBoostingClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
 				 <span class="n">max_depth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
 				 <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
@@ -867,9 +1378,9 @@ Accuracy for Gradient Booing: 1.0
 </div>
 </div>
 
-<div id="outline-container-org8ebdd4c" class="outline-3">
-<h3 id="org8ebdd4c">Checking the log Loss Metric</h3>
-<div class="outline-text-3" id="text-org8ebdd4c">
+<div id="outline-container-org62204f8" class="outline-3">
+<h3 id="org62204f8">Checking the log Loss Metric</h3>
+<div class="outline-text-3" id="text-org62204f8">
 <p>
 The <a href="http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingClassifier.html#sklearn.ensemble.GradientBoostingClassifier.predict_proba"><code>predict_proba</code></a> method will give us the probabilities that a data-point belongs to a class.
 </p>
@@ -890,9 +1401,9 @@ Test logloss: 0.0003138777469167194
 </div>
 </div>
 
-<div id="outline-container-org0b00057" class="outline-3">
-<h3 id="org0b00057">Some Helper Functions</h3>
-<div class="outline-text-3" id="text-org0b00057">
+<div id="outline-container-orgc943b03" class="outline-3">
+<h3 id="orgc943b03">Some Helper Functions</h3>
+<div class="outline-text-3" id="text-orgc943b03">
 <div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_loss</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">predicted_probabilities</span><span class="p">):</span>
     <span class="sd">"""applies sigmoid to predictions before calling log_loss</span>
 
@@ -920,9 +1431,9 @@ Test logloss: 0.0003138777469167194
 </div>
 </div>
 
-<div id="outline-container-orgfa30106" class="outline-3">
-<h3 id="orgfa30106">Checking The loss</h3>
-<div class="outline-text-3" id="text-orgfa30106">
+<div id="outline-container-orgbf1b604" class="outline-3">
+<h3 id="orgbf1b604">Checking The loss</h3>
+<div class="outline-text-3" id="text-orgbf1b604">
 <p>
 Now we get the cummulative sum of the <b>decision function</b> (<a href="http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingClassifier.html#sklearn.ensemble.GradientBoostingClassifier.staged_decision_function"><code>staged_decision_function</code></a>) for our trees. The <i>i</i>-th element is a sum of trees \[0 \ldots i-1\]. We cannot use <a href="http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingClassifier.html#sklearn.ensemble.GradientBoostingClassifier.staged_predict_proba">staged_predict_proba</a>, since we want to maniputate raw scores
 (not probabilities). And only in the end convert the scores to probabilities using the <code>sigmoid</code>.
@@ -999,9 +1510,9 @@ Which in turn means that if we drop the last tree we lower \(F(x)\) by <i>0</i> 
 </p>
 </div>
 
-<div id="outline-container-org726177a" class="outline-4">
-<h4 id="org726177a">A Bigger \(\eta\)</h4>
-<div class="outline-text-4" id="text-org726177a">
+<div id="outline-container-org9f49188" class="outline-4">
+<h4 id="org9f49188">A Bigger \(\eta\)</h4>
+<div class="outline-text-4" id="text-org9f49188">
 <p>
 To prove that last point let's try a larger learning rate of <i>8</i>.
 </p>
@@ -1057,16 +1568,16 @@ Even though the dataset is synthetic, a similar intuition will work with real da
 </div>
 </div>
 </div>
-<div id="outline-container-orgdc00e00" class="outline-2">
-<h2 id="orgdc00e00">A More Realistic Data Set</h2>
-<div class="outline-text-2" id="text-orgdc00e00">
+<div id="outline-container-org1286a35" class="outline-2">
+<h2 id="org1286a35">A More Realistic Data Set</h2>
+<div class="outline-text-2" id="text-org1286a35">
 <p>
 Sklearn's <a href="http://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_hastie_10_2.html">make_hastie_10_2</a> function makes a ten-dimensional data set with two classifications as targets.
 </p>
 </div>
-<div id="outline-container-org12936fd" class="outline-3">
-<h3 id="org12936fd">Building the Data Set</h3>
-<div class="outline-text-3" id="text-org12936fd">
+<div id="outline-container-org1b9d824" class="outline-3">
+<h3 id="org1b9d824">Building the Data Set</h3>
+<div class="outline-text-3" id="text-org1b9d824">
 <div class="highlight"><pre><span></span><span class="n">X_hastie</span><span class="p">,</span> <span class="n">y_hastie</span> <span class="o">=</span> <span class="n">make_hastie_10_2</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">X_train_hastie</span><span class="p">,</span> <span class="n">X_test_hastie</span><span class="p">,</span> <span class="n">y_train_hastie</span><span class="p">,</span> <span class="n">y_test_hastie</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
     <span class="n">X_hastie</span><span class="p">,</span>
@@ -1077,9 +1588,9 @@ Sklearn's <a href="http://scikit-learn.org/stable/modules/generated/sklearn.data
 </div>
 </div>
 
-<div id="outline-container-orgb2775fd" class="outline-3">
-<h3 id="orgb2775fd">Our Decision Stump Again</h3>
-<div class="outline-text-3" id="text-orgb2775fd">
+<div id="outline-container-orga22ba8e" class="outline-3">
+<h3 id="orga22ba8e">Our Decision Stump Again</h3>
+<div class="outline-text-3" id="text-orga22ba8e">
 <p>
 Let's try the decision stump on the new dataset.
 </p>
@@ -1115,9 +1626,9 @@ It does a little better, anyway.
 </div>
 </div>
 
-<div id="outline-container-orgb047c7e" class="outline-3">
-<h3 id="orgb047c7e">The Gradient Boosting Classifier</h3>
-<div class="outline-text-3" id="text-orgb047c7e">
+<div id="outline-container-org5ca7d79" class="outline-3">
+<h3 id="org5ca7d79">The Gradient Boosting Classifier</h3>
+<div class="outline-text-3" id="text-org5ca7d79">
 <div class="highlight"><pre><span></span><span class="n">gbc2_model</span> <span class="o">=</span> <span class="n">GradientBoostingClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
 					<span class="n">max_depth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
 					<span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
@@ -1149,9 +1660,9 @@ In this case, although there is a difference, removing the last doesn't seem to 
 </div>
 </div>
 
-<div id="outline-container-orge25269d" class="outline-3">
-<h3 id="orge25269d">XGBoost</h3>
-<div class="outline-text-3" id="text-orge25269d">
+<div id="outline-container-org94ca933" class="outline-3">
+<h3 id="org94ca933">XGBoost</h3>
+<div class="outline-text-3" id="text-org94ca933">
 <p>
 We stated earlier that the result should be the same with other implementations of Gradient Boosting so let's see what happens if we use XGBoost instead.
 </p>
@@ -1191,9 +1702,9 @@ If you read the documentation for the python package for <a href="https://xgboos
 </div>
 </div>
 
-<div id="outline-container-orgc5e0f3e" class="outline-2">
-<h2 id="orgc5e0f3e">Source</h2>
-<div class="outline-text-2" id="text-orgc5e0f3e">
+<div id="outline-container-org82d052a" class="outline-2">
+<h2 id="org82d052a">Source</h2>
+<div class="outline-text-2" id="text-org82d052a">
 <ul class="org-ul">
 <li>“Will Performance of GBDT Model Drop Dramatically If We Remove the First Tree?” Coursera. Accessed August 5, 2018. <a href="https://www.coursera.org/learn/competitive-data-science/home/welcome">https://www.coursera.org/learn/competitive-data-science/home/welcome</a>.</li>
 </ul>

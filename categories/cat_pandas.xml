@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about pandas)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/cat_pandas.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Mon, 06 Aug 2018 17:39:04 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Pandas Basics</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/pandas-basics/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-orga8006d5" class="outline-2"&gt;
-&lt;h2 id="orga8006d5"&gt;Description&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orga8006d5"&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about pandas)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/cat_pandas.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Tue, 07 Aug 2018 02:33:30 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Pandas Basics</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/pandas-basics/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-orgf11083d" class="outline-2"&gt;
+&lt;h2 id="orgf11083d"&gt;Description&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgf11083d"&gt;
 &lt;p&gt;
 This is a chance to refresh your &lt;b&gt;pandas&lt;/b&gt; knowledge. You will need to do several &lt;a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.groupby.html"&gt;&lt;code&gt;groupby&lt;/code&gt;&lt;/a&gt;s and &lt;a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.join.html"&gt;&lt;code&gt;join&lt;/code&gt;&lt;/a&gt;`s to solve the task. 
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orga70badc" class="outline-2"&gt;
-&lt;h2 id="orga70badc"&gt;Imports&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orga70badc"&gt;
+&lt;div id="outline-container-org84f94be" class="outline-2"&gt;
+&lt;h2 id="org84f94be"&gt;Imports&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org84f94be"&gt;
 &lt;p&gt;
 This first block is necessary for the code.
 &lt;/p&gt;
@@ -37,9 +37,9 @@ This next block is only relevant on Coursera's server.
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgd8847a3" class="outline-2"&gt;
-&lt;h2 id="orgd8847a3"&gt;The Data&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgd8847a3"&gt;
+&lt;div id="outline-container-org8746356" class="outline-2"&gt;
+&lt;h2 id="org8746356"&gt;The Data&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org8746356"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;DATA_FOLDER = '../readonly/final_project_data/'
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -61,9 +61,9 @@ shops           = pandas.read_csv(os.path.join(DATA_FOLDER,
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org77d5eb2" class="outline-2"&gt;
-&lt;h2 id="org77d5eb2"&gt;Data Description&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org77d5eb2"&gt;
+&lt;div id="outline-container-org5a81419" class="outline-2"&gt;
+&lt;h2 id="org5a81419"&gt;Data Description&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org5a81419"&gt;
 &lt;p&gt;
 The dataset we loaded is taken from a kaggle competititon. You can find complete data description at the &lt;a href="https://www.kaggle.com/c/competitive-data-science-final-project/data"&gt;competition web page&lt;/a&gt;. To join the competition use &lt;a href="https://www.kaggle.com/t/1ea93815dca248e99221df42ebde3540"&gt;this link&lt;/a&gt;.
 &lt;/p&gt;
@@ -75,9 +75,9 @@ You are provided with daily historical sales data. The task is to forecast the t
 &lt;/blockquote&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org3777004" class="outline-3"&gt;
-&lt;h3 id="org3777004"&gt;File descriptions&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org3777004"&gt;
+&lt;div id="outline-container-orgc9854f1" class="outline-3"&gt;
+&lt;h3 id="orgc9854f1"&gt;File descriptions&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgc9854f1"&gt;
 &lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
 
 
@@ -127,9 +127,9 @@ You are provided with daily historical sales data. The task is to forecast the t
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgf6d51b5" class="outline-3"&gt;
-&lt;h3 id="orgf6d51b5"&gt;Data Fields&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgf6d51b5"&gt;
+&lt;div id="outline-container-orgcc40546" class="outline-3"&gt;
+&lt;h3 id="orgcc40546"&gt;Data Fields&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgcc40546"&gt;
 &lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
 
 
@@ -206,9 +206,9 @@ You are provided with daily historical sales data. The task is to forecast the t
 &lt;/div&gt;
 
 
-&lt;div id="outline-container-orgc16edbe" class="outline-2"&gt;
-&lt;h2 id="orgc16edbe"&gt;The First Problem&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgc16edbe"&gt;
+&lt;div id="outline-container-orgf2be066" class="outline-2"&gt;
+&lt;h2 id="orgf2be066"&gt;The First Problem&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgf2be066"&gt;
 &lt;p&gt;
 Let's start with a simple task. 
 &lt;/p&gt;
@@ -275,9 +275,9 @@ for name, frame in frames.items():
     print(tabulate(head, headers="keys", tablefmt="orgtbl", showindex=False))
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org960dcf5" class="outline-3"&gt;
-&lt;h3 id="org960dcf5"&gt;transactions&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org960dcf5"&gt;
+&lt;div id="outline-container-org4cec204" class="outline-3"&gt;
+&lt;h3 id="org4cec204"&gt;transactions&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org4cec204"&gt;
 &lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
 
 
@@ -353,9 +353,9 @@ for name, frame in frames.items():
 &lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgb6a8fbf" class="outline-3"&gt;
-&lt;h3 id="orgb6a8fbf"&gt;items&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgb6a8fbf"&gt;
+&lt;div id="outline-container-org8f18b68" class="outline-3"&gt;
+&lt;h3 id="org8f18b68"&gt;items&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org8f18b68"&gt;
 &lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
 
 
@@ -407,9 +407,9 @@ for name, frame in frames.items():
 &lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org7900a2e" class="outline-3"&gt;
-&lt;h3 id="org7900a2e"&gt;item_categories&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org7900a2e"&gt;
+&lt;div id="outline-container-org8c30921" class="outline-3"&gt;
+&lt;h3 id="org8c30921"&gt;item_categories&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org8c30921"&gt;
 &lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
 
 
@@ -453,9 +453,457 @@ for name, frame in frames.items():
 &lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org964e870" class="outline-3"&gt;
-&lt;h3 id="org964e870"&gt;shops&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org964e870"&gt;
+&lt;div id="outline-container-orgaa56a37" class="outline-3"&gt;
+&lt;h3 id="orgaa56a37"&gt;shops&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgaa56a37"&gt;
+&lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
+
+
+&lt;colgroup&gt;
+&lt;col class="org-left"&gt;
+
+&lt;col class="org-right"&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope="col" class="org-left"&gt;shop_name&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;shop_id&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class="org-left"&gt;!Якутск Орджоникидзе, 56 фран&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;!Якутск ТЦ "Центральный" фран&lt;/td&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;Адыгея ТЦ "Мега"&lt;/td&gt;
+&lt;td class="org-right"&gt;2&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;Балашиха ТРК "Октябрь-Киномир"&lt;/td&gt;
+&lt;td class="org-right"&gt;3&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;Волжский ТЦ "Волга Молл"&lt;/td&gt;
+&lt;td class="org-right"&gt;4&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgc827108" class="outline-3"&gt;
+&lt;h3 id="orgc827108"&gt;transactions&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgc827108"&gt;
+&lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
+
+
+&lt;colgroup&gt;
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope="col" class="org-right"&gt;date&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;date_block_num&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;shop_id&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;item_id&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;item_price&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;item_cnt_day&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class="org-right"&gt;02.01.2013&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;59&lt;/td&gt;
+&lt;td class="org-right"&gt;22154&lt;/td&gt;
+&lt;td class="org-right"&gt;999&lt;/td&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;03.01.2013&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;25&lt;/td&gt;
+&lt;td class="org-right"&gt;2552&lt;/td&gt;
+&lt;td class="org-right"&gt;899&lt;/td&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;05.01.2013&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;25&lt;/td&gt;
+&lt;td class="org-right"&gt;2552&lt;/td&gt;
+&lt;td class="org-right"&gt;899&lt;/td&gt;
+&lt;td class="org-right"&gt;-1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;06.01.2013&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;25&lt;/td&gt;
+&lt;td class="org-right"&gt;2554&lt;/td&gt;
+&lt;td class="org-right"&gt;1709.05&lt;/td&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;15.01.2013&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;25&lt;/td&gt;
+&lt;td class="org-right"&gt;2555&lt;/td&gt;
+&lt;td class="org-right"&gt;1099&lt;/td&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org1d9cd0b" class="outline-3"&gt;
+&lt;h3 id="org1d9cd0b"&gt;items&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org1d9cd0b"&gt;
+&lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
+
+
+&lt;colgroup&gt;
+&lt;col class="org-left"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope="col" class="org-left"&gt;item_name&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;item_id&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;item_category_id&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class="org-left"&gt;! ВО ВЛАСТИ НАВАЖДЕНИЯ (ПЛАСТ.)         D&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;40&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;!ABBYY FineReader 12 Professional Edition Full [PC, Цифровая версия]&lt;/td&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;td class="org-right"&gt;76&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;***В ЛУЧАХ СЛАВЫ   (UNV)                    D&lt;/td&gt;
+&lt;td class="org-right"&gt;2&lt;/td&gt;
+&lt;td class="org-right"&gt;40&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;***ГОЛУБАЯ ВОЛНА  (Univ)                      D&lt;/td&gt;
+&lt;td class="org-right"&gt;3&lt;/td&gt;
+&lt;td class="org-right"&gt;40&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;***КОРОБКА (СТЕКЛО)                       D&lt;/td&gt;
+&lt;td class="org-right"&gt;4&lt;/td&gt;
+&lt;td class="org-right"&gt;40&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgcc4e2bc" class="outline-3"&gt;
+&lt;h3 id="orgcc4e2bc"&gt;item_categories&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgcc4e2bc"&gt;
+&lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
+
+
+&lt;colgroup&gt;
+&lt;col class="org-left"&gt;
+
+&lt;col class="org-right"&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope="col" class="org-left"&gt;item_category_name&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;item_category_id&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class="org-left"&gt;PC - Гарнитуры/Наушники&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;Аксессуары - PS2&lt;/td&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;Аксессуары - PS3&lt;/td&gt;
+&lt;td class="org-right"&gt;2&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;Аксессуары - PS4&lt;/td&gt;
+&lt;td class="org-right"&gt;3&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;Аксессуары - PSP&lt;/td&gt;
+&lt;td class="org-right"&gt;4&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orga8b9728" class="outline-3"&gt;
+&lt;h3 id="orga8b9728"&gt;shops&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orga8b9728"&gt;
+&lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
+
+
+&lt;colgroup&gt;
+&lt;col class="org-left"&gt;
+
+&lt;col class="org-right"&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope="col" class="org-left"&gt;shop_name&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;shop_id&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class="org-left"&gt;!Якутск Орджоникидзе, 56 фран&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;!Якутск ТЦ "Центральный" фран&lt;/td&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;Адыгея ТЦ "Мега"&lt;/td&gt;
+&lt;td class="org-right"&gt;2&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;Балашиха ТРК "Октябрь-Киномир"&lt;/td&gt;
+&lt;td class="org-right"&gt;3&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;Волжский ТЦ "Волга Молл"&lt;/td&gt;
+&lt;td class="org-right"&gt;4&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org62ef115" class="outline-3"&gt;
+&lt;h3 id="org62ef115"&gt;transactions&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org62ef115"&gt;
+&lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
+
+
+&lt;colgroup&gt;
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope="col" class="org-right"&gt;date&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;date_block_num&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;shop_id&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;item_id&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;item_price&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;item_cnt_day&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class="org-right"&gt;02.01.2013&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;59&lt;/td&gt;
+&lt;td class="org-right"&gt;22154&lt;/td&gt;
+&lt;td class="org-right"&gt;999&lt;/td&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;03.01.2013&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;25&lt;/td&gt;
+&lt;td class="org-right"&gt;2552&lt;/td&gt;
+&lt;td class="org-right"&gt;899&lt;/td&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;05.01.2013&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;25&lt;/td&gt;
+&lt;td class="org-right"&gt;2552&lt;/td&gt;
+&lt;td class="org-right"&gt;899&lt;/td&gt;
+&lt;td class="org-right"&gt;-1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;06.01.2013&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;25&lt;/td&gt;
+&lt;td class="org-right"&gt;2554&lt;/td&gt;
+&lt;td class="org-right"&gt;1709.05&lt;/td&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;15.01.2013&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;25&lt;/td&gt;
+&lt;td class="org-right"&gt;2555&lt;/td&gt;
+&lt;td class="org-right"&gt;1099&lt;/td&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orga63decd" class="outline-3"&gt;
+&lt;h3 id="orga63decd"&gt;items&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orga63decd"&gt;
+&lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
+
+
+&lt;colgroup&gt;
+&lt;col class="org-left"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope="col" class="org-left"&gt;item_name&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;item_id&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;item_category_id&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class="org-left"&gt;! ВО ВЛАСТИ НАВАЖДЕНИЯ (ПЛАСТ.)         D&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;40&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;!ABBYY FineReader 12 Professional Edition Full [PC, Цифровая версия]&lt;/td&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;td class="org-right"&gt;76&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;***В ЛУЧАХ СЛАВЫ   (UNV)                    D&lt;/td&gt;
+&lt;td class="org-right"&gt;2&lt;/td&gt;
+&lt;td class="org-right"&gt;40&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;***ГОЛУБАЯ ВОЛНА  (Univ)                      D&lt;/td&gt;
+&lt;td class="org-right"&gt;3&lt;/td&gt;
+&lt;td class="org-right"&gt;40&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;***КОРОБКА (СТЕКЛО)                       D&lt;/td&gt;
+&lt;td class="org-right"&gt;4&lt;/td&gt;
+&lt;td class="org-right"&gt;40&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org9b4e8bf" class="outline-3"&gt;
+&lt;h3 id="org9b4e8bf"&gt;item_categories&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org9b4e8bf"&gt;
+&lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
+
+
+&lt;colgroup&gt;
+&lt;col class="org-left"&gt;
+
+&lt;col class="org-right"&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope="col" class="org-left"&gt;item_category_name&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;item_category_id&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class="org-left"&gt;PC - Гарнитуры/Наушники&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;Аксессуары - PS2&lt;/td&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;Аксессуары - PS3&lt;/td&gt;
+&lt;td class="org-right"&gt;2&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;Аксессуары - PS4&lt;/td&gt;
+&lt;td class="org-right"&gt;3&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;Аксессуары - PSP&lt;/td&gt;
+&lt;td class="org-right"&gt;4&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org0f5f693" class="outline-3"&gt;
+&lt;h3 id="org0f5f693"&gt;shops&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org0f5f693"&gt;
 &lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
 
 
@@ -505,13 +953,13 @@ Unexpectedly, the names are all in &lt;a href="https://en.wikipedia.org/wiki/Cyr
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgf6c6dcc" class="outline-2"&gt;
-&lt;h2 id="orgf6c6dcc"&gt;Questions&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgf6c6dcc"&gt;
+&lt;div id="outline-container-orgaccaad4" class="outline-2"&gt;
+&lt;h2 id="orgaccaad4"&gt;Questions&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgaccaad4"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org1111c6c" class="outline-3"&gt;
-&lt;h3 id="org1111c6c"&gt;Question 1: &lt;b&gt;What was the maximum total revenue among all the shops in September, 2014?&lt;/b&gt;&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org1111c6c"&gt;
+&lt;div id="outline-container-org168aad2" class="outline-3"&gt;
+&lt;h3 id="org168aad2"&gt;Question 1: &lt;b&gt;What was the maximum total revenue among all the shops in September, 2014?&lt;/b&gt;&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org168aad2"&gt;
 &lt;p&gt;
 From here on out &lt;b&gt;revenue&lt;/b&gt; refers to total sales minus value of goods returned.
 &lt;/p&gt;
@@ -523,13 +971,13 @@ From here on out &lt;b&gt;revenue&lt;/b&gt; refers to total sales minus value of
 &lt;/ul&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org7011516" class="outline-4"&gt;
-&lt;h4 id="org7011516"&gt;Answer&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org7011516"&gt;
+&lt;div id="outline-container-org2c10ee5" class="outline-4"&gt;
+&lt;h4 id="org2c10ee5"&gt;Answer&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org2c10ee5"&gt;
 &lt;/div&gt;
 &lt;ul class="org-ul"&gt;
-&lt;li&gt;&lt;a id="orga93108f"&gt;&lt;/a&gt;Sales Per Item&lt;br&gt;
-&lt;div class="outline-text-5" id="text-orga93108f"&gt;
+&lt;li&gt;&lt;a id="orgdc70bb5"&gt;&lt;/a&gt;Sales Per Item&lt;br&gt;
+&lt;div class="outline-text-5" id="text-orgdc70bb5"&gt;
 &lt;p&gt;
 First I'll add a column with the total revenue for each item (the price times the number sold).
 &lt;/p&gt;
@@ -563,33 +1011,65 @@ min   -6.897000e+04
 75%    1.078200e+03  
 max    1.829990e+06  
 &lt;/p&gt;
-
-&lt;p&gt;
-I don't know why one item lost 68970 in whatever currency this represents (presumably rubles), but I assume this means the item had some returns.
-&lt;/p&gt;
 &lt;/div&gt;
 &lt;/li&gt;
 
-&lt;li&gt;&lt;a id="org7d1b9a7"&gt;&lt;/a&gt;Filter Out the Month&lt;br&gt;
-&lt;div class="outline-text-5" id="text-org7d1b9a7"&gt;
+&lt;li&gt;&lt;a id="orgfca0dad"&gt;&lt;/a&gt;Filter Out the Month&lt;br&gt;
+&lt;div class="outline-text-5" id="text-orgfca0dad"&gt;
 &lt;p&gt;
-We could convert the dates to datetime objects, but in this case it might be easier to match the &lt;code&gt;mm.yyyy&lt;/code&gt; date format instead.
+I was originally filtering using a regular expression, but the other questions use date-filtering too so I decided to create the extra day, month, and year columns once to avoid the extra regular expression overhead later on.
 &lt;/p&gt;
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;expression = r"\d{2}\.09\.2014"
-
-def matched(date, expression=expression):
-    """checks if the string matches our expected date
-
-    Args:
-     date: date string formatted dd.mm.yyyy
-     expression: regular expression to match
-
-    Returns:
-     bool: True if it matches the expression
-    """
-    return re.match(expression, date) is not None
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;class Dates:
+    date_expression = r'(?P&amp;lt;day&amp;gt;\d{2})\.(?P&amp;lt;month&amp;gt;\d{2})\.(?P&amp;lt;year&amp;gt;\d{4})'
+    september = '09'
+    summer = ['06', '07', '08']
 &lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;dates = transactions.date.str.extract(Dates.date_expression)
+print(dates.head())
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;
+  day month  year
+0  02    01  2013
+1  03    01  2013
+2  05    01  2013
+3  06    01  2013
+4  15    01  2013
+  day month  year
+0  02    01  2013
+1  03    01  2013
+2  05    01  2013
+3  06    01  2013
+4  15    01  2013
+&lt;/p&gt;
+
+&lt;p&gt;
+Now we can smash our new data frame to the transactions using the &lt;a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.concat.html"&gt;concat&lt;/a&gt; function. By default it will try to add the rows from the second data frame to the rows of the first, but since we're adding new columns we need to pass in the &lt;code&gt;axis='columns'&lt;/code&gt; argument.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;transactions = pandas.concat((transactions, dates), axis='columns')
+print(transactions.head())
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;
+         date  date_block_num  shop_id  item_id  item_price  item_cnt_day  \
+0  02.01.2013               0       59    22154      999.00           1.0   
+1  03.01.2013               0       25     2552      899.00           1.0   
+2  05.01.2013               0       25     2552      899.00          -1.0   
+3  06.01.2013               0       25     2554     1709.05           1.0   
+4  15.01.2013               0       25     2555     1099.00           1.0   
+&lt;/p&gt;
+
+&lt;p&gt;
+   item_revenue day month  year  
+0        999.00  02    01  2013  
+1        899.00  03    01  2013  
+2       -899.00  05    01  2013  
+3       1709.05  06    01  2013  
+4       1099.00  15    01  2013  
+&lt;/p&gt;
 
 &lt;p&gt;
 First, as a sanity check, we'll make sure that all the date cells have values.
@@ -599,16 +1079,37 @@ First, as a sanity check, we'll make sure that all the date cells have values.
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;
-Naw let's filter on the date-expression we created for september.
+Now let's filter on the date-expression we created for september. The next problem also uses 2014 so save that as a separate sub-set.
 &lt;/p&gt;
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;september = transactions[transactions.date.apply(matched)]
-print(matching.shape)
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;twenty_fourteen = transactions[transactions.year.isin(["2014"])]
+september = twenty_fourteen[twenty_fourteen.month.isin([Dates.september])]
+print(september.shape)
+print(september.head())
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;
-(73157, 7)
+(73157, 10)
+               date  date_block_num  shop_id  item_id  item_price  \
+1953691  24.09.2014              20        5     1039       899.0   
+1953692  27.09.2014              20        5     1015       449.0   
+1953693  07.09.2014              20        5     1329       399.0   
+1953694  27.09.2014              20        5      984       399.0   
+1953695  08.09.2014              20        5      984       399.0   
 &lt;/p&gt;
+
+&lt;p&gt;
+         item_cnt_day  item_revenue day month  year  
+1953691           1.0         899.0  24    09  2014  
+1953692           1.0         449.0  27    09  2014  
+1953693           1.0         399.0  07    09  2014  
+1953694           1.0         399.0  27    09  2014  
+1953695           1.0         399.0  08    09  2014  
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;assert all(twenty_fourteen.year == "2014")
+assert all(september.month == "09")
+&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;
 That seems like a lot of transactions. What fraction of the total is it?
@@ -626,32 +1127,127 @@ print("{:.2f} %".format(100 * rows/transactions.shape[0]))
 Not as much as I would have thought, &lt;code&gt;transactions&lt;/code&gt; is much larger than I first took it to be.
 &lt;/p&gt;
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;grouped = september.groupby(["shop_id", "item_id"])
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;grouped = september.groupby(["shop_id"])
 summed = grouped.item_revenue.agg(numpy.sum)
 print(summed.head())
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;
-shop_id  item_id
-2        32          298.0
-         33          199.0
-         482        6600.0
-         485         300.0
-         486         300.0
+shop_id
+2    1473540.00
+3    1228425.00
+4    1211556.00
+5    1350828.02
+6    3480397.00
 Name: item_revenue, dtype: float64
 &lt;/p&gt;
 
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;max_revenue = # PUT YOUR ANSWER IN THIS VARIABLE
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;max_revenue = summed.loc[summed.idxmax()]
+print("Highest Revenue Earned by a shop in September of 2014: $ {:,.2f}".format(max_revenue))
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;
-grader.submit_tag('max_revenue', max_revenue)
+Highest Revenue Earned by a shop in September of 2014: $ 7,982,852.20
 &lt;/p&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-org59f72a4" class="outline-3"&gt;
+&lt;h3 id="org59f72a4"&gt;Question 2: What item category generated the highest revenue in the Summer of 2014?&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org59f72a4"&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;Submit the &lt;code&gt;id&lt;/code&gt; of the category found.&lt;/li&gt;
+&lt;li&gt;Here we call "summer" the period from June to August.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;
+&lt;b&gt;Hints:&lt;/b&gt;
+&lt;/p&gt;
+
+&lt;p&gt;
+Note, that for an object `x` of type `pd.Series`: `x.argmax()` returns &lt;b&gt;&lt;b&gt;index&lt;/b&gt;&lt;/b&gt; of the maximum element. `pd.Series` can have non-trivial index (not `[1, 2, 3, … ]`).
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgb1458f4" class="outline-4"&gt;
+&lt;h4 id="orgb1458f4"&gt;Get the Summer months&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-orgb1458f4"&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;summer = twenty_fourteen[twenty_fourteen.month.isin(Dates.summer)]
+print(summer.head())
+for month in summer.month.unique():
+    assert month in Dates.summer
+print(summer.shape)
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;
+               date  date_block_num  shop_id  item_id  item_price  \
+1705909  15.06.2014              17       26     9532      399.00   
+1705910  10.06.2014              17       26     9507      149.00   
+1705911  13.06.2014              17       26     9509      246.32   
+1705912  03.06.2014              17       26     9532      399.00   
+1705913  08.06.2014              17       26     9532      399.00   
+&lt;/p&gt;
+
+&lt;p&gt;
+         item_cnt_day  item_revenue day month  year  
+1705909           1.0        399.00  15    06  2014  
+1705910           1.0        149.00  10    06  2014  
+1705911           1.0        246.32  13    06  2014  
+1705912           1.0        399.00  03    06  2014  
+1705913           1.0        399.00  08    06  2014  
+(247782, 10)
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-org80079d9" class="outline-4"&gt;
+&lt;h4 id="org80079d9"&gt;Map in the Category IDs&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org80079d9"&gt;
+&lt;p&gt;
+If you look at &lt;code&gt;items.item_id&lt;/code&gt; you can see that the id's are really just the numerical index to the &lt;code&gt;items.item_category_id&lt;/code&gt; series. I was originally add the category ids for all the transactions but it takes a long time so I'm just adding it to this group.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;assert all(items.item_id == range(len(items)))
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;
+So we can map them back into our summer transactions.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;summer["item_category_id"] = summer.item_id.apply(lambda item: items.item_category_id.loc[item])
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;print(summer.head())
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;
+               date  date_block_num  shop_id  item_id  item_price  \
+1705909  15.06.2014              17       26     9532      399.00   
+1705910  10.06.2014              17       26     9507      149.00   
+1705911  13.06.2014              17       26     9509      246.32   
+1705912  03.06.2014              17       26     9532      399.00   
+1705913  08.06.2014              17       26     9532      399.00   
+&lt;/p&gt;
+
+&lt;p&gt;
+         item_cnt_day  item_revenue day month  year  item_category_id  
+1705909           1.0        399.00  15    06  2014                30  
+1705910           1.0        149.00  10    06  2014                40  
+1705911           1.0        246.32  13    06  2014                37  
+1705912           1.0        399.00  03    06  2014                30  
+1705913           1.0        399.00  08    06  2014                30  
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;category_id_with_max_revenue = # PUT YOUR ANSWER IN THIS VARIABLE
+&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;
-category_id_with_max_revenue = # PUT YOUR ANSWER IN THIS VARIABLE
 grader.submit_tag('category_id_with_max_revenue', category_id_with_max_revenue)
 &lt;/p&gt;
 
@@ -696,8 +1292,6 @@ grader.status()
 grader.submit(STUDENT_EMAIL, STUDENT_TOKEN)
 &lt;/p&gt;
 &lt;/div&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;</description><category>pandas basics</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/pandas-basics/</guid><pubDate>Sun, 05 Aug 2018 19:56:23 GMT</pubDate></item></channel></rss>
