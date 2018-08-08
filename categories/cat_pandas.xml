@@ -1,23 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about pandas)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/cat_pandas.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Wed, 08 Aug 2018 02:29:05 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Pandas Basics</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/pandas-basics/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-org494a6f7" class="outline-2"&gt;
-&lt;h2 id="org494a6f7"&gt;Description&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org494a6f7"&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about pandas)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/cat_pandas.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Wed, 08 Aug 2018 04:31:23 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Revisiting Pandas (Yet Again)</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/pandas-basics/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
+&lt;h2&gt;Table of Contents&lt;/h2&gt;
+&lt;div id="text-table-of-contents"&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/pandas-basics/#org5a6b577"&gt;Description&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/pandas-basics/#orgcc1a308"&gt;Pandas Functions and Methods Used&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/pandas-basics/#org7d4745a"&gt;Imports&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/pandas-basics/#orgf005b5e"&gt;Confirmed&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/pandas-basics/#org5f7f496"&gt;The Data&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/pandas-basics/#orgfb31c34"&gt;Data Description&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/pandas-basics/#orgd0f6fec"&gt;A Warm Up&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/pandas-basics/#org1318c8a"&gt;Questions&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-org5a6b577" class="outline-2"&gt;
+&lt;h2 id="org5a6b577"&gt;Description&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org5a6b577"&gt;
 &lt;p&gt;
 This is a review of Pandas' Basics with an emphasis on using &lt;a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.groupby.html"&gt;groupby&lt;/a&gt;.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org37a3627" class="outline-2"&gt;
-&lt;h2 id="org37a3627"&gt;Imports&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org37a3627"&gt;
+&lt;div id="outline-container-orgcc1a308" class="outline-2"&gt;
+&lt;h2 id="orgcc1a308"&gt;Pandas Functions and Methods Used&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgcc1a308"&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;&lt;a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.describe.html"&gt;&lt;code&gt;describe&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.groupby.html"&gt;&lt;code&gt;groupby&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.head.html"&gt;&lt;code&gt;head&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.idxmax.html"&gt;&lt;code&gt;idxmax&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.isin.html"&gt;&lt;code&gt;isin&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.loc.html"&gt;&lt;code&gt;loc&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.var.html"&gt;&lt;code&gt;var&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.Series.abs.html"&gt;&lt;code&gt;abs&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.Series.nunique.html"&gt;&lt;code&gt;nunique&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.Series.str.extract.html"&gt;&lt;code&gt;str.extract&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.concat.html"&gt;&lt;code&gt;concat&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.core.groupby.DataFrameGroupBy.agg.html"&gt;&lt;code&gt;agg&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.read_csv.html"&gt;&lt;code&gt;read_csv&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org7d4745a" class="outline-2"&gt;
+&lt;h2 id="org7d4745a"&gt;Imports&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org7d4745a"&gt;
 &lt;p&gt;
-This first block is necessary for the code.
+Here's our dependencies.
 &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# pandas standard library&lt;/span&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# python standard library&lt;/span&gt;
 &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;os&lt;/span&gt;
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;re&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;collections&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;defaultdict&lt;/span&gt;
 
 &lt;span class="c1"&gt;# from pypi&lt;/span&gt;
 &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;pandas&lt;/span&gt;
@@ -30,18 +65,32 @@ This first block is necessary for the code.
 
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;get_python&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;run_line_magic&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'matplotlib'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'inline'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgf005b5e" class="outline-2"&gt;
+&lt;h2 id="orgf005b5e"&gt;Confirmed&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgf005b5e"&gt;
+&lt;p&gt;
+These are values that we know to be correct so you can use them to check the outcomes.
+&lt;/p&gt;
 
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Confirmed&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
     &lt;span class="sd"&gt;"""This holds confirmed values"""&lt;/span&gt;
     &lt;span class="n"&gt;september_max_revenue&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mf"&gt;7982852.199999956&lt;/span&gt;
     &lt;span class="n"&gt;september_max_category_id&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;20&lt;/span&gt;
+    &lt;span class="n"&gt;number_of_items_whose_price_didnt_change&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;5926&lt;/span&gt;
+    &lt;span class="n"&gt;variance_per_day&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mf"&gt;117167.70229885059&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orge4eafeb" class="outline-2"&gt;
-&lt;h2 id="orge4eafeb"&gt;The Data&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orge4eafeb"&gt;
+&lt;div id="outline-container-org5f7f496" class="outline-2"&gt;
+&lt;h2 id="org5f7f496"&gt;The Data&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org5f7f496"&gt;
+&lt;p&gt;
+We have four data-sets to load, all of them in csv format, although the file with all the transactions is compressed.
+&lt;/p&gt;
+
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;DATA_FOLDER&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;'../readonly/final_project_data/'&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -55,6 +104,10 @@ This first block is necessary for the code.
 					       &lt;span class="s1"&gt;'shops.csv'&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
+&lt;p&gt;
+The &lt;code&gt;frames&lt;/code&gt; dictionary is just a convenience thing to make printing the descriptive tables below a little easier.
+&lt;/p&gt;
+
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;frames&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;dict&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;transactions&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;transactions&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
 	      &lt;span class="n"&gt;items&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;items&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
 	      &lt;span class="n"&gt;item_categories&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;item_categories&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
@@ -63,23 +116,23 @@ This first block is necessary for the code.
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgb57969e" class="outline-2"&gt;
-&lt;h2 id="orgb57969e"&gt;Data Description&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgb57969e"&gt;
+&lt;div id="outline-container-orgfb31c34" class="outline-2"&gt;
+&lt;h2 id="orgfb31c34"&gt;Data Description&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgfb31c34"&gt;
 &lt;p&gt;
-The dataset we loaded is taken from a kaggle competititon. You can find complete data description at the &lt;a href="https://www.kaggle.com/c/competitive-data-science-final-project/data"&gt;competition web page&lt;/a&gt;. To join the competition use &lt;a href="https://www.kaggle.com/t/1ea93815dca248e99221df42ebde3540"&gt;this link&lt;/a&gt;.
+The dataset we loaded is taken from a kaggle competititon. You can find complete data description at the &lt;a href="https://www.kaggle.com/c/competitive-data-science-final-project/data"&gt;competition web page&lt;/a&gt;. To join the competition use &lt;a href="https://www.kaggle.com/t/1ea93815dca248e99221df42ebde3540"&gt;this link&lt;/a&gt;. The descriptions below cover all the files, not just the ones we use here.
 &lt;/p&gt;
 
 &lt;blockquote&gt;
 &lt;p&gt;
-You are provided with daily historical sales data. The task is to forecast the total amount of products sold in every shop for the test set. Note that the list of shops and products slightly changes every month. Creating a robust model that can handle such situations is part of the challenge.
+You are provided with daily historical sales data from what appears to be a software retailer, although that isn't explicitly stated. The task is to forecast the total amount of products sold in every shop for the test set. Note that the list of shops and products changes slightly every month. Creating a robust model that can handle such situations is part of the challenge.
 &lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org73a709a" class="outline-3"&gt;
-&lt;h3 id="org73a709a"&gt;File descriptions&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org73a709a"&gt;
+&lt;div id="outline-container-org063ef76" class="outline-3"&gt;
+&lt;h3 id="org063ef76"&gt;File descriptions&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org063ef76"&gt;
 &lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
 
 
@@ -129,9 +182,9 @@ You are provided with daily historical sales data. The task is to forecast the t
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org8a2ed8f" class="outline-3"&gt;
-&lt;h3 id="org8a2ed8f"&gt;Data Fields&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org8a2ed8f"&gt;
+&lt;div id="outline-container-orgea6792f" class="outline-3"&gt;
+&lt;h3 id="orgea6792f"&gt;Data Fields&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgea6792f"&gt;
 &lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
 
 
@@ -207,13 +260,12 @@ You are provided with daily historical sales data. The task is to forecast the t
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org0240172" class="outline-2"&gt;
-&lt;h2 id="org0240172"&gt;The First Problem&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org0240172"&gt;
+&lt;div id="outline-container-orgd0f6fec" class="outline-2"&gt;
+&lt;h2 id="orgd0f6fec"&gt;A Warm Up&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgd0f6fec"&gt;
 &lt;p&gt;
 Let's start with a simple task. 
 &lt;/p&gt;
-
 
 &lt;p&gt;
 Print the shape of the loaded dataframes and use the &lt;a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.head.html"&gt;&lt;code&gt;df.head&lt;/code&gt;&lt;/a&gt; function to print several rows. Examine the features you are given.
@@ -276,9 +328,9 @@ Print the shape of the loaded dataframes and use the &lt;a href="https://pandas.
     &lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;tabulate&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;head&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;headers&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"keys"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;tablefmt&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"orgtbl"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;showindex&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgd57d906" class="outline-3"&gt;
-&lt;h3 id="orgd57d906"&gt;transactions&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgd57d906"&gt;
+&lt;div id="outline-container-org5ca02bb" class="outline-3"&gt;
+&lt;h3 id="org5ca02bb"&gt;transactions&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org5ca02bb"&gt;
 &lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
 
 
@@ -354,9 +406,9 @@ Print the shape of the loaded dataframes and use the &lt;a href="https://pandas.
 &lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org1bb7809" class="outline-3"&gt;
-&lt;h3 id="org1bb7809"&gt;items&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org1bb7809"&gt;
+&lt;div id="outline-container-org5d68f9e" class="outline-3"&gt;
+&lt;h3 id="org5d68f9e"&gt;items&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org5d68f9e"&gt;
 &lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
 
 
@@ -408,9 +460,9 @@ Print the shape of the loaded dataframes and use the &lt;a href="https://pandas.
 &lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgb07ee2f" class="outline-3"&gt;
-&lt;h3 id="orgb07ee2f"&gt;item_categories&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgb07ee2f"&gt;
+&lt;div id="outline-container-org05cad85" class="outline-3"&gt;
+&lt;h3 id="org05cad85"&gt;item_categories&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org05cad85"&gt;
 &lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
 
 
@@ -454,9 +506,9 @@ Print the shape of the loaded dataframes and use the &lt;a href="https://pandas.
 &lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org579a04e" class="outline-3"&gt;
-&lt;h3 id="org579a04e"&gt;shops&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org579a04e"&gt;
+&lt;div id="outline-container-org9cf25e6" class="outline-3"&gt;
+&lt;h3 id="org9cf25e6"&gt;shops&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org9cf25e6"&gt;
 &lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
 
 
@@ -500,9 +552,9 @@ Print the shape of the loaded dataframes and use the &lt;a href="https://pandas.
 &lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org9354802" class="outline-3"&gt;
-&lt;h3 id="org9354802"&gt;transactions&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org9354802"&gt;
+&lt;div id="outline-container-org1725560" class="outline-3"&gt;
+&lt;h3 id="org1725560"&gt;transactions&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org1725560"&gt;
 &lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
 
 
@@ -578,9 +630,9 @@ Print the shape of the loaded dataframes and use the &lt;a href="https://pandas.
 &lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgc373d84" class="outline-3"&gt;
-&lt;h3 id="orgc373d84"&gt;items&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgc373d84"&gt;
+&lt;div id="outline-container-orgd3d97b3" class="outline-3"&gt;
+&lt;h3 id="orgd3d97b3"&gt;items&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgd3d97b3"&gt;
 &lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
 
 
@@ -632,9 +684,9 @@ Print the shape of the loaded dataframes and use the &lt;a href="https://pandas.
 &lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org3c161c6" class="outline-3"&gt;
-&lt;h3 id="org3c161c6"&gt;item_categories&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org3c161c6"&gt;
+&lt;div id="outline-container-org04d0eef" class="outline-3"&gt;
+&lt;h3 id="org04d0eef"&gt;item_categories&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org04d0eef"&gt;
 &lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
 
 
@@ -678,9 +730,9 @@ Print the shape of the loaded dataframes and use the &lt;a href="https://pandas.
 &lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org421bf23" class="outline-3"&gt;
-&lt;h3 id="org421bf23"&gt;shops&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org421bf23"&gt;
+&lt;div id="outline-container-orgdc8a922" class="outline-3"&gt;
+&lt;h3 id="orgdc8a922"&gt;shops&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgdc8a922"&gt;
 &lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
 
 
@@ -724,9 +776,9 @@ Print the shape of the loaded dataframes and use the &lt;a href="https://pandas.
 &lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org9046518" class="outline-3"&gt;
-&lt;h3 id="org9046518"&gt;transactions&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org9046518"&gt;
+&lt;div id="outline-container-org2dfd8d4" class="outline-3"&gt;
+&lt;h3 id="org2dfd8d4"&gt;transactions&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org2dfd8d4"&gt;
 &lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
 
 
@@ -802,9 +854,9 @@ Print the shape of the loaded dataframes and use the &lt;a href="https://pandas.
 &lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org865bba8" class="outline-3"&gt;
-&lt;h3 id="org865bba8"&gt;items&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org865bba8"&gt;
+&lt;div id="outline-container-org8cba962" class="outline-3"&gt;
+&lt;h3 id="org8cba962"&gt;items&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org8cba962"&gt;
 &lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
 
 
@@ -856,9 +908,9 @@ Print the shape of the loaded dataframes and use the &lt;a href="https://pandas.
 &lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org60bb1fe" class="outline-3"&gt;
-&lt;h3 id="org60bb1fe"&gt;item_categories&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org60bb1fe"&gt;
+&lt;div id="outline-container-org749dbb2" class="outline-3"&gt;
+&lt;h3 id="org749dbb2"&gt;item_categories&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org749dbb2"&gt;
 &lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
 
 
@@ -902,9 +954,9 @@ Print the shape of the loaded dataframes and use the &lt;a href="https://pandas.
 &lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org7f50c98" class="outline-3"&gt;
-&lt;h3 id="org7f50c98"&gt;shops&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org7f50c98"&gt;
+&lt;div id="outline-container-org241315c" class="outline-3"&gt;
+&lt;h3 id="org241315c"&gt;shops&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org241315c"&gt;
 &lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
 
 
@@ -948,9 +1000,9 @@ Print the shape of the loaded dataframes and use the &lt;a href="https://pandas.
 &lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgee22b0b" class="outline-3"&gt;
-&lt;h3 id="orgee22b0b"&gt;transactions&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgee22b0b"&gt;
+&lt;div id="outline-container-org4b9e745" class="outline-3"&gt;
+&lt;h3 id="org4b9e745"&gt;transactions&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org4b9e745"&gt;
 &lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
 
 
@@ -1026,9 +1078,9 @@ Print the shape of the loaded dataframes and use the &lt;a href="https://pandas.
 &lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orge979bf5" class="outline-3"&gt;
-&lt;h3 id="orge979bf5"&gt;items&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orge979bf5"&gt;
+&lt;div id="outline-container-org6b2ef04" class="outline-3"&gt;
+&lt;h3 id="org6b2ef04"&gt;items&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org6b2ef04"&gt;
 &lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
 
 
@@ -1080,9 +1132,9 @@ Print the shape of the loaded dataframes and use the &lt;a href="https://pandas.
 &lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgd4d9701" class="outline-3"&gt;
-&lt;h3 id="orgd4d9701"&gt;item_categories&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgd4d9701"&gt;
+&lt;div id="outline-container-org127d494" class="outline-3"&gt;
+&lt;h3 id="org127d494"&gt;item_categories&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org127d494"&gt;
 &lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
 
 
@@ -1126,9 +1178,9 @@ Print the shape of the loaded dataframes and use the &lt;a href="https://pandas.
 &lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org8e93599" class="outline-3"&gt;
-&lt;h3 id="org8e93599"&gt;shops&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org8e93599"&gt;
+&lt;div id="outline-container-org45c06aa" class="outline-3"&gt;
+&lt;h3 id="org45c06aa"&gt;shops&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org45c06aa"&gt;
 &lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
 
 
@@ -1178,13 +1230,13 @@ Unexpectedly, the names are all in &lt;a href="https://en.wikipedia.org/wiki/Cyr
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org1625922" class="outline-2"&gt;
-&lt;h2 id="org1625922"&gt;Questions&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org1625922"&gt;
+&lt;div id="outline-container-org1318c8a" class="outline-2"&gt;
+&lt;h2 id="org1318c8a"&gt;Questions&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org1318c8a"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org3a99d0d" class="outline-3"&gt;
-&lt;h3 id="org3a99d0d"&gt;Question 1: &lt;b&gt;What was the maximum total revenue among all the shops in September, 2014?&lt;/b&gt;&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org3a99d0d"&gt;
+&lt;div id="outline-container-orgc246cb1" class="outline-3"&gt;
+&lt;h3 id="orgc246cb1"&gt;Question 1: &lt;b&gt;What was the maximum total revenue among all the shops in September, 2014?&lt;/b&gt;&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgc246cb1"&gt;
 &lt;p&gt;
 From here on out &lt;b&gt;revenue&lt;/b&gt; refers to total sales minus value of goods returned.
 &lt;/p&gt;
@@ -1192,25 +1244,22 @@ From here on out &lt;b&gt;revenue&lt;/b&gt; refers to total sales minus value of
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;Sometimes items are returned, find such examples in the dataset.&lt;/li&gt;
 &lt;li&gt;It is handy to split `date` field into [`day`, `month`, `year`] components and use ` df.year &lt;code&gt;= 14` and `df.month =&lt;/code&gt; 9` in order to select target subset of dates.&lt;/li&gt;
-&lt;li&gt;You may work with `date` feature as with srings, or you may first convert it to ` pd.datetime` type with `pd.to_datetime` function, but do not forget to set correct ` ormat` argument.&lt;/li&gt;
+&lt;li&gt;You may work with `date` feature as with srings, or you may first convert it to ` pd.datetime` type with `pd.to_datetime` function, but do not forget to set correct &lt;code&gt;format&lt;/code&gt; argument.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org48bd573" class="outline-4"&gt;
-&lt;h4 id="org48bd573"&gt;Answer&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org48bd573"&gt;
+&lt;div id="outline-container-orgcddbce7" class="outline-4"&gt;
+&lt;h4 id="orgcddbce7"&gt;Answer&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-orgcddbce7"&gt;
 &lt;/div&gt;
 &lt;ul class="org-ul"&gt;
-&lt;li&gt;&lt;a id="org51028b1"&gt;&lt;/a&gt;Sales Per Item&lt;br&gt;
-&lt;div class="outline-text-5" id="text-org51028b1"&gt;
+&lt;li&gt;&lt;a id="org95e1583"&gt;&lt;/a&gt;Sales Per Item&lt;br&gt;
+&lt;div class="outline-text-5" id="text-org95e1583"&gt;
 &lt;p&gt;
-First I'll add a column with the total revenue for each item (the price times the number sold).
+First I'll add a column with the total revenue for each item (the \(price \times \textit{number sold}\)).
 &lt;/p&gt;
 
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;transactions&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;"item_revenue"&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;transactions&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;item_price&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;transactions&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;item_cnt_day&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;tabulate&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;transactions&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;describe&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt; &lt;span class="n"&gt;tablefmt&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;'orgtbl'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;headers&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"keys"&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
@@ -1328,10 +1377,10 @@ First I'll add a column with the total revenue for each item (the price times th
 &lt;/li&gt;
 
 
-&lt;li&gt;&lt;a id="org4da439a"&gt;&lt;/a&gt;Filter Out the Month&lt;br&gt;
-&lt;div class="outline-text-5" id="text-org4da439a"&gt;
+&lt;li&gt;&lt;a id="org87611be"&gt;&lt;/a&gt;Filter Out the Month&lt;br&gt;
+&lt;div class="outline-text-5" id="text-org87611be"&gt;
 &lt;p&gt;
-I was originally filtering using a regular expression, but the other questions use date-filtering too so I decided to create the extra day, month, and year columns once to avoid the extra regular expression overhead later on.
+I was originally filtering using a regular expression, but the other questions use date-filtering too so I decided to create the extra day, month, and year columns once to avoid the extra regular expression overhead later on. The &lt;a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.Series.str.extract.html"&gt;&lt;code&gt;str.extract&lt;/code&gt;&lt;/a&gt; method uses python regular expression groups to pull out values and create columns in a DataFrame. If you use named expressions (as I do here) then it will use the names as the column-names in the dataframe.
 &lt;/p&gt;
 
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Dates&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
@@ -1398,7 +1447,7 @@ I was originally filtering using a regular expression, but the other questions u
 &lt;/table&gt;
 
 &lt;p&gt;
-Now we can smash our new data frame to the transactions using the &lt;a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.concat.html"&gt;concat&lt;/a&gt; function. By default it will try to add the rows from the second data frame to the rows of the first, but since we're adding new columns we need to pass in the &lt;code&gt;axis='columns'&lt;/code&gt; argument.
+Now we can smash our new data frame onto the transactions using the &lt;a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.concat.html"&gt;concat&lt;/a&gt; function. by default it will try to add the rows from the second data frame to the rows of the first, but since we're adding new columns we need to pass in the &lt;code&gt;axis='columns'&lt;/code&gt; argument.
 &lt;/p&gt;
 
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;transactions&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pandas&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;concat&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;transactions&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;dates&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;axis&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;'columns'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
@@ -1514,14 +1563,14 @@ Now we can smash our new data frame to the transactions using the &lt;a href="ht
 &lt;/table&gt;
 
 &lt;p&gt;
-First, as a sanity check, we'll make sure that all the date cells have values.
+first, as a sanity check, we'll make sure that all the date cells have values.
 &lt;/p&gt;
 
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;assert&lt;/span&gt; &lt;span class="ow"&gt;not&lt;/span&gt; &lt;span class="n"&gt;transactions&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;date&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;hasnans&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;
-Now let's filter on the date-expression we created for september. The next problem also uses 2014 so save that as a separate sub-set.
+now let's filter on the date-expression we created for september. the next &lt;i&gt;Question&lt;/i&gt; also uses 2014 so I'll preserve that as a separate sub-set.
 &lt;/p&gt;
 
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;twenty_fourteen&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;transactions&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;transactions&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;year&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;isin&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="s2"&gt;"2014"&lt;/span&gt;&lt;span class="p"&gt;])]&lt;/span&gt;
@@ -1696,9 +1745,9 @@ Highest Revenue Earned by a shop in September of 2014: $ 7,982,852.20
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org85d212d" class="outline-3"&gt;
-&lt;h3 id="org85d212d"&gt;Question 2: What item category generated the highest revenue in the Summer of 2014?&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org85d212d"&gt;
+&lt;div id="outline-container-org5d97b43" class="outline-3"&gt;
+&lt;h3 id="org5d97b43"&gt;Question 2: What item category generated the highest revenue in the Summer of 2014?&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org5d97b43"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;Submit the &lt;code&gt;id&lt;/code&gt; of the category found.&lt;/li&gt;
 &lt;li&gt;Here we call "summer" the period from June to August.&lt;/li&gt;
@@ -1712,9 +1761,12 @@ Highest Revenue Earned by a shop in September of 2014: $ 7,982,852.20
 Note, that for an object `x` of type `pd.Series`: `x.argmax()` returns &lt;b&gt;&lt;b&gt;index&lt;/b&gt;&lt;/b&gt; of the maximum element. `pd.Series` can have non-trivial index (not `[1, 2, 3, … ]`).
 &lt;/p&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orge96481a" class="outline-4"&gt;
-&lt;h4 id="orge96481a"&gt;Get the Summer months&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-orge96481a"&gt;
+&lt;div id="outline-container-orgeb477f7" class="outline-4"&gt;
+&lt;h4 id="orgeb477f7"&gt;Get the Summer months&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-orgeb477f7"&gt;
+&lt;p&gt;
+To filter what we want I'll use the &lt;a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.isin.html"&gt;&lt;code&gt;isin&lt;/code&gt;&lt;/a&gt; method to remove every row that has a value that isn't in &lt;code&gt;Dates.summer&lt;/code&gt;.
+&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;summer&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;twenty_fourteen&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;twenty_fourteen&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;month&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;isin&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Dates&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;summer&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -1847,9 +1899,9 @@ Note, that for an object `x` of type `pd.Series`: `x.argmax()` returns &lt;b&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org64149b1" class="outline-4"&gt;
-&lt;h4 id="org64149b1"&gt;Map in the Category IDs&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org64149b1"&gt;
+&lt;div id="outline-container-org70fe88f" class="outline-4"&gt;
+&lt;h4 id="org70fe88f"&gt;Map in the Category IDs&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org70fe88f"&gt;
 &lt;p&gt;
 If you look at &lt;code&gt;items.item_id&lt;/code&gt; you can see that the id's are really just the numerical index to the &lt;code&gt;items.item_category_id&lt;/code&gt; series. I was originally add the category ids for all the transactions but it takes a long time so I'm just adding it to this group.
 &lt;/p&gt;
@@ -2018,9 +2070,9 @@ Category Id with the Maximum Value: 20
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgd419075" class="outline-3"&gt;
-&lt;h3 id="orgd419075"&gt;Question 3: Constant Prices&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgd419075"&gt;
+&lt;div id="outline-container-orgd5edac8" class="outline-3"&gt;
+&lt;h3 id="orgd5edac8"&gt;Question 3: Constant Prices&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgd5edac8"&gt;
 &lt;p&gt;
 How many items are there, such that their price stays constant (to the best of our knowledge) during the whole period of time?
 &lt;/p&gt;
@@ -2031,9 +2083,9 @@ Let's assume, that the items are returned for the same price as they had been so
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgfd8592b" class="outline-3"&gt;
-&lt;h3 id="orgfd8592b"&gt;Isolate the ID and Price&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgfd8592b"&gt;
+&lt;div id="outline-container-org95c86e0" class="outline-3"&gt;
+&lt;h3 id="org95c86e0"&gt;Isolate the ID and Price&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org95c86e0"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;id_price&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;transactions&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;loc&lt;/span&gt;&lt;span class="p"&gt;[:,&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;"item_id"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;"item_price"&lt;/span&gt;&lt;span class="p"&gt;]]&lt;/span&gt;
 &lt;span class="n"&gt;id_price&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;"item_price"&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;id_price&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;item_price&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;abs&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;span class="n"&gt;group&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;id_price&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;groupby&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"item_id"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
@@ -2042,6 +2094,7 @@ Let's assume, that the items are returned for the same price as they had been so
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;counts&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;group&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;item_price&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;nunique&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 
 &lt;span class="n"&gt;constant_prices&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="n"&gt;index&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;index&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;counts&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;index&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;counts&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;loc&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;index&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+&lt;span class="k"&gt;assert&lt;/span&gt; &lt;span class="n"&gt;constant_prices&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;Confirmed&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;number_of_items_whose_price_didnt_change&lt;/span&gt;
 &lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;constant_prices&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -2057,14 +2110,13 @@ Number of items whose price didn't change: 5926
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;
 
-&lt;div id="outline-container-orgf5b5b19" class="outline-2"&gt;
-&lt;h2 id="orgf5b5b19"&gt;Question 4&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgf5b5b19"&gt;
+&lt;div id="outline-container-orga7727b4" class="outline-3"&gt;
+&lt;h3 id="orga7727b4"&gt;Question 4&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orga7727b4"&gt;
 &lt;p&gt;
 Remember, the data can sometimes be noisy.
-What was the variance of the number of sold items per day sequence for the shop with &lt;code&gt;shop_id = 25&lt;/code&gt; in December, 2014? Do not count the items, that were sold but returned back later.
+&lt;i&gt;What was the variance of the number of sold items per day sequence for the shop with &lt;code&gt;shop_id = 25&lt;/code&gt; in December, 2014?&lt;/i&gt; Do not count the items, that were sold but returned back later.
 &lt;/p&gt;
 
 &lt;ul class="org-ul"&gt;
@@ -2075,10 +2127,11 @@ What was the variance of the number of sold items per day sequence for the shop 
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;shop_id&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;25&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;
 
-&lt;div id="outline-container-org0a71b37" class="outline-3"&gt;
-&lt;h3 id="org0a71b37"&gt;Filter to the Shop and Dates&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org0a71b37"&gt;
+&lt;div id="outline-container-org07d21d1" class="outline-3"&gt;
+&lt;h3 id="org07d21d1"&gt;Filter to the Shop and Dates&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org07d21d1"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;twenty_fives&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;twenty_fourteen&lt;/span&gt;&lt;span class="p"&gt;[(&lt;/span&gt;&lt;span class="n"&gt;transactions&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shop_id&lt;/span&gt;&lt;span class="o"&gt;==&lt;/span&gt;&lt;span class="n"&gt;shop_id&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 				&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;transactions&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;month&lt;/span&gt;&lt;span class="o"&gt;==&lt;/span&gt;&lt;span class="n"&gt;Dates&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;december&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt;
 &lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;tabulate&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;twenty_fives&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;head&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt; &lt;span class="n"&gt;headers&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;'keys'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;tablefmt&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;'orgtbl'&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
@@ -2203,9 +2256,9 @@ What was the variance of the number of sold items per day sequence for the shop 
 
 
 
-&lt;div id="outline-container-org752005c" class="outline-3"&gt;
-&lt;h3 id="org752005c"&gt;Group by date&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org752005c"&gt;
+&lt;div id="outline-container-orgd5e1076" class="outline-3"&gt;
+&lt;h3 id="orgd5e1076"&gt;Group by date&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgd5e1076"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;shop_grouped&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;twenty_fives&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;groupby&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"date"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;count_per_day&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;shop_grouped&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;item_cnt_day&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sum&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;count_per_day&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;head&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;
@@ -2224,9 +2277,9 @@ Name: item_cnt_day, dtype: float64
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orga6c07a0" class="outline-3"&gt;
-&lt;h3 id="orga6c07a0"&gt;Add a date-time to make it sortable for print&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orga6c07a0"&gt;
+&lt;div id="outline-container-org2a80756" class="outline-3"&gt;
+&lt;h3 id="org2a80756"&gt;Add a date-time to make it sortable for print&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org2a80756"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;pandas&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;mode&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;chained_assignment&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;None&lt;/span&gt;
 &lt;span class="n"&gt;count_per_day&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;index&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pandas&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;to_datetime&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;count_per_day&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;index&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="si"&gt;%d&lt;/span&gt;&lt;span class="s2"&gt;.%m.%Y"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;count_per_day&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;head&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;

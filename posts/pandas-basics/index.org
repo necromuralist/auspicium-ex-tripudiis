@@ -1,5 +1,5 @@
 #+BEGIN_COMMENT
-.. title: Pandas Basics
+.. title: Revisiting Pandas (Yet Again)
 .. slug: pandas-basics
 .. date: 2018-08-05 12:56:23 UTC-07:00
 .. tags: pandas basics
@@ -10,17 +10,32 @@
 #+END_COMMENT
 #+OPTIONS: ^:{}
 
+#+TOC: headlines 1
+
 * Description
 
 This is a review of Pandas' Basics with an emphasis on using [[https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.groupby.html][groupby]].
 
+* Pandas Functions and Methods Used
+  - [[https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.describe.html][=describe=]]
+  - [[https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.groupby.html][=groupby=]]
+  - [[https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.head.html][=head=]]
+  - [[https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.idxmax.html][=idxmax=]]
+  - [[https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.isin.html][=isin=]]
+  - [[https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.loc.html][=loc=]]
+  - [[https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.var.html][=var=]]
+  - [[https://pandas.pydata.org/pandas-docs/stable/generated/pandas.Series.abs.html][=abs=]]
+  - [[https://pandas.pydata.org/pandas-docs/stable/generated/pandas.Series.nunique.html][=nunique=]]
+  - [[https://pandas.pydata.org/pandas-docs/stable/generated/pandas.Series.str.extract.html][=str.extract=]] 
+  - [[https://pandas.pydata.org/pandas-docs/stable/generated/pandas.concat.html][=concat=]]
+  - [[https://pandas.pydata.org/pandas-docs/stable/generated/pandas.core.groupby.DataFrameGroupBy.agg.html][=agg=]]
+  - [[https://pandas.pydata.org/pandas-docs/stable/generated/pandas.read_csv.html][=read_csv=]]
 * Imports
-  This first block is necessary for the code.
+  Here's our dependencies.
+
 #+BEGIN_SRC python :session basics :results none
-# pandas standard library
+# python standard library
 import os
-import re
-from collections import defaultdict
 
 # from pypi
 import pandas
@@ -34,15 +49,21 @@ from tabulate import tabulate
 #+BEGIN_SRC python :session basics :results none
 get_python().run_line_magic('matplotlib', 'inline')
 #+END_SRC
+* Confirmed
+  These are values that we know to be correct so you can use them to check the outcomes.
 
 #+BEGIN_SRC python :session basics :results none
 class Confirmed:
     """This holds confirmed values"""
     september_max_revenue = 7982852.199999956
     september_max_category_id = 20
+    number_of_items_whose_price_didnt_change = 5926
+    variance_per_day = 117167.70229885059
 #+END_SRC
 
 * The Data
+  We have four data-sets to load, all of them in csv format, although the file with all the transactions is compressed.
+
 #+BEGIN_SRC python :session basics :results none
 DATA_FOLDER = '../readonly/final_project_data/'
 #+END_SRC
@@ -58,6 +79,8 @@ shops           = pandas.read_csv(os.path.join(DATA_FOLDER,
                                                'shops.csv'))
 #+END_SRC
 
+The =frames= dictionary is just a convenience thing to make printing the descriptive tables below a little easier.
+
 #+BEGIN_SRC python :session basics :results none
 frames = dict(transactions=transactions,
               items=items,
@@ -67,10 +90,10 @@ frames = dict(transactions=transactions,
 
 * Data Description
 
-The dataset we loaded is taken from a kaggle competititon. You can find complete data description at the [[https://www.kaggle.com/c/competitive-data-science-final-project/data][competition web page]]. To join the competition use [[https://www.kaggle.com/t/1ea93815dca248e99221df42ebde3540][this link]].
+The dataset we loaded is taken from a kaggle competititon. You can find complete data description at the [[https://www.kaggle.com/c/competitive-data-science-final-project/data][competition web page]]. To join the competition use [[https://www.kaggle.com/t/1ea93815dca248e99221df42ebde3540][this link]]. The descriptions below cover all the files, not just the ones we use here.
 
 #+BEGIN_QUOTE
-You are provided with daily historical sales data. The task is to forecast the total amount of products sold in every shop for the test set. Note that the list of shops and products slightly changes every month. Creating a robust model that can handle such situations is part of the challenge.
+You are provided with daily historical sales data from what appears to be a software retailer, although that isn't explicitly stated. The task is to forecast the total amount of products sold in every shop for the test set. Note that the list of shops and products changes slightly every month. Creating a robust model that can handle such situations is part of the challenge.
 #+END_QUOTE
 
 ** File descriptions
@@ -100,10 +123,9 @@ You are provided with daily historical sales data. The task is to forecast the t
 | shop_name          | name of shop                                                                                                    |
 | item_category_name | name of item category                                                                                           |
 
-* The First Problem
+* A Warm Up
 
 Let's start with a simple task. 
-
 
 Print the shape of the loaded dataframes and use the [[https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.head.html][=df.head=]] function to print several rows. Examine the features you are given.
 
@@ -269,18 +291,18 @@ From here on out *revenue* refers to total sales minus value of goods returned.
 
    - Sometimes items are returned, find such examples in the dataset. 
    - It is handy to split `date` field into [`day`, `month`, `year`] components and use ` df.year == 14` and `df.month == 9` in order to select target subset of dates.
-   - You may work with `date` feature as with srings, or you may first convert it to ` pd.datetime` type with `pd.to_datetime` function, but do not forget to set correct ` ormat` argument.
+   - You may work with `date` feature as with srings, or you may first convert it to ` pd.datetime` type with `pd.to_datetime` function, but do not forget to set correct =format= argument.
 
 *** Answer
 **** Sales Per Item
 
-First I'll add a column with the total revenue for each item (the price times the number sold).
+First I'll add a column with the total revenue for each item (the \(price \times \textit{number sold}\)).
 
 #+BEGIN_SRC python :session basics :results none
 transactions["item_revenue"] = transactions.item_price * transactions.item_cnt_day
 #+END_SRC
 
-#+BEGIN_SRC python :session basics :results output raw :exports both
+#+BEGIN_SRC python :session basics :results output raw :exports results
 print(tabulate(transactions.describe(), tablefmt='orgtbl', headers="keys"))
 #+END_SRC
 
@@ -298,7 +320,7 @@ print(tabulate(transactions.describe(), tablefmt='orgtbl', headers="keys"))
 
 
 **** Filter Out the Month
-     I was originally filtering using a regular expression, but the other questions use date-filtering too so I decided to create the extra day, month, and year columns once to avoid the extra regular expression overhead later on.
+     I was originally filtering using a regular expression, but the other questions use date-filtering too so I decided to create the extra day, month, and year columns once to avoid the extra regular expression overhead later on. The [[https://pandas.pydata.org/pandas-docs/stable/generated/pandas.Series.str.extract.html][=str.extract=]] method uses python regular expression groups to pull out values and create columns in a DataFrame. If you use named expressions (as I do here) then it will use the names as the column-names in the dataframe.
 
 #+BEGIN_SRC python :session basics :results none
 class Dates:
@@ -325,17 +347,17 @@ print(tabulate(dates.head(), headers="keys", showindex='never', tablefmt='orgtbl
 |  06 |    01 | 2013 |
 |  15 |    01 | 2013 |
 
-Now we can smash our new data frame to the transactions using the [[https://pandas.pydata.org/pandas-docs/stable/generated/pandas.concat.html][concat]] function. By default it will try to add the rows from the second data frame to the rows of the first, but since we're adding new columns we need to pass in the ~axis='columns'~ argument.
+Now we can smash our new data frame onto the transactions using the [[https://pandas.pydata.org/pandas-docs/stable/generated/pandas.concat.html][concat]] function. by default it will try to add the rows from the second data frame to the rows of the first, but since we're adding new columns we need to pass in the ~axis='columns'~ argument.
 
-#+BEGIN_SRC python :session basics :results none
+#+begin_src python :session basics :results none
 transactions = pandas.concat((transactions, dates), axis='columns')
-#+END_SRC
+#+end_src
 
-#+BEGIN_SRC python :session basics :results output raw :exports both
+#+begin_src python :session basics :results output raw :exports both
 print(tabulate(transactions.head(), headers="keys", tablefmt="orgtbl", showindex="never"))
-#+END_SRC
+#+end_src
 
-#+RESULTS:
+#+results:
 |       date | date_block_num | shop_id | item_id | item_price | item_cnt_day | item_revenue | day | month | year |
 |------------+----------------+---------+---------+------------+--------------+--------------+-----+-------+------|
 | 02.01.2013 |              0 |      59 |   22154 |        999 |            1 |          999 |  02 |    01 | 2013 |
@@ -344,13 +366,13 @@ print(tabulate(transactions.head(), headers="keys", tablefmt="orgtbl", showindex
 | 06.01.2013 |              0 |      25 |    2554 |    1709.05 |            1 |      1709.05 |  06 |    01 | 2013 |
 | 15.01.2013 |              0 |      25 |    2555 |       1099 |            1 |         1099 |  15 |    01 | 2013 |
 
-First, as a sanity check, we'll make sure that all the date cells have values.
+first, as a sanity check, we'll make sure that all the date cells have values.
 
-#+BEGIN_SRC python :session basics :results none
+#+begin_src python :session basics :results none
 assert not transactions.date.hasnans
-#+END_SRC
+#+end_src
 
-Now let's filter on the date-expression we created for september. The next problem also uses 2014 so save that as a separate sub-set.
+now let's filter on the date-expression we created for september. the next /Question/ also uses 2014 so I'll preserve that as a separate sub-set.
 
 #+BEGIN_SRC python :session basics :results none
 twenty_fourteen = transactions[transactions.year.isin(["2014"])]
@@ -422,6 +444,7 @@ Highest Revenue Earned by a shop in September of 2014: $ 7,982,852.20
 
 Note, that for an object `x` of type `pd.Series`: `x.argmax()` returns **index** of the maximum element. `pd.Series` can have non-trivial index (not `[1, 2, 3, ... ]`).
 *** Get the Summer months
+    To filter what we want I'll use the [[https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.isin.html][=isin=]] method to remove every row that has a value that isn't in =Dates.summer=.
 #+BEGIN_SRC python :session basics :results none
 summer = twenty_fourteen[twenty_fourteen.month.isin(Dates.summer)]
 #+END_SRC
@@ -510,6 +533,7 @@ group = id_price.groupby("item_id")
 counts = group.item_price.nunique()
 
 constant_prices = len([index for index in counts.index if counts.loc[index] == 1])
+assert constant_prices == Confirmed.number_of_items_whose_price_didnt_change
 print(constant_prices)
 #+END_SRC  
 
@@ -523,9 +547,9 @@ print("Number of items whose price didn't change: {}".format(constant_prices))
 #+RESULTS:
 Number of items whose price didn't change: 5926
 
-* Question 4
+** Question 4
 Remember, the data can sometimes be noisy.
-What was the variance of the number of sold items per day sequence for the shop with ~shop_id = 25~ in December, 2014? Do not count the items, that were sold but returned back later.
+/What was the variance of the number of sold items per day sequence for the shop with ~shop_id = 25~ in December, 2014?/ Do not count the items, that were sold but returned back later.
 
  - Fill =total_num_items_sold= and =days= arrays, and plot the sequence with the code below.
  - Then compute variance. Remember, there can be differences in how you normalize variance (biased or unbiased estimate, see [[https://math.stackexchange.com/questions/496627/the-difference-between-unbiased-biased-estimator-variance][this Stack Overflow post]]). Compute the ***unbiased*** estimate (use the right value for =ddof= argument in =pd.var= or =np.var=). 
