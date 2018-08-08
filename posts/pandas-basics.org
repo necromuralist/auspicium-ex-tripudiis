@@ -12,38 +12,42 @@
 
 * Description
 
-This is a chance to refresh your *pandas* knowledge. You will need to do several [[https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.groupby.html][=groupby=]]s and [[https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.join.html][=join=]]`s to solve the task. 
+This is a review of Pandas' Basics with an emphasis on using [[https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.groupby.html][groupby]].
 
 * Imports
   This first block is necessary for the code.
-#+BEGIN_SRC ipython :session basics :results none
+#+BEGIN_SRC python :session basics :results none
 # pandas standard library
 import os
 import re
+from collections import defaultdict
 
 # from pypi
 import pandas
 import numpy
-import matplotlib.pyplot as plt
+import matplotlib.pyplot as pyplot
+import seaborn
 
 from tabulate import tabulate
 #+END_SRC
 
-#+BEGIN_SRC ipython :session basics :results none
-get_ipython().run_line_magic('matplotlib', 'inline')
+#+BEGIN_SRC python :session basics :results none
+get_python().run_line_magic('matplotlib', 'inline')
 #+END_SRC
 
- This next block is only relevant on Coursera's server.
-#+BEGIN_SRC ipython :session basics :results none
-from grader import Grader
+#+BEGIN_SRC python :session basics :results none
+class Confirmed:
+    """This holds confirmed values"""
+    september_max_revenue = 7982852.199999956
+    september_max_category_id = 20
 #+END_SRC
 
 * The Data
-#+BEGIN_SRC ipython :session basics :results none
+#+BEGIN_SRC python :session basics :results none
 DATA_FOLDER = '../readonly/final_project_data/'
 #+END_SRC
 
-#+BEGIN_SRC ipython :session basics :results none
+#+BEGIN_SRC python :session basics :results none
 transactions    = pandas.read_csv(os.path.join(DATA_FOLDER,
                                                'sales_train.csv.gz'))
 items           = pandas.read_csv(os.path.join(DATA_FOLDER,
@@ -54,7 +58,7 @@ shops           = pandas.read_csv(os.path.join(DATA_FOLDER,
                                                'shops.csv'))
 #+END_SRC
 
-#+BEGIN_SRC ipython :session basics :results none
+#+BEGIN_SRC python :session basics :results none
 frames = dict(transactions=transactions,
               items=items,
               item_categories=item_categories,
@@ -96,7 +100,6 @@ You are provided with daily historical sales data. The task is to forecast the t
 | shop_name          | name of shop                                                                                                    |
 | item_category_name | name of item category                                                                                           |
 
-
 * The First Problem
 
 Let's start with a simple task. 
@@ -104,7 +107,7 @@ Let's start with a simple task.
 
 Print the shape of the loaded dataframes and use the [[https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.head.html][=df.head=]] function to print several rows. Examine the features you are given.
 
-#+BEGIN_SRC ipython :session basics :results output raw :exports both
+#+BEGIN_SRC python :session basics :results output :exports both
 print("| DataFrame | Rows| Columns|")
 print("|-+-+-|")
 for name, frame in frames.items():
@@ -120,7 +123,7 @@ for name, frame in frames.items():
 | item_categories |      84 |       2 |
 | shops           |      60 |       2 |
 
-#+BEGIN_SRC ipython :session basics :results output raw :exports both
+#+BEGIN_SRC python :session basics :results output :exports both
 for name, frame in frames.items():
     print("** {}".format(name))
     head = frame.head()
@@ -128,6 +131,38 @@ for name, frame in frames.items():
 #+END_SRC
 
 #+RESULTS:
+** transactions
+| date       |   date_block_num |   shop_id |   item_id |   item_price |   item_cnt_day |
+|------------+------------------+-----------+-----------+--------------+----------------|
+| 02.01.2013 |                0 |        59 |     22154 |       999    |              1 |
+| 03.01.2013 |                0 |        25 |      2552 |       899    |              1 |
+| 05.01.2013 |                0 |        25 |      2552 |       899    |             -1 |
+| 06.01.2013 |                0 |        25 |      2554 |      1709.05 |              1 |
+| 15.01.2013 |                0 |        25 |      2555 |      1099    |              1 |
+** items
+| item_name                                                            |   item_id |   item_category_id |
+|----------------------------------------------------------------------+-----------+--------------------|
+| ! ВО ВЛАСТИ НАВАЖДЕНИЯ (ПЛАСТ.)         D                            |         0 |                 40 |
+| !ABBYY FineReader 12 Professional Edition Full [PC, Цифровая версия] |         1 |                 76 |
+| ***В ЛУЧАХ СЛАВЫ   (UNV)                    D                        |         2 |                 40 |
+| ***ГОЛУБАЯ ВОЛНА  (Univ)                      D                      |         3 |                 40 |
+| ***КОРОБКА (СТЕКЛО)                       D                          |         4 |                 40 |
+** item_categories
+| item_category_name      |   item_category_id |
+|-------------------------+--------------------|
+| PC - Гарнитуры/Наушники |                  0 |
+| Аксессуары - PS2        |                  1 |
+| Аксессуары - PS3        |                  2 |
+| Аксессуары - PS4        |                  3 |
+| Аксессуары - PSP        |                  4 |
+** shops
+| shop_name                      |   shop_id |
+|--------------------------------+-----------|
+| !Якутск Орджоникидзе, 56 фран  |         0 |
+| !Якутск ТЦ "Центральный" фран  |         1 |
+| Адыгея ТЦ "Мега"               |         2 |
+| Балашиха ТРК "Октябрь-Киномир" |         3 |
+| Волжский ТЦ "Волга Молл"       |         4 |
 ** transactions
 | date       |   date_block_num |   shop_id |   item_id |   item_price |   item_cnt_day |
 |------------+------------------+-----------+-----------+--------------+----------------|
@@ -241,125 +276,108 @@ From here on out *revenue* refers to total sales minus value of goods returned.
 
 First I'll add a column with the total revenue for each item (the price times the number sold).
 
-#+BEGIN_SRC ipython :session basics :results none
+#+BEGIN_SRC python :session basics :results none
 transactions["item_revenue"] = transactions.item_price * transactions.item_cnt_day
 #+END_SRC
 
-#+BEGIN_SRC ipython :session basics :results output raw :exports both
-print(transactions.describe())
+#+BEGIN_SRC python :session basics :results output raw :exports both
+print(tabulate(transactions.describe(), tablefmt='orgtbl', headers="keys"))
 #+END_SRC
 
 #+RESULTS:
-       date_block_num       shop_id       item_id    item_price  item_cnt_day  \
-count    2.935849e+06  2.935849e+06  2.935849e+06  2.935849e+06  2.935849e+06   
-mean     1.456991e+01  3.300173e+01  1.019723e+04  8.908532e+02  1.242641e+00   
-std      9.422988e+00  1.622697e+01  6.324297e+03  1.729800e+03  2.618834e+00   
-min      0.000000e+00  0.000000e+00  0.000000e+00 -1.000000e+00 -2.200000e+01   
-25%      7.000000e+00  2.200000e+01  4.476000e+03  2.490000e+02  1.000000e+00   
-50%      1.400000e+01  3.100000e+01  9.343000e+03  3.990000e+02  1.000000e+00   
-75%      2.300000e+01  4.700000e+01  1.568400e+04  9.990000e+02  1.000000e+00   
-max      3.300000e+01  5.900000e+01  2.216900e+04  3.079800e+05  2.169000e+03   
+|       | date_block_num |     shop_id |     item_id |  item_price | item_cnt_day | item_revenue |
+|-------+----------------+-------------+-------------+-------------+--------------+--------------|
+| count |    2.93585e+06 | 2.93585e+06 | 2.93585e+06 | 2.93585e+06 |  2.93585e+06 |  2.93585e+06 |
+| mean  |        14.5699 |     33.0017 |     10197.2 |     890.853 |      1.24264 |      1157.73 |
+| std   |        9.42299 |      16.227 |      6324.3 |      1729.8 |      2.61883 |       5683.6 |
+| min   |              0 |           0 |           0 |          -1 |          -22 |       -68970 |
+| 25%   |              7 |          22 |        4476 |         249 |            1 |          249 |
+| 50%   |             14 |          31 |        9343 |         399 |            1 |          449 |
+| 75%   |             23 |          47 |       15684 |         999 |            1 |       1078.2 |
+| max   |             33 |          59 |       22169 |      307980 |         2169 |  1.82999e+06 |
 
-       item_revenue  
-count  2.935849e+06  
-mean   1.157732e+03  
-std    5.683604e+03  
-min   -6.897000e+04  
-25%    2.490000e+02  
-50%    4.490000e+02  
-75%    1.078200e+03  
-max    1.829990e+06  
 
 **** Filter Out the Month
      I was originally filtering using a regular expression, but the other questions use date-filtering too so I decided to create the extra day, month, and year columns once to avoid the extra regular expression overhead later on.
 
-#+BEGIN_SRC ipython :session basics :results none
+#+BEGIN_SRC python :session basics :results none
 class Dates:
     date_expression = r'(?P<day>\d{2})\.(?P<month>\d{2})\.(?P<year>\d{4})'
     september = '09'
+    december = '12'
     summer = ['06', '07', '08']
 #+END_SRC
 
-#+BEGIN_SRC ipython :session basics :results output raw :exports both
+#+BEGIN_SRC python :session basics :results none
 dates = transactions.date.str.extract(Dates.date_expression)
-print(dates.head())
+#+END_SRC
+
+#+BEGIN_SRC python :session basics :results output raw :exports both
+print(tabulate(dates.head(), headers="keys", showindex='never', tablefmt='orgtbl'))
 #+END_SRC
 
 #+RESULTS:
-  day month  year
-0  02    01  2013
-1  03    01  2013
-2  05    01  2013
-3  06    01  2013
-4  15    01  2013
-  day month  year
-0  02    01  2013
-1  03    01  2013
-2  05    01  2013
-3  06    01  2013
-4  15    01  2013
+| day | month | year |
+|-----+-------+------|
+|  02 |    01 | 2013 |
+|  03 |    01 | 2013 |
+|  05 |    01 | 2013 |
+|  06 |    01 | 2013 |
+|  15 |    01 | 2013 |
 
 Now we can smash our new data frame to the transactions using the [[https://pandas.pydata.org/pandas-docs/stable/generated/pandas.concat.html][concat]] function. By default it will try to add the rows from the second data frame to the rows of the first, but since we're adding new columns we need to pass in the ~axis='columns'~ argument.
 
-#+BEGIN_SRC ipython :session basics :results output raw :exports both
+#+BEGIN_SRC python :session basics :results none
 transactions = pandas.concat((transactions, dates), axis='columns')
-print(transactions.head())
+#+END_SRC
+
+#+BEGIN_SRC python :session basics :results output raw :exports both
+print(tabulate(transactions.head(), headers="keys", tablefmt="orgtbl", showindex="never"))
 #+END_SRC
 
 #+RESULTS:
-         date  date_block_num  shop_id  item_id  item_price  item_cnt_day  \
-0  02.01.2013               0       59    22154      999.00           1.0   
-1  03.01.2013               0       25     2552      899.00           1.0   
-2  05.01.2013               0       25     2552      899.00          -1.0   
-3  06.01.2013               0       25     2554     1709.05           1.0   
-4  15.01.2013               0       25     2555     1099.00           1.0   
-
-   item_revenue day month  year  
-0        999.00  02    01  2013  
-1        899.00  03    01  2013  
-2       -899.00  05    01  2013  
-3       1709.05  06    01  2013  
-4       1099.00  15    01  2013  
+|       date | date_block_num | shop_id | item_id | item_price | item_cnt_day | item_revenue | day | month | year |
+|------------+----------------+---------+---------+------------+--------------+--------------+-----+-------+------|
+| 02.01.2013 |              0 |      59 |   22154 |        999 |            1 |          999 |  02 |    01 | 2013 |
+| 03.01.2013 |              0 |      25 |    2552 |        899 |            1 |          899 |  03 |    01 | 2013 |
+| 05.01.2013 |              0 |      25 |    2552 |        899 |           -1 |         -899 |  05 |    01 | 2013 |
+| 06.01.2013 |              0 |      25 |    2554 |    1709.05 |            1 |      1709.05 |  06 |    01 | 2013 |
+| 15.01.2013 |              0 |      25 |    2555 |       1099 |            1 |         1099 |  15 |    01 | 2013 |
 
 First, as a sanity check, we'll make sure that all the date cells have values.
 
-#+BEGIN_SRC ipython :session basics :results none
+#+BEGIN_SRC python :session basics :results none
 assert not transactions.date.hasnans
 #+END_SRC
 
 Now let's filter on the date-expression we created for september. The next problem also uses 2014 so save that as a separate sub-set.
 
-#+BEGIN_SRC ipython :session basics :results output raw :exports both
+#+BEGIN_SRC python :session basics :results none
 twenty_fourteen = transactions[transactions.year.isin(["2014"])]
 september = twenty_fourteen[twenty_fourteen.month.isin([Dates.september])]
-print(september.shape)
-print(september.head())
+#+END_SRC
+
+#+BEGIN_SRC python :session basics :results output raw :exports both
+print(tabulate(september.head(), headers="keys", tablefmt="orgtbl"))
 #+END_SRC
 
 #+RESULTS:
-(73157, 10)
-               date  date_block_num  shop_id  item_id  item_price  \
-1953691  24.09.2014              20        5     1039       899.0   
-1953692  27.09.2014              20        5     1015       449.0   
-1953693  07.09.2014              20        5     1329       399.0   
-1953694  27.09.2014              20        5      984       399.0   
-1953695  08.09.2014              20        5      984       399.0   
+|         |       date | date_block_num | shop_id | item_id | item_price | item_cnt_day | item_revenue | day | month | year |
+|---------+------------+----------------+---------+---------+------------+--------------+--------------+-----+-------+------|
+| 1953691 | 24.09.2014 |             20 |       5 |    1039 |        899 |            1 |          899 |  24 |    09 | 2014 |
+| 1953692 | 27.09.2014 |             20 |       5 |    1015 |        449 |            1 |          449 |  27 |    09 | 2014 |
+| 1953693 | 07.09.2014 |             20 |       5 |    1329 |        399 |            1 |          399 |  07 |    09 | 2014 |
+| 1953694 | 27.09.2014 |             20 |       5 |     984 |        399 |            1 |          399 |  27 |    09 | 2014 |
+| 1953695 | 08.09.2014 |             20 |       5 |     984 |        399 |            1 |          399 |  08 |    09 | 2014 |
 
-         item_cnt_day  item_revenue day month  year  
-1953691           1.0         899.0  24    09  2014  
-1953692           1.0         449.0  27    09  2014  
-1953693           1.0         399.0  07    09  2014  
-1953694           1.0         399.0  27    09  2014  
-1953695           1.0         399.0  08    09  2014  
-
-#+BEGIN_SRC ipython :session basics :results none
+#+BEGIN_SRC python :session basics :results none
 assert all(twenty_fourteen.year == "2014")
 assert all(september.month == "09")
 #+END_SRC
 
 That seems like a lot of transactions. What fraction of the total is it?
 
-#+BEGIN_SRC ipython :session basics :results output raw :exports both
+#+BEGIN_SRC python :session basics :results output :exports both
 rows, columns = september.shape
 print("{:.2f} %".format(100 * rows/transactions.shape[0]))
 #+END_SRC
@@ -369,22 +387,25 @@ print("{:.2f} %".format(100 * rows/transactions.shape[0]))
 
 Not as much as I would have thought, =transactions= is much larger than I first took it to be.
 
-#+BEGIN_SRC ipython :session basics :results output raw :exports both
+#+BEGIN_SRC python :session basics :results none
 grouped = september.groupby(["shop_id"])
 summed = grouped.item_revenue.agg(numpy.sum)
+#+END_SRC
+
+#+BEGIN_SRC python :session basics :results output :exports both
 print(summed.head())
 #+END_SRC
 
 #+RESULTS:
-shop_id
-2    1473540.00
-3    1228425.00
-4    1211556.00
-5    1350828.02
-6    3480397.00
-Name: item_revenue, dtype: float64
+: shop_id
+: 2    1473540.00
+: 3    1228425.00
+: 4    1211556.00
+: 5    1350828.02
+: 6    3480397.00
+: Name: item_revenue, dtype: float64
 
-#+BEGIN_SRC ipython :session basics :results output raw :exports both
+#+BEGIN_SRC python :session basics :results output :exports both
 max_revenue = summed.loc[summed.idxmax()]
 print("Highest Revenue Earned by a shop in September of 2014: $ {:,.2f}".format(max_revenue))
 #+END_SRC
@@ -401,135 +422,194 @@ Highest Revenue Earned by a shop in September of 2014: $ 7,982,852.20
 
 Note, that for an object `x` of type `pd.Series`: `x.argmax()` returns **index** of the maximum element. `pd.Series` can have non-trivial index (not `[1, 2, 3, ... ]`).
 *** Get the Summer months
-#+BEGIN_SRC ipython :session basics :results output raw :exports both
+#+BEGIN_SRC python :session basics :results none
 summer = twenty_fourteen[twenty_fourteen.month.isin(Dates.summer)]
-print(summer.head())
+#+END_SRC
+
+#+BEGIN_SRC python :session basics :results output raw :exports both
+print(tabulate(summer.head(), headers="keys", tablefmt='orgtbl'))
 for month in summer.month.unique():
     assert month in Dates.summer
-print(summer.shape)
 #+END_SRC
 
 #+RESULTS:
-               date  date_block_num  shop_id  item_id  item_price  \
-1705909  15.06.2014              17       26     9532      399.00   
-1705910  10.06.2014              17       26     9507      149.00   
-1705911  13.06.2014              17       26     9509      246.32   
-1705912  03.06.2014              17       26     9532      399.00   
-1705913  08.06.2014              17       26     9532      399.00   
-
-         item_cnt_day  item_revenue day month  year  
-1705909           1.0        399.00  15    06  2014  
-1705910           1.0        149.00  10    06  2014  
-1705911           1.0        246.32  13    06  2014  
-1705912           1.0        399.00  03    06  2014  
-1705913           1.0        399.00  08    06  2014  
-(247782, 10)
+|         |       date | date_block_num | shop_id | item_id | item_price | item_cnt_day | item_revenue | day | month | year | item_category_id |
+|---------+------------+----------------+---------+---------+------------+--------------+--------------+-----+-------+------+------------------|
+| 1705909 | 15.06.2014 |             17 |      26 |    9532 |        399 |            1 |          399 |  15 |    06 | 2014 |               30 |
+| 1705910 | 10.06.2014 |             17 |      26 |    9507 |        149 |            1 |          149 |  10 |    06 | 2014 |               40 |
+| 1705911 | 13.06.2014 |             17 |      26 |    9509 |     246.32 |            1 |       246.32 |  13 |    06 | 2014 |               37 |
+| 1705912 | 03.06.2014 |             17 |      26 |    9532 |        399 |            1 |          399 |  03 |    06 | 2014 |               30 |
+| 1705913 | 08.06.2014 |             17 |      26 |    9532 |        399 |            1 |          399 |  08 |    06 | 2014 |               30 |
 
 *** Map in the Category IDs
 
 If you look at =items.item_id= you can see that the id's are really just the numerical index to the =items.item_category_id= series. I was originally add the category ids for all the transactions but it takes a long time so I'm just adding it to this group.
 
-#+BEGIN_SRC ipython :session basics :results none
+#+BEGIN_SRC python :session basics :results none
 assert all(items.item_id == range(len(items)))
 #+END_SRC
 
 So we can map them back into our summer transactions.
 
-#+BEGIN_SRC ipython :session basics :results none
-summer["item_category_id"] = summer.item_id.apply(lambda item: items.item_category_id.loc[item])
+#+BEGIN_SRC python :session basics :results none
+summer["item_category_id"] = summer.item_id.apply(lambda item: items.loc[item, 'item_category_id'])
 #+END_SRC
 
-#+BEGIN_SRC ipython :session basics :results output raw :exports both
-print(summer.head())
+#+BEGIN_SRC python :session basics :results output raw :exports both
+print(tabulate(summer.head(), headers='keys', tablefmt="orgtbl"))
 #+END_SRC
 
 #+RESULTS:
-               date  date_block_num  shop_id  item_id  item_price  \
-1705909  15.06.2014              17       26     9532      399.00   
-1705910  10.06.2014              17       26     9507      149.00   
-1705911  13.06.2014              17       26     9509      246.32   
-1705912  03.06.2014              17       26     9532      399.00   
-1705913  08.06.2014              17       26     9532      399.00   
+|         |       date | date_block_num | shop_id | item_id | item_price | item_cnt_day | item_revenue | day | month | year | item_category_id |
+|---------+------------+----------------+---------+---------+------------+--------------+--------------+-----+-------+------+------------------|
+| 1705909 | 15.06.2014 |             17 |      26 |    9532 |        399 |            1 |          399 |  15 |    06 | 2014 |               30 |
+| 1705910 | 10.06.2014 |             17 |      26 |    9507 |        149 |            1 |          149 |  10 |    06 | 2014 |               40 |
+| 1705911 | 13.06.2014 |             17 |      26 |    9509 |     246.32 |            1 |       246.32 |  13 |    06 | 2014 |               37 |
+| 1705912 | 03.06.2014 |             17 |      26 |    9532 |        399 |            1 |          399 |  03 |    06 | 2014 |               30 |
+| 1705913 | 08.06.2014 |             17 |      26 |    9532 |        399 |            1 |          399 |  08 |    06 | 2014 |               30 |
 
-         item_cnt_day  item_revenue day month  year  item_category_id  
-1705909           1.0        399.00  15    06  2014                30  
-1705910           1.0        149.00  10    06  2014                40  
-1705911           1.0        246.32  13    06  2014                37  
-1705912           1.0        399.00  03    06  2014                30  
-1705913           1.0        399.00  08    06  2014                30  
-
-#+BEGIN_SRC ipython :session basics :results output raw :exports both
+#+BEGIN_SRC python :session basics :results output :exports both
+categories = summer.groupby(["item_category_id"])
+categories_summed = categories.item_revenue.agg(numpy.sum)
+print(categories_summed.head())
 #+END_SRC
 
-#+BEGIN_SRC ipython :session basics :results output raw :exports both
-category_id_with_max_revenue = # PUT YOUR ANSWER IN THIS VARIABLE
+#+RESULTS:
+: item_category_id
+: 2    2755520.0
+: 3    6854669.8
+: 4      38833.2
+: 5     418233.1
+: 6    3360382.5
+: Name: item_revenue, dtype: float64
+
+#+BEGIN_SRC python :session basics :results none
+category_id_with_max_revenue = categories_summed.idxmax()
 #+END_SRC
 
+#+BEGIN_SRC python :session basics :results output  :exports both
+print("Category Id with the Maximum Value: {}".format(category_id_with_max_revenue))
+#+END_SRC
 
-grader.submit_tag('category_id_with_max_revenue', category_id_with_max_revenue)
+#+RESULTS:
+Category Id with the Maximum Value: 20
 
+** Question 3: Constant Prices
+How many items are there, such that their price stays constant (to the best of our knowledge) during the whole period of time?
 
-# <ol start="3">
-#   <li><b>How many items are there, such that their price stays constant (to the best of our knowledge) during the whole period of time?</b></li>
-# </ol>
-# 
-# * Let's assume, that the items are returned for the same price as they had been sold.
+Let's assume, that the items are returned for the same price as they had been sold.
 
-# In[ ]:
+** Isolate the ID and Price
+#+BEGIN_SRC python :session basics :results none
+id_price = transactions.loc[:, ["item_id", "item_price"]]
+id_price["item_price"] = id_price.item_price.abs()
+group = id_price.groupby("item_id")
+#+END_SRC
 
+#+BEGIN_SRC python :session basics :results output  :exports both
+counts = group.item_price.nunique()
 
-# YOUR CODE GOES HERE
+constant_prices = len([index for index in counts.index if counts.loc[index] == 1])
+print(constant_prices)
+#+END_SRC  
 
-num_items_constant_price = # PUT YOUR ANSWER IN THIS VARIABLE
-grader.submit_tag('num_items_constant_price', num_items_constant_price)
+#+RESULTS:
+5926
 
+#+BEGIN_SRC python :session basics :results output  :exports both
+print("Number of items whose price didn't change: {}".format(constant_prices))
+#+END_SRC
 
-# Remember, the data can sometimes be noisy.
+#+RESULTS:
+Number of items whose price didn't change: 5926
 
-# <ol start="4">
-#   <li><b>What was the variance of the number of sold items per day sequence for the shop with `shop_id = 25` in December, 2014? Do not count the items, that were sold but returned back later.</b></li>
-# </ol>
-# 
-# * Fill `total_num_items_sold` and `days` arrays, and plot the sequence with the code below.
-# * Then compute variance. Remember, there can be differences in how you normalize variance (biased or unbiased estimate, see [link](https://math.stackexchange.com/questions/496627/the-difference-between-unbiased-biased-estimator-variance)). Compute ***unbiased*** estimate (use the right value for `ddof` argument in `pd.var` or `np.var`). 
+* Question 4
+Remember, the data can sometimes be noisy.
+What was the variance of the number of sold items per day sequence for the shop with ~shop_id = 25~ in December, 2014? Do not count the items, that were sold but returned back later.
 
-# In[ ]:
+ - Fill =total_num_items_sold= and =days= arrays, and plot the sequence with the code below.
+ - Then compute variance. Remember, there can be differences in how you normalize variance (biased or unbiased estimate, see [[https://math.stackexchange.com/questions/496627/the-difference-between-unbiased-biased-estimator-variance][this Stack Overflow post]]). Compute the ***unbiased*** estimate (use the right value for =ddof= argument in =pd.var= or =np.var=). 
 
-
+#+BEGIN_SRC python :session basics :results none
 shop_id = 25
+#+END_SRC
 
-total_num_items_sold = # YOUR CODE GOES HERE
-days = # YOUR CODE GOES HERE
+** Filter to the Shop and Dates
 
-# Plot it
-plt.plot(days, total_num_items_sold)
-plt.ylabel('Num items')
-plt.xlabel('Day')
-plt.title("Daily revenue for shop_id = 25")
-plt.show()
+#+BEGIN_SRC python :session basics :results output raw :exports both
+twenty_fives = twenty_fourteen[(transactions.shop_id==shop_id)
+                                & (transactions.month==Dates.december)]
+print(tabulate(twenty_fives.head(), headers='keys', tablefmt='orgtbl'))
+assert(all(twenty_fives.shop_id == shop_id))
+#+END_SRC
 
-total_num_items_sold_var = # PUT YOUR ANSWER IN THIS VARIABLE
-grader.submit_tag('total_num_items_sold_var', total_num_items_sold_var)
-
-
-# ## Authorization & Submission
-# To submit assignment to Cousera platform, please, enter your e-mail and token into the variables below. You can generate token on the programming assignment page. *Note:* Token expires 30 minutes after generation.
-
-# In[ ]:
-
-
-STUDENT_EMAIL = # EMAIL HERE
-STUDENT_TOKEN = # TOKEN HERE
-grader.status()
+#+RESULTS:
+|         |       date | date_block_num | shop_id | item_id | item_price | item_cnt_day | item_revenue | day | month | year |
+|---------+------------+----------------+---------+---------+------------+--------------+--------------+-----+-------+------|
+| 2295837 | 14.12.2014 |             23 |      25 |   21752 |        399 |            1 |          399 |  14 |    12 | 2014 |
+| 2295838 | 13.12.2014 |             23 |      25 |   21752 |        399 |            3 |         1197 |  13 |    12 | 2014 |
+| 2295839 | 26.12.2014 |             23 |      25 |   21733 |        149 |            1 |          149 |  26 |    12 | 2014 |
+| 2295840 | 31.12.2014 |             23 |      25 |   21732 |        149 |            1 |          149 |  31 |    12 | 2014 |
+| 2295841 | 30.12.2014 |             23 |      25 |   21726 |        149 |            1 |          149 |  30 |    12 | 2014 |
 
 
-# In[ ]:
+  
+** Group by date
+
+#+BEGIN_SRC python :session basics :results output :exports both
+shop_grouped = twenty_fives.groupby("date")
+count_per_day = shop_grouped.item_cnt_day.sum()
+print(count_per_day.head())
+#+END_SRC
+
+#+RESULTS:
+: date
+: 01.12.2014    153.0
+: 02.12.2014    169.0
+: 03.12.2014    195.0
+: 04.12.2014    164.0
+: 05.12.2014    300.0
+: Name: item_cnt_day, dtype: float64
+
+** Add a date-time to make it sortable for print
+#+BEGIN_SRC python :session basics :results output :exports both
+pandas.options.mode.chained_assignment = None
+count_per_day.index = pandas.to_datetime(count_per_day.index, format="%d.%m.%Y")
+print(count_per_day.head())
+#+END_SRC
+
+#+RESULTS:
+: date
+: 2014-12-01    153.0
+: 2014-12-02    169.0
+: 2014-12-03    195.0
+: 2014-12-04    164.0
+: 2014-12-05    300.0
+: Name: item_cnt_day, dtype: float64
 
 
-grader.submit(STUDENT_EMAIL, STUDENT_TOKEN)
+#+BEGIN_SRC python :session basics :results none :ipyfile ../files/posts/pandas-basics/items_per_day.png
+figure = pyplot.figure(figsize=(20, 15))
+axe = figure.gca()
+pyplot.plot(count_per_day.index, count_per_day.values)
+pyplot.ylabel('Num items')
+pyplot.xlabel('Day')
+axe.set_xlim([count_per_day.index[0], count_per_day.index[-1]])
+title = pyplot.title("Daily revenue for shop_id = 25")
+#+END_SRC
 
+#+RESULTS:
+# Out[241]:
+[[file:../files/posts/pandas-basics/items_per_day.png]]
 
-# Well done! :)
+[[file:items_per_day.png]]
 
+#+BEGIN_SRC python :session basics :results output :exports both
+# pandas uses 1/n-1 by default, numpy uses 1/n
+total_num_items_sold_var = count_per_day.var()
+print("Variance for items sold per day: {}".format(total_num_items_sold_var))
+#+END_SRC
 
+#+RESULTS:
+Variance for items sold per day: 117167.70229885059
 
