@@ -16,12 +16,18 @@
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
 
 @font-face {
-    font-family: 'cinzel_decorativebold';
-    src: url('../fonts/cinzel/cinzeldecorative-bold-webfont.woff2') format('woff2'),
-         url('../fonts/cinzel/cinzeldecorative-bold-webfont.woff') format('woff');
+    font-family: 'chunkfiveroman';
+    src: url('../fonts/ChunkFive/chunkfive-webfont.woff2') format('woff2'),
+         url('../fonts/ChunkFive/chunkfive-webfont.woff') format('woff');
     font-weight: bold;
     font-style: normal;
-
+}
+@font-face {
+    font-family: 'chunkfiveroman';
+    src: url('../fonts/ChunkFive/chunkfive-webfont.woff2') format('woff2'),
+         url('../fonts/ChunkFive/chunkfive-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
 }
 html {
   font-family: sans-serif;
@@ -1187,20 +1193,7 @@ hr {
 [role="button"] {
   cursor: pointer;
 }
-@font-face {
-    font-family: 'chunkfiveroman';
-    src: url('../fonts/ChunkFive/chunkfive-webfont.woff2') format('woff2'),
-         url('../fonts/ChunkFive/chunkfive-webfont.woff') format('woff');
-    font-weight: bold;
-    font-style: normal;
-}
-@font-face {
-    font-family: 'chunkfiveroman';
-    src: url('../fonts/ChunkFive/chunkfive-webfont.woff2') format('woff2'),
-         url('../fonts/ChunkFive/chunkfive-webfont.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-}
+
 
 h1,
 h2,
