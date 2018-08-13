@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="Looking at the data.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Exploring The Data | Notes on Kaggle</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="../../rss.xml">
+<link rel="canonical" href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploring-the-data/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script><meta name="author" content="Cloistered Monkey">
+<link rel="prev" href="../set-up-the-kaggle-command-line-command/" title="Set Up the Kaggle Command-Line Command" type="text/html">
+<link rel="next" href="../first-naive-try/" title="First Naive Try" type="text/html">
+<meta property="og:site_name" content="Notes on Kaggle">
+<meta property="og:title" content="Exploring The Data">
+<meta property="og:url" content="https://necromuralist.github.io/Kaggle-Competitions/posts/exploring-the-data/">
+<meta property="og:description" content="Looking at the data.">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2018-08-11T15:26:40-07:00">
+<meta property="article:tag" content="kaggle data exploration">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-default navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://necromuralist.github.io/Kaggle-Competitions/">
+
+                <span id="blog-title">Notes on Kaggle</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="https://necromuralist.github.io/">The Cloistered Monkey</a>
+                </li>
+<li>
+<a href="../../archive.html">Archive</a>
+                </li>
+<li>
+<a href="../../categories/">Tags</a>
+                </li>
+<li>
+<a href="../../rss.xml">RSS feed</a>
+
+                
+            </li>
+</ul>
+<!-- Google custom search --><form method="get" action="https://www.google.com/search" class="navbar-form navbar-right" role="search">
+<div class="form-group">
+<input type="text" name="q" class="form-control" placeholder="Search">
+</div>
+<button type="submit" class="btn btn-primary">
+	<span class="glyphicon glyphicon-search"></span>
+</button>
+<input type="hidden" name="sitesearch" value="https://necromuralist.github.io/Kaggle-Competitions/">
+</form>
+<!-- End of custom search -->
+
+
+            <ul class="nav navbar-nav navbar-right">
+<li>
+    <a href="index.org" id="sourcelink">Source</a>
+    </li>
+
+                
+            </ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+            
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Exploring The Data</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                    Cloistered Monkey
+            </span></p>
+            <p class="dateline"><a href="." rel="bookmark"><time class="published dt-published" datetime="2018-08-11T15:26:40-07:00" itemprop="datePublished" title="2018-08-11 15:26">2018-08-11 15:26</time></a></p>
+            
+        <p class="sourceline"><a href="index.org" class="sourcelink">Source</a></p>
+
+        </div>
+        
+
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org89805ac">Imports</a></li>
+<li><a href="#orgad73860">Helpers</a></li>
+<li><a href="#orgc277e11">Constants</a></li>
+<li><a href="#orge38dcd7">The Files</a></li>
+<li><a href="#org1ee53b6">Some Counts</a></li>
+<li><a href="#org6f7e5dc">The Official Feature Descriptions</a></li>
+<li><a href="#orga919018">The Training Set</a></li>
+<li><a href="#orga0928f1">Building Up the Training Set</a></li>
+<li><a href="#org9186c98">Saving the Super Set</a></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org89805ac" class="outline-2">
+<h2 id="org89805ac">Imports</h2>
+<div class="outline-text-2" id="text-org89805ac">
+</div>
+<div id="outline-container-org910ed62" class="outline-3">
+<h3 id="org910ed62">Suppressing the Numpy Warnings</h3>
+<div class="outline-text-3" id="text-org910ed62">
+<p>
+When you import pandas you get some warnings:
+</p>
+
+<pre class="example">
+/usr/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+  return f(*args, **kwds)
+/usr/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+  return f(*args, **kwds)
+</pre>
+
+<p>
+According to <a href="https://stackoverflow.com/questions/40845304/runtimewarning-numpy-dtype-size-changed-may-indicate-binary-incompatibility">Stack Overflow</a>, this is because <a href="https://www.scipy.org/">scipy</a> is built against an older version of <a href="http://www.numpy.org/">numpy</a>, but it shouldn't actually affect the way it works, so we should just suppress it.
+</p>
+
+<div class="highlight"><pre><span></span>import warnings
+warnings.filterwarnings("ignore", message="numpy.dtype size changed")
+warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
+</pre></div>
+
+
+<div class="highlight"><pre><span></span># python standard library
+import os
+import pickle
+
+# from pypi
+import matplotlib.pyplot as pyplot
+import numpy
+import pandas
+import seaborn
+from tabulate import tabulate
+</pre></div>
+
+<div class="highlight"><pre><span></span>% matplotlib inline
+</pre></div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgad73860" class="outline-2">
+<h2 id="orgad73860">Helpers</h2>
+<div class="outline-text-2" id="text-orgad73860">
+<p>
+Just some functions that keep coming up.
+</p>
+
+<div class="highlight"><pre><span></span>class Helpers:
+    """Helper functions"""
+    pickle_target = "../pickles/"
+    pickle_target_string = pickle_target + "{}.pkl"
+
+    @staticmethod
+    def print_head(frame):
+	"""prints the head of the given data frame
+
+	Args:
+	 frame (pandas.DataFrame): data frame to print as a table
+	"""
+	print(tabulate(frame.head(), headers="keys", tablefmt="orgtbl",
+		       showindex=False))
+	return
+
+    @staticmethod
+    def print_table(data, showindex=True):
+	"""print the data
+
+	Args:
+	 data: some kind of data-frame
+	"""
+	print(tabulate(data, headers="keys", tablefmt="orgtbl",
+		       showindex=showindex))
+	return
+
+    @staticmethod
+    def pickle_it(thing, name=None):
+	"""save the object to a pickle in the data folder
+
+	Args:
+	 thing: object to pickle
+	 name: thing to call the pickle
+	"""
+	name = name if name is not None else thing.__name__
+	with open(
+		os.path.join(
+		    Helpers.pickle_target_string.format(name)),
+		"wb") as pickler:
+	    pickle.dump(thing, pickler)
+	return
+</pre></div>
+
+<div class="highlight"><pre><span></span>Helpers.pickle_it(Helpers)
+</pre></div>
+</div>
+</div>
+
+<div id="outline-container-orgc277e11" class="outline-2">
+<h2 id="orgc277e11">Constants</h2>
+<div class="outline-text-2" id="text-orgc277e11">
+<p>
+As always, I'll try to put constants in the same place.
+</p>
+</div>
+
+<div id="outline-container-orgd5ebadd" class="outline-3">
+<h3 id="orgd5ebadd">Data Source</h3>
+<div class="outline-text-3" id="text-orgd5ebadd">
+<div class="highlight"><pre><span></span>class DataSource:
+    """Strings for the files"""
+    directory = "../data/"
+
+DataSource.file_names = os.listdir(DataSource.directory)
+for name in DataSource.file_names:
+    setattr(DataSource, name.split('.')[0], name)
+
+DataSource.paths = [os.path.join(DataSource.directory, name)
+		    for name in DataSource.file_names]
+</pre></div>
+
+<div class="highlight"><pre><span></span>Helpers.pickle_it(DataSource)
+</pre></div>
+</div>
+</div>
+
+<div id="outline-container-org0193619" class="outline-3">
+<h3 id="org0193619">Data Keys</h3>
+<div class="outline-text-3" id="text-org0193619">
+<div class="highlight"><pre><span></span>class DataKeys:
+    """Column names/keys for the data."""
+    item_category = "item_category_id"
+    shop = "shop_id"
+    item = "item_id"
+    date = "date"
+</pre></div>
+
+<div class="highlight"><pre><span></span>Helpers.pickle_it(DataKeys)
+</pre></div>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orge38dcd7" class="outline-2">
+<h2 id="orge38dcd7">The Files</h2>
+<div class="outline-text-2" id="text-orge38dcd7">
+<p>
+These are the files we are given.
+</p>
+
+<div class="highlight"><pre><span></span>for name in DataSource.file_names:
+    print(" - {}".format(name))
+</pre></div>
+
+<ul class="org-ul">
+<li>sample_submission.csv.gz</li>
+<li>shops.csv</li>
+<li>items.csv</li>
+<li>sales_train.csv.gz</li>
+<li>item_categories.csv</li>
+<li>test.csv.gz</li>
+</ul>
+<p>
+I was originally thinking I would need to unzip the gzipped files but apparently the <a href="https://pandas.pydata.org/pandas-docs/stable/io.html#io-read-csv-table"><code>Pandas.read_csv</code></a> function will decompress them automagically, so I guess I can leave them.
+</p>
+
+<div class="highlight"><pre><span></span>frames = {DataSource.file_names[index]: pandas.read_csv(path)
+	  for index, path in enumerate(DataSource.paths)}
+</pre></div>
+
+<div class="highlight"><pre><span></span>for name, frame in frames.items():
+    print("\n** {}".format(name))
+    Helpers.print_head(frame)
+    print()
+    print(frame.info())
+</pre></div>
+</div>
+
+<div id="outline-container-orgc7d79de" class="outline-3">
+<h3 id="orgc7d79de">sample_submission.csv.gz</h3>
+<div class="outline-text-3" id="text-orgc7d79de">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-right">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-right">ID</th>
+<th scope="col" class="org-right">item_cnt_month</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-right">0</td>
+<td class="org-right">0.5</td>
+</tr>
+<tr>
+<td class="org-right">1</td>
+<td class="org-right">0.5</td>
+</tr>
+<tr>
+<td class="org-right">2</td>
+<td class="org-right">0.5</td>
+</tr>
+<tr>
+<td class="org-right">3</td>
+<td class="org-right">0.5</td>
+</tr>
+<tr>
+<td class="org-right">4</td>
+<td class="org-right">0.5</td>
+</tr>
+</tbody>
+</table>
+<p>
+&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 214200 entries, 0 to 214199
+Data columns (total 2 columns):
+ID                214200 non-null int64
+item_cnt_month    214200 non-null float64
+dtypes: float64(1), int64(1)
+memory usage: 3.3 MB
+None
+</p>
+</div>
+</div>
+
+<div id="outline-container-org98cfc1a" class="outline-3">
+<h3 id="org98cfc1a">shops.csv</h3>
+<div class="outline-text-3" id="text-org98cfc1a">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-left">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-left">shop_name</th>
+<th scope="col" class="org-right">shop_id</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-left">!Якутск Орджоникидзе, 56 фран</td>
+<td class="org-right">0</td>
+</tr>
+<tr>
+<td class="org-left">!Якутск ТЦ "Центральный" фран</td>
+<td class="org-right">1</td>
+</tr>
+<tr>
+<td class="org-left">Адыгея ТЦ "Мега"</td>
+<td class="org-right">2</td>
+</tr>
+<tr>
+<td class="org-left">Балашиха ТРК "Октябрь-Киномир"</td>
+<td class="org-right">3</td>
+</tr>
+<tr>
+<td class="org-left">Волжский ТЦ "Волга Молл"</td>
+<td class="org-right">4</td>
+</tr>
+</tbody>
+</table>
+<p>
+&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 60 entries, 0 to 59
+Data columns (total 2 columns):
+shop_name    60 non-null object
+shop_id      60 non-null int64
+dtypes: int64(1), object(1)
+memory usage: 1.0+ KB
+None
+</p>
+</div>
+</div>
+
+<div id="outline-container-org50f8fef" class="outline-3">
+<h3 id="org50f8fef">items.csv</h3>
+<div class="outline-text-3" id="text-org50f8fef">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-left">
+<col class="org-right">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-left">item_name</th>
+<th scope="col" class="org-right">item_id</th>
+<th scope="col" class="org-right">item_category_id</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-left">! ВО ВЛАСТИ НАВАЖДЕНИЯ (ПЛАСТ.)         D</td>
+<td class="org-right">0</td>
+<td class="org-right">40</td>
+</tr>
+<tr>
+<td class="org-left">!ABBYY FineReader 12 Professional Edition Full [PC, Цифровая версия]</td>
+<td class="org-right">1</td>
+<td class="org-right">76</td>
+</tr>
+<tr>
+<td class="org-left">***В ЛУЧАХ СЛАВЫ   (UNV)                    D</td>
+<td class="org-right">2</td>
+<td class="org-right">40</td>
+</tr>
+<tr>
+<td class="org-left">***ГОЛУБАЯ ВОЛНА  (Univ)                      D</td>
+<td class="org-right">3</td>
+<td class="org-right">40</td>
+</tr>
+<tr>
+<td class="org-left">***КОРОБКА (СТЕКЛО)                       D</td>
+<td class="org-right">4</td>
+<td class="org-right">40</td>
+</tr>
+</tbody>
+</table>
+<p>
+&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 22170 entries, 0 to 22169
+Data columns (total 3 columns):
+item_name           22170 non-null object
+item_id             22170 non-null int64
+item_category_id    22170 non-null int64
+dtypes: int64(2), object(1)
+memory usage: 519.7+ KB
+None
+</p>
+</div>
+</div>
+
+<div id="outline-container-org5bc0f27" class="outline-3">
+<h3 id="org5bc0f27">sales_train.csv.gz</h3>
+<div class="outline-text-3" id="text-org5bc0f27">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-right">date</th>
+<th scope="col" class="org-right">date_block_num</th>
+<th scope="col" class="org-right">shop_id</th>
+<th scope="col" class="org-right">item_id</th>
+<th scope="col" class="org-right">item_price</th>
+<th scope="col" class="org-right">item_cnt_day</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-right">02.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">59</td>
+<td class="org-right">22154</td>
+<td class="org-right">999</td>
+<td class="org-right">1</td>
+</tr>
+<tr>
+<td class="org-right">03.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2552</td>
+<td class="org-right">899</td>
+<td class="org-right">1</td>
+</tr>
+<tr>
+<td class="org-right">05.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2552</td>
+<td class="org-right">899</td>
+<td class="org-right">-1</td>
+</tr>
+<tr>
+<td class="org-right">06.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2554</td>
+<td class="org-right">1709.05</td>
+<td class="org-right">1</td>
+</tr>
+<tr>
+<td class="org-right">15.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2555</td>
+<td class="org-right">1099</td>
+<td class="org-right">1</td>
+</tr>
+</tbody>
+</table>
+<p>
+&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 2935849 entries, 0 to 2935848
+Data columns (total 6 columns):
+date              object
+date_block_num    int64
+shop_id           int64
+item_id           int64
+item_price        float64
+item_cnt_day      float64
+dtypes: float64(2), int64(3), object(1)
+memory usage: 134.4+ MB
+None
+</p>
+</div>
+</div>
+
+<div id="outline-container-org5c32342" class="outline-3">
+<h3 id="org5c32342">item_categories.csv</h3>
+<div class="outline-text-3" id="text-org5c32342">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-left">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-left">item_category_name</th>
+<th scope="col" class="org-right">item_category_id</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-left">PC - Гарнитуры/Наушники</td>
+<td class="org-right">0</td>
+</tr>
+<tr>
+<td class="org-left">Аксессуары - PS2</td>
+<td class="org-right">1</td>
+</tr>
+<tr>
+<td class="org-left">Аксессуары - PS3</td>
+<td class="org-right">2</td>
+</tr>
+<tr>
+<td class="org-left">Аксессуары - PS4</td>
+<td class="org-right">3</td>
+</tr>
+<tr>
+<td class="org-left">Аксессуары - PSP</td>
+<td class="org-right">4</td>
+</tr>
+</tbody>
+</table>
+<p>
+&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 84 entries, 0 to 83
+Data columns (total 2 columns):
+item_category_name    84 non-null object
+item_category_id      84 non-null int64
+dtypes: int64(1), object(1)
+memory usage: 1.4+ KB
+None
+</p>
+</div>
+</div>
+
+<div id="outline-container-orge9cf064" class="outline-3">
+<h3 id="orge9cf064">test.csv.gz</h3>
+<div class="outline-text-3" id="text-orge9cf064">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-right">ID</th>
+<th scope="col" class="org-right">shop_id</th>
+<th scope="col" class="org-right">item_id</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-right">0</td>
+<td class="org-right">5</td>
+<td class="org-right">5037</td>
+</tr>
+<tr>
+<td class="org-right">1</td>
+<td class="org-right">5</td>
+<td class="org-right">5320</td>
+</tr>
+<tr>
+<td class="org-right">2</td>
+<td class="org-right">5</td>
+<td class="org-right">5233</td>
+</tr>
+<tr>
+<td class="org-right">3</td>
+<td class="org-right">5</td>
+<td class="org-right">5232</td>
+</tr>
+<tr>
+<td class="org-right">4</td>
+<td class="org-right">5</td>
+<td class="org-right">5268</td>
+</tr>
+</tbody>
+</table>
+<p>
+&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 214200 entries, 0 to 214199
+Data columns (total 3 columns):
+ID         214200 non-null int64
+shop_id    214200 non-null int64
+item_id    214200 non-null int64
+dtypes: int64(3)
+memory usage: 4.9 MB
+None
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org1ee53b6" class="outline-2">
+<h2 id="org1ee53b6">Some Counts</h2>
+<div class="outline-text-2" id="text-org1ee53b6">
+</div>
+<div id="outline-container-orgb93cb44" class="outline-3">
+<h3 id="orgb93cb44">How much data is there in the training set?</h3>
+<div class="outline-text-3" id="text-orgb93cb44">
+<div class="highlight"><pre><span></span>print("There are {:,} rows in the traning set.".format(len(frames[DataSource.sales_train])))
+</pre></div>
+
+<p>
+There are 2,935,849 rows in the traning set.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org4239061" class="outline-3">
+<h3 id="org4239061">How many shops are there?</h3>
+<div class="outline-text-3" id="text-org4239061">
+<div class="highlight"><pre><span></span>print("There are {} shops.".format(len(frames[DataSource.shops])))
+</pre></div>
+
+<p>
+There are 60 shops.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orge08dd40" class="outline-3">
+<h3 id="orge08dd40">How Many Items Are There?</h3>
+<div class="outline-text-3" id="text-orge08dd40">
+<div class="highlight"><pre><span></span>print("There are {:,} items.".format(len(frames[DataSource.items])))
+</pre></div>
+
+<p>
+There are 22,170 items.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org90cd0e1" class="outline-3">
+<h3 id="org90cd0e1">How Many Item Categories are there?</h3>
+<div class="outline-text-3" id="text-org90cd0e1">
+<div class="highlight"><pre><span></span>print("There are {:,} categories.".format(len(frames[DataSource.item_categories])))
+</pre></div>
+
+<p>
+There are 84 categories.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org6f7e5dc" class="outline-2">
+<h2 id="org6f7e5dc">The Official Feature Descriptions</h2>
+<div class="outline-text-2" id="text-org6f7e5dc">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-left">
+<col class="org-left">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-left">Column Name</th>
+<th scope="col" class="org-left">Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-left">ID</td>
+<td class="org-left">an Id that represents a (Shop, Item) tuple within the test set</td>
+</tr>
+<tr>
+<td class="org-left">shop_id</td>
+<td class="org-left">unique identifier of a shop</td>
+</tr>
+<tr>
+<td class="org-left">item_id</td>
+<td class="org-left">unique identifier of a product</td>
+</tr>
+<tr>
+<td class="org-left">item_category_id</td>
+<td class="org-left">unique identifier of item category</td>
+</tr>
+<tr>
+<td class="org-left">item_cnt_day</td>
+<td class="org-left">number of products sold. You are predicting a monthly amount of this measure</td>
+</tr>
+<tr>
+<td class="org-left">item_price</td>
+<td class="org-left">current price of an item</td>
+</tr>
+<tr>
+<td class="org-left">date</td>
+<td class="org-left">date in format dd/mm/yyyy</td>
+</tr>
+<tr>
+<td class="org-left">date_block_num</td>
+<td class="org-left">a consecutive month number, used for convenience. January 2013 is 0, February 2013 is 1,…, October 2015 is 33</td>
+</tr>
+<tr>
+<td class="org-left">item_name</td>
+<td class="org-left">name of item</td>
+</tr>
+<tr>
+<td class="org-left">shop_name</td>
+<td class="org-left">name of shop</td>
+</tr>
+<tr>
+<td class="org-left">item_category_name</td>
+<td class="org-left">name of item category</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-orga919018" class="outline-2">
+<h2 id="orga919018">The Training Set</h2>
+<div class="outline-text-2" id="text-orga919018">
+<div class="highlight"><pre><span></span>print(super_set.dtypes)
+</pre></div>
+
+<p>
+date                 object
+date_block_num        int64
+shop_id               int64
+item_id               int64
+item_price          float64
+item_cnt_day        float64
+item_category_id      int64
+dtype: object
+</p>
+</div>
+
+<div id="outline-container-org8992fdf" class="outline-3">
+<h3 id="org8992fdf">Numeric Features</h3>
+<div class="outline-text-3" id="text-org8992fdf">
+<div class="highlight"><pre><span></span>Helpers.print_table(super_set.describe(include=numpy.number).T)
+</pre></div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-left">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-left"> </th>
+<th scope="col" class="org-right">count</th>
+<th scope="col" class="org-right">mean</th>
+<th scope="col" class="org-right">std</th>
+<th scope="col" class="org-right">min</th>
+<th scope="col" class="org-right">25%</th>
+<th scope="col" class="org-right">50%</th>
+<th scope="col" class="org-right">75%</th>
+<th scope="col" class="org-right">max</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-left">date_block_num</td>
+<td class="org-right">2.93585e+06</td>
+<td class="org-right">14.5699</td>
+<td class="org-right">9.42299</td>
+<td class="org-right">0</td>
+<td class="org-right">7</td>
+<td class="org-right">14</td>
+<td class="org-right">23</td>
+<td class="org-right">33</td>
+</tr>
+<tr>
+<td class="org-left">shop_id</td>
+<td class="org-right">2.93585e+06</td>
+<td class="org-right">33.0017</td>
+<td class="org-right">16.227</td>
+<td class="org-right">0</td>
+<td class="org-right">22</td>
+<td class="org-right">31</td>
+<td class="org-right">47</td>
+<td class="org-right">59</td>
+</tr>
+<tr>
+<td class="org-left">item_id</td>
+<td class="org-right">2.93585e+06</td>
+<td class="org-right">10197.2</td>
+<td class="org-right">6324.3</td>
+<td class="org-right">0</td>
+<td class="org-right">4476</td>
+<td class="org-right">9343</td>
+<td class="org-right">15684</td>
+<td class="org-right">22169</td>
+</tr>
+<tr>
+<td class="org-left">item_price</td>
+<td class="org-right">2.93585e+06</td>
+<td class="org-right">890.853</td>
+<td class="org-right">1729.8</td>
+<td class="org-right">-1</td>
+<td class="org-right">249</td>
+<td class="org-right">399</td>
+<td class="org-right">999</td>
+<td class="org-right">307980</td>
+</tr>
+<tr>
+<td class="org-left">item_cnt_day</td>
+<td class="org-right">2.93585e+06</td>
+<td class="org-right">1.24264</td>
+<td class="org-right">2.61883</td>
+<td class="org-right">-22</td>
+<td class="org-right">1</td>
+<td class="org-right">1</td>
+<td class="org-right">1</td>
+<td class="org-right">2169</td>
+</tr>
+<tr>
+<td class="org-left">item_category_id</td>
+<td class="org-right">2.93585e+06</td>
+<td class="org-right">40.0014</td>
+<td class="org-right">17.1008</td>
+<td class="org-right">0</td>
+<td class="org-right">28</td>
+<td class="org-right">40</td>
+<td class="org-right">55</td>
+<td class="org-right">83</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-org1e1e17b" class="outline-3">
+<h3 id="org1e1e17b">Categorical Features</h3>
+<div class="outline-text-3" id="text-org1e1e17b">
+<div class="highlight"><pre><span></span>Helpers.print_table(super_set.describe(include=[numpy.object, pandas.Categorical]).T)
+</pre></div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-left">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-left"> </th>
+<th scope="col" class="org-right">count</th>
+<th scope="col" class="org-right">unique</th>
+<th scope="col" class="org-right">top</th>
+<th scope="col" class="org-right">freq</th>
+</tr></thead>
+<tbody><tr>
+<td class="org-left">date</td>
+<td class="org-right">2.93585e+06</td>
+<td class="org-right">1034</td>
+<td class="org-right">28.12.2013</td>
+<td class="org-right">9434</td>
+</tr></tbody>
+</table>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orga0928f1" class="outline-2">
+<h2 id="orga0928f1">Building Up the Training Set</h2>
+<div class="outline-text-2" id="text-orga0928f1">
+<p>
+Since we have some variables in separate sets I thought it would be useful to combine them into a single training set.
+</p>
+</div>
+
+<div id="outline-container-org7805929" class="outline-3">
+<h3 id="org7805929">Building the Super Set</h3>
+<div class="outline-text-3" id="text-org7805929">
+<div class="highlight"><pre><span></span>super_set = frames[DataSource.sales_train].copy()
+</pre></div>
+
+<div class="highlight"><pre><span></span>Helpers.print_head(super_set)
+</pre></div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-right">date</th>
+<th scope="col" class="org-right">date_block_num</th>
+<th scope="col" class="org-right">shop_id</th>
+<th scope="col" class="org-right">item_id</th>
+<th scope="col" class="org-right">item_price</th>
+<th scope="col" class="org-right">item_cnt_day</th>
+<th scope="col" class="org-right">item_category_id</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-right">02.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">59</td>
+<td class="org-right">22154</td>
+<td class="org-right">999</td>
+<td class="org-right">1</td>
+<td class="org-right">37</td>
+</tr>
+<tr>
+<td class="org-right">03.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2552</td>
+<td class="org-right">899</td>
+<td class="org-right">1</td>
+<td class="org-right">58</td>
+</tr>
+<tr>
+<td class="org-right">05.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2552</td>
+<td class="org-right">899</td>
+<td class="org-right">-1</td>
+<td class="org-right">58</td>
+</tr>
+<tr>
+<td class="org-right">06.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2554</td>
+<td class="org-right">1709.05</td>
+<td class="org-right">1</td>
+<td class="org-right">58</td>
+</tr>
+<tr>
+<td class="org-right">15.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2555</td>
+<td class="org-right">1099</td>
+<td class="org-right">1</td>
+<td class="org-right">56</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-org393b70a" class="outline-3">
+<h3 id="org393b70a">Adding The Category ID</h3>
+<div class="outline-text-3" id="text-org393b70a">
+<div class="highlight"><pre><span></span>super_set[DataKeys.item_category] = super_set.item_id.apply(
+    lambda item: frames[DataSource.items].loc[item, DataKeys.item_category])
+</pre></div>
+
+<div class="highlight"><pre><span></span>Helpers.print_head(super_set)
+</pre></div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-right">date</th>
+<th scope="col" class="org-right">date_block_num</th>
+<th scope="col" class="org-right">shop_id</th>
+<th scope="col" class="org-right">item_id</th>
+<th scope="col" class="org-right">item_price</th>
+<th scope="col" class="org-right">item_cnt_day</th>
+<th scope="col" class="org-right">item_category_id</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-right">02.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">59</td>
+<td class="org-right">22154</td>
+<td class="org-right">999</td>
+<td class="org-right">1</td>
+<td class="org-right">37</td>
+</tr>
+<tr>
+<td class="org-right">03.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2552</td>
+<td class="org-right">899</td>
+<td class="org-right">1</td>
+<td class="org-right">58</td>
+</tr>
+<tr>
+<td class="org-right">05.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2552</td>
+<td class="org-right">899</td>
+<td class="org-right">-1</td>
+<td class="org-right">58</td>
+</tr>
+<tr>
+<td class="org-right">06.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2554</td>
+<td class="org-right">1709.05</td>
+<td class="org-right">1</td>
+<td class="org-right">58</td>
+</tr>
+<tr>
+<td class="org-right">15.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2555</td>
+<td class="org-right">1099</td>
+<td class="org-right">1</td>
+<td class="org-right">56</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span>counts = super_set[DataKeys.item_category].value_counts(sort=True)
+</pre></div>
+
+<div class="highlight"><pre><span></span>figure = pyplot.figure(figsize=(10, 8))
+axe = figure.gca()
+axe.set_title("Category Counts")
+axe.set_ylabel("Category")
+axe.set_xlabel("Count")
+# plot = axe.plot(counts.index, counts.item_id, 'o')
+plot = counts.plot.barh(ax=axe)
+</pre></div>
+
+<p>
+<img src="../files/posts/exploring-the-data/categories.png" alt="categories.png"><img src="categories.png" alt="categories.png"></p>
+
+<p>
+It looks like a few categories dominate the sales.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orga9360e5" class="outline-3">
+<h3 id="orga9360e5">What do the dates mean?</h3>
+<div class="outline-text-3" id="text-orga9360e5">
+<p>
+If you look at the head of the training data it looks like only one item was sold or returned per day. This seems like it wouldn't be the case, so lets see how many shops and items there are per day.
+</p>
+
+<div class="highlight"><pre><span></span>days = super_set.groupby(DataKeys.date)
+day_counts = days.count()
+</pre></div>
+
+<p>
+<code>day_counts</code> is just the number of entries there are for each day, regardless of how many of each item were sold per day.
+</p>
+
+<div class="highlight"><pre><span></span>figure =  pyplot.figure(figsize=(12, 10))
+axe = figure.gca()
+axe.set_title("Entries Per Day")
+axe.set_ylabel("Entries")
+axe.set_xlabel("Date")
+axe = axe.plot(day_counts.item_id, '.')
+</pre></div>
+
+<p>
+<img src="../files/posts/exploring-the-data/items_per_date.png" alt="items_per_date.png"><img src="items_per_date.png" alt="items_per_date.png"></p>
+
+<p>
+It looks like there was actually a lot of entries per date.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org9186c98" class="outline-2">
+<h2 id="org9186c98">Saving the Super Set</h2>
+<div class="outline-text-2" id="text-org9186c98">
+<div class="highlight"><pre><span></span>Helpers.pickle_it(super_set, "training_data")
+</pre></div>
+</div>
+</div>
+    </div>
+    <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
+<li><a class="tag p-category" href="../../categories/kaggle-data-exploration/" rel="tag">kaggle data exploration</a></li>
+        </ul>
+<ul class="pager hidden-print">
+<li class="previous">
+                <a href="../set-up-the-kaggle-command-line-command/" rel="prev" title="Set Up the Kaggle Command-Line Command">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../first-naive-try/" rel="next" title="First Naive Try">Next post</a>
+            </li>
+        </ul></nav></aside></article>
+</div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            Contents © 2018         <a href="mailto:necromuralist@protonmail.com">Cloistered Monkey</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png"></a><br>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+            
+        </footer>
+</div>
+</div>
+
+
+            <script src="../../assets/js/all-nocdn.js"></script><script>$('a.image-reference:not(.islink) img:not(.islink)').parent().colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates -->
+</body>
+</html>

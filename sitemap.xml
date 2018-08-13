@@ -15,11 +15,11 @@
  </url>
  <url>
   <loc>https://necromuralist.github.io/Kaggle-Competitions/archive.html</loc>
-  <lastmod>2018-08-06T14:08:00Z</lastmod>
+  <lastmod>2018-08-13T03:39:00Z</lastmod>
  </url>
  <url>
   <loc>https://necromuralist.github.io/Kaggle-Competitions/categories/</loc>
-  <lastmod>2018-08-06T14:08:00Z</lastmod>
+  <lastmod>2018-08-12T16:27:00Z</lastmod>
  </url>
  <url>
   <loc>https://necromuralist.github.io/Kaggle-Competitions/categories/basics-algorithms/</loc>
@@ -34,24 +34,76 @@
   <lastmod>2018-08-05T02:28:00Z</lastmod>
  </url>
  <url>
+  <loc>https://necromuralist.github.io/Kaggle-Competitions/categories/cat_about/</loc>
+  <lastmod>2018-08-11T20:58:00Z</lastmod>
+ </url>
+ <url>
   <loc>https://necromuralist.github.io/Kaggle-Competitions/categories/cat_basics/</loc>
   <lastmod>2018-08-05T02:28:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://necromuralist.github.io/Kaggle-Competitions/categories/cat_exploration/</loc>
+  <lastmod>2018-08-11T23:18:00Z</lastmod>
  </url>
  <url>
   <loc>https://necromuralist.github.io/Kaggle-Competitions/categories/cat_gbdt/</loc>
   <lastmod>2018-08-05T02:28:00Z</lastmod>
  </url>
  <url>
+  <loc>https://necromuralist.github.io/Kaggle-Competitions/categories/cat_howto/</loc>
+  <lastmod>2018-08-11T20:58:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://necromuralist.github.io/Kaggle-Competitions/categories/cat_naive/</loc>
+  <lastmod>2018-08-12T16:27:00Z</lastmod>
+ </url>
+ <url>
   <loc>https://necromuralist.github.io/Kaggle-Competitions/categories/cat_pandas/</loc>
   <lastmod>2018-08-06T14:08:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://necromuralist.github.io/Kaggle-Competitions/categories/cat_preprocessing/</loc>
+  <lastmod>2018-08-11T20:58:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://necromuralist.github.io/Kaggle-Competitions/categories/features-preprocessing/</loc>
+  <lastmod>2018-08-11T20:58:00Z</lastmod>
  </url>
  <url>
   <loc>https://necromuralist.github.io/Kaggle-Competitions/categories/gbdt-basics/</loc>
   <lastmod>2018-08-05T02:28:00Z</lastmod>
  </url>
  <url>
+  <loc>https://necromuralist.github.io/Kaggle-Competitions/categories/kaggle-competition-about/</loc>
+  <lastmod>2018-08-11T20:58:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://necromuralist.github.io/Kaggle-Competitions/categories/kaggle-data-exploration/</loc>
+  <lastmod>2018-08-11T23:18:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://necromuralist.github.io/Kaggle-Competitions/categories/kaggle-howto/</loc>
+  <lastmod>2018-08-11T20:58:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://necromuralist.github.io/Kaggle-Competitions/categories/naive-model/</loc>
+  <lastmod>2018-08-12T16:27:00Z</lastmod>
+ </url>
+ <url>
   <loc>https://necromuralist.github.io/Kaggle-Competitions/categories/pandas-basics/</loc>
   <lastmod>2018-08-06T14:08:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://necromuralist.github.io/Kaggle-Competitions/posts/exploring-the-data/</loc>
+  <lastmod>2018-08-12T16:26:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://necromuralist.github.io/Kaggle-Competitions/posts/feature-preprocessing/</loc>
+  <lastmod>2018-08-11T20:58:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://necromuralist.github.io/Kaggle-Competitions/posts/first-naive-try/</loc>
+  <lastmod>2018-08-12T16:27:00Z</lastmod>
  </url>
  <url>
   <loc>https://necromuralist.github.io/Kaggle-Competitions/posts/kaggle-mechanics/</loc>
@@ -68,6 +120,14 @@
  <url>
   <loc>https://necromuralist.github.io/Kaggle-Competitions/posts/real-world-vs-kaggle/</loc>
   <lastmod>2018-08-05T02:28:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://necromuralist.github.io/Kaggle-Competitions/posts/set-up-the-kaggle-command-line-command/</loc>
+  <lastmod>2018-08-11T23:16:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://necromuralist.github.io/Kaggle-Competitions/posts/the-competition/</loc>
+  <lastmod>2018-08-11T20:58:00Z</lastmod>
  </url>
  <url>
   <loc>https://necromuralist.github.io/Kaggle-Competitions/posts/will-a-gbdt-performance-drop-if-we-remove-the-first-tree/</loc>

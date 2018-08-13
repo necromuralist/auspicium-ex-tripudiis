@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="About the kaggle competition.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Competition | Notes on Kaggle</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="../../rss.xml">
+<link rel="canonical" href="https://necromuralist.github.io/Kaggle-Competitions/posts/the-competition/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script><meta name="author" content="Cloistered Monkey">
+<link rel="prev" href="../feature-preprocessing/" title="Feature Preprocessing" type="text/html">
+<link rel="next" href="../set-up-the-kaggle-command-line-command/" title="Set Up the Kaggle Command-Line Command" type="text/html">
+<meta property="og:site_name" content="Notes on Kaggle">
+<meta property="og:title" content="The Competition">
+<meta property="og:url" content="https://necromuralist.github.io/Kaggle-Competitions/posts/the-competition/">
+<meta property="og:description" content="About the kaggle competition.">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2018-08-11T13:14:17-07:00">
+<meta property="article:tag" content="kaggle competition about">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-default navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://necromuralist.github.io/Kaggle-Competitions/">
+
+                <span id="blog-title">Notes on Kaggle</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="https://necromuralist.github.io/">The Cloistered Monkey</a>
+                </li>
+<li>
+<a href="../../archive.html">Archive</a>
+                </li>
+<li>
+<a href="../../categories/">Tags</a>
+                </li>
+<li>
+<a href="../../rss.xml">RSS feed</a>
+
+                
+            </li>
+</ul>
+<!-- Google custom search --><form method="get" action="https://www.google.com/search" class="navbar-form navbar-right" role="search">
+<div class="form-group">
+<input type="text" name="q" class="form-control" placeholder="Search">
+</div>
+<button type="submit" class="btn btn-primary">
+	<span class="glyphicon glyphicon-search"></span>
+</button>
+<input type="hidden" name="sitesearch" value="https://necromuralist.github.io/Kaggle-Competitions/">
+</form>
+<!-- End of custom search -->
+
+
+            <ul class="nav navbar-nav navbar-right">
+<li>
+    <a href="index.org" id="sourcelink">Source</a>
+    </li>
+
+                
+            </ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+            
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">The Competition</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                    Cloistered Monkey
+            </span></p>
+            <p class="dateline"><a href="." rel="bookmark"><time class="published dt-published" datetime="2018-08-11T13:14:17-07:00" itemprop="datePublished" title="2018-08-11 13:14">2018-08-11 13:14</time></a></p>
+            
+        <p class="sourceline"><a href="index.org" class="sourcelink">Source</a></p>
+
+        </div>
+        
+
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orga5cff13">What is this about?</a></li>
+<li><a href="#org8f51605">What is the data made up of?</a></li>
+<li><a href="#org19b677e">How will you be evaluated?</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orga5cff13" class="outline-2">
+<h2 id="orga5cff13">What is this about?</h2>
+<div class="outline-text-2" id="text-orga5cff13">
+<p>
+This is about the <a href="https://www.kaggle.com/c/competitive-data-science-final-project">kaggle competition</a> to predict future sales based on prior sale data. You are given a data set made up of prior sales and asked to predict how much each product will sell over the next month.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org8f51605" class="outline-2">
+<h2 id="org8f51605">What is the data made up of?</h2>
+<div class="outline-text-2" id="text-org8f51605">
+</div>
+<div id="outline-container-org74d7de2" class="outline-3">
+<h3 id="org74d7de2">The Source</h3>
+<div class="outline-text-3" id="text-org74d7de2">
+<p>
+The data comes from the <a href="http://1c.ru/eng/title.htm">1C Company</a>, a Russian company that describes themselves on their website like this.
+</p>
+
+<blockquote>
+<p>
+Founded in 1991 1C Company specializes in development, distribution, publishing and support of mass-market software.
+</p>
+
+<p>
+At present 8000 dealers from 600 cities cooperate with 1C. About 7500 teams constitute the 1C:Franchising partner network,which is a main channel of value-adding for 1C products. Service-partners provide regular information and technological support for 1C software customers. The network of authorized training centers is also operating.
+</p>
+
+<p>
+1C is the official distributor of such world-famous vendors as Microsoft, Novell, Borland, Symantec, ABBYY, Kaspersky Lab, ProMT, Eset Software and over 100 other software vendors. 1C offers more than 10 000 titles of software for office and home use. 
+</p>
+</blockquote>
+</div>
+</div>
+
+<div id="outline-container-orga4466f9" class="outline-3">
+<h3 id="orga4466f9">Getting it</h3>
+<div class="outline-text-3" id="text-orga4466f9">
+<p>
+It looks like the data-set is the same one that I used for the Pandas example, but I'll download it anyway to be safe.
+</p>
+
+<pre class="example">
+mkdir data
+kaggle competitions download competitive-data-science-final-project --path data
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org2c74816" class="outline-3">
+<h3 id="org2c74816">The Description</h3>
+<div class="outline-text-3" id="text-org2c74816">
+<blockquote>
+<p>
+You are provided with daily historical sales data. The task is to forecast the total amount of products sold in every shop for the test set. Note that the list of shops and products slightly changes every month. Creating a robust model that can handle such situations is part of the challenge.
+</p>
+</blockquote>
+</div>
+
+
+<div id="outline-container-org6b6afa9" class="outline-4">
+<h4 id="org6b6afa9">Files</h4>
+<div class="outline-text-4" id="text-org6b6afa9">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-left">
+<col class="org-left">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-left">File Name</th>
+<th scope="col" class="org-left">Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-left">sales_train.csv</td>
+<td class="org-left">the training set. Daily historical data from January 2013 to October 2015.</td>
+</tr>
+<tr>
+<td class="org-left">test.csv</td>
+<td class="org-left">the test set. You need to forecast the sales for these shops and products for November 2015.</td>
+</tr>
+<tr>
+<td class="org-left">sample_submission.csv</td>
+<td class="org-left">a sample submission file in the correct format.</td>
+</tr>
+<tr>
+<td class="org-left">items.csv</td>
+<td class="org-left">supplemental information about the items/products.</td>
+</tr>
+<tr>
+<td class="org-left">item_categories.csv</td>
+<td class="org-left">supplemental information about the items categories.</td>
+</tr>
+<tr>
+<td class="org-left">shops.csv</td>
+<td class="org-left">supplemental information about the shops.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+<div id="outline-container-orgb629eaa" class="outline-4">
+<h4 id="orgb629eaa">Features</h4>
+<div class="outline-text-4" id="text-orgb629eaa">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-left">
+<col class="org-left">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-left">Column Name</th>
+<th scope="col" class="org-left">Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-left">ID</td>
+<td class="org-left">an Id that represents a (Shop, Item) tuple within the test set</td>
+</tr>
+<tr>
+<td class="org-left">shop_id</td>
+<td class="org-left">unique identifier of a shop</td>
+</tr>
+<tr>
+<td class="org-left">item_id</td>
+<td class="org-left">unique identifier of a product</td>
+</tr>
+<tr>
+<td class="org-left">item_category_id</td>
+<td class="org-left">unique identifier of item category</td>
+</tr>
+<tr>
+<td class="org-left">item_cnt_day</td>
+<td class="org-left">number of products sold. You are predicting a monthly amount of this measure</td>
+</tr>
+<tr>
+<td class="org-left">item_price</td>
+<td class="org-left">current price of an item</td>
+</tr>
+<tr>
+<td class="org-left">date</td>
+<td class="org-left">date in format dd/mm/yyyy</td>
+</tr>
+<tr>
+<td class="org-left">date_block_num</td>
+<td class="org-left">a consecutive month number, used for convenience. January 2013 is 0, February 2013 is 1,…, October 2015 is 33</td>
+</tr>
+<tr>
+<td class="org-left">item_name</td>
+<td class="org-left">name of item</td>
+</tr>
+<tr>
+<td class="org-left">shop_name</td>
+<td class="org-left">name of shop</td>
+</tr>
+<tr>
+<td class="org-left">item_category_name</td>
+<td class="org-left">name of item category</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org19b677e" class="outline-2">
+<h2 id="org19b677e">How will you be evaluated?</h2>
+<div class="outline-text-2" id="text-org19b677e">
+</div>
+<div id="outline-container-org7baeffc" class="outline-3">
+<h3 id="org7baeffc">Submission Format</h3>
+<div class="outline-text-3" id="text-org7baeffc">
+<p>
+You will submit a comma-separated file with two columns, the product ID and the total number of sales. It should look like this.
+</p>
+
+<pre class="example">
+ID,item_cnt_month
+0,5
+1,3
+2,6
+</pre>
+</div>
+</div>
+
+
+<div id="outline-container-orgedf2743" class="outline-3">
+<h3 id="orgedf2743">Scoring</h3>
+<div class="outline-text-3" id="text-orgedf2743">
+<p>
+You will be scored base on the <a href="https://en.wikipedia.org/wiki/Root-mean-square_deviation">Root Mean Square Error (RMSE)</a>. The page says that the true target values are clipped to the <code>[0,20]</code> range and the example given shows <code>0.5</code> as the <code>item_cnt_month</code> values, neither of which makes any sense to me at the moment.
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-org5d85106" class="outline-3">
+<h3 id="org5d85106">The meaning of the target</h3>
+<div class="outline-text-3" id="text-org5d85106">
+<p>
+According to <a href="https://www.kaggle.com/c/competitive-data-science-final-project/discussion/48251">this thread</a> you need to <a href="https://docs.scipy.org/doc/numpy-1.13.0/reference/generated/numpy.clip.html">clip</a> the predictions back to that range (make anything less than zero a zero and anything more than twenty a twenty).
+</p>
+</div>
+</div>
+</div>
+    </div>
+    <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
+<li><a class="tag p-category" href="../../categories/kaggle-competition-about/" rel="tag">kaggle competition about</a></li>
+        </ul>
+<ul class="pager hidden-print">
+<li class="previous">
+                <a href="../feature-preprocessing/" rel="prev" title="Feature Preprocessing">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../set-up-the-kaggle-command-line-command/" rel="next" title="Set Up the Kaggle Command-Line Command">Next post</a>
+            </li>
+        </ul></nav></aside></article>
+</div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            Contents © 2018         <a href="mailto:necromuralist@protonmail.com">Cloistered Monkey</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png"></a><br>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+            
+        </footer>
+</div>
+</div>
+
+
+            <script src="../../assets/js/all-nocdn.js"></script><script>$('a.image-reference:not(.islink) img:not(.islink)').parent().colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates -->
+</body>
+</html>

@@ -13,7 +13,7 @@
 <link rel="alternate" type="application/rss+xml" title="RSS" href="rss.xml">
 <link rel="canonical" href="https://necromuralist.github.io/Kaggle-Competitions/">
 <!--[if lt IE 9]><script src="assets/js/html5.js"></script><![endif]--><script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
-</script><link rel="prefetch" href="posts/pandas-basics/" type="text/html">
+</script><link rel="prefetch" href="posts/first-naive-try/" type="text/html">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -81,148 +81,1385 @@
 
     
 <div class="postindex">
-    <article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/pandas-basics/" class="u-url">Revisiting Pandas (Yet Again)</a></h1>
+    <article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/first-naive-try/" class="u-url">First Naive Try</a></h1>
         <div class="metadata">
             <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
                 Cloistered Monkey
             </span></p>
-            <p class="dateline"><a href="posts/pandas-basics/" rel="bookmark"><time class="published dt-published" datetime="2018-08-05T12:56:23-07:00" title="2018-08-05 12:56">2018-08-05 12:56</time></a></p>
+            <p class="dateline"><a href="posts/first-naive-try/" rel="bookmark"><time class="published dt-published" datetime="2018-08-11T19:37:37-07:00" title="2018-08-11 19:37">2018-08-11 19:37</time></a></p>
+        </div>
+    </header><div class="e-content entry-content">
+    <div id="outline-container-org384e3a1" class="outline-2">
+<h2 id="org384e3a1">Imports</h2>
+<div class="outline-text-2" id="text-org384e3a1">
+<div class="highlight"><pre><span></span># python standard library
+import warnings
+import os
+import pickle
+
+warnings.filterwarnings("ignore", message="numpy.dtype size changed")
+warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
+
+# from pypi
+import numpy
+import pandas
+from sklearn.metrics import mean_squared_error
+from tabulate import tabulate
+from xgboost import XGBRegressor
+</pre></div>
+</div>
+</div>
+<div id="outline-container-org889940c" class="outline-2">
+<h2 id="org889940c">Loading the Data</h2>
+<div class="outline-text-2" id="text-org889940c">
+<div class="highlight"><pre><span></span>def unpickle(name):
+    """loads the pickled object from the data folder
+
+    Args;
+     name: name of the pickle without the folder or extension
+
+    Returns:
+     object: the un-pickled object
+    """
+    with open("../data/{}.pkl".format(name), "rb") as unpickler:
+	unpickled = pickle.load(unpickler)
+    return unpickled
+</pre></div>
+
+<div class="highlight"><pre><span></span>Helpers = unpickle("Helpers")
+</pre></div>
+
+<div class="highlight"><pre><span></span>DataSource = unpickle("DataSource")
+</pre></div>
+
+<div class="highlight"><pre><span></span>training_data = unpickle("training_data")
+</pre></div>
+
+<div class="highlight"><pre><span></span>Helpers.print_head(training_data)
+</pre></div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-right">date</th>
+<th scope="col" class="org-right">date<sub>block</sub><sub>num</sub>
+</th>
+<th scope="col" class="org-right">shop<sub>id</sub>
+</th>
+<th scope="col" class="org-right">item<sub>id</sub>
+</th>
+<th scope="col" class="org-right">item<sub>price</sub>
+</th>
+<th scope="col" class="org-right">item<sub>cnt</sub><sub>day</sub>
+</th>
+<th scope="col" class="org-right">item<sub>category</sub><sub>id</sub>
+</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-right">02.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">59</td>
+<td class="org-right">22154</td>
+<td class="org-right">999</td>
+<td class="org-right">1</td>
+<td class="org-right">37</td>
+</tr>
+<tr>
+<td class="org-right">03.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2552</td>
+<td class="org-right">899</td>
+<td class="org-right">1</td>
+<td class="org-right">58</td>
+</tr>
+<tr>
+<td class="org-right">05.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2552</td>
+<td class="org-right">899</td>
+<td class="org-right">-1</td>
+<td class="org-right">58</td>
+</tr>
+<tr>
+<td class="org-right">06.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2554</td>
+<td class="org-right">1709.05</td>
+<td class="org-right">1</td>
+<td class="org-right">58</td>
+</tr>
+<tr>
+<td class="org-right">15.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2555</td>
+<td class="org-right">1099</td>
+<td class="org-right">1</td>
+<td class="org-right">56</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+    </div>
+    </article><article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/exploring-the-data/" class="u-url">Exploring The Data</a></h1>
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                Cloistered Monkey
+            </span></p>
+            <p class="dateline"><a href="posts/exploring-the-data/" rel="bookmark"><time class="published dt-published" datetime="2018-08-11T15:26:40-07:00" title="2018-08-11 15:26">2018-08-11 15:26</time></a></p>
         </div>
     </header><div class="e-content entry-content">
     <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="posts/pandas-basics/#org5a6b577">Description</a></li>
-<li><a href="posts/pandas-basics/#orgcc1a308">Pandas Functions and Methods Used</a></li>
-<li><a href="posts/pandas-basics/#org7d4745a">Imports</a></li>
-<li><a href="posts/pandas-basics/#orgf005b5e">Confirmed</a></li>
-<li><a href="posts/pandas-basics/#org5f7f496">The Data</a></li>
-<li><a href="posts/pandas-basics/#orgfb31c34">Data Description</a></li>
-<li><a href="posts/pandas-basics/#orgd0f6fec">A Warm Up</a></li>
-<li><a href="posts/pandas-basics/#org1318c8a">Questions</a></li>
+<li><a href="posts/exploring-the-data/#org89805ac">Imports</a></li>
+<li><a href="posts/exploring-the-data/#orgad73860">Helpers</a></li>
+<li><a href="posts/exploring-the-data/#orgc277e11">Constants</a></li>
+<li><a href="posts/exploring-the-data/#orge38dcd7">The Files</a></li>
+<li><a href="posts/exploring-the-data/#org1ee53b6">Some Counts</a></li>
+<li><a href="posts/exploring-the-data/#org6f7e5dc">The Official Feature Descriptions</a></li>
+<li><a href="posts/exploring-the-data/#orga919018">The Training Set</a></li>
+<li><a href="posts/exploring-the-data/#orga0928f1">Building Up the Training Set</a></li>
+<li><a href="posts/exploring-the-data/#org9186c98">Saving the Super Set</a></li>
 </ul>
 </div>
 </div>
-
-<div id="outline-container-org5a6b577" class="outline-2">
-<h2 id="org5a6b577">Description</h2>
-<div class="outline-text-2" id="text-org5a6b577">
+<div id="outline-container-org89805ac" class="outline-2">
+<h2 id="org89805ac">Imports</h2>
+<div class="outline-text-2" id="text-org89805ac">
+</div>
+<div id="outline-container-org910ed62" class="outline-3">
+<h3 id="org910ed62">Suppressing the Numpy Warnings</h3>
+<div class="outline-text-3" id="text-org910ed62">
 <p>
-This is a review of Pandas' Basics with an emphasis on using <a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.groupby.html">groupby</a>.
+When you import pandas you get some warnings:
+</p>
+
+<pre class="example">
+/usr/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+  return f(*args, **kwds)
+/usr/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+  return f(*args, **kwds)
+</pre>
+
+<p>
+According to <a href="https://stackoverflow.com/questions/40845304/runtimewarning-numpy-dtype-size-changed-may-indicate-binary-incompatibility">Stack Overflow</a>, this is because <a href="https://www.scipy.org/">scipy</a> is built against an older version of <a href="http://www.numpy.org/">numpy</a>, but it shouldn't actually affect the way it works, so we should just suppress it.
+</p>
+
+<div class="highlight"><pre><span></span>import warnings
+warnings.filterwarnings("ignore", message="numpy.dtype size changed")
+warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
+</pre></div>
+
+
+<div class="highlight"><pre><span></span># python standard library
+import os
+import pickle
+
+# from pypi
+import matplotlib.pyplot as pyplot
+import numpy
+import pandas
+import seaborn
+from tabulate import tabulate
+</pre></div>
+
+<div class="highlight"><pre><span></span>% matplotlib inline
+</pre></div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgad73860" class="outline-2">
+<h2 id="orgad73860">Helpers</h2>
+<div class="outline-text-2" id="text-orgad73860">
+<p>
+Just some functions that keep coming up.
+</p>
+
+<div class="highlight"><pre><span></span>class Helpers:
+    """Helper functions"""
+    pickle_target = "../pickles/"
+    pickle_target_string = pickle_target + "{}.pkl"
+
+    @staticmethod
+    def print_head(frame):
+	"""prints the head of the given data frame
+
+	Args:
+	 frame (pandas.DataFrame): data frame to print as a table
+	"""
+	print(tabulate(frame.head(), headers="keys", tablefmt="orgtbl",
+		       showindex=False))
+	return
+
+    @staticmethod
+    def print_table(data, showindex=True):
+	"""print the data
+
+	Args:
+	 data: some kind of data-frame
+	"""
+	print(tabulate(data, headers="keys", tablefmt="orgtbl",
+		       showindex=showindex))
+	return
+
+    @staticmethod
+    def pickle_it(thing, name=None):
+	"""save the object to a pickle in the data folder
+
+	Args:
+	 thing: object to pickle
+	 name: thing to call the pickle
+	"""
+	name = name if name is not None else thing.__name__
+	with open(
+		os.path.join(
+		    Helpers.pickle_target_string.format(name)),
+		"wb") as pickler:
+	    pickle.dump(thing, pickler)
+	return
+</pre></div>
+
+<div class="highlight"><pre><span></span>Helpers.pickle_it(Helpers)
+</pre></div>
+</div>
+</div>
+
+<div id="outline-container-orgc277e11" class="outline-2">
+<h2 id="orgc277e11">Constants</h2>
+<div class="outline-text-2" id="text-orgc277e11">
+<p>
+As always, I'll try to put constants in the same place.
 </p>
 </div>
+
+<div id="outline-container-orgd5ebadd" class="outline-3">
+<h3 id="orgd5ebadd">Data Source</h3>
+<div class="outline-text-3" id="text-orgd5ebadd">
+<div class="highlight"><pre><span></span>class DataSource:
+    """Strings for the files"""
+    directory = "../data/"
+
+DataSource.file_names = os.listdir(DataSource.directory)
+for name in DataSource.file_names:
+    setattr(DataSource, name.split('.')[0], name)
+
+DataSource.paths = [os.path.join(DataSource.directory, name)
+		    for name in DataSource.file_names]
+</pre></div>
+
+<div class="highlight"><pre><span></span>Helpers.pickle_it(DataSource)
+</pre></div>
+</div>
 </div>
 
-<div id="outline-container-orgcc1a308" class="outline-2">
-<h2 id="orgcc1a308">Pandas Functions and Methods Used</h2>
-<div class="outline-text-2" id="text-orgcc1a308">
+<div id="outline-container-org0193619" class="outline-3">
+<h3 id="org0193619">Data Keys</h3>
+<div class="outline-text-3" id="text-org0193619">
+<div class="highlight"><pre><span></span>class DataKeys:
+    """Column names/keys for the data."""
+    item_category = "item_category_id"
+    shop = "shop_id"
+    item = "item_id"
+    date = "date"
+</pre></div>
+
+<div class="highlight"><pre><span></span>Helpers.pickle_it(DataKeys)
+</pre></div>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orge38dcd7" class="outline-2">
+<h2 id="orge38dcd7">The Files</h2>
+<div class="outline-text-2" id="text-orge38dcd7">
+<p>
+These are the files we are given.
+</p>
+
+<div class="highlight"><pre><span></span>for name in DataSource.file_names:
+    print(" - {}".format(name))
+</pre></div>
+
 <ul class="org-ul">
-<li><a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.describe.html"><code>describe</code></a></li>
-<li><a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.groupby.html"><code>groupby</code></a></li>
-<li><a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.head.html"><code>head</code></a></li>
-<li><a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.idxmax.html"><code>idxmax</code></a></li>
-<li><a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.isin.html"><code>isin</code></a></li>
-<li><a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.loc.html"><code>loc</code></a></li>
-<li><a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.var.html"><code>var</code></a></li>
-<li><a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.Series.abs.html"><code>abs</code></a></li>
-<li><a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.Series.nunique.html"><code>nunique</code></a></li>
-<li><a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.Series.str.extract.html"><code>str.extract</code></a></li>
-<li><a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.concat.html"><code>concat</code></a></li>
-<li><a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.core.groupby.DataFrameGroupBy.agg.html"><code>agg</code></a></li>
-<li><a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.read_csv.html"><code>read_csv</code></a></li>
+<li>sample_submission.csv.gz</li>
+<li>shops.csv</li>
+<li>items.csv</li>
+<li>sales_train.csv.gz</li>
+<li>item_categories.csv</li>
+<li>test.csv.gz</li>
+</ul>
+<p>
+I was originally thinking I would need to unzip the gzipped files but apparently the <a href="https://pandas.pydata.org/pandas-docs/stable/io.html#io-read-csv-table"><code>Pandas.read_csv</code></a> function will decompress them automagically, so I guess I can leave them.
+</p>
+
+<div class="highlight"><pre><span></span>frames = {DataSource.file_names[index]: pandas.read_csv(path)
+	  for index, path in enumerate(DataSource.paths)}
+</pre></div>
+
+<div class="highlight"><pre><span></span>for name, frame in frames.items():
+    print("\n** {}".format(name))
+    Helpers.print_head(frame)
+    print()
+    print(frame.info())
+</pre></div>
+</div>
+
+<div id="outline-container-orgc7d79de" class="outline-3">
+<h3 id="orgc7d79de">sample_submission.csv.gz</h3>
+<div class="outline-text-3" id="text-orgc7d79de">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-right">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-right">ID</th>
+<th scope="col" class="org-right">item_cnt_month</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-right">0</td>
+<td class="org-right">0.5</td>
+</tr>
+<tr>
+<td class="org-right">1</td>
+<td class="org-right">0.5</td>
+</tr>
+<tr>
+<td class="org-right">2</td>
+<td class="org-right">0.5</td>
+</tr>
+<tr>
+<td class="org-right">3</td>
+<td class="org-right">0.5</td>
+</tr>
+<tr>
+<td class="org-right">4</td>
+<td class="org-right">0.5</td>
+</tr>
+</tbody>
+</table>
+<p>
+&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 214200 entries, 0 to 214199
+Data columns (total 2 columns):
+ID                214200 non-null int64
+item_cnt_month    214200 non-null float64
+dtypes: float64(1), int64(1)
+memory usage: 3.3 MB
+None
+</p>
+</div>
+</div>
+
+<div id="outline-container-org98cfc1a" class="outline-3">
+<h3 id="org98cfc1a">shops.csv</h3>
+<div class="outline-text-3" id="text-org98cfc1a">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-left">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-left">shop_name</th>
+<th scope="col" class="org-right">shop_id</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-left">!Якутск Орджоникидзе, 56 фран</td>
+<td class="org-right">0</td>
+</tr>
+<tr>
+<td class="org-left">!Якутск ТЦ "Центральный" фран</td>
+<td class="org-right">1</td>
+</tr>
+<tr>
+<td class="org-left">Адыгея ТЦ "Мега"</td>
+<td class="org-right">2</td>
+</tr>
+<tr>
+<td class="org-left">Балашиха ТРК "Октябрь-Киномир"</td>
+<td class="org-right">3</td>
+</tr>
+<tr>
+<td class="org-left">Волжский ТЦ "Волга Молл"</td>
+<td class="org-right">4</td>
+</tr>
+</tbody>
+</table>
+<p>
+&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 60 entries, 0 to 59
+Data columns (total 2 columns):
+shop_name    60 non-null object
+shop_id      60 non-null int64
+dtypes: int64(1), object(1)
+memory usage: 1.0+ KB
+None
+</p>
+</div>
+</div>
+
+<div id="outline-container-org50f8fef" class="outline-3">
+<h3 id="org50f8fef">items.csv</h3>
+<div class="outline-text-3" id="text-org50f8fef">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-left">
+<col class="org-right">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-left">item_name</th>
+<th scope="col" class="org-right">item_id</th>
+<th scope="col" class="org-right">item_category_id</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-left">! ВО ВЛАСТИ НАВАЖДЕНИЯ (ПЛАСТ.)         D</td>
+<td class="org-right">0</td>
+<td class="org-right">40</td>
+</tr>
+<tr>
+<td class="org-left">!ABBYY FineReader 12 Professional Edition Full [PC, Цифровая версия]</td>
+<td class="org-right">1</td>
+<td class="org-right">76</td>
+</tr>
+<tr>
+<td class="org-left">***В ЛУЧАХ СЛАВЫ   (UNV)                    D</td>
+<td class="org-right">2</td>
+<td class="org-right">40</td>
+</tr>
+<tr>
+<td class="org-left">***ГОЛУБАЯ ВОЛНА  (Univ)                      D</td>
+<td class="org-right">3</td>
+<td class="org-right">40</td>
+</tr>
+<tr>
+<td class="org-left">***КОРОБКА (СТЕКЛО)                       D</td>
+<td class="org-right">4</td>
+<td class="org-right">40</td>
+</tr>
+</tbody>
+</table>
+<p>
+&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 22170 entries, 0 to 22169
+Data columns (total 3 columns):
+item_name           22170 non-null object
+item_id             22170 non-null int64
+item_category_id    22170 non-null int64
+dtypes: int64(2), object(1)
+memory usage: 519.7+ KB
+None
+</p>
+</div>
+</div>
+
+<div id="outline-container-org5bc0f27" class="outline-3">
+<h3 id="org5bc0f27">sales_train.csv.gz</h3>
+<div class="outline-text-3" id="text-org5bc0f27">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-right">date</th>
+<th scope="col" class="org-right">date_block_num</th>
+<th scope="col" class="org-right">shop_id</th>
+<th scope="col" class="org-right">item_id</th>
+<th scope="col" class="org-right">item_price</th>
+<th scope="col" class="org-right">item_cnt_day</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-right">02.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">59</td>
+<td class="org-right">22154</td>
+<td class="org-right">999</td>
+<td class="org-right">1</td>
+</tr>
+<tr>
+<td class="org-right">03.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2552</td>
+<td class="org-right">899</td>
+<td class="org-right">1</td>
+</tr>
+<tr>
+<td class="org-right">05.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2552</td>
+<td class="org-right">899</td>
+<td class="org-right">-1</td>
+</tr>
+<tr>
+<td class="org-right">06.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2554</td>
+<td class="org-right">1709.05</td>
+<td class="org-right">1</td>
+</tr>
+<tr>
+<td class="org-right">15.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2555</td>
+<td class="org-right">1099</td>
+<td class="org-right">1</td>
+</tr>
+</tbody>
+</table>
+<p>
+&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 2935849 entries, 0 to 2935848
+Data columns (total 6 columns):
+date              object
+date_block_num    int64
+shop_id           int64
+item_id           int64
+item_price        float64
+item_cnt_day      float64
+dtypes: float64(2), int64(3), object(1)
+memory usage: 134.4+ MB
+None
+</p>
+</div>
+</div>
+
+<div id="outline-container-org5c32342" class="outline-3">
+<h3 id="org5c32342">item_categories.csv</h3>
+<div class="outline-text-3" id="text-org5c32342">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-left">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-left">item_category_name</th>
+<th scope="col" class="org-right">item_category_id</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-left">PC - Гарнитуры/Наушники</td>
+<td class="org-right">0</td>
+</tr>
+<tr>
+<td class="org-left">Аксессуары - PS2</td>
+<td class="org-right">1</td>
+</tr>
+<tr>
+<td class="org-left">Аксессуары - PS3</td>
+<td class="org-right">2</td>
+</tr>
+<tr>
+<td class="org-left">Аксессуары - PS4</td>
+<td class="org-right">3</td>
+</tr>
+<tr>
+<td class="org-left">Аксессуары - PSP</td>
+<td class="org-right">4</td>
+</tr>
+</tbody>
+</table>
+<p>
+&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 84 entries, 0 to 83
+Data columns (total 2 columns):
+item_category_name    84 non-null object
+item_category_id      84 non-null int64
+dtypes: int64(1), object(1)
+memory usage: 1.4+ KB
+None
+</p>
+</div>
+</div>
+
+<div id="outline-container-orge9cf064" class="outline-3">
+<h3 id="orge9cf064">test.csv.gz</h3>
+<div class="outline-text-3" id="text-orge9cf064">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-right">ID</th>
+<th scope="col" class="org-right">shop_id</th>
+<th scope="col" class="org-right">item_id</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-right">0</td>
+<td class="org-right">5</td>
+<td class="org-right">5037</td>
+</tr>
+<tr>
+<td class="org-right">1</td>
+<td class="org-right">5</td>
+<td class="org-right">5320</td>
+</tr>
+<tr>
+<td class="org-right">2</td>
+<td class="org-right">5</td>
+<td class="org-right">5233</td>
+</tr>
+<tr>
+<td class="org-right">3</td>
+<td class="org-right">5</td>
+<td class="org-right">5232</td>
+</tr>
+<tr>
+<td class="org-right">4</td>
+<td class="org-right">5</td>
+<td class="org-right">5268</td>
+</tr>
+</tbody>
+</table>
+<p>
+&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 214200 entries, 0 to 214199
+Data columns (total 3 columns):
+ID         214200 non-null int64
+shop_id    214200 non-null int64
+item_id    214200 non-null int64
+dtypes: int64(3)
+memory usage: 4.9 MB
+None
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org1ee53b6" class="outline-2">
+<h2 id="org1ee53b6">Some Counts</h2>
+<div class="outline-text-2" id="text-org1ee53b6">
+</div>
+<div id="outline-container-orgb93cb44" class="outline-3">
+<h3 id="orgb93cb44">How much data is there in the training set?</h3>
+<div class="outline-text-3" id="text-orgb93cb44">
+<div class="highlight"><pre><span></span>print("There are {:,} rows in the traning set.".format(len(frames[DataSource.sales_train])))
+</pre></div>
+
+<p>
+There are 2,935,849 rows in the traning set.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org4239061" class="outline-3">
+<h3 id="org4239061">How many shops are there?</h3>
+<div class="outline-text-3" id="text-org4239061">
+<div class="highlight"><pre><span></span>print("There are {} shops.".format(len(frames[DataSource.shops])))
+</pre></div>
+
+<p>
+There are 60 shops.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orge08dd40" class="outline-3">
+<h3 id="orge08dd40">How Many Items Are There?</h3>
+<div class="outline-text-3" id="text-orge08dd40">
+<div class="highlight"><pre><span></span>print("There are {:,} items.".format(len(frames[DataSource.items])))
+</pre></div>
+
+<p>
+There are 22,170 items.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org90cd0e1" class="outline-3">
+<h3 id="org90cd0e1">How Many Item Categories are there?</h3>
+<div class="outline-text-3" id="text-org90cd0e1">
+<div class="highlight"><pre><span></span>print("There are {:,} categories.".format(len(frames[DataSource.item_categories])))
+</pre></div>
+
+<p>
+There are 84 categories.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org6f7e5dc" class="outline-2">
+<h2 id="org6f7e5dc">The Official Feature Descriptions</h2>
+<div class="outline-text-2" id="text-org6f7e5dc">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-left">
+<col class="org-left">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-left">Column Name</th>
+<th scope="col" class="org-left">Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-left">ID</td>
+<td class="org-left">an Id that represents a (Shop, Item) tuple within the test set</td>
+</tr>
+<tr>
+<td class="org-left">shop_id</td>
+<td class="org-left">unique identifier of a shop</td>
+</tr>
+<tr>
+<td class="org-left">item_id</td>
+<td class="org-left">unique identifier of a product</td>
+</tr>
+<tr>
+<td class="org-left">item_category_id</td>
+<td class="org-left">unique identifier of item category</td>
+</tr>
+<tr>
+<td class="org-left">item_cnt_day</td>
+<td class="org-left">number of products sold. You are predicting a monthly amount of this measure</td>
+</tr>
+<tr>
+<td class="org-left">item_price</td>
+<td class="org-left">current price of an item</td>
+</tr>
+<tr>
+<td class="org-left">date</td>
+<td class="org-left">date in format dd/mm/yyyy</td>
+</tr>
+<tr>
+<td class="org-left">date_block_num</td>
+<td class="org-left">a consecutive month number, used for convenience. January 2013 is 0, February 2013 is 1,…, October 2015 is 33</td>
+</tr>
+<tr>
+<td class="org-left">item_name</td>
+<td class="org-left">name of item</td>
+</tr>
+<tr>
+<td class="org-left">shop_name</td>
+<td class="org-left">name of shop</td>
+</tr>
+<tr>
+<td class="org-left">item_category_name</td>
+<td class="org-left">name of item category</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-orga919018" class="outline-2">
+<h2 id="orga919018">The Training Set</h2>
+<div class="outline-text-2" id="text-orga919018">
+<div class="highlight"><pre><span></span>print(super_set.dtypes)
+</pre></div>
+
+<p>
+date                 object
+date_block_num        int64
+shop_id               int64
+item_id               int64
+item_price          float64
+item_cnt_day        float64
+item_category_id      int64
+dtype: object
+</p>
+</div>
+
+<div id="outline-container-org8992fdf" class="outline-3">
+<h3 id="org8992fdf">Numeric Features</h3>
+<div class="outline-text-3" id="text-org8992fdf">
+<div class="highlight"><pre><span></span>Helpers.print_table(super_set.describe(include=numpy.number).T)
+</pre></div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-left">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-left"> </th>
+<th scope="col" class="org-right">count</th>
+<th scope="col" class="org-right">mean</th>
+<th scope="col" class="org-right">std</th>
+<th scope="col" class="org-right">min</th>
+<th scope="col" class="org-right">25%</th>
+<th scope="col" class="org-right">50%</th>
+<th scope="col" class="org-right">75%</th>
+<th scope="col" class="org-right">max</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-left">date_block_num</td>
+<td class="org-right">2.93585e+06</td>
+<td class="org-right">14.5699</td>
+<td class="org-right">9.42299</td>
+<td class="org-right">0</td>
+<td class="org-right">7</td>
+<td class="org-right">14</td>
+<td class="org-right">23</td>
+<td class="org-right">33</td>
+</tr>
+<tr>
+<td class="org-left">shop_id</td>
+<td class="org-right">2.93585e+06</td>
+<td class="org-right">33.0017</td>
+<td class="org-right">16.227</td>
+<td class="org-right">0</td>
+<td class="org-right">22</td>
+<td class="org-right">31</td>
+<td class="org-right">47</td>
+<td class="org-right">59</td>
+</tr>
+<tr>
+<td class="org-left">item_id</td>
+<td class="org-right">2.93585e+06</td>
+<td class="org-right">10197.2</td>
+<td class="org-right">6324.3</td>
+<td class="org-right">0</td>
+<td class="org-right">4476</td>
+<td class="org-right">9343</td>
+<td class="org-right">15684</td>
+<td class="org-right">22169</td>
+</tr>
+<tr>
+<td class="org-left">item_price</td>
+<td class="org-right">2.93585e+06</td>
+<td class="org-right">890.853</td>
+<td class="org-right">1729.8</td>
+<td class="org-right">-1</td>
+<td class="org-right">249</td>
+<td class="org-right">399</td>
+<td class="org-right">999</td>
+<td class="org-right">307980</td>
+</tr>
+<tr>
+<td class="org-left">item_cnt_day</td>
+<td class="org-right">2.93585e+06</td>
+<td class="org-right">1.24264</td>
+<td class="org-right">2.61883</td>
+<td class="org-right">-22</td>
+<td class="org-right">1</td>
+<td class="org-right">1</td>
+<td class="org-right">1</td>
+<td class="org-right">2169</td>
+</tr>
+<tr>
+<td class="org-left">item_category_id</td>
+<td class="org-right">2.93585e+06</td>
+<td class="org-right">40.0014</td>
+<td class="org-right">17.1008</td>
+<td class="org-right">0</td>
+<td class="org-right">28</td>
+<td class="org-right">40</td>
+<td class="org-right">55</td>
+<td class="org-right">83</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-org1e1e17b" class="outline-3">
+<h3 id="org1e1e17b">Categorical Features</h3>
+<div class="outline-text-3" id="text-org1e1e17b">
+<div class="highlight"><pre><span></span>Helpers.print_table(super_set.describe(include=[numpy.object, pandas.Categorical]).T)
+</pre></div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-left">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-left"> </th>
+<th scope="col" class="org-right">count</th>
+<th scope="col" class="org-right">unique</th>
+<th scope="col" class="org-right">top</th>
+<th scope="col" class="org-right">freq</th>
+</tr></thead>
+<tbody><tr>
+<td class="org-left">date</td>
+<td class="org-right">2.93585e+06</td>
+<td class="org-right">1034</td>
+<td class="org-right">28.12.2013</td>
+<td class="org-right">9434</td>
+</tr></tbody>
+</table>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orga0928f1" class="outline-2">
+<h2 id="orga0928f1">Building Up the Training Set</h2>
+<div class="outline-text-2" id="text-orga0928f1">
+<p>
+Since we have some variables in separate sets I thought it would be useful to combine them into a single training set.
+</p>
+</div>
+
+<div id="outline-container-org7805929" class="outline-3">
+<h3 id="org7805929">Building the Super Set</h3>
+<div class="outline-text-3" id="text-org7805929">
+<div class="highlight"><pre><span></span>super_set = frames[DataSource.sales_train].copy()
+</pre></div>
+
+<div class="highlight"><pre><span></span>Helpers.print_head(super_set)
+</pre></div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-right">date</th>
+<th scope="col" class="org-right">date_block_num</th>
+<th scope="col" class="org-right">shop_id</th>
+<th scope="col" class="org-right">item_id</th>
+<th scope="col" class="org-right">item_price</th>
+<th scope="col" class="org-right">item_cnt_day</th>
+<th scope="col" class="org-right">item_category_id</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-right">02.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">59</td>
+<td class="org-right">22154</td>
+<td class="org-right">999</td>
+<td class="org-right">1</td>
+<td class="org-right">37</td>
+</tr>
+<tr>
+<td class="org-right">03.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2552</td>
+<td class="org-right">899</td>
+<td class="org-right">1</td>
+<td class="org-right">58</td>
+</tr>
+<tr>
+<td class="org-right">05.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2552</td>
+<td class="org-right">899</td>
+<td class="org-right">-1</td>
+<td class="org-right">58</td>
+</tr>
+<tr>
+<td class="org-right">06.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2554</td>
+<td class="org-right">1709.05</td>
+<td class="org-right">1</td>
+<td class="org-right">58</td>
+</tr>
+<tr>
+<td class="org-right">15.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2555</td>
+<td class="org-right">1099</td>
+<td class="org-right">1</td>
+<td class="org-right">56</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-org393b70a" class="outline-3">
+<h3 id="org393b70a">Adding The Category ID</h3>
+<div class="outline-text-3" id="text-org393b70a">
+<div class="highlight"><pre><span></span>super_set[DataKeys.item_category] = super_set.item_id.apply(
+    lambda item: frames[DataSource.items].loc[item, DataKeys.item_category])
+</pre></div>
+
+<div class="highlight"><pre><span></span>Helpers.print_head(super_set)
+</pre></div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-right">date</th>
+<th scope="col" class="org-right">date_block_num</th>
+<th scope="col" class="org-right">shop_id</th>
+<th scope="col" class="org-right">item_id</th>
+<th scope="col" class="org-right">item_price</th>
+<th scope="col" class="org-right">item_cnt_day</th>
+<th scope="col" class="org-right">item_category_id</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-right">02.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">59</td>
+<td class="org-right">22154</td>
+<td class="org-right">999</td>
+<td class="org-right">1</td>
+<td class="org-right">37</td>
+</tr>
+<tr>
+<td class="org-right">03.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2552</td>
+<td class="org-right">899</td>
+<td class="org-right">1</td>
+<td class="org-right">58</td>
+</tr>
+<tr>
+<td class="org-right">05.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2552</td>
+<td class="org-right">899</td>
+<td class="org-right">-1</td>
+<td class="org-right">58</td>
+</tr>
+<tr>
+<td class="org-right">06.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2554</td>
+<td class="org-right">1709.05</td>
+<td class="org-right">1</td>
+<td class="org-right">58</td>
+</tr>
+<tr>
+<td class="org-right">15.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2555</td>
+<td class="org-right">1099</td>
+<td class="org-right">1</td>
+<td class="org-right">56</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span>counts = super_set[DataKeys.item_category].value_counts(sort=True)
+</pre></div>
+
+<div class="highlight"><pre><span></span>figure = pyplot.figure(figsize=(10, 8))
+axe = figure.gca()
+axe.set_title("Category Counts")
+axe.set_ylabel("Category")
+axe.set_xlabel("Count")
+# plot = axe.plot(counts.index, counts.item_id, 'o')
+plot = counts.plot.barh(ax=axe)
+</pre></div>
+
+<p>
+<img src="posts/files/posts/exploring-the-data/categories.png" alt="categories.png"><img src="posts/exploring-the-data/categories.png" alt="categories.png"></p>
+
+<p>
+It looks like a few categories dominate the sales.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orga9360e5" class="outline-3">
+<h3 id="orga9360e5">What do the dates mean?</h3>
+<div class="outline-text-3" id="text-orga9360e5">
+<p>
+If you look at the head of the training data it looks like only one item was sold or returned per day. This seems like it wouldn't be the case, so lets see how many shops and items there are per day.
+</p>
+
+<div class="highlight"><pre><span></span>days = super_set.groupby(DataKeys.date)
+day_counts = days.count()
+</pre></div>
+
+<p>
+<code>day_counts</code> is just the number of entries there are for each day, regardless of how many of each item were sold per day.
+</p>
+
+<div class="highlight"><pre><span></span>figure =  pyplot.figure(figsize=(12, 10))
+axe = figure.gca()
+axe.set_title("Entries Per Day")
+axe.set_ylabel("Entries")
+axe.set_xlabel("Date")
+axe = axe.plot(day_counts.item_id, '.')
+</pre></div>
+
+<p>
+<img src="posts/files/posts/exploring-the-data/items_per_date.png" alt="items_per_date.png"><img src="posts/exploring-the-data/items_per_date.png" alt="items_per_date.png"></p>
+
+<p>
+It looks like there was actually a lot of entries per date.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org9186c98" class="outline-2">
+<h2 id="org9186c98">Saving the Super Set</h2>
+<div class="outline-text-2" id="text-org9186c98">
+<div class="highlight"><pre><span></span>Helpers.pickle_it(super_set, "training_data")
+</pre></div>
+</div>
+</div>
+    </div>
+    </article><article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/set-up-the-kaggle-command-line-command/" class="u-url">Set Up the Kaggle Command-Line Command</a></h1>
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                Cloistered Monkey
+            </span></p>
+            <p class="dateline"><a href="posts/set-up-the-kaggle-command-line-command/" rel="bookmark"><time class="published dt-published" datetime="2018-08-11T13:37:44-07:00" title="2018-08-11 13:37">2018-08-11 13:37</time></a></p>
+        </div>
+    </header><div class="e-content entry-content">
+    <p>
+These are my notes as I set up the command-line interface. The official instructions are in the <a href="https://github.com/Kaggle/kaggle-api">README on github</a>.
+</p>
+
+<div id="outline-container-org7abe8e7" class="outline-2">
+<h2 id="org7abe8e7">Install the Command</h2>
+<div class="outline-text-2" id="text-org7abe8e7">
+<p>
+The code is available through <a href="https://pypi.org/project/kaggle/">pypi</a> so you can install it through pip. Their instructions say to install it at the user-level but I'm doing it in a <code>virtualenv</code> so that actually doesn't work for me, instead I did a regular <code>pip</code> install (after installing <code>wheel</code>).
+</p>
+
+<pre class="example">
+pip install kaggle
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org7060565" class="outline-2">
+<h2 id="org7060565">Get Your Credentials</h2>
+<div class="outline-text-2" id="text-org7060565">
+</div>
+<div id="outline-container-org6b2be0e" class="outline-3">
+<h3 id="org6b2be0e">Download the JSON File From Kaggle</h3>
+<div class="outline-text-3" id="text-org6b2be0e">
+<p>
+Log in to your kaggle account and click on the <i>Account</i> menu (it's hidden until you hover over the drop-down widget).
+</p>
+
+
+<div class="figure">
+<p><img src="posts/set-up-the-kaggle-command-line-command/kaggle_account_menu.png" alt="kaggle_account_menu.png"></p>
+</div>
+
+<p>
+Scroll down to the <i>API</i> box and click on <b>Create New API Token</b>.
+</p>
+
+
+<div class="figure">
+<p><img src="posts/set-up-the-kaggle-command-line-command/api_box.png" alt="api_box.png"></p>
+</div>
+
+<p>
+This will start a file download, if it prompts you save it to your computer.
+</p>
+
+
+<div class="figure">
+<p><img src="posts/set-up-the-kaggle-command-line-command/download_json.png" alt="download_json.png"></p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org89ffc33" class="outline-3">
+<h3 id="org89ffc33">Set Up the File</h3>
+<div class="outline-text-3" id="text-org89ffc33">
+<p>
+Store this file in a folder named <code>.kaggle</code>.
+</p>
+
+<pre class="example">
+mkdir ~/.kaggle
+mv ~/Downloads/kaggle.json ~/.kaggle/
+</pre>
+
+<p>
+To be on the safe side, change the permissions on the file so that other users can't read it.
+</p>
+
+<pre class="example">
+chmod 600 ~/.kaggle/kaggle.json
+</pre>
+
+<p>
+If you look in the file you'll see that it just has a JSON object with your username and API key.
+</p>
+
+<pre class="example">
+{"username":"bumblebee","key":"8b970a13a2cfcfb7a77bdb8b4effaebc"}
+</pre>
+
+<p>
+The instructions say you could also export the values as environment variables, but I'll leave it like this for now.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgde0f796" class="outline-2">
+<h2 id="orgde0f796">Test it out</h2>
+<div class="outline-text-2" id="text-orgde0f796">
+<p>
+It's a python command that uses the basic help system you would expect if you've used python command-line programs before.
+</p>
+
+<div class="highlight"><pre><span></span>kaggle --help
+</pre></div>
+
+<pre class="example">
+usage: kaggle [-h] [-v] {competitions,c,datasets,d,kernels,k,config} ...
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -v, --version         show program's version number and exit
+
+commands:
+  {competitions,c,datasets,d,kernels,k,config}
+                        Use one of:
+                        competitions {list, files, download, submit, submissions, leaderboard}
+                        datasets {list, files, download, create, version, init, metadata, status}
+                        config {view, set, unset}
+    competitions (c)    Commands related to Kaggle competitions
+    datasets (d)        Commands related to Kaggle datasets
+    kernels (k)         Commands related to Kaggle kernels
+    config              Configuration settings
+</pre>
+</div>
+</div>
+    </div>
+    </article><article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/the-competition/" class="u-url">The Competition</a></h1>
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                Cloistered Monkey
+            </span></p>
+            <p class="dateline"><a href="posts/the-competition/" rel="bookmark"><time class="published dt-published" datetime="2018-08-11T13:14:17-07:00" title="2018-08-11 13:14">2018-08-11 13:14</time></a></p>
+        </div>
+    </header><div class="e-content entry-content">
+    <div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="posts/the-competition/#orga5cff13">What is this about?</a></li>
+<li><a href="posts/the-competition/#org8f51605">What is the data made up of?</a></li>
+<li><a href="posts/the-competition/#org19b677e">How will you be evaluated?</a></li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org7d4745a" class="outline-2">
-<h2 id="org7d4745a">Imports</h2>
-<div class="outline-text-2" id="text-org7d4745a">
+
+<div id="outline-container-orga5cff13" class="outline-2">
+<h2 id="orga5cff13">What is this about?</h2>
+<div class="outline-text-2" id="text-orga5cff13">
 <p>
-Here's our dependencies.
+This is about the <a href="https://www.kaggle.com/c/competitive-data-science-final-project">kaggle competition</a> to predict future sales based on prior sale data. You are given a data set made up of prior sales and asked to predict how much each product will sell over the next month.
 </p>
-
-<div class="highlight"><pre><span></span><span class="c1"># python standard library</span>
-<span class="kn">import</span> <span class="nn">os</span>
-
-<span class="c1"># from pypi</span>
-<span class="kn">import</span> <span class="nn">pandas</span>
-<span class="kn">import</span> <span class="nn">numpy</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">pyplot</span>
-<span class="kn">import</span> <span class="nn">seaborn</span>
-
-<span class="kn">from</span> <span class="nn">tabulate</span> <span class="kn">import</span> <span class="n">tabulate</span>
-</pre></div>
-
-<div class="highlight"><pre><span></span><span class="n">get_python</span><span class="p">()</span><span class="o">.</span><span class="n">run_line_magic</span><span class="p">(</span><span class="s1">'matplotlib'</span><span class="p">,</span> <span class="s1">'inline'</span><span class="p">)</span>
-</pre></div>
 </div>
 </div>
-<div id="outline-container-orgf005b5e" class="outline-2">
-<h2 id="orgf005b5e">Confirmed</h2>
-<div class="outline-text-2" id="text-orgf005b5e">
+
+<div id="outline-container-org8f51605" class="outline-2">
+<h2 id="org8f51605">What is the data made up of?</h2>
+<div class="outline-text-2" id="text-org8f51605">
+</div>
+<div id="outline-container-org74d7de2" class="outline-3">
+<h3 id="org74d7de2">The Source</h3>
+<div class="outline-text-3" id="text-org74d7de2">
 <p>
-These are values that we know to be correct so you can use them to check the outcomes.
-</p>
-
-<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Confirmed</span><span class="p">:</span>
-    <span class="sd">"""This holds confirmed values"""</span>
-    <span class="n">september_max_revenue</span> <span class="o">=</span> <span class="mf">7982852.199999956</span>
-    <span class="n">september_max_category_id</span> <span class="o">=</span> <span class="mi">20</span>
-    <span class="n">number_of_items_whose_price_didnt_change</span> <span class="o">=</span> <span class="mi">5926</span>
-    <span class="n">variance_per_day</span> <span class="o">=</span> <span class="mf">117167.70229885059</span>
-</pre></div>
-</div>
-</div>
-
-<div id="outline-container-org5f7f496" class="outline-2">
-<h2 id="org5f7f496">The Data</h2>
-<div class="outline-text-2" id="text-org5f7f496">
-<p>
-We have four data-sets to load, all of them in csv format, although the file with all the transactions is compressed.
-</p>
-
-<div class="highlight"><pre><span></span><span class="n">DATA_FOLDER</span> <span class="o">=</span> <span class="s1">'../readonly/final_project_data/'</span>
-</pre></div>
-
-<div class="highlight"><pre><span></span><span class="n">transactions</span>    <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DATA_FOLDER</span><span class="p">,</span>
-					       <span class="s1">'sales_train.csv.gz'</span><span class="p">))</span>
-<span class="n">items</span>           <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DATA_FOLDER</span><span class="p">,</span>
-					       <span class="s1">'items.csv'</span><span class="p">))</span>
-<span class="n">item_categories</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DATA_FOLDER</span><span class="p">,</span>
-					       <span class="s1">'item_categories.csv'</span><span class="p">))</span>
-<span class="n">shops</span>           <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DATA_FOLDER</span><span class="p">,</span>
-					       <span class="s1">'shops.csv'</span><span class="p">))</span>
-</pre></div>
-
-<p>
-The <code>frames</code> dictionary is just a convenience thing to make printing the descriptive tables below a little easier.
-</p>
-
-<div class="highlight"><pre><span></span><span class="n">frames</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">transactions</span><span class="o">=</span><span class="n">transactions</span><span class="p">,</span>
-	      <span class="n">items</span><span class="o">=</span><span class="n">items</span><span class="p">,</span>
-	      <span class="n">item_categories</span><span class="o">=</span><span class="n">item_categories</span><span class="p">,</span>
-	      <span class="n">shops</span><span class="o">=</span><span class="n">shops</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-
-<div id="outline-container-orgfb31c34" class="outline-2">
-<h2 id="orgfb31c34">Data Description</h2>
-<div class="outline-text-2" id="text-orgfb31c34">
-<p>
-The dataset we loaded is taken from a kaggle competititon. You can find complete data description at the <a href="https://www.kaggle.com/c/competitive-data-science-final-project/data">competition web page</a>. To join the competition use <a href="https://www.kaggle.com/t/1ea93815dca248e99221df42ebde3540">this link</a>. The descriptions below cover all the files, not just the ones we use here.
+The data comes from the <a href="http://1c.ru/eng/title.htm">1C Company</a>, a Russian company that describes themselves on their website like this.
 </p>
 
 <blockquote>
 <p>
-You are provided with daily historical sales data from what appears to be a software retailer, although that isn't explicitly stated. The task is to forecast the total amount of products sold in every shop for the test set. Note that the list of shops and products changes slightly every month. Creating a robust model that can handle such situations is part of the challenge.
+Founded in 1991 1C Company specializes in development, distribution, publishing and support of mass-market software.
+</p>
+
+<p>
+At present 8000 dealers from 600 cities cooperate with 1C. About 7500 teams constitute the 1C:Franchising partner network,which is a main channel of value-adding for 1C products. Service-partners provide regular information and technological support for 1C software customers. The network of authorized training centers is also operating.
+</p>
+
+<p>
+1C is the official distributor of such world-famous vendors as Microsoft, Novell, Borland, Symantec, ABBYY, Kaspersky Lab, ProMT, Eset Software and over 100 other software vendors. 1C offers more than 10 000 titles of software for office and home use. 
+</p>
+</blockquote>
+</div>
+</div>
+
+<div id="outline-container-orga4466f9" class="outline-3">
+<h3 id="orga4466f9">Getting it</h3>
+<div class="outline-text-3" id="text-orga4466f9">
+<p>
+It looks like the data-set is the same one that I used for the Pandas example, but I'll download it anyway to be safe.
+</p>
+
+<pre class="example">
+mkdir data
+kaggle competitions download competitive-data-science-final-project --path data
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org2c74816" class="outline-3">
+<h3 id="org2c74816">The Description</h3>
+<div class="outline-text-3" id="text-org2c74816">
+<blockquote>
+<p>
+You are provided with daily historical sales data. The task is to forecast the total amount of products sold in every shop for the test set. Note that the list of shops and products slightly changes every month. Creating a robust model that can handle such situations is part of the challenge.
 </p>
 </blockquote>
 </div>
 
-<div id="outline-container-org063ef76" class="outline-3">
-<h3 id="org063ef76">File descriptions</h3>
-<div class="outline-text-3" id="text-org063ef76">
+
+<div id="outline-container-org6b6afa9" class="outline-4">
+<h4 id="org6b6afa9">Files</h4>
+<div class="outline-text-4" id="text-org6b6afa9">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-left">
@@ -262,9 +1499,548 @@ You are provided with daily historical sales data from what appears to be a soft
 </div>
 </div>
 
-<div id="outline-container-orgea6792f" class="outline-3">
-<h3 id="orgea6792f">Data Fields</h3>
-<div class="outline-text-3" id="text-orgea6792f">
+
+<div id="outline-container-orgb629eaa" class="outline-4">
+<h4 id="orgb629eaa">Features</h4>
+<div class="outline-text-4" id="text-orgb629eaa">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-left">
+<col class="org-left">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-left">Column Name</th>
+<th scope="col" class="org-left">Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-left">ID</td>
+<td class="org-left">an Id that represents a (Shop, Item) tuple within the test set</td>
+</tr>
+<tr>
+<td class="org-left">shop_id</td>
+<td class="org-left">unique identifier of a shop</td>
+</tr>
+<tr>
+<td class="org-left">item_id</td>
+<td class="org-left">unique identifier of a product</td>
+</tr>
+<tr>
+<td class="org-left">item_category_id</td>
+<td class="org-left">unique identifier of item category</td>
+</tr>
+<tr>
+<td class="org-left">item_cnt_day</td>
+<td class="org-left">number of products sold. You are predicting a monthly amount of this measure</td>
+</tr>
+<tr>
+<td class="org-left">item_price</td>
+<td class="org-left">current price of an item</td>
+</tr>
+<tr>
+<td class="org-left">date</td>
+<td class="org-left">date in format dd/mm/yyyy</td>
+</tr>
+<tr>
+<td class="org-left">date_block_num</td>
+<td class="org-left">a consecutive month number, used for convenience. January 2013 is 0, February 2013 is 1,…, October 2015 is 33</td>
+</tr>
+<tr>
+<td class="org-left">item_name</td>
+<td class="org-left">name of item</td>
+</tr>
+<tr>
+<td class="org-left">shop_name</td>
+<td class="org-left">name of shop</td>
+</tr>
+<tr>
+<td class="org-left">item_category_name</td>
+<td class="org-left">name of item category</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org19b677e" class="outline-2">
+<h2 id="org19b677e">How will you be evaluated?</h2>
+<div class="outline-text-2" id="text-org19b677e">
+</div>
+<div id="outline-container-org7baeffc" class="outline-3">
+<h3 id="org7baeffc">Submission Format</h3>
+<div class="outline-text-3" id="text-org7baeffc">
+<p>
+You will submit a comma-separated file with two columns, the product ID and the total number of sales. It should look like this.
+</p>
+
+<pre class="example">
+ID,item_cnt_month
+0,5
+1,3
+2,6
+</pre>
+</div>
+</div>
+
+
+<div id="outline-container-orgedf2743" class="outline-3">
+<h3 id="orgedf2743">Scoring</h3>
+<div class="outline-text-3" id="text-orgedf2743">
+<p>
+You will be scored base on the <a href="https://en.wikipedia.org/wiki/Root-mean-square_deviation">Root Mean Square Error (RMSE)</a>. The page says that the true target values are clipped to the <code>[0,20]</code> range and the example given shows <code>0.5</code> as the <code>item_cnt_month</code> values, neither of which makes any sense to me at the moment.
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-org5d85106" class="outline-3">
+<h3 id="org5d85106">The meaning of the target</h3>
+<div class="outline-text-3" id="text-org5d85106">
+<p>
+According to <a href="https://www.kaggle.com/c/competitive-data-science-final-project/discussion/48251">this thread</a> you need to <a href="https://docs.scipy.org/doc/numpy-1.13.0/reference/generated/numpy.clip.html">clip</a> the predictions back to that range (make anything less than zero a zero and anything more than twenty a twenty).
+</p>
+</div>
+</div>
+</div>
+    </div>
+    </article><article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/feature-preprocessing/" class="u-url">Feature Preprocessing</a></h1>
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                Cloistered Monkey
+            </span></p>
+            <p class="dateline"><a href="posts/feature-preprocessing/" rel="bookmark"><time class="published dt-published" datetime="2018-08-07T21:41:10-07:00" title="2018-08-07 21:41">2018-08-07 21:41</time></a></p>
+        </div>
+    </header><div class="e-content entry-content">
+    <div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="posts/feature-preprocessing/#org5b56716">Preprocessing</a></li>
+<li><a href="posts/feature-preprocessing/#org8d57f03">Numeric Feature Preprocessing</a></li>
+<li><a href="posts/feature-preprocessing/#org059e47a">Categorical And Ordinal Features</a></li>
+<li><a href="posts/feature-preprocessing/#orgd99b104">Dates and Times</a></li>
+<li><a href="posts/feature-preprocessing/#orgac5d138">Coordinates</a></li>
+<li><a href="posts/feature-preprocessing/#org0e1ccc3">Missing Data</a></li>
+<li><a href="posts/feature-preprocessing/#orgb3a7c44">Links</a></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org5b56716" class="outline-2">
+<h2 id="org5b56716">Preprocessing</h2>
+<div class="outline-text-2" id="text-org5b56716">
+<p>
+In every competition you need to:
+</p>
+
+<ul class="org-ul">
+<li>pre-process the data</li>
+<li>generate new features from the existing ones</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org8d57f03" class="outline-2">
+<h2 id="org8d57f03">Numeric Feature Preprocessing</h2>
+<div class="outline-text-2" id="text-org8d57f03">
+<p>
+Some models (e.g. Linear Classification) need you to convert numeric-looking data to categorical data. Tree-based models don't need pre-processing as much as non tree-based models do.
+</p>
+</div>
+
+<div id="outline-container-org8bd57f0" class="outline-3">
+<h3 id="org8bd57f0">Scaling</h3>
+<div class="outline-text-3" id="text-org8bd57f0">
+<p>
+If features have different value ranges then the model will  treat them differently.
+</p>
+<ul class="org-ul">
+<li>sklearn.preprocessing.MinMaxScalar
+Scale by the range of values</li>
+<li>sklearn.preprocessing.StandardScalar
+Scale the data to have a mean of 0 and a standard deviation of 1</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org423c307" class="outline-3">
+<h3 id="org423c307">Outliers</h3>
+<div class="outline-text-3" id="text-org423c307">
+<ul class="org-ul">
+<li>Clip (<code>numpy.clip</code>)values to get rid of unusual values that mess with the model. (Winsorization)</li>
+<li>Rank Transform them (<code>scipy.stats.rankdata</code>) so that they</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org550db9e" class="outline-3">
+<h3 id="org550db9e">Transformation</h3>
+<div class="outline-text-3" id="text-org550db9e">
+<p>
+For linear models and neural networks, transforming the data can sometimes help.
+</p>
+<ul class="org-ul">
+<li>Log Transform: <code>numpy.log(1 + x)</code>
+</li>
+<li>Power Less Than 1 Transform: =numpy.sqrt(x + 2/3)</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org72b3eca" class="outline-3">
+<h3 id="org72b3eca">Feature Generation</h3>
+<div class="outline-text-3" id="text-org72b3eca">
+<p>
+Sometimes you can convert separate columns to get new ones. This requires exploratory data analysis.
+</p>
+<ul class="org-ul">
+<li>Fractional Parts: people perceive numbers with fractions differently so sometime separating out the fractional part makes the model perform better because it is the more important part</li>
+<li>You can derive new values mathematically (e.g. distance using height and width)</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org059e47a" class="outline-2">
+<h2 id="org059e47a">Categorical And Ordinal Features</h2>
+<div class="outline-text-2" id="text-org059e47a">
+<ul class="org-ul">
+<li>Ordinal Features have an ordering but even if they are labeled numerically (e.g. 1, 2, 3) they aren't numeric because there is no implication about the distance between each</li>
+<li>label and frequency encoding are commonly used for tree-based models</li>
+<li>one-hot encoding is more common for non-tree-based models</li>
+</ul>
+</div>
+<div id="outline-container-org3b68a2b" class="outline-3">
+<h3 id="org3b68a2b">Label Encoding</h3>
+<div class="outline-text-3" id="text-org3b68a2b">
+<p>
+Some models need numeric values or numeric values that don't have implied ordering so you want to encode them.
+</p>
+<ul class="org-ul">
+<li>
+<code>sklearn.preprocessing.LabelEncoder</code>
+Sorts the labels then encodes them as integers</li>
+<li>
+<code>Pandas.factorize</code>
+Encodes the labels in the order they appear. This makes more sense if there is a meaning to the order in which labels appear.</li>
+<li>This is more commonly used with tree-based methods.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgd014be3" class="outline-3">
+<h3 id="orgd014be3">Frequency Encoding</h3>
+<div class="outline-text-3" id="text-orgd014be3">
+<p>
+Encode the values to a fraction of all the labels. Can work with linear models if the frequency is correlated with the target value.
+</p>
+<ul class="org-ul">
+<li><code>titanic.groupby("Embarked").size()/len(titanic)</code></li>
+<li><code>from scipy.stats import rankedata</code></li>
+<li>More common with tree-based methods</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgdd89b1e" class="outline-3">
+<h3 id="orgdd89b1e">One Hot Encoding</h3>
+<div class="outline-text-3" id="text-orgdd89b1e">
+<p>
+Creates one column for each label and puts a 1 in the column that matches. Works with both linear and tree-based models, but can be inefficient with tree-based models.
+</p>
+<ul class="org-ul">
+<li><code>pandas.get_dummies</code></li>
+<li><code>sklearn.preprocessing.OneHotEncoder</code></li>
+<li>One hot encoding is better for non-tree models.</li>
+<li>This allows easier feature interactions (encode combined features (e.g. gender and class) rather than encoding them separately) 
+<ul class="org-ul">
+<li>This is more common with linear models and KNN</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-orgd99b104" class="outline-2">
+<h2 id="orgd99b104">Dates and Times</h2>
+<div class="outline-text-2" id="text-orgd99b104">
+<p>
+When working with seasonal data, sometimes the relative date-stamps are more important than the actual dates (how close to Christmas?).
+Sometimes you want the time between events.
+</p>
+</div>
+</div>
+<div id="outline-container-orgac5d138" class="outline-2">
+<h2 id="orgac5d138">Coordinates</h2>
+<div class="outline-text-2" id="text-orgac5d138">
+<p>
+Sometimes you want exact coordinates, but most times you want distances to some center.
+</p>
+</div>
+</div>
+<div id="outline-container-org0e1ccc3" class="outline-2">
+<h2 id="org0e1ccc3">Missing Data</h2>
+<div class="outline-text-2" id="text-org0e1ccc3">
+<ul class="org-ul">
+<li>"missing" data might mean outliers - values that are probably wrong</li>
+<li>avoid replacing missing values before feature engineering - it can throw off what you do</li>
+<li>Gradient Boost Trees can handle isNaN, so you don't have to do anything</li>
+</ul>
+</div>
+<div id="outline-container-orgedf1a23" class="outline-3">
+<h3 id="orgedf1a23">Numeric</h3>
+<div class="outline-text-3" id="text-orgedf1a23">
+</div>
+<div id="outline-container-org42e038e" class="outline-4">
+<h4 id="org42e038e">Fill NA Approaches</h4>
+<div class="outline-text-4" id="text-org42e038e">
+<ul class="org-ul">
+<li>-999, -1, other numbers
+<ul class="org-ul">
+<li>lets you categorize missing values</li>
+<li>throws some models off (e.g. linear models and neural networks)</li>
+<li>one solution is to create a new feature for missing values, but this has now increased the amount of data you need (curse of dimensionality)</li>
+</ul>
+</li>
+<li>mean, median, some central tendency
+<ul class="org-ul">
+<li>This can throw the model off</li>
+<li>it is sometimes better to ignore missing data</li>
+</ul>
+</li>
+<li>recronstructed valud</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orgb3a7c44" class="outline-2">
+<h2 id="orgb3a7c44">Links</h2>
+<div class="outline-text-2" id="text-orgb3a7c44">
+</div>
+<div id="outline-container-orgc40f607" class="outline-3">
+<h3 id="orgc40f607">Feature Pre-processing</h3>
+<div class="outline-text-3" id="text-orgc40f607">
+<ul class="org-ul">
+<li><a href="http://scikit-learn.org/stable/modules/preprocessing.html">SKlearn's Preprocessing Documentation</a></li>
+<li><a href="https://www.coursera.org/learn/machine-learning/lecture/xx3Da/gradient-descent-in-practice-i-feature-scaling">Andrew Ng on Feature Scaling and its effect on Gradient Descent</a></li>
+<li><a href="http://sebastianraschka.com/Articles/2014_about_feature_scaling.html">Sebastian Raschka on Feature Scaling</a></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org9817e48" class="outline-3">
+<h3 id="org9817e48">Feature Engineering</h3>
+<div class="outline-text-3" id="text-org9817e48">
+<ul class="org-ul">
+<li><a href="https://machinelearningmastery.com/discover-feature-engineering-how-to-engineer-features-and-how-to-get-good-at-it/">Machine Learning Mastery on Feature Engineering</a></li>
+<li><a href="https://www.quora.com/What-are-some-best-practices-in-Feature-Engineering">Quora: What are some best practices in Feature Engineering?</a></li>
+</ul>
+</div>
+</div>
+</div>
+    </div>
+    </article><article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/pandas-basics/" class="u-url">Revisiting Pandas (Yet Again)</a></h1>
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                Cloistered Monkey
+            </span></p>
+            <p class="dateline"><a href="posts/pandas-basics/" rel="bookmark"><time class="published dt-published" datetime="2018-08-05T12:56:23-07:00" title="2018-08-05 12:56">2018-08-05 12:56</time></a></p>
+        </div>
+    </header><div class="e-content entry-content">
+    <div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="posts/pandas-basics/#orgb17fbae">Description</a></li>
+<li><a href="posts/pandas-basics/#org8b82f52">Pandas Functions and Methods Used</a></li>
+<li><a href="posts/pandas-basics/#org4133150">Imports</a></li>
+<li><a href="posts/pandas-basics/#org4c6f781">Confirmed</a></li>
+<li><a href="posts/pandas-basics/#org0264372">The Data</a></li>
+<li>
+<a href="posts/pandas-basics/#org0eba953">Data Description</a>
+<ul>
+<li><a href="posts/pandas-basics/#org521c7f8">File descriptions</a></li>
+<li><a href="posts/pandas-basics/#org029b944">Data Fields</a></li>
+</ul>
+</li>
+<li>
+<a href="posts/pandas-basics/#org3823f01">A Warm Up</a>
+<ul>
+<li><a href="posts/pandas-basics/#org70ae69d">transactions</a></li>
+<li><a href="posts/pandas-basics/#org1e49be3">items</a></li>
+<li><a href="posts/pandas-basics/#org36e77a1">item_categories</a></li>
+<li><a href="posts/pandas-basics/#orgf22cff6">shops</a></li>
+</ul>
+</li>
+<li>
+<a href="posts/pandas-basics/#org8d37c7e">Questions</a>
+<ul>
+<li><a href="posts/pandas-basics/#org03c78ee">Question 1: <b>What was the maximum total revenue among all the shops in September, 2014?</b></a></li>
+<li><a href="posts/pandas-basics/#org25e3811">Question 2: <b>What item category generated the highest revenue in the Summer of 2014?</b></a></li>
+<li><a href="posts/pandas-basics/#orgfff72fc">Question 3: <b>How many items have the same price throughout the data set?</b></a></li>
+<li><a href="posts/pandas-basics/#org6accee5">Question 4: <b>What was the variance of the number of items sold per day for shop 25 in December, 2014?</b></a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgb17fbae" class="outline-2">
+<h2 id="orgb17fbae">Description</h2>
+<div class="outline-text-2" id="text-orgb17fbae">
+<p>
+This is a review of Pandas' Basics with an emphasis on using <a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.groupby.html">groupby</a>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org8b82f52" class="outline-2">
+<h2 id="org8b82f52">Pandas Functions and Methods Used</h2>
+<div class="outline-text-2" id="text-org8b82f52">
+<ul class="org-ul">
+<li><a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.describe.html"><code>describe</code></a></li>
+<li><a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.groupby.html"><code>groupby</code></a></li>
+<li><a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.head.html"><code>head</code></a></li>
+<li><a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.idxmax.html"><code>idxmax</code></a></li>
+<li><a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.isin.html"><code>isin</code></a></li>
+<li><a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.loc.html"><code>loc</code></a></li>
+<li><a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.var.html"><code>var</code></a></li>
+<li><a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.Series.abs.html"><code>abs</code></a></li>
+<li><a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.Series.nunique.html"><code>nunique</code></a></li>
+<li><a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.Series.str.extract.html"><code>str.extract</code></a></li>
+<li><a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.concat.html"><code>concat</code></a></li>
+<li><a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.core.groupby.DataFrameGroupBy.agg.html"><code>agg</code></a></li>
+<li><a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.read_csv.html"><code>read_csv</code></a></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org4133150" class="outline-2">
+<h2 id="org4133150">Imports</h2>
+<div class="outline-text-2" id="text-org4133150">
+<p>
+Here's our dependencies.
+</p>
+
+<div class="highlight"><pre><span></span><span class="c1"># python standard library</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="c1"># from pypi</span>
+<span class="kn">import</span> <span class="nn">pandas</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">pyplot</span>
+<span class="kn">import</span> <span class="nn">seaborn</span>
+
+<span class="kn">from</span> <span class="nn">tabulate</span> <span class="kn">import</span> <span class="n">tabulate</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">get_python</span><span class="p">()</span><span class="o">.</span><span class="n">run_line_magic</span><span class="p">(</span><span class="s1">'matplotlib'</span><span class="p">,</span> <span class="s1">'inline'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div id="outline-container-org4c6f781" class="outline-2">
+<h2 id="org4c6f781">Confirmed</h2>
+<div class="outline-text-2" id="text-org4c6f781">
+<p>
+These are values that we know to be correct so you can use them to check the outcomes.
+</p>
+
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Confirmed</span><span class="p">:</span>
+    <span class="sd">"""This holds confirmed values"""</span>
+    <span class="n">september_max_revenue</span> <span class="o">=</span> <span class="mf">7982852.199999956</span>
+    <span class="n">september_max_category_id</span> <span class="o">=</span> <span class="mi">20</span>
+    <span class="n">number_of_items_whose_price_didnt_change</span> <span class="o">=</span> <span class="mi">5926</span>
+    <span class="n">variance_per_day</span> <span class="o">=</span> <span class="mf">117167.70229885059</span>
+</pre></div>
+</div>
+</div>
+
+<div id="outline-container-org0264372" class="outline-2">
+<h2 id="org0264372">The Data</h2>
+<div class="outline-text-2" id="text-org0264372">
+<p>
+We have four data-sets to load, all of them in csv format, although the file with all the transactions is compressed.
+</p>
+
+<div class="highlight"><pre><span></span><span class="n">DATA_FOLDER</span> <span class="o">=</span> <span class="s1">'../readonly/final_project_data/'</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">transactions</span>    <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DATA_FOLDER</span><span class="p">,</span>
+					       <span class="s1">'sales_train.csv.gz'</span><span class="p">))</span>
+<span class="n">items</span>           <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DATA_FOLDER</span><span class="p">,</span>
+					       <span class="s1">'items.csv'</span><span class="p">))</span>
+<span class="n">item_categories</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DATA_FOLDER</span><span class="p">,</span>
+					       <span class="s1">'item_categories.csv'</span><span class="p">))</span>
+<span class="n">shops</span>           <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DATA_FOLDER</span><span class="p">,</span>
+					       <span class="s1">'shops.csv'</span><span class="p">))</span>
+</pre></div>
+
+<p>
+The <code>frames</code> dictionary is just a convenience thing to make printing the descriptive tables below a little easier.
+</p>
+
+<div class="highlight"><pre><span></span><span class="n">frames</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">transactions</span><span class="o">=</span><span class="n">transactions</span><span class="p">,</span>
+	      <span class="n">items</span><span class="o">=</span><span class="n">items</span><span class="p">,</span>
+	      <span class="n">item_categories</span><span class="o">=</span><span class="n">item_categories</span><span class="p">,</span>
+	      <span class="n">shops</span><span class="o">=</span><span class="n">shops</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+
+<div id="outline-container-org0eba953" class="outline-2">
+<h2 id="org0eba953">Data Description</h2>
+<div class="outline-text-2" id="text-org0eba953">
+<p>
+The dataset we loaded is taken from a kaggle competititon. You can find complete data description at the <a href="https://www.kaggle.com/c/competitive-data-science-final-project/data">competition web page</a>. To join the competition use <a href="https://www.kaggle.com/t/1ea93815dca248e99221df42ebde3540">this link</a>. The descriptions below cover all the files, not just the ones we use here.
+</p>
+
+<blockquote>
+<p>
+You are provided with daily historical sales data from what appears to be a software retailer, although that isn't explicitly stated. The task is to forecast the total amount of products sold in every shop for the test set. Note that the list of shops and products changes slightly every month. Creating a robust model that can handle such situations is part of the challenge.
+</p>
+</blockquote>
+</div>
+
+<div id="outline-container-org521c7f8" class="outline-3">
+<h3 id="org521c7f8">File descriptions</h3>
+<div class="outline-text-3" id="text-org521c7f8">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-left">
+<col class="org-left">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-left">File Name</th>
+<th scope="col" class="org-left">Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-left">sales_train.csv</td>
+<td class="org-left">the training set. Daily historical data from January 2013 to October 2015.</td>
+</tr>
+<tr>
+<td class="org-left">test.csv</td>
+<td class="org-left">the test set. You need to forecast the sales for these shops and products for November 2015.</td>
+</tr>
+<tr>
+<td class="org-left">sample_submission.csv</td>
+<td class="org-left">a sample submission file in the correct format.</td>
+</tr>
+<tr>
+<td class="org-left">items.csv</td>
+<td class="org-left">supplemental information about the items/products.</td>
+</tr>
+<tr>
+<td class="org-left">item_categories.csv</td>
+<td class="org-left">supplemental information about the items categories.</td>
+</tr>
+<tr>
+<td class="org-left">shops.csv</td>
+<td class="org-left">supplemental information about the shops.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-org029b944" class="outline-3">
+<h3 id="org029b944">Data Fields</h3>
+<div class="outline-text-3" id="text-org029b944">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-left">
@@ -325,9 +2101,9 @@ You are provided with daily historical sales data from what appears to be a soft
 </div>
 </div>
 
-<div id="outline-container-orgd0f6fec" class="outline-2">
-<h2 id="orgd0f6fec">A Warm Up</h2>
-<div class="outline-text-2" id="text-orgd0f6fec">
+<div id="outline-container-org3823f01" class="outline-2">
+<h2 id="org3823f01">A Warm Up</h2>
+<div class="outline-text-2" id="text-org3823f01">
 <p>
 Let's start with a simple task. 
 </p>
@@ -383,9 +2159,9 @@ Print the shape of the loaded dataframes and use the <a href="https://pandas.pyd
     <span class="k">print</span><span class="p">(</span><span class="n">tabulate</span><span class="p">(</span><span class="n">head</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="s2">"keys"</span><span class="p">,</span> <span class="n">tablefmt</span><span class="o">=</span><span class="s2">"orgtbl"</span><span class="p">,</span> <span class="n">showindex</span><span class="o">=</span><span class="bp">False</span><span class="p">))</span>
 </pre></div>
 </div>
-<div id="outline-container-org5ca02bb" class="outline-3">
-<h3 id="org5ca02bb">transactions</h3>
-<div class="outline-text-3" id="text-org5ca02bb">
+<div id="outline-container-org70ae69d" class="outline-3">
+<h3 id="org70ae69d">transactions</h3>
+<div class="outline-text-3" id="text-org70ae69d">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-right">
@@ -448,9 +2224,9 @@ Print the shape of the loaded dataframes and use the <a href="https://pandas.pyd
 </table>
 </div>
 </div>
-<div id="outline-container-org5d68f9e" class="outline-3">
-<h3 id="org5d68f9e">items</h3>
-<div class="outline-text-3" id="text-org5d68f9e">
+<div id="outline-container-org1e49be3" class="outline-3">
+<h3 id="org1e49be3">items</h3>
+<div class="outline-text-3" id="text-org1e49be3">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-left">
@@ -492,9 +2268,9 @@ Print the shape of the loaded dataframes and use the <a href="https://pandas.pyd
 </table>
 </div>
 </div>
-<div id="outline-container-org05cad85" class="outline-3">
-<h3 id="org05cad85">item_categories</h3>
-<div class="outline-text-3" id="text-org05cad85">
+<div id="outline-container-org36e77a1" class="outline-3">
+<h3 id="org36e77a1">item_categories</h3>
+<div class="outline-text-3" id="text-org36e77a1">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-left">
@@ -529,558 +2305,9 @@ Print the shape of the loaded dataframes and use the <a href="https://pandas.pyd
 </table>
 </div>
 </div>
-<div id="outline-container-org9cf25e6" class="outline-3">
-<h3 id="org9cf25e6">shops</h3>
-<div class="outline-text-3" id="text-org9cf25e6">
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-<colgroup>
-<col class="org-left">
-<col class="org-right">
-</colgroup>
-<thead><tr>
-<th scope="col" class="org-left">shop_name</th>
-<th scope="col" class="org-right">shop_id</th>
-</tr></thead>
-<tbody>
-<tr>
-<td class="org-left">!Якутск Орджоникидзе, 56 фран</td>
-<td class="org-right">0</td>
-</tr>
-<tr>
-<td class="org-left">!Якутск ТЦ "Центральный" фран</td>
-<td class="org-right">1</td>
-</tr>
-<tr>
-<td class="org-left">Адыгея ТЦ "Мега"</td>
-<td class="org-right">2</td>
-</tr>
-<tr>
-<td class="org-left">Балашиха ТРК "Октябрь-Киномир"</td>
-<td class="org-right">3</td>
-</tr>
-<tr>
-<td class="org-left">Волжский ТЦ "Волга Молл"</td>
-<td class="org-right">4</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div id="outline-container-org1725560" class="outline-3">
-<h3 id="org1725560">transactions</h3>
-<div class="outline-text-3" id="text-org1725560">
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-<colgroup>
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-</colgroup>
-<thead><tr>
-<th scope="col" class="org-right">date</th>
-<th scope="col" class="org-right">date_block_num</th>
-<th scope="col" class="org-right">shop_id</th>
-<th scope="col" class="org-right">item_id</th>
-<th scope="col" class="org-right">item_price</th>
-<th scope="col" class="org-right">item_cnt_day</th>
-</tr></thead>
-<tbody>
-<tr>
-<td class="org-right">02.01.2013</td>
-<td class="org-right">0</td>
-<td class="org-right">59</td>
-<td class="org-right">22154</td>
-<td class="org-right">999</td>
-<td class="org-right">1</td>
-</tr>
-<tr>
-<td class="org-right">03.01.2013</td>
-<td class="org-right">0</td>
-<td class="org-right">25</td>
-<td class="org-right">2552</td>
-<td class="org-right">899</td>
-<td class="org-right">1</td>
-</tr>
-<tr>
-<td class="org-right">05.01.2013</td>
-<td class="org-right">0</td>
-<td class="org-right">25</td>
-<td class="org-right">2552</td>
-<td class="org-right">899</td>
-<td class="org-right">-1</td>
-</tr>
-<tr>
-<td class="org-right">06.01.2013</td>
-<td class="org-right">0</td>
-<td class="org-right">25</td>
-<td class="org-right">2554</td>
-<td class="org-right">1709.05</td>
-<td class="org-right">1</td>
-</tr>
-<tr>
-<td class="org-right">15.01.2013</td>
-<td class="org-right">0</td>
-<td class="org-right">25</td>
-<td class="org-right">2555</td>
-<td class="org-right">1099</td>
-<td class="org-right">1</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div id="outline-container-orgd3d97b3" class="outline-3">
-<h3 id="orgd3d97b3">items</h3>
-<div class="outline-text-3" id="text-orgd3d97b3">
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-<colgroup>
-<col class="org-left">
-<col class="org-right">
-<col class="org-right">
-</colgroup>
-<thead><tr>
-<th scope="col" class="org-left">item_name</th>
-<th scope="col" class="org-right">item_id</th>
-<th scope="col" class="org-right">item_category_id</th>
-</tr></thead>
-<tbody>
-<tr>
-<td class="org-left">! ВО ВЛАСТИ НАВАЖДЕНИЯ (ПЛАСТ.)         D</td>
-<td class="org-right">0</td>
-<td class="org-right">40</td>
-</tr>
-<tr>
-<td class="org-left">!ABBYY FineReader 12 Professional Edition Full [PC, Цифровая версия]</td>
-<td class="org-right">1</td>
-<td class="org-right">76</td>
-</tr>
-<tr>
-<td class="org-left">***В ЛУЧАХ СЛАВЫ   (UNV)                    D</td>
-<td class="org-right">2</td>
-<td class="org-right">40</td>
-</tr>
-<tr>
-<td class="org-left">***ГОЛУБАЯ ВОЛНА  (Univ)                      D</td>
-<td class="org-right">3</td>
-<td class="org-right">40</td>
-</tr>
-<tr>
-<td class="org-left">***КОРОБКА (СТЕКЛО)                       D</td>
-<td class="org-right">4</td>
-<td class="org-right">40</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div id="outline-container-org04d0eef" class="outline-3">
-<h3 id="org04d0eef">item_categories</h3>
-<div class="outline-text-3" id="text-org04d0eef">
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-<colgroup>
-<col class="org-left">
-<col class="org-right">
-</colgroup>
-<thead><tr>
-<th scope="col" class="org-left">item_category_name</th>
-<th scope="col" class="org-right">item_category_id</th>
-</tr></thead>
-<tbody>
-<tr>
-<td class="org-left">PC - Гарнитуры/Наушники</td>
-<td class="org-right">0</td>
-</tr>
-<tr>
-<td class="org-left">Аксессуары - PS2</td>
-<td class="org-right">1</td>
-</tr>
-<tr>
-<td class="org-left">Аксессуары - PS3</td>
-<td class="org-right">2</td>
-</tr>
-<tr>
-<td class="org-left">Аксессуары - PS4</td>
-<td class="org-right">3</td>
-</tr>
-<tr>
-<td class="org-left">Аксессуары - PSP</td>
-<td class="org-right">4</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div id="outline-container-orgdc8a922" class="outline-3">
-<h3 id="orgdc8a922">shops</h3>
-<div class="outline-text-3" id="text-orgdc8a922">
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-<colgroup>
-<col class="org-left">
-<col class="org-right">
-</colgroup>
-<thead><tr>
-<th scope="col" class="org-left">shop_name</th>
-<th scope="col" class="org-right">shop_id</th>
-</tr></thead>
-<tbody>
-<tr>
-<td class="org-left">!Якутск Орджоникидзе, 56 фран</td>
-<td class="org-right">0</td>
-</tr>
-<tr>
-<td class="org-left">!Якутск ТЦ "Центральный" фран</td>
-<td class="org-right">1</td>
-</tr>
-<tr>
-<td class="org-left">Адыгея ТЦ "Мега"</td>
-<td class="org-right">2</td>
-</tr>
-<tr>
-<td class="org-left">Балашиха ТРК "Октябрь-Киномир"</td>
-<td class="org-right">3</td>
-</tr>
-<tr>
-<td class="org-left">Волжский ТЦ "Волга Молл"</td>
-<td class="org-right">4</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div id="outline-container-org2dfd8d4" class="outline-3">
-<h3 id="org2dfd8d4">transactions</h3>
-<div class="outline-text-3" id="text-org2dfd8d4">
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-<colgroup>
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-</colgroup>
-<thead><tr>
-<th scope="col" class="org-right">date</th>
-<th scope="col" class="org-right">date_block_num</th>
-<th scope="col" class="org-right">shop_id</th>
-<th scope="col" class="org-right">item_id</th>
-<th scope="col" class="org-right">item_price</th>
-<th scope="col" class="org-right">item_cnt_day</th>
-</tr></thead>
-<tbody>
-<tr>
-<td class="org-right">02.01.2013</td>
-<td class="org-right">0</td>
-<td class="org-right">59</td>
-<td class="org-right">22154</td>
-<td class="org-right">999</td>
-<td class="org-right">1</td>
-</tr>
-<tr>
-<td class="org-right">03.01.2013</td>
-<td class="org-right">0</td>
-<td class="org-right">25</td>
-<td class="org-right">2552</td>
-<td class="org-right">899</td>
-<td class="org-right">1</td>
-</tr>
-<tr>
-<td class="org-right">05.01.2013</td>
-<td class="org-right">0</td>
-<td class="org-right">25</td>
-<td class="org-right">2552</td>
-<td class="org-right">899</td>
-<td class="org-right">-1</td>
-</tr>
-<tr>
-<td class="org-right">06.01.2013</td>
-<td class="org-right">0</td>
-<td class="org-right">25</td>
-<td class="org-right">2554</td>
-<td class="org-right">1709.05</td>
-<td class="org-right">1</td>
-</tr>
-<tr>
-<td class="org-right">15.01.2013</td>
-<td class="org-right">0</td>
-<td class="org-right">25</td>
-<td class="org-right">2555</td>
-<td class="org-right">1099</td>
-<td class="org-right">1</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div id="outline-container-org8cba962" class="outline-3">
-<h3 id="org8cba962">items</h3>
-<div class="outline-text-3" id="text-org8cba962">
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-<colgroup>
-<col class="org-left">
-<col class="org-right">
-<col class="org-right">
-</colgroup>
-<thead><tr>
-<th scope="col" class="org-left">item_name</th>
-<th scope="col" class="org-right">item_id</th>
-<th scope="col" class="org-right">item_category_id</th>
-</tr></thead>
-<tbody>
-<tr>
-<td class="org-left">! ВО ВЛАСТИ НАВАЖДЕНИЯ (ПЛАСТ.)         D</td>
-<td class="org-right">0</td>
-<td class="org-right">40</td>
-</tr>
-<tr>
-<td class="org-left">!ABBYY FineReader 12 Professional Edition Full [PC, Цифровая версия]</td>
-<td class="org-right">1</td>
-<td class="org-right">76</td>
-</tr>
-<tr>
-<td class="org-left">***В ЛУЧАХ СЛАВЫ   (UNV)                    D</td>
-<td class="org-right">2</td>
-<td class="org-right">40</td>
-</tr>
-<tr>
-<td class="org-left">***ГОЛУБАЯ ВОЛНА  (Univ)                      D</td>
-<td class="org-right">3</td>
-<td class="org-right">40</td>
-</tr>
-<tr>
-<td class="org-left">***КОРОБКА (СТЕКЛО)                       D</td>
-<td class="org-right">4</td>
-<td class="org-right">40</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div id="outline-container-org749dbb2" class="outline-3">
-<h3 id="org749dbb2">item_categories</h3>
-<div class="outline-text-3" id="text-org749dbb2">
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-<colgroup>
-<col class="org-left">
-<col class="org-right">
-</colgroup>
-<thead><tr>
-<th scope="col" class="org-left">item_category_name</th>
-<th scope="col" class="org-right">item_category_id</th>
-</tr></thead>
-<tbody>
-<tr>
-<td class="org-left">PC - Гарнитуры/Наушники</td>
-<td class="org-right">0</td>
-</tr>
-<tr>
-<td class="org-left">Аксессуары - PS2</td>
-<td class="org-right">1</td>
-</tr>
-<tr>
-<td class="org-left">Аксессуары - PS3</td>
-<td class="org-right">2</td>
-</tr>
-<tr>
-<td class="org-left">Аксессуары - PS4</td>
-<td class="org-right">3</td>
-</tr>
-<tr>
-<td class="org-left">Аксессуары - PSP</td>
-<td class="org-right">4</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div id="outline-container-org241315c" class="outline-3">
-<h3 id="org241315c">shops</h3>
-<div class="outline-text-3" id="text-org241315c">
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-<colgroup>
-<col class="org-left">
-<col class="org-right">
-</colgroup>
-<thead><tr>
-<th scope="col" class="org-left">shop_name</th>
-<th scope="col" class="org-right">shop_id</th>
-</tr></thead>
-<tbody>
-<tr>
-<td class="org-left">!Якутск Орджоникидзе, 56 фран</td>
-<td class="org-right">0</td>
-</tr>
-<tr>
-<td class="org-left">!Якутск ТЦ "Центральный" фран</td>
-<td class="org-right">1</td>
-</tr>
-<tr>
-<td class="org-left">Адыгея ТЦ "Мега"</td>
-<td class="org-right">2</td>
-</tr>
-<tr>
-<td class="org-left">Балашиха ТРК "Октябрь-Киномир"</td>
-<td class="org-right">3</td>
-</tr>
-<tr>
-<td class="org-left">Волжский ТЦ "Волга Молл"</td>
-<td class="org-right">4</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div id="outline-container-org4b9e745" class="outline-3">
-<h3 id="org4b9e745">transactions</h3>
-<div class="outline-text-3" id="text-org4b9e745">
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-<colgroup>
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-</colgroup>
-<thead><tr>
-<th scope="col" class="org-right">date</th>
-<th scope="col" class="org-right">date_block_num</th>
-<th scope="col" class="org-right">shop_id</th>
-<th scope="col" class="org-right">item_id</th>
-<th scope="col" class="org-right">item_price</th>
-<th scope="col" class="org-right">item_cnt_day</th>
-</tr></thead>
-<tbody>
-<tr>
-<td class="org-right">02.01.2013</td>
-<td class="org-right">0</td>
-<td class="org-right">59</td>
-<td class="org-right">22154</td>
-<td class="org-right">999</td>
-<td class="org-right">1</td>
-</tr>
-<tr>
-<td class="org-right">03.01.2013</td>
-<td class="org-right">0</td>
-<td class="org-right">25</td>
-<td class="org-right">2552</td>
-<td class="org-right">899</td>
-<td class="org-right">1</td>
-</tr>
-<tr>
-<td class="org-right">05.01.2013</td>
-<td class="org-right">0</td>
-<td class="org-right">25</td>
-<td class="org-right">2552</td>
-<td class="org-right">899</td>
-<td class="org-right">-1</td>
-</tr>
-<tr>
-<td class="org-right">06.01.2013</td>
-<td class="org-right">0</td>
-<td class="org-right">25</td>
-<td class="org-right">2554</td>
-<td class="org-right">1709.05</td>
-<td class="org-right">1</td>
-</tr>
-<tr>
-<td class="org-right">15.01.2013</td>
-<td class="org-right">0</td>
-<td class="org-right">25</td>
-<td class="org-right">2555</td>
-<td class="org-right">1099</td>
-<td class="org-right">1</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div id="outline-container-org6b2ef04" class="outline-3">
-<h3 id="org6b2ef04">items</h3>
-<div class="outline-text-3" id="text-org6b2ef04">
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-<colgroup>
-<col class="org-left">
-<col class="org-right">
-<col class="org-right">
-</colgroup>
-<thead><tr>
-<th scope="col" class="org-left">item_name</th>
-<th scope="col" class="org-right">item_id</th>
-<th scope="col" class="org-right">item_category_id</th>
-</tr></thead>
-<tbody>
-<tr>
-<td class="org-left">! ВО ВЛАСТИ НАВАЖДЕНИЯ (ПЛАСТ.)         D</td>
-<td class="org-right">0</td>
-<td class="org-right">40</td>
-</tr>
-<tr>
-<td class="org-left">!ABBYY FineReader 12 Professional Edition Full [PC, Цифровая версия]</td>
-<td class="org-right">1</td>
-<td class="org-right">76</td>
-</tr>
-<tr>
-<td class="org-left">***В ЛУЧАХ СЛАВЫ   (UNV)                    D</td>
-<td class="org-right">2</td>
-<td class="org-right">40</td>
-</tr>
-<tr>
-<td class="org-left">***ГОЛУБАЯ ВОЛНА  (Univ)                      D</td>
-<td class="org-right">3</td>
-<td class="org-right">40</td>
-</tr>
-<tr>
-<td class="org-left">***КОРОБКА (СТЕКЛО)                       D</td>
-<td class="org-right">4</td>
-<td class="org-right">40</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div id="outline-container-org127d494" class="outline-3">
-<h3 id="org127d494">item_categories</h3>
-<div class="outline-text-3" id="text-org127d494">
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-<colgroup>
-<col class="org-left">
-<col class="org-right">
-</colgroup>
-<thead><tr>
-<th scope="col" class="org-left">item_category_name</th>
-<th scope="col" class="org-right">item_category_id</th>
-</tr></thead>
-<tbody>
-<tr>
-<td class="org-left">PC - Гарнитуры/Наушники</td>
-<td class="org-right">0</td>
-</tr>
-<tr>
-<td class="org-left">Аксессуары - PS2</td>
-<td class="org-right">1</td>
-</tr>
-<tr>
-<td class="org-left">Аксессуары - PS3</td>
-<td class="org-right">2</td>
-</tr>
-<tr>
-<td class="org-left">Аксессуары - PS4</td>
-<td class="org-right">3</td>
-</tr>
-<tr>
-<td class="org-left">Аксессуары - PSP</td>
-<td class="org-right">4</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div id="outline-container-org45c06aa" class="outline-3">
-<h3 id="org45c06aa">shops</h3>
-<div class="outline-text-3" id="text-org45c06aa">
+<div id="outline-container-orgf22cff6" class="outline-3">
+<h3 id="orgf22cff6">shops</h3>
+<div class="outline-text-3" id="text-orgf22cff6">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-left">
@@ -1120,14 +2347,14 @@ Unexpectedly, the names are all in <a href="https://en.wikipedia.org/wiki/Cyrill
 </div>
 </div>
 
-<div id="outline-container-org1318c8a" class="outline-2">
-<h2 id="org1318c8a">Questions</h2>
-<div class="outline-text-2" id="text-org1318c8a">
+<div id="outline-container-org8d37c7e" class="outline-2">
+<h2 id="org8d37c7e">Questions</h2>
+<div class="outline-text-2" id="text-org8d37c7e">
 </div>
-<div id="outline-container-orgc246cb1" class="outline-3">
-<h3 id="orgc246cb1">Question 1: <b>What was the maximum total revenue among all the shops in September, 2014?</b>
+<div id="outline-container-org03c78ee" class="outline-3">
+<h3 id="org03c78ee">Question 1: <b>What was the maximum total revenue among all the shops in September, 2014?</b>
 </h3>
-<div class="outline-text-3" id="text-orgc246cb1">
+<div class="outline-text-3" id="text-org03c78ee">
 <p>
 From here on out <b>revenue</b> refers to total sales minus value of goods returned.
 </p>
@@ -1139,13 +2366,13 @@ From here on out <b>revenue</b> refers to total sales minus value of goods retur
 </ul>
 </div>
 
-<div id="outline-container-orgcddbce7" class="outline-4">
-<h4 id="orgcddbce7">Answer</h4>
-<div class="outline-text-4" id="text-orgcddbce7">
+<div id="outline-container-org8d5b306" class="outline-4">
+<h4 id="org8d5b306">Answer</h4>
+<div class="outline-text-4" id="text-org8d5b306">
 </div>
 <ul class="org-ul">
 <li>
-<a id="org95e1583"></a>Sales Per Item<br><div class="outline-text-5" id="text-org95e1583">
+<a id="org18cb587"></a>Sales Per Item<br><div class="outline-text-5" id="text-org18cb587">
 <p>
 First I'll add a column with the total revenue for each item (the \(price \times \textit{number sold}\)).
 </p>
@@ -1252,7 +2479,7 @@ First I'll add a column with the total revenue for each item (the \(price \times
 
 
 <li>
-<a id="org87611be"></a>Filter Out the Month<br><div class="outline-text-5" id="text-org87611be">
+<a id="orgd4152e1"></a>Filter Out the Month<br><div class="outline-text-5" id="text-orgd4152e1">
 <p>
 I was originally filtering using a regular expression, but the other questions use date-filtering too so I decided to create the extra day, month, and year columns once to avoid the extra regular expression overhead later on. The <a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.Series.str.extract.html"><code>str.extract</code></a> method uses python regular expression groups to pull out values and create columns in a DataFrame. If you use named expressions (as I do here) then it will use the names as the column-names in the dataframe.
 </p>
@@ -1571,9 +2798,10 @@ Highest Revenue Earned by a shop in September of 2014: $ 7,982,852.20
 </div>
 </div>
 
-<div id="outline-container-org5d97b43" class="outline-3">
-<h3 id="org5d97b43">Question 2: What item category generated the highest revenue in the Summer of 2014?</h3>
-<div class="outline-text-3" id="text-org5d97b43">
+<div id="outline-container-org25e3811" class="outline-3">
+<h3 id="org25e3811">Question 2: <b>What item category generated the highest revenue in the Summer of 2014?</b>
+</h3>
+<div class="outline-text-3" id="text-org25e3811">
 <ul class="org-ul">
 <li>Submit the <code>id</code> of the category found.</li>
 <li>Here we call "summer" the period from June to August.</li>
@@ -1586,9 +2814,9 @@ Highest Revenue Earned by a shop in September of 2014: $ 7,982,852.20
 Note, that for an object `x` of type `pd.Series`: `x.argmax()` returns <b><b>index</b></b> of the maximum element. `pd.Series` can have non-trivial index (not `[1, 2, 3, … ]`).
 </p>
 </div>
-<div id="outline-container-orgeb477f7" class="outline-4">
-<h4 id="orgeb477f7">Get the Summer months</h4>
-<div class="outline-text-4" id="text-orgeb477f7">
+<div id="outline-container-orga84ed06" class="outline-4">
+<h4 id="orga84ed06">Get the Summer months</h4>
+<div class="outline-text-4" id="text-orga84ed06">
 <p>
 To filter what we want I'll use the <a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.isin.html"><code>isin</code></a> method to remove every row that has a value that isn't in <code>Dates.summer</code>.
 </p>
@@ -1705,9 +2933,9 @@ To filter what we want I'll use the <a href="https://pandas.pydata.org/pandas-do
 </div>
 </div>
 
-<div id="outline-container-org70fe88f" class="outline-4">
-<h4 id="org70fe88f">Map in the Category IDs</h4>
-<div class="outline-text-4" id="text-org70fe88f">
+<div id="outline-container-org143b3bc" class="outline-4">
+<h4 id="org143b3bc">Map in the Category IDs</h4>
+<div class="outline-text-4" id="text-org143b3bc">
 <p>
 If you look at <code>items.item_id</code> you can see that the id's are really just the numerical index to the <code>items.item_category_id</code> series. I was originally add the category ids for all the transactions but it takes a long time so I'm just adding it to this group.
 </p>
@@ -1856,9 +3084,10 @@ Category Id with the Maximum Value: 20
 </div>
 </div>
 
-<div id="outline-container-orgd5edac8" class="outline-3">
-<h3 id="orgd5edac8">Question 3: Constant Prices</h3>
-<div class="outline-text-3" id="text-orgd5edac8">
+<div id="outline-container-orgfff72fc" class="outline-3">
+<h3 id="orgfff72fc">Question 3: <b>How many items have the same price throughout the data set?</b>
+</h3>
+<div class="outline-text-3" id="text-orgfff72fc">
 <p>
 How many items are there, such that their price stays constant (to the best of our knowledge) during the whole period of time?
 </p>
@@ -1867,11 +3096,10 @@ How many items are there, such that their price stays constant (to the best of o
 Let's assume, that the items are returned for the same price as they had been sold.
 </p>
 </div>
-</div>
 
-<div id="outline-container-org95c86e0" class="outline-3">
-<h3 id="org95c86e0">Isolate the ID and Price</h3>
-<div class="outline-text-3" id="text-org95c86e0">
+<div id="outline-container-org02b1a3c" class="outline-4">
+<h4 id="org02b1a3c">Isolate the ID and Price</h4>
+<div class="outline-text-4" id="text-org02b1a3c">
 <div class="highlight"><pre><span></span><span class="n">id_price</span> <span class="o">=</span> <span class="n">transactions</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="p">[</span><span class="s2">"item_id"</span><span class="p">,</span> <span class="s2">"item_price"</span><span class="p">]]</span>
 <span class="n">id_price</span><span class="p">[</span><span class="s2">"item_price"</span><span class="p">]</span> <span class="o">=</span> <span class="n">id_price</span><span class="o">.</span><span class="n">item_price</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span>
 <span class="n">group</span> <span class="o">=</span> <span class="n">id_price</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">"item_id"</span><span class="p">)</span>
@@ -1896,13 +3124,15 @@ Number of items whose price didn't change: 5926
 </p>
 </div>
 </div>
+</div>
 
-<div id="outline-container-orga7727b4" class="outline-3">
-<h3 id="orga7727b4">Question 4</h3>
-<div class="outline-text-3" id="text-orga7727b4">
+<div id="outline-container-org6accee5" class="outline-3">
+<h3 id="org6accee5">Question 4: <b>What was the variance of the number of items sold per day for shop 25 in December, 2014?</b>
+</h3>
+<div class="outline-text-3" id="text-org6accee5">
 <p>
 Remember, the data can sometimes be noisy.
-<i>What was the variance of the number of sold items per day sequence for the shop with <code>shop_id = 25</code> in December, 2014?</i> Do not count the items, that were sold but returned back later.
+Do not count the items, that were sold but returned back later.
 </p>
 
 <ul class="org-ul">
@@ -1912,11 +3142,10 @@ Remember, the data can sometimes be noisy.
 <div class="highlight"><pre><span></span><span class="n">shop_id</span> <span class="o">=</span> <span class="mi">25</span>
 </pre></div>
 </div>
-</div>
 
-<div id="outline-container-org07d21d1" class="outline-3">
-<h3 id="org07d21d1">Filter to the Shop and Dates</h3>
-<div class="outline-text-3" id="text-org07d21d1">
+<div id="outline-container-org3e2e7a7" class="outline-4">
+<h4 id="org3e2e7a7">Filter to the Shop and Dates</h4>
+<div class="outline-text-4" id="text-org3e2e7a7">
 <div class="highlight"><pre><span></span><span class="n">twenty_fives</span> <span class="o">=</span> <span class="n">twenty_fourteen</span><span class="p">[(</span><span class="n">transactions</span><span class="o">.</span><span class="n">shop_id</span><span class="o">==</span><span class="n">shop_id</span><span class="p">)</span>
 				<span class="o">&amp;</span> <span class="p">(</span><span class="n">transactions</span><span class="o">.</span><span class="n">month</span><span class="o">==</span><span class="n">Dates</span><span class="o">.</span><span class="n">december</span><span class="p">)]</span>
 <span class="k">print</span><span class="p">(</span><span class="n">tabulate</span><span class="p">(</span><span class="n">twenty_fives</span><span class="o">.</span><span class="n">head</span><span class="p">(),</span> <span class="n">headers</span><span class="o">=</span><span class="s1">'keys'</span><span class="p">,</span> <span class="n">tablefmt</span><span class="o">=</span><span class="s1">'orgtbl'</span><span class="p">))</span>
@@ -2021,11 +3250,9 @@ Remember, the data can sometimes be noisy.
 </div>
 </div>
 
-
-
-<div id="outline-container-orgd5e1076" class="outline-3">
-<h3 id="orgd5e1076">Group by date</h3>
-<div class="outline-text-3" id="text-orgd5e1076">
+<div id="outline-container-orgd3d45e7" class="outline-4">
+<h4 id="orgd3d45e7">Group by date</h4>
+<div class="outline-text-4" id="text-orgd3d45e7">
 <div class="highlight"><pre><span></span><span class="n">shop_grouped</span> <span class="o">=</span> <span class="n">twenty_fives</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">"date"</span><span class="p">)</span>
 <span class="n">count_per_day</span> <span class="o">=</span> <span class="n">shop_grouped</span><span class="o">.</span><span class="n">item_cnt_day</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 <span class="k">print</span><span class="p">(</span><span class="n">count_per_day</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
@@ -2044,9 +3271,9 @@ Name: item_cnt_day, dtype: float64
 </div>
 </div>
 
-<div id="outline-container-org2a80756" class="outline-3">
-<h3 id="org2a80756">Add a date-time to make it sortable for print</h3>
-<div class="outline-text-3" id="text-org2a80756">
+<div id="outline-container-org9362db7" class="outline-4">
+<h4 id="org9362db7">Add a date-time to make it sortable for print</h4>
+<div class="outline-text-4" id="text-org9362db7">
 <div class="highlight"><pre><span></span><span class="n">pandas</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">mode</span><span class="o">.</span><span class="n">chained_assignment</span> <span class="o">=</span> <span class="bp">None</span>
 <span class="n">count_per_day</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">count_per_day</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">format</span><span class="o">=</span><span class="s2">"</span><span class="si">%d</span><span class="s2">.%m.%Y"</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="n">count_per_day</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
@@ -2091,6 +3318,7 @@ Name: item_cnt_day, dtype: float64
 <p>
 Variance for items sold per day: 117167.70229885059
 </p>
+</div>
 </div>
 </div>
 </div>

@@ -6870,6 +6870,11 @@ button.close {
   color: #fff;
 }
 
+/* The org-mode exporter smashes table columns together for some reason */
+.org-left, .org-right {
+    padding-left: 10px;
+}
+
 /*
 :Author: David Goodger (goodger@python.org)
 :Id: $Id: html4css1.css 7952 2016-07-26 18:15:59Z milde $

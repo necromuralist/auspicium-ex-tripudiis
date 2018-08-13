@@ -1,0 +1,1170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about kaggle data exploration)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/kaggle-data-exploration.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Mon, 13 Aug 2018 03:39:15 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Exploring The Data</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/exploring-the-data/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
+&lt;h2&gt;Table of Contents&lt;/h2&gt;
+&lt;div id="text-table-of-contents"&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploring-the-data/#org89805ac"&gt;Imports&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploring-the-data/#orgad73860"&gt;Helpers&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploring-the-data/#orgc277e11"&gt;Constants&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploring-the-data/#orge38dcd7"&gt;The Files&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploring-the-data/#org1ee53b6"&gt;Some Counts&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploring-the-data/#org6f7e5dc"&gt;The Official Feature Descriptions&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploring-the-data/#orga919018"&gt;The Training Set&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploring-the-data/#orga0928f1"&gt;Building Up the Training Set&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploring-the-data/#org9186c98"&gt;Saving the Super Set&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org89805ac" class="outline-2"&gt;
+&lt;h2 id="org89805ac"&gt;Imports&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org89805ac"&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org910ed62" class="outline-3"&gt;
+&lt;h3 id="org910ed62"&gt;Suppressing the Numpy Warnings&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org910ed62"&gt;
+&lt;p&gt;
+When you import pandas you get some warnings:
+&lt;/p&gt;
+
+&lt;pre class="example"&gt;
+/usr/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+  return f(*args, **kwds)
+/usr/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
+  return f(*args, **kwds)
+&lt;/pre&gt;
+
+&lt;p&gt;
+According to &lt;a href="https://stackoverflow.com/questions/40845304/runtimewarning-numpy-dtype-size-changed-may-indicate-binary-incompatibility"&gt;Stack Overflow&lt;/a&gt;, this is because &lt;a href="https://www.scipy.org/"&gt;scipy&lt;/a&gt; is built against an older version of &lt;a href="http://www.numpy.org/"&gt;numpy&lt;/a&gt;, but it shouldn't actually affect the way it works, so we should just suppress it.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;import warnings
+warnings.filterwarnings("ignore", message="numpy.dtype size changed")
+warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# python standard library
+import os
+import pickle
+
+# from pypi
+import matplotlib.pyplot as pyplot
+import numpy
+import pandas
+import seaborn
+from tabulate import tabulate
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;% matplotlib inline
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-orgad73860" class="outline-2"&gt;
+&lt;h2 id="orgad73860"&gt;Helpers&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgad73860"&gt;
+&lt;p&gt;
+Just some functions that keep coming up.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;class Helpers:
+    """Helper functions"""
+    pickle_target = "../pickles/"
+    pickle_target_string = pickle_target + "{}.pkl"
+
+    @staticmethod
+    def print_head(frame):
+	"""prints the head of the given data frame
+
+	Args:
+	 frame (pandas.DataFrame): data frame to print as a table
+	"""
+	print(tabulate(frame.head(), headers="keys", tablefmt="orgtbl",
+		       showindex=False))
+	return
+
+    @staticmethod
+    def print_table(data, showindex=True):
+	"""print the data
+
+	Args:
+	 data: some kind of data-frame
+	"""
+	print(tabulate(data, headers="keys", tablefmt="orgtbl",
+		       showindex=showindex))
+	return
+
+    @staticmethod
+    def pickle_it(thing, name=None):
+	"""save the object to a pickle in the data folder
+
+	Args:
+	 thing: object to pickle
+	 name: thing to call the pickle
+	"""
+	name = name if name is not None else thing.__name__
+	with open(
+		os.path.join(
+		    Helpers.pickle_target_string.format(name)),
+		"wb") as pickler:
+	    pickle.dump(thing, pickler)
+	return
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;Helpers.pickle_it(Helpers)
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-orgc277e11" class="outline-2"&gt;
+&lt;h2 id="orgc277e11"&gt;Constants&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgc277e11"&gt;
+&lt;p&gt;
+As always, I'll try to put constants in the same place.
+&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-orgd5ebadd" class="outline-3"&gt;
+&lt;h3 id="orgd5ebadd"&gt;Data Source&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgd5ebadd"&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;class DataSource:
+    """Strings for the files"""
+    directory = "../data/"
+
+DataSource.file_names = os.listdir(DataSource.directory)
+for name in DataSource.file_names:
+    setattr(DataSource, name.split('.')[0], name)
+
+DataSource.paths = [os.path.join(DataSource.directory, name)
+		    for name in DataSource.file_names]
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;Helpers.pickle_it(DataSource)
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-org0193619" class="outline-3"&gt;
+&lt;h3 id="org0193619"&gt;Data Keys&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org0193619"&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;class DataKeys:
+    """Column names/keys for the data."""
+    item_category = "item_category_id"
+    shop = "shop_id"
+    item = "item_id"
+    date = "date"
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;Helpers.pickle_it(DataKeys)
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+
+&lt;div id="outline-container-orge38dcd7" class="outline-2"&gt;
+&lt;h2 id="orge38dcd7"&gt;The Files&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orge38dcd7"&gt;
+&lt;p&gt;
+These are the files we are given.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;for name in DataSource.file_names:
+    print(" - {}".format(name))
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;sample_submission.csv.gz&lt;/li&gt;
+&lt;li&gt;shops.csv&lt;/li&gt;
+&lt;li&gt;items.csv&lt;/li&gt;
+&lt;li&gt;sales_train.csv.gz&lt;/li&gt;
+&lt;li&gt;item_categories.csv&lt;/li&gt;
+&lt;li&gt;test.csv.gz&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;
+I was originally thinking I would need to unzip the gzipped files but apparently the &lt;a href="https://pandas.pydata.org/pandas-docs/stable/io.html#io-read-csv-table"&gt;&lt;code&gt;Pandas.read_csv&lt;/code&gt;&lt;/a&gt; function will decompress them automagically, so I guess I can leave them.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;frames = {DataSource.file_names[index]: pandas.read_csv(path)
+	  for index, path in enumerate(DataSource.paths)}
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;for name, frame in frames.items():
+    print("\n** {}".format(name))
+    Helpers.print_head(frame)
+    print()
+    print(frame.info())
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-orgc7d79de" class="outline-3"&gt;
+&lt;h3 id="orgc7d79de"&gt;sample_submission.csv.gz&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgc7d79de"&gt;
+&lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
+
+
+&lt;colgroup&gt;
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope="col" class="org-right"&gt;ID&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;item_cnt_month&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;0.5&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;td class="org-right"&gt;0.5&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;2&lt;/td&gt;
+&lt;td class="org-right"&gt;0.5&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;3&lt;/td&gt;
+&lt;td class="org-right"&gt;0.5&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;4&lt;/td&gt;
+&lt;td class="org-right"&gt;0.5&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;
+&amp;lt;class 'pandas.core.frame.DataFrame'&amp;gt;
+RangeIndex: 214200 entries, 0 to 214199
+Data columns (total 2 columns):
+ID                214200 non-null int64
+item_cnt_month    214200 non-null float64
+dtypes: float64(1), int64(1)
+memory usage: 3.3 MB
+None
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-org98cfc1a" class="outline-3"&gt;
+&lt;h3 id="org98cfc1a"&gt;shops.csv&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org98cfc1a"&gt;
+&lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
+
+
+&lt;colgroup&gt;
+&lt;col class="org-left"&gt;
+
+&lt;col class="org-right"&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope="col" class="org-left"&gt;shop_name&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;shop_id&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class="org-left"&gt;!Якутск Орджоникидзе, 56 фран&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;!Якутск ТЦ "Центральный" фран&lt;/td&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;Адыгея ТЦ "Мега"&lt;/td&gt;
+&lt;td class="org-right"&gt;2&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;Балашиха ТРК "Октябрь-Киномир"&lt;/td&gt;
+&lt;td class="org-right"&gt;3&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;Волжский ТЦ "Волга Молл"&lt;/td&gt;
+&lt;td class="org-right"&gt;4&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;
+&amp;lt;class 'pandas.core.frame.DataFrame'&amp;gt;
+RangeIndex: 60 entries, 0 to 59
+Data columns (total 2 columns):
+shop_name    60 non-null object
+shop_id      60 non-null int64
+dtypes: int64(1), object(1)
+memory usage: 1.0+ KB
+None
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-org50f8fef" class="outline-3"&gt;
+&lt;h3 id="org50f8fef"&gt;items.csv&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org50f8fef"&gt;
+&lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
+
+
+&lt;colgroup&gt;
+&lt;col class="org-left"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope="col" class="org-left"&gt;item_name&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;item_id&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;item_category_id&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class="org-left"&gt;! ВО ВЛАСТИ НАВАЖДЕНИЯ (ПЛАСТ.)         D&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;40&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;!ABBYY FineReader 12 Professional Edition Full [PC, Цифровая версия]&lt;/td&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;td class="org-right"&gt;76&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;***В ЛУЧАХ СЛАВЫ   (UNV)                    D&lt;/td&gt;
+&lt;td class="org-right"&gt;2&lt;/td&gt;
+&lt;td class="org-right"&gt;40&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;***ГОЛУБАЯ ВОЛНА  (Univ)                      D&lt;/td&gt;
+&lt;td class="org-right"&gt;3&lt;/td&gt;
+&lt;td class="org-right"&gt;40&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;***КОРОБКА (СТЕКЛО)                       D&lt;/td&gt;
+&lt;td class="org-right"&gt;4&lt;/td&gt;
+&lt;td class="org-right"&gt;40&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;
+&amp;lt;class 'pandas.core.frame.DataFrame'&amp;gt;
+RangeIndex: 22170 entries, 0 to 22169
+Data columns (total 3 columns):
+item_name           22170 non-null object
+item_id             22170 non-null int64
+item_category_id    22170 non-null int64
+dtypes: int64(2), object(1)
+memory usage: 519.7+ KB
+None
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-org5bc0f27" class="outline-3"&gt;
+&lt;h3 id="org5bc0f27"&gt;sales_train.csv.gz&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org5bc0f27"&gt;
+&lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
+
+
+&lt;colgroup&gt;
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope="col" class="org-right"&gt;date&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;date_block_num&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;shop_id&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;item_id&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;item_price&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;item_cnt_day&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class="org-right"&gt;02.01.2013&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;59&lt;/td&gt;
+&lt;td class="org-right"&gt;22154&lt;/td&gt;
+&lt;td class="org-right"&gt;999&lt;/td&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;03.01.2013&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;25&lt;/td&gt;
+&lt;td class="org-right"&gt;2552&lt;/td&gt;
+&lt;td class="org-right"&gt;899&lt;/td&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;05.01.2013&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;25&lt;/td&gt;
+&lt;td class="org-right"&gt;2552&lt;/td&gt;
+&lt;td class="org-right"&gt;899&lt;/td&gt;
+&lt;td class="org-right"&gt;-1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;06.01.2013&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;25&lt;/td&gt;
+&lt;td class="org-right"&gt;2554&lt;/td&gt;
+&lt;td class="org-right"&gt;1709.05&lt;/td&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;15.01.2013&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;25&lt;/td&gt;
+&lt;td class="org-right"&gt;2555&lt;/td&gt;
+&lt;td class="org-right"&gt;1099&lt;/td&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;
+&amp;lt;class 'pandas.core.frame.DataFrame'&amp;gt;
+RangeIndex: 2935849 entries, 0 to 2935848
+Data columns (total 6 columns):
+date              object
+date_block_num    int64
+shop_id           int64
+item_id           int64
+item_price        float64
+item_cnt_day      float64
+dtypes: float64(2), int64(3), object(1)
+memory usage: 134.4+ MB
+None
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-org5c32342" class="outline-3"&gt;
+&lt;h3 id="org5c32342"&gt;item_categories.csv&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org5c32342"&gt;
+&lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
+
+
+&lt;colgroup&gt;
+&lt;col class="org-left"&gt;
+
+&lt;col class="org-right"&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope="col" class="org-left"&gt;item_category_name&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;item_category_id&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class="org-left"&gt;PC - Гарнитуры/Наушники&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;Аксессуары - PS2&lt;/td&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;Аксессуары - PS3&lt;/td&gt;
+&lt;td class="org-right"&gt;2&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;Аксессуары - PS4&lt;/td&gt;
+&lt;td class="org-right"&gt;3&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;Аксессуары - PSP&lt;/td&gt;
+&lt;td class="org-right"&gt;4&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;
+&amp;lt;class 'pandas.core.frame.DataFrame'&amp;gt;
+RangeIndex: 84 entries, 0 to 83
+Data columns (total 2 columns):
+item_category_name    84 non-null object
+item_category_id      84 non-null int64
+dtypes: int64(1), object(1)
+memory usage: 1.4+ KB
+None
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-orge9cf064" class="outline-3"&gt;
+&lt;h3 id="orge9cf064"&gt;test.csv.gz&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orge9cf064"&gt;
+&lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
+
+
+&lt;colgroup&gt;
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope="col" class="org-right"&gt;ID&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;shop_id&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;item_id&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;5&lt;/td&gt;
+&lt;td class="org-right"&gt;5037&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;td class="org-right"&gt;5&lt;/td&gt;
+&lt;td class="org-right"&gt;5320&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;2&lt;/td&gt;
+&lt;td class="org-right"&gt;5&lt;/td&gt;
+&lt;td class="org-right"&gt;5233&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;3&lt;/td&gt;
+&lt;td class="org-right"&gt;5&lt;/td&gt;
+&lt;td class="org-right"&gt;5232&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;4&lt;/td&gt;
+&lt;td class="org-right"&gt;5&lt;/td&gt;
+&lt;td class="org-right"&gt;5268&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;
+&amp;lt;class 'pandas.core.frame.DataFrame'&amp;gt;
+RangeIndex: 214200 entries, 0 to 214199
+Data columns (total 3 columns):
+ID         214200 non-null int64
+shop_id    214200 non-null int64
+item_id    214200 non-null int64
+dtypes: int64(3)
+memory usage: 4.9 MB
+None
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-org1ee53b6" class="outline-2"&gt;
+&lt;h2 id="org1ee53b6"&gt;Some Counts&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org1ee53b6"&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgb93cb44" class="outline-3"&gt;
+&lt;h3 id="orgb93cb44"&gt;How much data is there in the training set?&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgb93cb44"&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;print("There are {:,} rows in the traning set.".format(len(frames[DataSource.sales_train])))
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;
+There are 2,935,849 rows in the traning set.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-org4239061" class="outline-3"&gt;
+&lt;h3 id="org4239061"&gt;How many shops are there?&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org4239061"&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;print("There are {} shops.".format(len(frames[DataSource.shops])))
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;
+There are 60 shops.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-orge08dd40" class="outline-3"&gt;
+&lt;h3 id="orge08dd40"&gt;How Many Items Are There?&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orge08dd40"&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;print("There are {:,} items.".format(len(frames[DataSource.items])))
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;
+There are 22,170 items.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-org90cd0e1" class="outline-3"&gt;
+&lt;h3 id="org90cd0e1"&gt;How Many Item Categories are there?&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org90cd0e1"&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;print("There are {:,} categories.".format(len(frames[DataSource.item_categories])))
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;
+There are 84 categories.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-org6f7e5dc" class="outline-2"&gt;
+&lt;h2 id="org6f7e5dc"&gt;The Official Feature Descriptions&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org6f7e5dc"&gt;
+&lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
+
+
+&lt;colgroup&gt;
+&lt;col class="org-left"&gt;
+
+&lt;col class="org-left"&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope="col" class="org-left"&gt;Column Name&lt;/th&gt;
+&lt;th scope="col" class="org-left"&gt;Description&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class="org-left"&gt;ID&lt;/td&gt;
+&lt;td class="org-left"&gt;an Id that represents a (Shop, Item) tuple within the test set&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;shop_id&lt;/td&gt;
+&lt;td class="org-left"&gt;unique identifier of a shop&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;item_id&lt;/td&gt;
+&lt;td class="org-left"&gt;unique identifier of a product&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;item_category_id&lt;/td&gt;
+&lt;td class="org-left"&gt;unique identifier of item category&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;item_cnt_day&lt;/td&gt;
+&lt;td class="org-left"&gt;number of products sold. You are predicting a monthly amount of this measure&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;item_price&lt;/td&gt;
+&lt;td class="org-left"&gt;current price of an item&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;date&lt;/td&gt;
+&lt;td class="org-left"&gt;date in format dd/mm/yyyy&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;date_block_num&lt;/td&gt;
+&lt;td class="org-left"&gt;a consecutive month number, used for convenience. January 2013 is 0, February 2013 is 1,…, October 2015 is 33&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;item_name&lt;/td&gt;
+&lt;td class="org-left"&gt;name of item&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;shop_name&lt;/td&gt;
+&lt;td class="org-left"&gt;name of shop&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;item_category_name&lt;/td&gt;
+&lt;td class="org-left"&gt;name of item category&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-orga919018" class="outline-2"&gt;
+&lt;h2 id="orga919018"&gt;The Training Set&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orga919018"&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;print(super_set.dtypes)
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;
+date                 object
+date_block_num        int64
+shop_id               int64
+item_id               int64
+item_price          float64
+item_cnt_day        float64
+item_category_id      int64
+dtype: object
+&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-org8992fdf" class="outline-3"&gt;
+&lt;h3 id="org8992fdf"&gt;Numeric Features&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org8992fdf"&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;Helpers.print_table(super_set.describe(include=numpy.number).T)
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
+
+
+&lt;colgroup&gt;
+&lt;col class="org-left"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope="col" class="org-left"&gt; &lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;count&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;mean&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;std&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;min&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;25%&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;50%&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;75%&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;max&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class="org-left"&gt;date_block_num&lt;/td&gt;
+&lt;td class="org-right"&gt;2.93585e+06&lt;/td&gt;
+&lt;td class="org-right"&gt;14.5699&lt;/td&gt;
+&lt;td class="org-right"&gt;9.42299&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;7&lt;/td&gt;
+&lt;td class="org-right"&gt;14&lt;/td&gt;
+&lt;td class="org-right"&gt;23&lt;/td&gt;
+&lt;td class="org-right"&gt;33&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;shop_id&lt;/td&gt;
+&lt;td class="org-right"&gt;2.93585e+06&lt;/td&gt;
+&lt;td class="org-right"&gt;33.0017&lt;/td&gt;
+&lt;td class="org-right"&gt;16.227&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;22&lt;/td&gt;
+&lt;td class="org-right"&gt;31&lt;/td&gt;
+&lt;td class="org-right"&gt;47&lt;/td&gt;
+&lt;td class="org-right"&gt;59&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;item_id&lt;/td&gt;
+&lt;td class="org-right"&gt;2.93585e+06&lt;/td&gt;
+&lt;td class="org-right"&gt;10197.2&lt;/td&gt;
+&lt;td class="org-right"&gt;6324.3&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;4476&lt;/td&gt;
+&lt;td class="org-right"&gt;9343&lt;/td&gt;
+&lt;td class="org-right"&gt;15684&lt;/td&gt;
+&lt;td class="org-right"&gt;22169&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;item_price&lt;/td&gt;
+&lt;td class="org-right"&gt;2.93585e+06&lt;/td&gt;
+&lt;td class="org-right"&gt;890.853&lt;/td&gt;
+&lt;td class="org-right"&gt;1729.8&lt;/td&gt;
+&lt;td class="org-right"&gt;-1&lt;/td&gt;
+&lt;td class="org-right"&gt;249&lt;/td&gt;
+&lt;td class="org-right"&gt;399&lt;/td&gt;
+&lt;td class="org-right"&gt;999&lt;/td&gt;
+&lt;td class="org-right"&gt;307980&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;item_cnt_day&lt;/td&gt;
+&lt;td class="org-right"&gt;2.93585e+06&lt;/td&gt;
+&lt;td class="org-right"&gt;1.24264&lt;/td&gt;
+&lt;td class="org-right"&gt;2.61883&lt;/td&gt;
+&lt;td class="org-right"&gt;-22&lt;/td&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;td class="org-right"&gt;2169&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;item_category_id&lt;/td&gt;
+&lt;td class="org-right"&gt;2.93585e+06&lt;/td&gt;
+&lt;td class="org-right"&gt;40.0014&lt;/td&gt;
+&lt;td class="org-right"&gt;17.1008&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;28&lt;/td&gt;
+&lt;td class="org-right"&gt;40&lt;/td&gt;
+&lt;td class="org-right"&gt;55&lt;/td&gt;
+&lt;td class="org-right"&gt;83&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-org1e1e17b" class="outline-3"&gt;
+&lt;h3 id="org1e1e17b"&gt;Categorical Features&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org1e1e17b"&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;Helpers.print_table(super_set.describe(include=[numpy.object, pandas.Categorical]).T)
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
+
+
+&lt;colgroup&gt;
+&lt;col class="org-left"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope="col" class="org-left"&gt; &lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;count&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;unique&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;top&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;freq&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class="org-left"&gt;date&lt;/td&gt;
+&lt;td class="org-right"&gt;2.93585e+06&lt;/td&gt;
+&lt;td class="org-right"&gt;1034&lt;/td&gt;
+&lt;td class="org-right"&gt;28.12.2013&lt;/td&gt;
+&lt;td class="org-right"&gt;9434&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-orga0928f1" class="outline-2"&gt;
+&lt;h2 id="orga0928f1"&gt;Building Up the Training Set&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orga0928f1"&gt;
+&lt;p&gt;
+Since we have some variables in separate sets I thought it would be useful to combine them into a single training set.
+&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-org7805929" class="outline-3"&gt;
+&lt;h3 id="org7805929"&gt;Building the Super Set&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org7805929"&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;super_set = frames[DataSource.sales_train].copy()
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;Helpers.print_head(super_set)
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
+
+
+&lt;colgroup&gt;
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope="col" class="org-right"&gt;date&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;date_block_num&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;shop_id&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;item_id&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;item_price&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;item_cnt_day&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;item_category_id&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class="org-right"&gt;02.01.2013&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;59&lt;/td&gt;
+&lt;td class="org-right"&gt;22154&lt;/td&gt;
+&lt;td class="org-right"&gt;999&lt;/td&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;td class="org-right"&gt;37&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;03.01.2013&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;25&lt;/td&gt;
+&lt;td class="org-right"&gt;2552&lt;/td&gt;
+&lt;td class="org-right"&gt;899&lt;/td&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;td class="org-right"&gt;58&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;05.01.2013&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;25&lt;/td&gt;
+&lt;td class="org-right"&gt;2552&lt;/td&gt;
+&lt;td class="org-right"&gt;899&lt;/td&gt;
+&lt;td class="org-right"&gt;-1&lt;/td&gt;
+&lt;td class="org-right"&gt;58&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;06.01.2013&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;25&lt;/td&gt;
+&lt;td class="org-right"&gt;2554&lt;/td&gt;
+&lt;td class="org-right"&gt;1709.05&lt;/td&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;td class="org-right"&gt;58&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;15.01.2013&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;25&lt;/td&gt;
+&lt;td class="org-right"&gt;2555&lt;/td&gt;
+&lt;td class="org-right"&gt;1099&lt;/td&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;td class="org-right"&gt;56&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-org393b70a" class="outline-3"&gt;
+&lt;h3 id="org393b70a"&gt;Adding The Category ID&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org393b70a"&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;super_set[DataKeys.item_category] = super_set.item_id.apply(
+    lambda item: frames[DataSource.items].loc[item, DataKeys.item_category])
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;Helpers.print_head(super_set)
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
+
+
+&lt;colgroup&gt;
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope="col" class="org-right"&gt;date&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;date_block_num&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;shop_id&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;item_id&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;item_price&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;item_cnt_day&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;item_category_id&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class="org-right"&gt;02.01.2013&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;59&lt;/td&gt;
+&lt;td class="org-right"&gt;22154&lt;/td&gt;
+&lt;td class="org-right"&gt;999&lt;/td&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;td class="org-right"&gt;37&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;03.01.2013&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;25&lt;/td&gt;
+&lt;td class="org-right"&gt;2552&lt;/td&gt;
+&lt;td class="org-right"&gt;899&lt;/td&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;td class="org-right"&gt;58&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;05.01.2013&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;25&lt;/td&gt;
+&lt;td class="org-right"&gt;2552&lt;/td&gt;
+&lt;td class="org-right"&gt;899&lt;/td&gt;
+&lt;td class="org-right"&gt;-1&lt;/td&gt;
+&lt;td class="org-right"&gt;58&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;06.01.2013&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;25&lt;/td&gt;
+&lt;td class="org-right"&gt;2554&lt;/td&gt;
+&lt;td class="org-right"&gt;1709.05&lt;/td&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;td class="org-right"&gt;58&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;15.01.2013&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;25&lt;/td&gt;
+&lt;td class="org-right"&gt;2555&lt;/td&gt;
+&lt;td class="org-right"&gt;1099&lt;/td&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;td class="org-right"&gt;56&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;counts = super_set[DataKeys.item_category].value_counts(sort=True)
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;figure = pyplot.figure(figsize=(10, 8))
+axe = figure.gca()
+axe.set_title("Category Counts")
+axe.set_ylabel("Category")
+axe.set_xlabel("Count")
+# plot = axe.plot(counts.index, counts.item_id, 'o')
+plot = counts.plot.barh(ax=axe)
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;
+&lt;img src="https://necromuralist.github.io/Kaggle-Competitions/posts/files/posts/exploring-the-data/categories.png" alt="categories.png"&gt;
+&lt;img src="https://necromuralist.github.io/Kaggle-Competitions/posts/exploring-the-data/categories.png" alt="categories.png"&gt;
+&lt;/p&gt;
+
+&lt;p&gt;
+It looks like a few categories dominate the sales.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-orga9360e5" class="outline-3"&gt;
+&lt;h3 id="orga9360e5"&gt;What do the dates mean?&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orga9360e5"&gt;
+&lt;p&gt;
+If you look at the head of the training data it looks like only one item was sold or returned per day. This seems like it wouldn't be the case, so lets see how many shops and items there are per day.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;days = super_set.groupby(DataKeys.date)
+day_counts = days.count()
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;
+&lt;code&gt;day_counts&lt;/code&gt; is just the number of entries there are for each day, regardless of how many of each item were sold per day.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;figure =  pyplot.figure(figsize=(12, 10))
+axe = figure.gca()
+axe.set_title("Entries Per Day")
+axe.set_ylabel("Entries")
+axe.set_xlabel("Date")
+axe = axe.plot(day_counts.item_id, '.')
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;
+&lt;img src="https://necromuralist.github.io/Kaggle-Competitions/posts/files/posts/exploring-the-data/items_per_date.png" alt="items_per_date.png"&gt;
+&lt;img src="https://necromuralist.github.io/Kaggle-Competitions/posts/exploring-the-data/items_per_date.png" alt="items_per_date.png"&gt;
+&lt;/p&gt;
+
+&lt;p&gt;
+It looks like there was actually a lot of entries per date.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org9186c98" class="outline-2"&gt;
+&lt;h2 id="org9186c98"&gt;Saving the Super Set&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org9186c98"&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;Helpers.pickle_it(super_set, "training_data")
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description><category>kaggle data exploration</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/exploring-the-data/</guid><pubDate>Sat, 11 Aug 2018 22:26:40 GMT</pubDate></item></channel></rss>
