@@ -1,0 +1,88 @@
+#+BEGIN_COMMENT
+.. title: Feature Preprocessing
+.. slug: feature-preprocessing
+.. date: 2018-08-07 21:41:10 UTC-07:00
+.. tags: features preprocessing
+.. category: preprocessing
+.. link: 
+.. description: Preprocessing data features.
+.. type: text
+#+END_COMMENT
+
+#+TOC: headlines 1
+* Preprocessing
+  In every competition you need to:
+
+  - pre-process the data
+  - generate new features from the existing ones
+* Numeric Feature Preprocessing
+  Some models (e.g. Linear Classification) need you to convert numeric-looking data to categorical data. Tree-based models don't need pre-processing as much as non tree-based models do.
+
+** Scaling
+   If features have different value ranges then the model will  treat them differently.
+   - sklearn.preprocessing.MinMaxScalar
+     Scale by the range of values
+   - sklearn.preprocessing.StandardScalar
+     Scale the data to have a mean of 0 and a standard deviation of 1
+** Outliers
+   - Clip (=numpy.clip=)values to get rid of unusual values that mess with the model. (Winsorization)
+   - Rank Transform them (=scipy.stats.rankdata=) so that they
+** Transformation
+   For linear models and neural networks, transforming the data can sometimes help.
+   - Log Transform: =numpy.log(1 + x)=
+   - Power Less Than 1 Transform: =numpy.sqrt(x + 2/3)
+** Feature Generation
+  Sometimes you can convert separate columns to get new ones. This requires exploratory data analysis.
+  - Fractional Parts: people perceive numbers with fractions differently so sometime separating out the fractional part makes the model perform better because it is the more important part
+  - You can derive new values mathematically (e.g. distance using height and width)
+
+* Categorical And Ordinal Features
+  - Ordinal Features have an ordering but even if they are labeled numerically (e.g. 1, 2, 3) they aren't numeric because there is no implication about the distance between each
+  - label and frequency encoding are commonly used for tree-based models
+  - one-hot encoding is more common for non-tree-based models
+** Label Encoding
+   Some models need numeric values or numeric values that don't have implied ordering so you want to encode them.
+   - =sklearn.preprocessing.LabelEncoder=
+     Sorts the labels then encodes them as integers
+   - =Pandas.factorize=
+     Encodes the labels in the order they appear. This makes more sense if there is a meaning to the order in which labels appear.
+   - This is more commonly used with tree-based methods.
+** Frequency Encoding
+   Encode the values to a fraction of all the labels. Can work with linear models if the frequency is correlated with the target value.
+   - =titanic.groupby("Embarked").size()/len(titanic)=
+   - =from scipy.stats import rankedata=
+   - More common with tree-based methods
+** One Hot Encoding
+   Creates one column for each label and puts a 1 in the column that matches. Works with both linear and tree-based models, but can be inefficient with tree-based models.
+   - =pandas.get_dummies=
+   - =sklearn.preprocessing.OneHotEncoder=
+   - One hot encoding is better for non-tree models.
+   - This allows easier feature interactions (encode combined features (e.g. gender and class) rather than encoding them separately) 
+    +  This is more common with linear models and KNN
+* Dates and Times
+  When working with seasonal data, sometimes the relative date-stamps are more important than the actual dates (how close to Christmas?).
+  Sometimes you want the time between events.
+* Coordinates
+  Sometimes you want exact coordinates, but most times you want distances to some center.
+* Missing Data
+  - "missing" data might mean outliers - values that are probably wrong
+  - avoid replacing missing values before feature engineering - it can throw off what you do
+  - Gradient Boost Trees can handle isNaN, so you don't have to do anything
+** Numeric
+*** Fill NA Approaches
+    - -999, -1, other numbers
+       + lets you categorize missing values
+       + throws some models off (e.g. linear models and neural networks)
+       + one solution is to create a new feature for missing values, but this has now increased the amount of data you need (curse of dimensionality)
+    - mean, median, some central tendency
+      + This can throw the model off
+      + it is sometimes better to ignore missing data
+    - recronstructed valud
+* Links
+** Feature Pre-processing
+  - [[http://scikit-learn.org/stable/modules/preprocessing.html][SKlearn's Preprocessing Documentation]]
+  - [[https://www.coursera.org/learn/machine-learning/lecture/xx3Da/gradient-descent-in-practice-i-feature-scaling][Andrew Ng on Feature Scaling and its effect on Gradient Descent]]
+  - [[http://sebastianraschka.com/Articles/2014_about_feature_scaling.html][Sebastian Raschka on Feature Scaling]]
+** Feature Engineering
+   - [[https://machinelearningmastery.com/discover-feature-engineering-how-to-engineer-features-and-how-to-get-good-at-it/][Machine Learning Mastery on Feature Engineering]]
+   - [[https://www.quora.com/What-are-some-best-practices-in-Feature-Engineering][Quora: What are some best practices in Feature Engineering?]]

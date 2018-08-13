@@ -6869,3 +6869,8 @@ button.close {
 .panel-info .panel-title {
   color: #fff;
 }
+
+/* The org-mode exporter smashes table columns together for some reason */
+.org-left, .org-right {
+    padding-left: 10px;
+}

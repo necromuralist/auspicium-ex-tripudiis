@@ -10,7 +10,7 @@
 #+END_COMMENT
 #+OPTIONS: ^:{}
 
-#+TOC: headlines 1
+#+TOC: headlines 2
 
 * Description
 
@@ -153,102 +153,6 @@ for name, frame in frames.items():
 #+END_SRC
 
 #+RESULTS:
-** transactions
-| date       |   date_block_num |   shop_id |   item_id |   item_price |   item_cnt_day |
-|------------+------------------+-----------+-----------+--------------+----------------|
-| 02.01.2013 |                0 |        59 |     22154 |       999    |              1 |
-| 03.01.2013 |                0 |        25 |      2552 |       899    |              1 |
-| 05.01.2013 |                0 |        25 |      2552 |       899    |             -1 |
-| 06.01.2013 |                0 |        25 |      2554 |      1709.05 |              1 |
-| 15.01.2013 |                0 |        25 |      2555 |      1099    |              1 |
-** items
-| item_name                                                            |   item_id |   item_category_id |
-|----------------------------------------------------------------------+-----------+--------------------|
-| ! ВО ВЛАСТИ НАВАЖДЕНИЯ (ПЛАСТ.)         D                            |         0 |                 40 |
-| !ABBYY FineReader 12 Professional Edition Full [PC, Цифровая версия] |         1 |                 76 |
-| ***В ЛУЧАХ СЛАВЫ   (UNV)                    D                        |         2 |                 40 |
-| ***ГОЛУБАЯ ВОЛНА  (Univ)                      D                      |         3 |                 40 |
-| ***КОРОБКА (СТЕКЛО)                       D                          |         4 |                 40 |
-** item_categories
-| item_category_name      |   item_category_id |
-|-------------------------+--------------------|
-| PC - Гарнитуры/Наушники |                  0 |
-| Аксессуары - PS2        |                  1 |
-| Аксессуары - PS3        |                  2 |
-| Аксессуары - PS4        |                  3 |
-| Аксессуары - PSP        |                  4 |
-** shops
-| shop_name                      |   shop_id |
-|--------------------------------+-----------|
-| !Якутск Орджоникидзе, 56 фран  |         0 |
-| !Якутск ТЦ "Центральный" фран  |         1 |
-| Адыгея ТЦ "Мега"               |         2 |
-| Балашиха ТРК "Октябрь-Киномир" |         3 |
-| Волжский ТЦ "Волга Молл"       |         4 |
-** transactions
-| date       |   date_block_num |   shop_id |   item_id |   item_price |   item_cnt_day |
-|------------+------------------+-----------+-----------+--------------+----------------|
-| 02.01.2013 |                0 |        59 |     22154 |       999    |              1 |
-| 03.01.2013 |                0 |        25 |      2552 |       899    |              1 |
-| 05.01.2013 |                0 |        25 |      2552 |       899    |             -1 |
-| 06.01.2013 |                0 |        25 |      2554 |      1709.05 |              1 |
-| 15.01.2013 |                0 |        25 |      2555 |      1099    |              1 |
-** items
-| item_name                                                            |   item_id |   item_category_id |
-|----------------------------------------------------------------------+-----------+--------------------|
-| ! ВО ВЛАСТИ НАВАЖДЕНИЯ (ПЛАСТ.)         D                            |         0 |                 40 |
-| !ABBYY FineReader 12 Professional Edition Full [PC, Цифровая версия] |         1 |                 76 |
-| ***В ЛУЧАХ СЛАВЫ   (UNV)                    D                        |         2 |                 40 |
-| ***ГОЛУБАЯ ВОЛНА  (Univ)                      D                      |         3 |                 40 |
-| ***КОРОБКА (СТЕКЛО)                       D                          |         4 |                 40 |
-** item_categories
-| item_category_name      |   item_category_id |
-|-------------------------+--------------------|
-| PC - Гарнитуры/Наушники |                  0 |
-| Аксессуары - PS2        |                  1 |
-| Аксессуары - PS3        |                  2 |
-| Аксессуары - PS4        |                  3 |
-| Аксессуары - PSP        |                  4 |
-** shops
-| shop_name                      |   shop_id |
-|--------------------------------+-----------|
-| !Якутск Орджоникидзе, 56 фран  |         0 |
-| !Якутск ТЦ "Центральный" фран  |         1 |
-| Адыгея ТЦ "Мега"               |         2 |
-| Балашиха ТРК "Октябрь-Киномир" |         3 |
-| Волжский ТЦ "Волга Молл"       |         4 |
-** transactions
-| date       |   date_block_num |   shop_id |   item_id |   item_price |   item_cnt_day |
-|------------+------------------+-----------+-----------+--------------+----------------|
-| 02.01.2013 |                0 |        59 |     22154 |       999    |              1 |
-| 03.01.2013 |                0 |        25 |      2552 |       899    |              1 |
-| 05.01.2013 |                0 |        25 |      2552 |       899    |             -1 |
-| 06.01.2013 |                0 |        25 |      2554 |      1709.05 |              1 |
-| 15.01.2013 |                0 |        25 |      2555 |      1099    |              1 |
-** items
-| item_name                                                            |   item_id |   item_category_id |
-|----------------------------------------------------------------------+-----------+--------------------|
-| ! ВО ВЛАСТИ НАВАЖДЕНИЯ (ПЛАСТ.)         D                            |         0 |                 40 |
-| !ABBYY FineReader 12 Professional Edition Full [PC, Цифровая версия] |         1 |                 76 |
-| ***В ЛУЧАХ СЛАВЫ   (UNV)                    D                        |         2 |                 40 |
-| ***ГОЛУБАЯ ВОЛНА  (Univ)                      D                      |         3 |                 40 |
-| ***КОРОБКА (СТЕКЛО)                       D                          |         4 |                 40 |
-** item_categories
-| item_category_name      |   item_category_id |
-|-------------------------+--------------------|
-| PC - Гарнитуры/Наушники |                  0 |
-| Аксессуары - PS2        |                  1 |
-| Аксессуары - PS3        |                  2 |
-| Аксессуары - PS4        |                  3 |
-| Аксессуары - PSP        |                  4 |
-** shops
-| shop_name                      |   shop_id |
-|--------------------------------+-----------|
-| !Якутск Орджоникидзе, 56 фран  |         0 |
-| !Якутск ТЦ "Центральный" фран  |         1 |
-| Адыгея ТЦ "Мега"               |         2 |
-| Балашиха ТРК "Октябрь-Киномир" |         3 |
-| Волжский ТЦ "Волга Молл"       |         4 |
 ** transactions
 | date       |   date_block_num |   shop_id |   item_id |   item_price |   item_cnt_day |
 |------------+------------------+-----------+-----------+--------------+----------------|
@@ -435,7 +339,7 @@ print("Highest Revenue Earned by a shop in September of 2014: $ {:,.2f}".format(
 #+RESULTS:
 Highest Revenue Earned by a shop in September of 2014: $ 7,982,852.20
 
-** Question 2: What item category generated the highest revenue in the Summer of 2014?
+** Question 2: *What item category generated the highest revenue in the Summer of 2014?*
 
  - Submit the =id= of the category found.
  - Here we call "summer" the period from June to August.
@@ -517,12 +421,12 @@ print("Category Id with the Maximum Value: {}".format(category_id_with_max_reven
 #+RESULTS:
 Category Id with the Maximum Value: 20
 
-** Question 3: Constant Prices
+** Question 3: *How many items have the same price throughout the data set?*
 How many items are there, such that their price stays constant (to the best of our knowledge) during the whole period of time?
 
 Let's assume, that the items are returned for the same price as they had been sold.
 
-** Isolate the ID and Price
+*** Isolate the ID and Price
 #+BEGIN_SRC python :session basics :results none
 id_price = transactions.loc[:, ["item_id", "item_price"]]
 id_price["item_price"] = id_price.item_price.abs()
@@ -547,9 +451,9 @@ print("Number of items whose price didn't change: {}".format(constant_prices))
 #+RESULTS:
 Number of items whose price didn't change: 5926
 
-** Question 4
+** Question 4: *What was the variance of the number of items sold per day for shop 25 in December, 2014?*
 Remember, the data can sometimes be noisy.
-/What was the variance of the number of sold items per day sequence for the shop with ~shop_id = 25~ in December, 2014?/ Do not count the items, that were sold but returned back later.
+Do not count the items, that were sold but returned back later.
 
  - Fill =total_num_items_sold= and =days= arrays, and plot the sequence with the code below.
  - Then compute variance. Remember, there can be differences in how you normalize variance (biased or unbiased estimate, see [[https://math.stackexchange.com/questions/496627/the-difference-between-unbiased-biased-estimator-variance][this Stack Overflow post]]). Compute the ***unbiased*** estimate (use the right value for =ddof= argument in =pd.var= or =np.var=). 
@@ -558,7 +462,7 @@ Remember, the data can sometimes be noisy.
 shop_id = 25
 #+END_SRC
 
-** Filter to the Shop and Dates
+*** Filter to the Shop and Dates
 
 #+BEGIN_SRC python :session basics :results output raw :exports both
 twenty_fives = twenty_fourteen[(transactions.shop_id==shop_id)
@@ -575,10 +479,8 @@ assert(all(twenty_fives.shop_id == shop_id))
 | 2295839 | 26.12.2014 |             23 |      25 |   21733 |        149 |            1 |          149 |  26 |    12 | 2014 |
 | 2295840 | 31.12.2014 |             23 |      25 |   21732 |        149 |            1 |          149 |  31 |    12 | 2014 |
 | 2295841 | 30.12.2014 |             23 |      25 |   21726 |        149 |            1 |          149 |  30 |    12 | 2014 |
-
-
   
-** Group by date
+*** Group by date
 
 #+BEGIN_SRC python :session basics :results output :exports both
 shop_grouped = twenty_fives.groupby("date")
@@ -595,7 +497,7 @@ print(count_per_day.head())
 : 05.12.2014    300.0
 : Name: item_cnt_day, dtype: float64
 
-** Add a date-time to make it sortable for print
+*** Add a date-time to make it sortable for print
 #+BEGIN_SRC python :session basics :results output :exports both
 pandas.options.mode.chained_assignment = None
 count_per_day.index = pandas.to_datetime(count_per_day.index, format="%d.%m.%Y")
