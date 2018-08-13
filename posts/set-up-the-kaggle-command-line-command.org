@@ -1,0 +1,81 @@
+#+BEGIN_COMMENT
+.. title: Set Up the Kaggle Command-Line Command
+.. slug: set-up-the-kaggle-command-line-command
+.. date: 2018-08-11 13:37:44 UTC-07:00
+.. tags: kaggle howto
+.. category: howto
+.. link: 
+.. description: How to set up the command-line interface for the kaggle API.
+.. type: text
+#+END_COMMENT
+
+These are my notes as I set up the command-line interface. The official instructions are in the [[https://github.com/Kaggle/kaggle-api][README on github]].
+
+* Install the Command
+  The code is available through [[https://pypi.org/project/kaggle/][pypi]] so you can install it through pip. Their instructions say to install it at the user-level but I'm doing it in a =virtualenv= so that actually doesn't work for me, instead I did a regular =pip= install (after installing =wheel=).
+
+#+BEGIN_EXAMPLE
+pip install kaggle
+#+END_EXAMPLE
+
+* Get Your Credentials
+** Download the JSON File From Kaggle
+  Log in to your kaggle account and click on the /Account/ menu (it's hidden until you hover over the drop-down widget).
+
+[[file:kaggle_account_menu.png]]
+
+Scroll down to the /API/ box and click on *Create New API Token*.
+
+[[file:api_box.png]]
+
+This will start a file download, if it prompts you save it to your computer.
+
+[[file:download_json.png]]
+
+** Set Up the File
+Store this file in a folder named =.kaggle=.
+
+#+BEGIN_EXAMPLE
+mkdir ~/.kaggle
+mv ~/Downloads/kaggle.json ~/.kaggle/
+#+END_EXAMPLE
+
+To be on the safe side, change the permissions on the file so that other users can't read it.
+
+#+BEGIN_EXAMPLE
+chmod 600 ~/.kaggle/kaggle.json
+#+END_EXAMPLE
+
+If you look in the file you'll see that it just has a JSON object with your username and API key.
+
+#+BEGIN_EXAMPLE
+{"username":"bumblebee","key":"8b970a13a2cfcfb7a77bdb8b4effaebc"}
+#+END_EXAMPLE
+
+The instructions say you could also export the values as environment variables, but I'll leave it like this for now.
+
+* Test it out
+  It's a python command that uses the basic help system you would expect if you've used python command-line programs before.
+  
+#+BEGIN_SRC sh :results output
+kaggle --help
+#+END_SRC
+
+#+begin_example
+usage: kaggle [-h] [-v] {competitions,c,datasets,d,kernels,k,config} ...
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -v, --version         show program's version number and exit
+
+commands:
+  {competitions,c,datasets,d,kernels,k,config}
+                        Use one of:
+                        competitions {list, files, download, submit, submissions, leaderboard}
+                        datasets {list, files, download, create, version, init, metadata, status}
+                        config {view, set, unset}
+    competitions (c)    Commands related to Kaggle competitions
+    datasets (d)        Commands related to Kaggle datasets
+    kernels (k)         Commands related to Kaggle kernels
+    config              Configuration settings
+#+end_example

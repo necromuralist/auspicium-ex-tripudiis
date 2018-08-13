@@ -1,0 +1,91 @@
+#+BEGIN_COMMENT
+.. title: The Competition
+.. slug: the-competition
+.. date: 2018-08-11 13:14:17 UTC-07:00
+.. tags: kaggle competition about
+.. category: about
+.. link: 
+.. description: About the kaggle competition.
+.. type: text
+#+END_COMMENT
+
+#+OPTIONS: ^:{}
+#+TOC: headlines 1
+
+* What is this about?
+  This is about the [[https://www.kaggle.com/c/competitive-data-science-final-project][kaggle competition]] to predict future sales based on prior sale data. You are given a data set made up of prior sales and asked to predict how much each product will sell over the next month.
+
+* What is the data made up of?
+** The Source
+  The data comes from the [[http://1c.ru/eng/title.htm][1C Company]], a Russian company that describes themselves on their website like this.
+
+#+BEGIN_QUOTE
+Founded in 1991 1C Company specializes in development, distribution, publishing and support of mass-market software.
+
+At present 8000 dealers from 600 cities cooperate with 1C. About 7500 teams constitute the 1C:Franchising partner network,which is a main channel of value-adding for 1C products. Service-partners provide regular information and technological support for 1C software customers. The network of authorized training centers is also operating.
+
+1C is the official distributor of such world-famous vendors as Microsoft, Novell, Borland, Symantec, ABBYY, Kaspersky Lab, ProMT, Eset Software and over 100 other software vendors. 1C offers more than 10 000 titles of software for office and home use. 
+#+END_QUOTE
+
+** Getting it
+   It looks like the data-set is the same one that I used for the Pandas example, but I'll download it anyway to be safe.
+
+#+BEGIN_EXAMPLE
+mkdir data
+kaggle competitions download competitive-data-science-final-project --path data
+#+END_EXAMPLE
+
+** The Description
+
+#+BEGIN_QUOTE
+You are provided with daily historical sales data. The task is to forecast the total amount of products sold in every shop for the test set. Note that the list of shops and products slightly changes every month. Creating a robust model that can handle such situations is part of the challenge.
+#+END_QUOTE
+
+
+*** Files
+
+    | File Name             | Description                                                                                  |
+    |-----------------------+----------------------------------------------------------------------------------------------|
+    | sales_train.csv       | the training set. Daily historical data from January 2013 to October 2015.                   |
+    | test.csv              | the test set. You need to forecast the sales for these shops and products for November 2015. |
+    | sample_submission.csv | a sample submission file in the correct format.                                              |
+    | items.csv             | supplemental information about the items/products.                                           |
+    | item_categories.csv   | supplemental information about the items categories.                                         |
+    | shops.csv             | supplemental information about the shops.                                                    |
+
+
+*** Features
+
+    | Column Name        | Description                                                                                                     |
+    |--------------------+-----------------------------------------------------------------------------------------------------------------|
+    | ID                 | an Id that represents a (Shop, Item) tuple within the test set                                                  |
+    | shop_id            | unique identifier of a shop                                                                                     |
+    | item_id            | unique identifier of a product                                                                                  |
+    | item_category_id   | unique identifier of item category                                                                              |
+    | item_cnt_day       | number of products sold. You are predicting a monthly amount of this measure                                    |
+    | item_price         | current price of an item                                                                                        |
+    | date               | date in format dd/mm/yyyy                                                                                       |
+    | date_block_num     | a consecutive month number, used for convenience. January 2013 is 0, February 2013 is 1,..., October 2015 is 33 |
+    | item_name          | name of item                                                                                                    |
+    | shop_name          | name of shop                                                                                                    |
+    | item_category_name | name of item category                                                                                           |
+
+
+* How will you be evaluated?
+** Submission Format
+  You will submit a comma-separated file with two columns, the product ID and the total number of sales. It should look like this.
+
+#+BEGIN_EXAMPLE
+ID,item_cnt_month
+0,5
+1,3
+2,6
+#+END_EXAMPLE
+
+
+** Scoring
+You will be scored base on the [[https://en.wikipedia.org/wiki/Root-mean-square_deviation][Root Mean Square Error (RMSE)]]. The page says that the true target values are clipped to the =[0,20]= range and the example given shows =0.5= as the =item_cnt_month= values, neither of which makes any sense to me at the moment.
+
+
+** The meaning of the target
+According to [[https://www.kaggle.com/c/competitive-data-science-final-project/discussion/48251][this thread]] you need to [[https://docs.scipy.org/doc/numpy-1.13.0/reference/generated/numpy.clip.html][clip]] the predictions back to that range (make anything less than zero a zero and anything more than twenty a twenty).

@@ -1,0 +1,68 @@
+#+BEGIN_COMMENT
+.. title: First Naive Try
+.. slug: first-naive-try
+.. date: 2018-08-11 19:37:37 UTC-07:00
+.. tags: naive model
+.. category: naive
+.. link: 
+.. description: A first naive model.
+.. type: text
+#+END_COMMENT
+
+* Imports
+#+BEGIN_SRC ipython :session naive :results none
+# python standard library
+import warnings
+import os
+import pickle
+
+warnings.filterwarnings("ignore", message="numpy.dtype size changed")
+warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
+
+# from pypi
+import numpy
+import pandas
+from sklearn.metrics import mean_squared_error
+from tabulate import tabulate
+from xgboost import XGBRegressor
+#+END_SRC
+* Loading the Data
+#+BEGIN_SRC ipython :session explore :results none
+def unpickle(name):
+    """loads the pickled object from the data folder
+
+    Args;
+     name: name of the pickle without the folder or extension
+
+    Returns:
+     object: the un-pickled object
+    """
+    with open("../data/{}.pkl".format(name), "rb") as unpickler:
+        unpickled = pickle.load(unpickler)
+    return unpickled
+#+END_SRC
+
+#+BEGIN_SRC ipython :session explore :results none
+Helpers = unpickle("Helpers")
+#+END_SRC
+
+#+BEGIN_SRC ipython :session explore :results none
+DataSource = unpickle("DataSource")
+#+END_SRC
+
+#+BEGIN_SRC ipython :session explore :results none
+training_data = unpickle("training_data")
+#+END_SRC
+
+#+BEGIN_SRC ipython :session explore :results output raw :exports both
+Helpers.print_head(training_data)
+#+END_SRC
+
+#+RESULTS:
+|       date | date_block_num | shop_id | item_id | item_price | item_cnt_day | item_category_id |
+|------------+----------------+---------+---------+------------+--------------+------------------|
+| 02.01.2013 |              0 |      59 |   22154 |        999 |            1 |               37 |
+| 03.01.2013 |              0 |      25 |    2552 |        899 |            1 |               58 |
+| 05.01.2013 |              0 |      25 |    2552 |        899 |           -1 |               58 |
+| 06.01.2013 |              0 |      25 |    2554 |    1709.05 |            1 |               58 |
+| 15.01.2013 |              0 |      25 |    2555 |       1099 |            1 |               56 |
