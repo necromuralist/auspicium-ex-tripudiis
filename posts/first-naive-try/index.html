@@ -15,6 +15,7 @@
 <!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
 </script><meta name="author" content="Cloistered Monkey">
 <link rel="prev" href="../exploring-the-data/" title="Exploring The Data" type="text/html">
+<link rel="next" href="../feature-extraction-from-text-and-images/" title="Feature Extraction From Text and Images" type="text/html">
 <meta property="og:site_name" content="Notes on Kaggle">
 <meta property="og:title" content="First Naive Try">
 <meta property="og:url" content="https://necromuralist.github.io/Kaggle-Competitions/posts/first-naive-try/">
@@ -103,9 +104,47 @@
         
 
     </header><div class="e-content entry-content" itemprop="articleBody text">
-    <div id="outline-container-org384e3a1" class="outline-2">
-<h2 id="org384e3a1">Imports</h2>
-<div class="outline-text-2" id="text-org384e3a1">
+    <div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org60874bf">Introduction</a></li>
+<li><a href="#org8157e78">Imports</a></li>
+<li><a href="#orge860bff">Loading the Data</a></li>
+<li><a href="#orga4040b2">The Linear Model</a></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org60874bf" class="outline-2">
+<h2 id="org60874bf">Introduction</h2>
+<div class="outline-text-2" id="text-org60874bf">
+<p>
+This is going to be a naive attempt to get this project running. If you look at the <a href="http://scikit-learn.org/stable/tutorial/machine_learning_map/index.html">sklearn flowchart</a> and follow the path through regression with more than 100,000 samples (we have 1,287,299 entries in the training set (after splitting out the validation set from it)) you end up with two cases:
+</p>
+
+<ul class="org-ul">
+<li>a few important features
+<ul class="org-ul">
+<li>lasso</li>
+<li>electric net</li>
+</ul>
+</li>
+<li>Many important Features
+<ul class="org-ul">
+<li>ridge regression</li>
+<li>svr</li>
+<li>ensemble regressors</li>
+</ul>
+</li>
+</ul>
+<p>
+I kind of think there won't be too many important features, although I might be wrong. This chart might not be up-to-date, since it says that the ensemble regressors don't work, but I'm pretty sure Random Forest Regression is implemented. In any case, I'm going to see what each of the models does if I just use the defaults in order to get a baseline.
+</p>
+</div>
+</div>
+<div id="outline-container-org8157e78" class="outline-2">
+<h2 id="org8157e78">Imports</h2>
+<div class="outline-text-2" id="text-org8157e78">
 <div class="highlight"><pre><span></span># python standard library
 import warnings
 import os
@@ -118,38 +157,36 @@ warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
 import numpy
 import pandas
 from sklearn.metrics import mean_squared_error
+from sklearn.model_selection import cross_val_score
+from sklearn.ensemble import RandomTreesRegressor
 from tabulate import tabulate
-from xgboost import XGBRegressor
+
+# this project
+from helpers.helpers import (
+    Helpers,
+    DataSource,
+    DataKeys,
+    Pickles,
+    )
 </pre></div>
 </div>
 </div>
-<div id="outline-container-org889940c" class="outline-2">
-<h2 id="org889940c">Loading the Data</h2>
-<div class="outline-text-2" id="text-org889940c">
-<div class="highlight"><pre><span></span>def unpickle(name):
-    """loads the pickled object from the data folder
-
-    Args;
-     name: name of the pickle without the folder or extension
-
-    Returns:
-     object: the un-pickled object
-    """
-    with open("../data/{}.pkl".format(name), "rb") as unpickler:
-	unpickled = pickle.load(unpickler)
-    return unpickled
+<div id="outline-container-orge860bff" class="outline-2">
+<h2 id="orge860bff">Loading the Data</h2>
+<div class="outline-text-2" id="text-orge860bff">
+<div class="highlight"><pre><span></span>DataSource = Helpers.unpickle("DataSource")
 </pre></div>
 
-<div class="highlight"><pre><span></span>Helpers = unpickle("Helpers")
+<p>
+This probably doesn't make sense anymore. Better to just get the random seed and use <code>train_test_split</code>, maybe.
+</p>
+<div class="highlight"><pre><span></span>x_train = Helpers.unpickle(Pickles.x_train)
+x_test = Helpers.unpickle(Pickles.x_test)
+y_train = Helpers.unpickle(Pickles.y_train)
+y_test = Helpers.unpickle(Pickles.y_test)
 </pre></div>
 
-<div class="highlight"><pre><span></span>DataSource = unpickle("DataSource")
-</pre></div>
-
-<div class="highlight"><pre><span></span>training_data = unpickle("training_data")
-</pre></div>
-
-<div class="highlight"><pre><span></span>Helpers.print_head(training_data)
+<div class="highlight"><pre><span></span>Helpers.print_head(x_train)
 </pre></div>
 
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
@@ -158,73 +195,90 @@ from xgboost import XGBRegressor
 <col class="org-right">
 <col class="org-right">
 <col class="org-right">
+<col class="org-left">
 <col class="org-right">
 <col class="org-right">
 <col class="org-right">
 </colgroup>
 <thead><tr>
-<th scope="col" class="org-right">date</th>
-<th scope="col" class="org-right">date<sub>block</sub><sub>num</sub>
-</th>
-<th scope="col" class="org-right">shop<sub>id</sub>
-</th>
-<th scope="col" class="org-right">item<sub>id</sub>
-</th>
-<th scope="col" class="org-right">item<sub>price</sub>
-</th>
-<th scope="col" class="org-right">item<sub>cnt</sub><sub>day</sub>
-</th>
-<th scope="col" class="org-right">item<sub>category</sub><sub>id</sub>
-</th>
+<th scope="col" class="org-right">date_block_num</th>
+<th scope="col" class="org-right">shop_id</th>
+<th scope="col" class="org-right">item_id</th>
+<th scope="col" class="org-right">item_price</th>
+<th scope="col" class="org-left">item_name</th>
+<th scope="col" class="org-right">item_category_id</th>
+<th scope="col" class="org-right">month</th>
+<th scope="col" class="org-right">year</th>
 </tr></thead>
 <tbody>
 <tr>
-<td class="org-right">02.01.2013</td>
-<td class="org-right">0</td>
-<td class="org-right">59</td>
-<td class="org-right">22154</td>
-<td class="org-right">999</td>
-<td class="org-right">1</td>
-<td class="org-right">37</td>
+<td class="org-right">11</td>
+<td class="org-right">15</td>
+<td class="org-right">1324</td>
+<td class="org-right">499</td>
+<td class="org-left">ARMSTRONG LOUIS  Essential Collection  3CD</td>
+<td class="org-right">55</td>
+<td class="org-right">12</td>
+<td class="org-right">2013</td>
 </tr>
 <tr>
-<td class="org-right">03.01.2013</td>
-<td class="org-right">0</td>
-<td class="org-right">25</td>
-<td class="org-right">2552</td>
-<td class="org-right">899</td>
-<td class="org-right">1</td>
-<td class="org-right">58</td>
+<td class="org-right">18</td>
+<td class="org-right">31</td>
+<td class="org-right">19981</td>
+<td class="org-right">499</td>
+<td class="org-left">Толстой Л.Н.  Война и мир  Роман-эпопея  4CD (mp3-CD) (Jewel)</td>
+<td class="org-right">43</td>
+<td class="org-right">07</td>
+<td class="org-right">2014</td>
 </tr>
 <tr>
-<td class="org-right">05.01.2013</td>
-<td class="org-right">0</td>
-<td class="org-right">25</td>
-<td class="org-right">2552</td>
-<td class="org-right">899</td>
-<td class="org-right">-1</td>
-<td class="org-right">58</td>
+<td class="org-right">32</td>
+<td class="org-right">28</td>
+<td class="org-right">7934</td>
+<td class="org-right">398</td>
+<td class="org-left">XOne: Пульт дистанционного управления для Xbox One [6DV-00006]</td>
+<td class="org-right">7</td>
+<td class="org-right">09</td>
+<td class="org-right">2015</td>
 </tr>
 <tr>
-<td class="org-right">06.01.2013</td>
-<td class="org-right">0</td>
-<td class="org-right">25</td>
-<td class="org-right">2554</td>
-<td class="org-right">1709.05</td>
-<td class="org-right">1</td>
-<td class="org-right">58</td>
+<td class="org-right">12</td>
+<td class="org-right">43</td>
+<td class="org-right">13518</td>
+<td class="org-right">1499</td>
+<td class="org-left">Комплект Прогулки с динозаврами (только для PS Move) [PS3, русская версия] + Wonderbook</td>
+<td class="org-right">19</td>
+<td class="org-right">01</td>
+<td class="org-right">2014</td>
 </tr>
 <tr>
-<td class="org-right">15.01.2013</td>
-<td class="org-right">0</td>
+<td class="org-right">28</td>
 <td class="org-right">25</td>
-<td class="org-right">2555</td>
-<td class="org-right">1099</td>
-<td class="org-right">1</td>
-<td class="org-right">56</td>
+<td class="org-right">19927</td>
+<td class="org-right">329</td>
+<td class="org-left">Таривердиев М. Инструментальные кинохиты (подар. уп.) (mp3-CD) (Jewel)</td>
+<td class="org-right">57</td>
+<td class="org-right">05</td>
+<td class="org-right">2015</td>
 </tr>
 </tbody>
 </table>
+</div>
+</div>
+
+<div id="outline-container-orga4040b2" class="outline-2">
+<h2 id="orga4040b2">The Linear Model</h2>
+<div class="outline-text-2" id="text-orga4040b2">
+<p>
+What happens if we just use the default linear regression model? The first problem we have is that we have both non-numeric data and categorical data. I think removing the <code>item_name</code> variable seems reasonable at this point, since we have unique <code>item_id</code> values for each item, although it's possible that some text-mining might reveal something in the names, because this is just a naive approach that will use linear regression.
+</p>
+
+<div class="highlight"><pre><span></span>del(x_train[DataKeys.name])
+</pre></div>
+
+<div class="highlight"><pre><span></span>regression = linear_model.LinearRegression()
+regression.fit(x_train, y_train)
+</pre></div>
 </div>
 </div>
     </div>
@@ -234,6 +288,9 @@ from xgboost import XGBRegressor
 <ul class="pager hidden-print">
 <li class="previous">
                 <a href="../exploring-the-data/" rel="prev" title="Exploring The Data">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../feature-extraction-from-text-and-images/" rel="next" title="Feature Extraction From Text and Images">Next post</a>
             </li>
         </ul></nav></aside></article>
 </div>

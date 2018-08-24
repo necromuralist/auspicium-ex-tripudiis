@@ -8,7 +8,20 @@
 .. description: A first naive model.
 .. type: text
 #+END_COMMENT
+#+OPTIONS: ^:{}
+#+TOC: headlines 1
+* Introduction
+  This is going to be a naive attempt to get this project running. If you look at the [[http://scikit-learn.org/stable/tutorial/machine_learning_map/index.html][sklearn flowchart]] and follow the path through regression with more than 100,000 samples (we have 1,287,299 entries in the training set (after splitting out the validation set from it)) you end up with two cases:
 
+  + a few important features
+    - lasso
+    - electric net
+  + Many important Features
+    - ridge regression
+    - svr
+    - ensemble regressors
+
+I kind of think there won't be too many important features, although I might be wrong. This chart might not be up-to-date, since it says that the ensemble regressors don't work, but I'm pretty sure Random Forest Regression is implemented. In any case, I'm going to see what each of the models does if I just use the defaults in order to get a baseline.
 * Imports
 #+BEGIN_SRC ipython :session naive :results none
 # python standard library
@@ -23,46 +36,53 @@ warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
 import numpy
 import pandas
 from sklearn.metrics import mean_squared_error
+from sklearn.model_selection import cross_val_score
+from sklearn.ensemble import RandomTreesRegressor
 from tabulate import tabulate
-from xgboost import XGBRegressor
-#+END_SRC
+
+# this project
+from helpers.helpers import (
+    Helpers,
+    DataSource,
+    DataKeys,
+    Pickles,
+    )
+#+End_SRC
 * Loading the Data
-#+BEGIN_SRC ipython :session explore :results none
-def unpickle(name):
-    """loads the pickled object from the data folder
 
-    Args;
-     name: name of the pickle without the folder or extension
-
-    Returns:
-     object: the un-pickled object
-    """
-    with open("../data/{}.pkl".format(name), "rb") as unpickler:
-        unpickled = pickle.load(unpickler)
-    return unpickled
+#+BEGIN_SRC ipython :session naive :results none
+DataSource = Helpers.unpickle("DataSource")
 #+END_SRC
 
-#+BEGIN_SRC ipython :session explore :results none
-Helpers = unpickle("Helpers")
+This probably doesn't make sense anymore. Better to just get the random seed and use =train_test_split=, maybe.
+#+BEGIN_SRC ipython :session naive :results none
+x_train = Helpers.unpickle(Pickles.x_train)
+x_test = Helpers.unpickle(Pickles.x_test)
+y_train = Helpers.unpickle(Pickles.y_train)
+y_test = Helpers.unpickle(Pickles.y_test)
 #+END_SRC
 
-#+BEGIN_SRC ipython :session explore :results none
-DataSource = unpickle("DataSource")
-#+END_SRC
-
-#+BEGIN_SRC ipython :session explore :results none
-training_data = unpickle("training_data")
-#+END_SRC
-
-#+BEGIN_SRC ipython :session explore :results output raw :exports both
-Helpers.print_head(training_data)
+#+BEGIN_SRC ipython :session naive :results output raw :exports both
+Helpers.print_head(x_train)
 #+END_SRC
 
 #+RESULTS:
-|       date | date_block_num | shop_id | item_id | item_price | item_cnt_day | item_category_id |
-|------------+----------------+---------+---------+------------+--------------+------------------|
-| 02.01.2013 |              0 |      59 |   22154 |        999 |            1 |               37 |
-| 03.01.2013 |              0 |      25 |    2552 |        899 |            1 |               58 |
-| 05.01.2013 |              0 |      25 |    2552 |        899 |           -1 |               58 |
-| 06.01.2013 |              0 |      25 |    2554 |    1709.05 |            1 |               58 |
-| 15.01.2013 |              0 |      25 |    2555 |       1099 |            1 |               56 |
+| date_block_num | shop_id | item_id | item_price | item_name                                                                               | item_category_id | month | year |
+|----------------+---------+---------+------------+-----------------------------------------------------------------------------------------+------------------+-------+------|
+|             11 |      15 |    1324 |        499 | ARMSTRONG LOUIS  Essential Collection  3CD                                              |               55 |    12 | 2013 |
+|             18 |      31 |   19981 |        499 | Толстой Л.Н.  Война и мир  Роман-эпопея  4CD (mp3-CD) (Jewel)                           |               43 |    07 | 2014 |
+|             32 |      28 |    7934 |        398 | XOne: Пульт дистанционного управления для Xbox One [6DV-00006]                          |                7 |    09 | 2015 |
+|             12 |      43 |   13518 |       1499 | Комплект Прогулки с динозаврами (только для PS Move) [PS3, русская версия] + Wonderbook |               19 |    01 | 2014 |
+|             28 |      25 |   19927 |        329 | Таривердиев М. Инструментальные кинохиты (подар. уп.) (mp3-CD) (Jewel)                  |               57 |    05 | 2015 |
+
+* The Linear Model
+  What happens if we just use the default linear regression model? The first problem we have is that we have both non-numeric data and categorical data. I think removing the =item_name= variable seems reasonable at this point, since we have unique =item_id= values for each item, although it's possible that some text-mining might reveal something in the names, because this is just a naive approach that will use linear regression.
+
+#+BEGIN_SRC ipython :session naive :results none
+del(x_train[DataKeys.name])
+#+END_SRC
+
+#+BEGIN_SRC ipython :session naive :results none
+regression = linear_model.LinearRegression()
+regression.fit(x_train, y_train)
+#+END_SRC

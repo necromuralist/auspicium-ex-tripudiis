@@ -108,9 +108,9 @@
 These are my notes as I set up the command-line interface. The official instructions are in the <a href="https://github.com/Kaggle/kaggle-api">README on github</a>.
 </p>
 
-<div id="outline-container-org7abe8e7" class="outline-2">
-<h2 id="org7abe8e7">Install the Command</h2>
-<div class="outline-text-2" id="text-org7abe8e7">
+<div id="outline-container-org22a6ea2" class="outline-2">
+<h2 id="org22a6ea2">Install the Command</h2>
+<div class="outline-text-2" id="text-org22a6ea2">
 <p>
 The code is available through <a href="https://pypi.org/project/kaggle/">pypi</a> so you can install it through pip. Their instructions say to install it at the user-level but I'm doing it in a <code>virtualenv</code> so that actually doesn't work for me, instead I did a regular <code>pip</code> install (after installing <code>wheel</code>).
 </p>
@@ -121,13 +121,13 @@ pip install kaggle
 </div>
 </div>
 
-<div id="outline-container-org7060565" class="outline-2">
-<h2 id="org7060565">Get Your Credentials</h2>
-<div class="outline-text-2" id="text-org7060565">
+<div id="outline-container-org418aab0" class="outline-2">
+<h2 id="org418aab0">Get Your Credentials</h2>
+<div class="outline-text-2" id="text-org418aab0">
 </div>
-<div id="outline-container-org6b2be0e" class="outline-3">
-<h3 id="org6b2be0e">Download the JSON File From Kaggle</h3>
-<div class="outline-text-3" id="text-org6b2be0e">
+<div id="outline-container-org0deddec" class="outline-3">
+<h3 id="org0deddec">Download the JSON File From Kaggle</h3>
+<div class="outline-text-3" id="text-org0deddec">
 <p>
 Log in to your kaggle account and click on the <i>Account</i> menu (it's hidden until you hover over the drop-down widget).
 </p>
@@ -157,9 +157,9 @@ This will start a file download, if it prompts you save it to your computer.
 </div>
 </div>
 
-<div id="outline-container-org89ffc33" class="outline-3">
-<h3 id="org89ffc33">Set Up the File</h3>
-<div class="outline-text-3" id="text-org89ffc33">
+<div id="outline-container-orgbd455eb" class="outline-3">
+<h3 id="orgbd455eb">Set Up the File</h3>
+<div class="outline-text-3" id="text-orgbd455eb">
 <p>
 Store this file in a folder named <code>.kaggle</code>.
 </p>
@@ -192,9 +192,9 @@ The instructions say you could also export the values as environment variables, 
 </div>
 </div>
 
-<div id="outline-container-orgde0f796" class="outline-2">
-<h2 id="orgde0f796">Test it out</h2>
-<div class="outline-text-2" id="text-orgde0f796">
+<div id="outline-container-orgb160a5f" class="outline-2">
+<h2 id="orgb160a5f">Test it out</h2>
+<div class="outline-text-2" id="text-orgb160a5f">
 <p>
 It's a python command that uses the basic help system you would expect if you've used python command-line programs before.
 </p>
@@ -220,6 +220,43 @@ commands:
     kernels (k)         Commands related to Kaggle kernels
     config              Configuration settings
 </pre>
+
+<p>
+For this project you would download the data like this (downloading to a folder named <code>data</code>).
+</p>
+
+<pre class="example">
+kaggle competitions download -c competitive-data-science-final-project data
+</pre>
+</div>
+</div>
+<div id="outline-container-org72db10b" class="outline-2">
+<h2 id="org72db10b">The Actual API</h2>
+<div class="outline-text-2" id="text-org72db10b">
+<p>
+If you look under the hood the command is just doing REST calls. To make it programattic you could probably use <a href="http://docs.python-requests.org/en/master/">requests</a> or something similar to interact with it directly. You can see the calls you need to make by looking at the <a href="https://github.com/Kaggle/kaggle-api/blob/master/KaggleSwagger.yaml">swagger file</a>.
+</p>
+</div>
+
+<div id="outline-container-org0991aa4" class="outline-3">
+<h3 id="org0991aa4">How the CLI does it</h3>
+<div class="outline-text-3" id="text-org0991aa4">
+<p>
+If you look in the <code>kaggle.__init__.py</code> file in the repository you'll see these imports.
+</p>
+
+<div class="highlight"><pre><span></span>from kaggle.api.kaggle_api_extended import KaggleApi
+from kaggle.api_client import ApiClient
+</pre></div>
+
+<p>
+Then when the command-line is called to download the data set it does this.
+</p>
+
+<div class="highlight"><pre><span></span>api = KaggleApi(ApiClient())
+api.competition_download_cli(competition=None, competition_opt="competitive-data-science-final-project", path="data")
+</pre></div>
+</div>
 </div>
 </div>
     </div>

@@ -1,0 +1,27 @@
+#+BEGIN_COMMENT
+.. title: Feature Extraction From Text and Images
+.. slug: feature-extraction-from-text-and-images
+.. date: 2018-08-13 07:17:52 UTC-07:00
+.. tags: featureextraction text images
+.. category: featureextraction
+.. link: 
+.. description: Getting features from text and image data.
+.. type: text
+#+END_COMMENT
+#+OPTIONS: ^:{}
+#+TOC: headlines 1
+
+* How do you convert text to data?
+** Two Main Methods
+*** Bag Of Words
+**** Vectorization
+    This method counts the number of occurrences of each word in the source. For each word it creates a column and then in the row puts the counts for that instance of data.
+    + Sklearn implements this with [[http://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.CountVectorizer.html][CountVectorizer]]
+**** Term Frequency/Inverse Document Frequency (TF/IDF)
+     This method tries to make word counts comparable even if the texts are of different sizes and also to emphasize more important words.
+     + Term Frequency: Normalize rows so all values are from 0 to 1 to make texts of different sizes comparable
+     + Inverse Document Frequency: Normalize columns to make emphasize more important features
+     + Sklearn implements this with [[http://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html][TfidVectorizer]]
+**** N-Grams
+     This m
+*** Embeddings (e.g. Word2Vec)
