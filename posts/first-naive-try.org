@@ -8,7 +8,20 @@
 .. description: A first naive model.
 .. type: text
 #+END_COMMENT
+#+OPTIONS: ^:{}
+#+TOC: headlines 1
+* Introduction
+  This is going to be a naive attempt to get this project running. If you look at the [[http://scikit-learn.org/stable/tutorial/machine_learning_map/index.html][sklearn flowchart]] and follow the path through regression with more than 100,000 samples (we have 1,287,299 entries in the training set (after splitting out the validation set from it)) you end up with two cases:
 
+  + a few important features
+    - lasso
+    - electric net
+  + Many important Features
+    - ridge regression
+    - svr
+    - ensemble regressors
+
+I kind of think there won't be too many important features, although I might be wrong. This chart might not be up-to-date, since it says that the ensemble regressors don't work, but I'm pretty sure Random Forest Regression is implemented. In any case, I'm going to see what each of the models does if I just use the defaults in order to get a baseline.
 * Imports
 #+BEGIN_SRC ipython :session naive :results none
 # python standard library
