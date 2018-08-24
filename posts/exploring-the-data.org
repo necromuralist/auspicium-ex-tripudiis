@@ -55,7 +55,7 @@ from tabulate import tabulate
 * The Tangle
   Exports so some of this can be re-used.
 
-#+BEGIN_SRC python :tangle helpers/helpers.py
+#+BEGIN_SRC python :tangle helpers/helpers.py :exports none
 <<imports>>
 <<helpers>>
 
@@ -715,8 +715,6 @@ print("There are {:,} categories.".format(len(frames[DataSource.item_categories]
 
 #+RESULTS:
 There are 84 categories.
-There are 84 categories.
-
 
 ** How many date-blocks are there?
 
@@ -1065,7 +1063,7 @@ print(len(chunked))
 Helpers.pickle_it(chunked, Pickles.grouped)
 #+END_SRC
 
-To make my validation and training set I'm going to use sklearn's [[ http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html][train_test_split]]. First we need to split the data up into inputs and targets
+To make my validation and training set I'm going to use sklearn's [[http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html][train_test_split]]. First we need to split the data up into inputs and targets
 #+BEGIN_SRC ipython :session explore :results  none
 target = chunked[DataKeys.month_count].copy()
 features = chunked[chunked.columns[chunked.columns != DataKeys.month_count]].copy()
@@ -1117,5 +1115,3 @@ print(y_test.shape)
 (321825, 7)
 (1287299,)
 (321825,)
-
-* Some Plotting
