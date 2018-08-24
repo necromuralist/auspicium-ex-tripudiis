@@ -79,3 +79,26 @@ commands:
     kernels (k)         Commands related to Kaggle kernels
     config              Configuration settings
 #+end_example
+
+For this project you would download the data like this (downloading to a folder named =data=).
+
+#+BEGIN_EXAMPLE
+kaggle competitions download -c competitive-data-science-final-project data
+#+END_EXAMPLE
+* The Actual API
+  If you look under the hood the command is just doing REST calls. To make it programattic you could probably use [[http://docs.python-requests.org/en/master/][requests]] or something similar to interact with it directly. You can see the calls you need to make by looking at the [[https://github.com/Kaggle/kaggle-api/blob/master/KaggleSwagger.yaml][swagger file]].
+
+** How the CLI does it
+   If you look in the =kaggle.__init__.py= file in the repository you'll see these imports.
+
+#+BEGIN_SRC ipython :session api :results none
+from kaggle.api.kaggle_api_extended import KaggleApi
+from kaggle.api_client import ApiClient
+#+END_SRC
+
+Then when the command-line is called to download the data set it does this.
+
+#+BEGIN_SRC ipython :session api :results none
+api = KaggleApi(ApiClient())
+api.competition_download_cli(competition=None, competition_opt="competitive-data-science-final-project", path="data")
+#+END_SRC
