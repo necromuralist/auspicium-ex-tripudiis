@@ -1,5 +1,11 @@
+# python standard library
+import os
 import pickle
+
+# from pypi
 from tabulate import tabulate
+
+
 class Helpers:
     """Helper functions"""
     pickle_target = "../pickles/"
@@ -59,9 +65,58 @@ class Helpers:
             unpickled = pickle.load(unpickler)
         return unpickled
 
+
 class DataSource:
-    """Strings for the files"""
-    directory = "../data/"
+    """Strings for the files
+
+    Args:
+     directory: path to the data-folder
+    """
+    def __init__(self, directory="../data/"):
+        self.directory = directory
+        self._file_names = None
+        self._paths = None
+        self._file_name_paths = None
+        return
+
+    @property
+    def file_names(self):
+        """list of file names in the data directory"""
+        if self._file_names is None:
+            self._file_names = os.listdir(self.directory)
+        return self._file_names
+
+    @property
+    def paths(self):
+        """list of paths to the file names"""
+        if self._paths is None:
+            self._paths = [os.path.join(self.directory, name)
+                    for name in self.file_names]
+        return self._paths
+
+    @property
+    def file_name_paths(self):
+        """dict of name: path"""
+        if self._file_name_paths is None:
+            self._file_name_paths = {
+                name.split('.')[0]: self.paths[index]
+                for index, name in enumerate(self.file_names)}
+        return self._file_name_paths
+    
+    def set_attributes(self):
+        """attaches the file names to this object"""
+        for name in self.file_names:
+            setattr(self, name.split('.')[0], name)
+        return
+
+
+class DataNames:
+    """thing with the data-file-names (without extensions) as attributes"""
+    training = "sales_train"
+    items = "items"
+    item_categories = "item_categories"
+    shops = "shops"
+
 
 class DataKeys:
     """Column names/keys for the data."""
@@ -74,13 +129,6 @@ class DataKeys:
     day_count = "item_cnt_day"
     month_count = 'item_count_month'
     name = "item_name"
-
-class Pickles:
-    """Holder of the pickle names"""
-    super_set = "training_data"
-    grouped = "grouped_months_data"
-    x_train = "x_train"
-    x_test = "x_test"
-    y_train = "y_train"
-    y_test = "y_test"
-    train_test = "train_test"
+    day = "day"
+    month = "month"
+    year = "year"

@@ -8,6 +8,8 @@
 .. description: How to set up the command-line interface for the kaggle API.
 .. type: text
 #+END_COMMENT
+#+OPTIONS: ^:{}
+#+TOC: headlines 1
 
 These are my notes as I set up the command-line interface. The official instructions are in the [[https://github.com/Kaggle/kaggle-api][README on github]].
 

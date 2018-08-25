@@ -23,32 +23,33 @@
 
 According to [[https://stackoverflow.com/questions/40845304/runtimewarning-numpy-dtype-size-changed-may-indicate-binary-incompatibility][Stack Overflow]], this is because [[https://www.scipy.org/][scipy]] is built against an older version of [[http://www.numpy.org/][numpy]], but it shouldn't actually affect the way it works, so we should just suppress it.
 
-#+BEGIN_SRC ipython :session explore :results none
+#+BEGIN_SRC python :session explore :results none
 import warnings
 warnings.filterwarnings("ignore", message="numpy.dtype size changed")
 warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
 #+END_SRC
 
 ** The rest of the imports
-#+BEGIN_SRC ipython :session explore :results none
+#+BEGIN_SRC python :session explore :results none :noweb-ref python-standard-library
 # python standard library
 import os
+import pickle
+#+END_SRC
 
+#+BEGIN_SRC python :session explore :results none
 # from pypi
 import matplotlib.pyplot as pyplot
 import numpy
 import pandas
 import seaborn
-
-from sklearn.model_selection import train_test_split
 #+END_SRC
 
-#+BEGIN_SRC ipython :session explore :results none :noweb-ref imports
-import pickle
+#+BEGIN_SRC python :session explore :results none :noweb-ref imports
+# from pypi
 from tabulate import tabulate
 #+END_SRC
 
-#+BEGIN_SRC ipython :session explore :results none
+#+BEGIN_SRC python :session explore :results none
 % matplotlib inline
 #+END_SRC
 
@@ -56,14 +57,21 @@ from tabulate import tabulate
   Exports so some of this can be re-used.
 
 #+BEGIN_SRC python :tangle helpers/helpers.py
+<<python-standard-library>>
+
 <<imports>>
+
+
 <<helpers>>
+
 
 <<datasource>>
 
-<<data-keys>>
 
-<<pickles>>
+<<data-names>>
+
+
+<<data-keys>>
 #+END_SRC
 
 #+RESULTS:
@@ -71,7 +79,7 @@ from tabulate import tabulate
 * Helpers
   Just some functions that keep coming up.
 
-#+BEGIN_SRC ipython :session explore :results none :noweb-ref helpers
+#+BEGIN_SRC python :session explore :results none :noweb-ref helpers
 class Helpers:
     """Helper functions"""
     pickle_target = "../pickles/"
@@ -134,30 +142,68 @@ class Helpers:
 
 * Constants
   As always, I'll try to put constants in the same place.
+** Data Names
+   This is just a re-mapping of the file-names since I keep forgetting them.
+
+#+BEGIN_SRC python :session explore :results none :noweb-ref data-names
+class DataNames:
+    """thing with the data-file-names (without extensions) as attributes"""
+    training = "sales_train"
+    items = "items"
+    item_categories = "item_categories"
+    shops = "shops"
+#+END_SRC
 
 ** Data Source
    
-#+BEGIN_SRC ipython :session explore :results none :noweb-ref datasource
+#+BEGIN_SRC python :session explore :results none :noweb-ref datasource
 class DataSource:
-    """Strings for the files"""
-    directory = "../data/"
-#+END_SRC
+    """Strings for the files
 
-#+BEGIN_SRC ipython :session explore :results none
-DataSource.file_names = os.listdir(DataSource.directory)
-for name in DataSource.file_names:
-    setattr(DataSource, name.split('.')[0], name)    
-DataSource.paths = [os.path.join(DataSource.directory, name)
-                    for name in DataSource.file_names]
-#+END_SRC
+    Args:
+     directory: path to the data-folder
+    """
+    def __init__(self, directory="../data/"):
+        self.directory = directory
+        self._file_names = None
+        self._paths = None
+        self._file_name_paths = None
+        return
 
-#+BEGIN_SRC ipython :session explore :results none
-Helpers.pickle_it(DataSource)
+    @property
+    def file_names(self):
+        """list of file names in the data directory"""
+        if self._file_names is None:
+            self._file_names = os.listdir(self.directory)
+        return self._file_names
+
+    @property
+    def paths(self):
+        """list of paths to the file names"""
+        if self._paths is None:
+            self._paths = [os.path.join(self.directory, name)
+                    for name in self.file_names]
+        return self._paths
+
+    @property
+    def file_name_paths(self):
+        """dict of name: path"""
+        if self._file_name_paths is None:
+            self._file_name_paths = {
+                name.split('.')[0]: self.paths[index]
+                for index, name in enumerate(self.file_names)}
+        return self._file_name_paths
+    
+    def set_attributes(self):
+        """attaches the file names to this object"""
+        for name in self.file_names:
+            setattr(self, name.split('.')[0], name)
+        return
 #+END_SRC
 
 ** Data Keys
 
-#+BEGIN_SRC ipython :session explore :results none :noweb-ref data-keys
+#+BEGIN_SRC python :session explore :results none :noweb-ref data-keys
 class DataKeys:
     """Column names/keys for the data."""
     item_category = "item_category_id"
@@ -169,35 +215,22 @@ class DataKeys:
     day_count = "item_cnt_day"
     month_count = 'item_count_month'
     name = "item_name"
+    day = "day"
+    month = "month"
+    year = "year"
 #+END_SRC
 
-#+BEGIN_SRC ipython :session explore :results none
-Helpers.pickle_it(DataKeys)
-#+END_SRC
-
-** Pickles
-#+BEGIN_SRC ipython :session explore :results  none :noweb-ref pickles
-class Pickles:
-    """Holder of the pickle names"""
-    super_set = "training_data"
-    grouped = "grouped_months_data"
-    x_train = "x_train"
-    x_test = "x_test"
-    y_train = "y_train"
-    y_test = "y_test"
-    train_test = "train_test"
-#+END_SRC
-
-#+BEGIN_SRC ipython :session explore :results  none
-Helpers.pickle_it(Pickles)
+#+BEGIN_SRC python :session explore :results none
+data_source = DataSource()
+data_source.set_attributes()
 #+END_SRC
 
 * The Files
 
   These are the files we are given.
 
-#+BEGIN_SRC ipython :session explore :results output raw :exports both
-for name in DataSource.file_names:
+#+BEGIN_SRC python :session explore :results output raw :exports both
+for name in data_source.file_names:
     print(" - {}".format(name))
 #+END_SRC
 
@@ -211,12 +244,12 @@ for name in DataSource.file_names:
 
 I was originally thinking I would need to unzip the gzipped files but apparently the [[https://pandas.pydata.org/pandas-docs/stable/io.html#io-read-csv-table][=Pandas.read_csv=]] function will decompress them automagically, so I guess I can leave them.
 
-#+BEGIN_SRC ipython :session explore :results none
-frames = {DataSource.file_names[index]: pandas.read_csv(path)
-          for index, path in enumerate(DataSource.paths)}
+#+BEGIN_SRC python :session explore :results none
+frames = {data_source.file_names[index]: pandas.read_csv(path)
+          for index, path in enumerate(data_source.paths)}
 #+END_SRC
 
-#+BEGIN_SRC ipython :session explore :results output raw :exports both
+#+BEGIN_SRC python :session explore :results output raw :exports both
 for name, frame in frames.items():
     print("\n** {}".format(name))
     Helpers.print_head(frame)
@@ -570,54 +603,49 @@ None
 
 * Some Counts
 ** How much data is there in the training set?
-#+BEGIN_SRC ipython :session explore :results output raw :exports both
-print("There are {:,} rows in the training set.".format(len(frames[DataSource.sales_train])))
+#+BEGIN_SRC python :session explore :results output raw :exports both
+print("There are {:,} rows in the training set.".format(len(frames[data_source.sales_train])))
 #+END_SRC
 
 #+RESULTS:
-There are 2,935,849 rows in the training set.
 There are 2,935,849 rows in the training set.
 
 ** How many shops are there?
 
-#+BEGIN_SRC ipython :session explore :results output raw :exports both
-print("There are {} shops.".format(len(frames[DataSource.shops])))
+#+BEGIN_SRC python :session explore :results output raw :exports both
+print("There are {} shops.".format(len(frames[data_source.shops])))
 #+END_SRC
 
 #+RESULTS:
-There are 60 shops.
 There are 60 shops.
 
 ** How Many Items Are There?
 
-#+BEGIN_SRC ipython :session explore :results output raw :exports both
-print("There are {:,} items.".format(len(frames[DataSource.items])))
+#+BEGIN_SRC python :session explore :results output raw :exports both
+print("There are {:,} items.".format(len(frames[data_source.items])))
 #+END_SRC
 
 #+RESULTS:
-There are 22,170 items.
 There are 22,170 items.
 
 ** How Many Item Categories are there?
 
-#+BEGIN_SRC ipython :session explore :results output raw :exports both
-print("There are {:,} categories.".format(len(frames[DataSource.item_categories])))
+#+BEGIN_SRC python :session explore :results output raw :exports both
+print("There are {:,} categories.".format(len(frames[data_source.item_categories])))
 #+END_SRC
 
 #+RESULTS:
-There are 84 categories.
 There are 84 categories.
 
 
 ** How many date-blocks are there?
 
-#+BEGIN_SRC ipython :session explore :results output raw :exports both
+#+BEGIN_SRC python :session explore :results output raw :exports both
 print("There are {} date-blocks.".format(
-    len(frames[DataSource.sales_train][DataKeys.date_block].unique())))
+    len(frames[data_source.sales_train][DataKeys.date_block].unique())))
 #+END_SRC
 
 #+RESULTS:
-There are 34 date-blocks.
 There are 34 date-blocks.
 
 * The Official Feature Descriptions
@@ -638,8 +666,8 @@ There are 34 date-blocks.
 
 * The Training Set
 
-#+BEGIN_SRC ipython :session explore :results output raw :exports both
-print(frames[DataSource.sales_train].dtypes)
+#+BEGIN_SRC python :session explore :results output raw :exports both
+print(frames[data_source.sales_train].dtypes)
 #+END_SRC
 
 #+RESULTS:
@@ -650,18 +678,11 @@ item_id             int64
 item_price        float64
 item_cnt_day      float64
 dtype: object
-date               object
-date_block_num      int64
-shop_id             int64
-item_id             int64
-item_price        float64
-item_cnt_day      float64
-dtype: object
 
 ** Numeric Features
 
-#+BEGIN_SRC ipython :session explore :results output raw :exports both
-Helpers.print_table(frames[DataSource.sales_train].describe(include=numpy.number).T)
+#+BEGIN_SRC python :session explore :results output raw :exports both
+Helpers.print_table(frames[data_source.sales_train].describe(include=numpy.number).T)
 #+END_SRC
 
 #+RESULTS:
@@ -674,8 +695,8 @@ Helpers.print_table(frames[DataSource.sales_train].describe(include=numpy.number
 | item_cnt_day   | 2.93585e+06 | 1.24264 | 2.61883 | -22 |    1 |    1 |     1 |   2169 |
 
 ** Categorical Features
-#+BEGIN_SRC ipython :session explore :results output raw :exports both
-Helpers.print_table(frames[DataSource.sales_train].describe(include=[numpy.object, pandas.Categorical]).T)
+#+BEGIN_SRC python :session explore :results output raw :exports both
+Helpers.print_table(frames[data_source.sales_train].describe(include=[numpy.object, pandas.Categorical]).T)
 #+END_SRC
 
 #+RESULTS:
@@ -683,328 +704,3 @@ Helpers.print_table(frames[DataSource.sales_train].describe(include=[numpy.objec
 |------+-------------+--------+------------+------|
 | date | 2.93585e+06 |   1034 | 28.12.2013 | 9434 |
 
-* Building Up the Training Set
-  Since we have some variables in separate sets I thought it would be useful to combine them into a single training set.
-
-** Building the Super Set
-
-#+BEGIN_SRC ipython :session explore :results none
-super_set = frames[DataSource.sales_train].copy()
-#+END_SRC
-
-#+BEGIN_SRC ipython :session explore :results output raw :exports both
-Helpers.print_head(super_set)
-#+END_SRC
-
-#+RESULTS:
-|       date | date_block_num | shop_id | item_id | item_price | item_cnt_day |
-|------------+----------------+---------+---------+------------+--------------|
-| 02.01.2013 |              0 |      59 |   22154 |        999 |            1 |
-| 03.01.2013 |              0 |      25 |    2552 |        899 |            1 |
-| 05.01.2013 |              0 |      25 |    2552 |        899 |           -1 |
-| 06.01.2013 |              0 |      25 |    2554 |    1709.05 |            1 |
-| 15.01.2013 |              0 |      25 |    2555 |       1099 |            1 |
-
-** Adding The Category ID
-#+BEGIN_SRC ipython :session explore :results none
-super_set = pandas.merge(super_set, frames[DataSource.items], on=DataKeys.item, how="left")
-#+END_SRC
-
-#+BEGIN_SRC ipython :session explore :results output raw :exports both
-Helpers.print_head(super_set)
-#+END_SRC
-
-#+RESULTS:
-|       date | date_block_num | shop_id | item_id | item_price | item_cnt_day | item_name                                | item_category_id |
-|------------+----------------+---------+---------+------------+--------------+------------------------------------------+------------------|
-| 02.01.2013 |              0 |      59 |   22154 |        999 |            1 | ЯВЛЕНИЕ 2012 (BD)                        |               37 |
-| 03.01.2013 |              0 |      25 |    2552 |        899 |            1 | DEEP PURPLE  The House Of Blue Light  LP |               58 |
-| 05.01.2013 |              0 |      25 |    2552 |        899 |           -1 | DEEP PURPLE  The House Of Blue Light  LP |               58 |
-| 06.01.2013 |              0 |      25 |    2554 |    1709.05 |            1 | DEEP PURPLE  Who Do You Think We Are  LP |               58 |
-| 15.01.2013 |              0 |      25 |    2555 |       1099 |            1 | DEEP PURPLE 30 Very Best Of 2CD (Фирм.)  |               56 |
-
-#+BEGIN_SRC ipython :session explore :results none
-counts = super_set[DataKeys.item_category].value_counts(sort=True)
-#+END_SRC
-
-#+BEGIN_SRC ipython :session explore :results raw :ipyfile ../files/posts/exploring-the-data/categories.png
-figure = pyplot.figure(figsize=(10, 8))
-axe = figure.gca()
-axe.set_title("Category Counts")
-axe.set_ylabel("Category")
-axe.set_xlabel("Count")
-# plot = axe.plot(counts.index, counts.item_id, 'o')
-plot = counts.plot.barh(ax=axe)
-#+END_SRC
-
-#+RESULTS:
-# Out[29]:
-[[file:../files/posts/exploring-the-data/categories.png]]
-# Out[71]:
-[[file:../files/posts/exploring-the-data/categories.png]]
-[[file:categories.png]]
-
-It looks like a few categories dominate the sales.
-
-** What do the dates mean?
-   If you look at the head of the training data it looks like only one item was sold or returned per day. This seems like it wouldn't be the case, so lets see how many shops and items there are per day.
-
-#+BEGIN_SRC ipython :session explore :results none
-days = super_set.groupby(DataKeys.date)
-day_counts = days.count()
-#+END_SRC
-
-=day_counts= is just the number of entries there are for each day, regardless of how many of each item were sold per day.
-
-#+BEGIN_SRC ipython :session explore :results none :ipyfile ../files/posts/exploring-the-data/items_per_date.png
-figure =  pyplot.figure(figsize=(12, 10))
-axe = figure.gca()
-axe.set_title("Entries Per Day")
-axe.set_ylabel("Entries")
-axe.set_xlabel("Date")
-axe = axe.plot(day_counts.item_id, '.')
-#+END_SRC
-
-#+RESULTS:
-# Out[172]:
-[[file:../files/posts/exploring-the-data/items_per_date.png]]
-[[file:items_per_date.png]]
-
-It looks like there was actually a lot of entries per date.
-
-** Splitting the Dates
-
-#+BEGIN_SRC ipython :session explore :results none
-class Dates:
-    date_expression = r'(?P<day>\d{2})\.(?P<month>\d{2})\.(?P<year>\d{4})'
-#+END_SRC
-
-#+BEGIN_SRC ipython :session explore :results none
-dates = super_set.date.str.extract(Dates.date_expression)
-#+END_SRC
-
-#+BEGIN_SRC ipython :session explore :results output raw :exports both
-print(tabulate(dates.head(), headers="keys", showindex='never', tablefmt='orgtbl'))
-#+END_SRC
-
-#+RESULTS:
-| day | month | year |
-|-----+-------+------|
-|  02 |    01 | 2013 |
-|  03 |    01 | 2013 |
-|  05 |    01 | 2013 |
-|  06 |    01 | 2013 |
-|  15 |    01 | 2013 |
-
-Now we can smash our new data frame onto the transactions using the [[https://pandas.pydata.org/pandas-docs/stable/generated/pandas.concat.html][concat]] function. by default it will try to add the rows from the second data frame to the rows of the first, but since we're adding new columns we need to pass in the ~axis='columns'~ argument.
-
-#+begin_src ipython :session explore :results none
-super_set = pandas.concat((super_set, dates), axis='columns')
-#+end_src
-
-#+BEGIN_SRC ipython :session explore :results output raw :exports both
-Helpers.print_head(super_set)
-#+END_SRC
-
-#+RESULTS:
-|       date | date_block_num | shop_id | item_id | item_price | item_cnt_day | item_name                                | item_category_id | day | month | year |
-|------------+----------------+---------+---------+------------+--------------+------------------------------------------+------------------+-----+-------+------|
-| 02.01.2013 |              0 |      59 |   22154 |        999 |            1 | ЯВЛЕНИЕ 2012 (BD)                        |               37 |  02 |    01 | 2013 |
-| 03.01.2013 |              0 |      25 |    2552 |        899 |            1 | DEEP PURPLE  The House Of Blue Light  LP |               58 |  03 |    01 | 2013 |
-| 05.01.2013 |              0 |      25 |    2552 |        899 |           -1 | DEEP PURPLE  The House Of Blue Light  LP |               58 |  05 |    01 | 2013 |
-| 06.01.2013 |              0 |      25 |    2554 |    1709.05 |            1 | DEEP PURPLE  Who Do You Think We Are  LP |               58 |  06 |    01 | 2013 |
-| 15.01.2013 |              0 |      25 |    2555 |       1099 |            1 | DEEP PURPLE 30 Very Best Of 2CD (Фирм.)  |               56 |  15 |    01 | 2013 |
-
-* Saving the Super Set
-
-#+BEGIN_SRC ipython :session explore :results none
-Helpers.pickle_it(super_set, Pickles.super_set)
-#+END_SRC
-
-* Setting up the Training and Validation Data
-  Although I went through the trouble of smashing all the values into one Data Frame, it turns out that I need things grouped by month, and doing the grouping after adding the columns just make it messy, so I'm going to back-track a little here to set up the data we need for training and testing.
-
-** The Grouper
-    Since I'm going to aggregate by the month (really the =date_block_num=), leaving in things like the price doesn't really make sense so I'll make a sub-frame that I can group.
-#+BEGIN_SRC ipython :session explore :results none
-grouper = super_set[[DataKeys.date_block, DataKeys.shop, DataKeys.item, DataKeys.day_count]].copy()
-grouped = grouper.groupby([DataKeys.date_block, DataKeys.shop, DataKeys.item]).sum()
-#+END_SRC
-
-#+BEGIN_SRC ipython :session explore :results output raw :exports both
-chunked = grouped.reset_index()
-chunked.rename(columns={DataKeys.day_count: DataKeys.month_count}, inplace=True)
-print(chunked.head())
-#+END_SRC
-
-#+RESULTS:
-   date_block_num  shop_id  item_id  item_count_month
-0               0        0       32               6.0
-1               0        0       33               3.0
-2               0        0       35               1.0
-3               0        0       43               1.0
-4               0        0       51               2.0
-   date_block_num  shop_id  item_id  item_count_month
-0               0        0       32               6.0
-1               0        0       33               3.0
-2               0        0       35               1.0
-3               0        0       43               1.0
-4               0        0       51               2.0
-
-** Adding the Columns Back
-   Since there are multiple entries for items in a given month, I'm going to group the items by shop and date-block (month) and then grab the last entry for each group. I'm also going to delete the /date/ column since we don't really need it.
-
-#+BEGIN_SRC ipython :session explore :results  none
-del(super_set["date"])
-#+END_SRC
-
-#+BEGIN_SRC ipython :session explore :results  none
-super_group = super_set.groupby([DataKeys.date_block, DataKeys.shop, DataKeys.item]).last()
-super_group = super_group.reset_index()
-#+END_SRC
-
-#+BEGIN_SRC ipython :session explore :results output raw :exports both
-Helpers.print_head(super_group, True)
-#+END_SRC
-
-#+RESULTS:
-|   | date_block_num | shop_id | item_id | item_price | item_cnt_day | item_name                                            | item_category_id | day | month | year |
-|---+----------------+---------+---------+------------+--------------+------------------------------------------------------+------------------+-----+-------+------|
-| 0 |              0 |       0 |      32 |        221 |            1 | 1+1                                                  |               40 |  31 |    01 | 2013 |
-| 1 |              0 |       0 |      33 |        347 |            1 | 1+1 (BD)                                             |               37 |  28 |    01 | 2013 |
-| 2 |              0 |       0 |      35 |        247 |            1 | 10 ЛЕТ СПУСТЯ                                        |               40 |  31 |    01 | 2013 |
-| 3 |              0 |       0 |      43 |        221 |            1 | 100 МИЛЛИОНОВ ЕВРО                                   |               40 |  31 |    01 | 2013 |
-| 4 |              0 |       0 |      51 |        127 |            1 | 100 лучших произведений классики (mp3-CD) (Digipack) |               57 |  31 |    01 | 2013 |
-
-
-Now we need to get the category id, price, etc, back into the grouped data by merging it with the de-duplicated one we just created.
-#+BEGIN_SRC ipython :session explore :results  none
-chunked = pandas.merge(chunked, super_group,
-                       on=[DataKeys.date_block, DataKeys.shop, DataKeys.item], how="left")
-#+END_SRC
-
-
-#+BEGIN_SRC ipython :session explore :results output raw :exports both
-print(chunked.head())
-#+END_SRC
-
-#+RESULTS:
-   date_block_num  shop_id  item_id  item_count_month  item_price  \
-0               0        0       32               6.0       221.0   
-1               0        0       33               3.0       347.0   
-2               0        0       35               1.0       247.0   
-3               0        0       43               1.0       221.0   
-4               0        0       51               2.0       127.0   
-
-   item_cnt_day                                          item_name  \
-0           1.0                                                1+1   
-1           1.0                                           1+1 (BD)   
-2           1.0                                      10 ЛЕТ СПУСТЯ   
-3           1.0                                 100 МИЛЛИОНОВ ЕВРО   
-4           1.0  100 лучших произведений классики (mp3-CD) (Dig...   
-
-   item_category_id day month  year  
-0                40  31    01  2013  
-1                37  28    01  2013  
-2                40  31    01  2013  
-3                40  31    01  2013  
-4                57  31    01  2013  
-   date_block_num  shop_id  item_id  item_count_month  item_price  \
-0               0        0       32               6.0       221.0   
-1               0        0       33               3.0       347.0   
-2               0        0       35               1.0       247.0   
-3               0        0       43               1.0       221.0   
-4               0        0       51               2.0       127.0   
-
-   item_cnt_day  item_category_id day month  year  
-0           1.0                40  31    01  2013  
-1           1.0                37  28    01  2013  
-2           1.0                40  31    01  2013  
-3           1.0                40  31    01  2013  
-4           1.0                57  31    01  2013  
-
-
-It looks like the day-count is still there, which doesn't make sense any more so I'll remove it, along with the =day= column.
-
-#+BEGIN_SRC ipython :session explore :results none
-del(chunked[DataKeys.day_count])
-del(chunked['day'])
-#+END_SRC
-
-#+BEGIN_SRC ipython :session explore :results output raw :exports both
-Helpers.print_head(chunked)
-#+END_SRC
-
-#+RESULTS:
-| date_block_num | shop_id | item_id | item_count_month | item_price | item_name                                            | item_category_id | month | year |
-|----------------+---------+---------+------------------+------------+------------------------------------------------------+------------------+-------+------|
-|              0 |       0 |      32 |                6 |        221 | 1+1                                                  |               40 |    01 | 2013 |
-|              0 |       0 |      33 |                3 |        347 | 1+1 (BD)                                             |               37 |    01 | 2013 |
-|              0 |       0 |      35 |                1 |        247 | 10 ЛЕТ СПУСТЯ                                        |               40 |    01 | 2013 |
-|              0 |       0 |      43 |                1 |        221 | 100 МИЛЛИОНОВ ЕВРО                                   |               40 |    01 | 2013 |
-|              0 |       0 |      51 |                2 |        127 | 100 лучших произведений классики (mp3-CD) (Digipack) |               57 |    01 | 2013 |
-
-#+BEGIN_SRC ipython :session explore :results output raw :exports both
-print(len(chunked))
-#+END_SRC
-
-#+RESULTS:
-1609124
-1609124
-
-#+BEGIN_SRC ipython :session explore :results  none
-Helpers.pickle_it(chunked, Pickles.grouped)
-#+END_SRC
-
-To make my validation and training set I'm going to use sklearn's [[ http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html][train_test_split]]. First we need to split the data up into inputs and targets
-#+BEGIN_SRC ipython :session explore :results  none
-target = chunked[DataKeys.month_count].copy()
-features = chunked[chunked.columns[chunked.columns != DataKeys.month_count]].copy()
-#+END_SRC
-
-#+BEGIN_SRC ipython :session explore :results output raw :exports both
-print(target.shape)
-print(features.shape)
-#+END_SRC
-
-#+RESULTS:
-(1609124,)
-(1609124, 8)
-(1609124,)
-(1609124, 7)
-
-#+BEGIN_SRC ipython :session explore :results  none
-x_train, x_test, y_train, y_test = train_test_split(features, target,
-                                                    test_size=0.2,
-                                                    random_state=2018)
-
-Helpers.pickle_it(x_train, Pickles.x_train)
-Helpers.pickle_it(x_test, Pickles.x_test)
-Helpers.pickle_it(y_train, Pickles.y_train)
-Helpers.pickle_it(y_test, Pickles.y_test)
-#+END_SRC
-
-#+BEGIN_SRC ipython :session explore :results  none :noweb-ref train-test
-class TrainTest:
-    x_train = x_train
-    x_test = x_test
-    y_train = y_train
-    y_test = y_test
-#+END_SRC
-
-#+BEGIN_SRC ipython :session explore :results  none
-Helpers.pickle_it(TrainTest, Pickles.train_test)
-#+END_SRC
-
-#+BEGIN_SRC ipython :session explore :results output raw :exports both
-print(x_train.shape)
-print(x_test.shape)
-print(y_train.shape)
-print(y_test.shape)
-#+END_SRC
-
-#+RESULTS:
-(1287299, 7)
-(321825, 7)
-(1287299,)
-(321825,)
