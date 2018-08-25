@@ -3,7 +3,7 @@
 .. slug: kaggle-mechanics
 .. date: 2018-08-04 17:18:12 UTC-07:00
 .. tags: basics rules
-.. category: basics
+.. category: notes
 .. link: 
 .. description: The mechanics of a kaggle competition.
 .. type: text

@@ -1,0 +1,91 @@
+#+BEGIN_COMMENT
+.. title: Preprocessing the Kaggle Data
+.. slug: preprocessing-the-kaggle-data
+.. date: 2018-08-25 13:05:56 UTC-07:00
+.. tags: preprocessing data kaggle
+.. category: competition
+.. link: 
+.. description: 
+.. type: text
+#+END_COMMENT
+
+* Introduction
+  This is a post to do some basic pre-processing on the data. It won't do anything fancy (i.e. no Feature Engineering), but will just get the data ready to be used by the models. In particular, the rules say that the test data target will be limited to a range and the features are categorical so we need to transform them for non-tree models.
+* Tangle
+
+#+BEGIN_SRC python :tangle ../kaggler/helpers/preprocess_data.py
+<<pypi-imports>>
+
+<<local-imports>>
+
+<<clip-it>>
+
+#+END_SRC
+* Imports
+** From pypi
+#+BEGIN_SRC ipython :session preprocessing :results none :noweb-ref pypi-imports
+import numpy
+#+END_SRC
+
+** This project
+#+BEGIN_SRC ipython :session preprocessing :results none :noweb-ref local-imports
+from kaggler.helpers.build_training_data import Pickles
+from kaggler.helpers.helpers import Helpers
+#+END_SRC
+* Loading the Data
+#+BEGIN_SRC ipython :session preprocessing :results none
+x_train = Helpers.unpickle(Pickles.x_train)
+x_test = Helpers.unpickle(Pickles.x_test)
+y_train = Helpers.unpickle(Pickles.y_train)
+y_test = Helpers.unpickle(Pickles.y_test)
+#+END_SRC
+
+#+BEGIN_SRC ipython :session preprocessing :results output
+print(x_train.shape)
+print(x_test.shape)
+print(y_train.shape)
+print(y_test.shape)
+#+END_SRC
+
+#+RESULTS:
+: (1287299, 7)
+: (321825, 7)
+: (1287299,)
+: (321825,)
+
+* Limit the Target Range
+  According to the contest description the true target values are clipped to the =[0,20]= range, so it might make sense to clip the target data in our training and testing data to the given range.
+
+#+BEGIN_SRC ipython :session preprocessing :results output raw :exports both
+Helpers.print_head(x_train)
+#+END_SRC
+
+#+RESULTS:
+| date_block_num | shop_id | item_id | item_price | item_category_id | month | year |
+|----------------+---------+---------+------------+------------------+-------+------|
+|             11 |      15 |    1324 |        499 |               55 |    12 | 2013 |
+|             18 |      31 |   19981 |        499 |               43 |    07 | 2014 |
+|             32 |      28 |    7934 |        398 |                7 |    09 | 2015 |
+|             12 |      43 |   13518 |       1499 |               19 |    01 | 2014 |
+|             28 |      25 |   19927 |        329 |               57 |    05 | 2015 |
+
+#+BEGIN_SRC ipython :session preprocessing :results output :exports both
+print(y_train.describe())
+#+END_SRC
+
+#+RESULTS:
+: count    1.287299e+06
+: mean     2.264775e+00
+: std      8.693074e+00
+: min     -2.200000e+01
+: 25%      1.000000e+00
+: 50%      1.000000e+00
+: 75%      2.000000e+00
+: max      2.253000e+03
+: Name: item_count_month, dtype: float64
+
+Looking at the y-train data you can see that it ranges for -22 to 2,253 - so there is actually a huge amount of reduction in the range of the target data, but the median is only 1, so it might be that there are outliers in the data.
+
+#+BEGIN_SRC ipython :session preprocessing :results none :noweb-ref clip-it
+
+#+END_SRC

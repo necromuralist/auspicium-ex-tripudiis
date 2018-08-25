@@ -1,8 +1,11 @@
+autopep8
 ghp-import2
 jupyter
+kaggle
 Nikola
 seaborn
 sklearn
 tabulate
 virtualfish
 webassets
+wheel
