@@ -9,6 +9,7 @@
 .. type: text
 #+END_COMMENT
 #+OPTIONS: ^:{}
+#+TOC: headlines 1
 
 We'll look at how [[http://blog.kaggle.com/2017/01/23/a-kaggle-master-explains-gradient-boosting/][*Gradient Boosting*]] works and  answer the question:
 

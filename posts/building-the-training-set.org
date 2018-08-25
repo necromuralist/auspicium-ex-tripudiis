@@ -1,0 +1,440 @@
+#+BEGIN_COMMENT
+.. title: Building The Training Set
+.. slug: building-the-training-set
+.. date: 2018-08-25 09:31:43 UTC-07:00
+.. tags: data preprocessing
+.. category: preprocessing
+.. link: 
+.. description: Creating the training and validation data set.
+.. type: text
+#+END_COMMENT
+#+OPTIONS: ^:{}
+#+TOC: headlines 1
+
+* Imports
+** Suppressing the Numpy Warnings
+   This is to suppress the warnings when we import pandas.
+#+BEGIN_SRC python :session training :results none
+import warnings
+warnings.filterwarnings("ignore", message="numpy.dtype size changed")
+warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
+#+END_SRC
+
+** From pypi
+#+BEGIN_SRC python :session training :results none
+import pandas
+from sklearn.model_selection import train_test_split
+#+END_SRC
+
+** This Project
+#+BEGIN_SRC python :session training :results none
+from helpers.helpers import (
+    DataKeys,
+    DataNames,
+    DataSource,
+    Helpers,
+)
+#+END_SRC
+
+* The Tangle
+  This is the exporter for stuff to be re-used outside of this post.
+#+BEGIN_SRC python :tangle helpers/build_training_data.py
+<<pickles>>
+
+<<data-source>>
+
+<<super-set>>
+
+<<load-items>>
+
+<<row-count>>
+
+<<add-category-ids>>
+
+<<date-expression>>
+
+<<split-dates>>
+
+<<add-dates>>
+
+<<clean-super-set>>
+
+<<pickle-super-set>>
+
+<<make-grouper>>
+
+<<make-chunked>>
+
+<<reset-chunked>>
+
+<<super-group>>
+
+<<merge-chunked>>
+
+<<delete-day-count>>
+
+<<pickle-grouped>>
+
+<<targets-features>>
+
+<<train-test-split>>
+#+END_SRC
+
+* Helpers
+** Pickles
+   I'm going to pickle the data to re-load them later so this will hold the names.
+#+BEGIN_SRC python :session training :results  none :noweb-ref pickles
+class Pickles:
+    """Holder of the pickle names"""
+    super_set = "training_data"
+    grouped = "grouped_months_data"
+    x_train = "x_train"
+    x_test = "x_test"
+    y_train = "y_train"
+    y_test = "y_test"
+    train_test = "train_test"
+#+END_SRC
+
+* Building Up the Super Set
+  Since we have some variables in separate sets I thought it would be useful to combine them into a single training set.
+** The Data Source
+   I put the paths into a class called DataSource, this is just to instantiate it.
+
+#+BEGIN_SRC python :session training :results none :noweb-ref data-source
+data_sources = DataSource()
+data_sources.set_attributes()
+#+END_SRC
+
+** Building the Super Set
+   The =super_set= will be a combination of the different data-sources.
+
+#+BEGIN_SRC python :session training :results none :noweb-ref super-set
+super_set = pandas.read_csv(data_sources.file_name_paths[DataNames.training])
+#+END_SRC
+
+#+BEGIN_SRC python :session training :results output raw :exports both
+Helpers.print_head(super_set)
+#+END_SRC
+
+#+RESULTS:
+|       date | date_block_num | shop_id | item_id | item_price | item_cnt_day |
+|------------+----------------+---------+---------+------------+--------------|
+| 02.01.2013 |              0 |      59 |   22154 |        999 |            1 |
+| 03.01.2013 |              0 |      25 |    2552 |        899 |            1 |
+| 05.01.2013 |              0 |      25 |    2552 |        899 |           -1 |
+| 06.01.2013 |              0 |      25 |    2554 |    1709.05 |            1 |
+| 15.01.2013 |              0 |      25 |    2555 |       1099 |            1 |
+
+** Adding the Category IDs
+   The =items.csv= file holds a map of the item-ids to category-ids so we can [[https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.merge.html][merge]] it in to get the category ids for our data-set.
+
+#+BEGIN_SRC python :session training :results  none :noweb-ref load-items
+items = pandas.read_csv(data_sources.file_name_paths[DataNames.items])
+#+END_SRC
+
+#+BEGIN_SRC python :session training :results output raw :exports both
+Helpers.print_head(items)
+#+END_SRC
+
+#+RESULTS:
+| item_name                                                            | item_id | item_category_id |
+|----------------------------------------------------------------------+---------+------------------|
+| ! ВО ВЛАСТИ НАВАЖДЕНИЯ (ПЛАСТ.)         D                            |       0 |               40 |
+| !ABBYY FineReader 12 Professional Edition Full [PC, Цифровая версия] |       1 |               76 |
+| ***В ЛУЧАХ СЛАВЫ   (UNV)                    D                        |       2 |               40 |
+| ***ГОЛУБАЯ ВОЛНА  (Univ)                      D                      |       3 |               40 |
+| ***КОРОБКА (СТЕКЛО)                       D                          |       4 |               40 |
+
+This is also going to add the name of the item, which I'm thinking won't be as useful, but we can clean that out later.
+
+#+BEGIN_SRC python :session training :results  none :noweb-ref row-count
+row_count = len(super_set)
+#+END_SRC
+
+#+BEGIN_SRC python :session training :results  none :noweb-ref add-category-ids
+super_set = super_set.merge(items, on="item_id", how="left")
+assert len(super_set) == row_count
+#+END_SRC
+
+#+BEGIN_SRC python :session training :results output raw :exports both
+Helpers.print_head(super_set)
+#+END_SRC
+
+#+RESULTS:
+|       date | date_block_num | shop_id | item_id | item_price | item_cnt_day | item_name                                | item_category_id |
+|------------+----------------+---------+---------+------------+--------------+------------------------------------------+------------------|
+| 02.01.2013 |              0 |      59 |   22154 |        999 |            1 | ЯВЛЕНИЕ 2012 (BD)                        |               37 |
+| 03.01.2013 |              0 |      25 |    2552 |        899 |            1 | DEEP PURPLE  The House Of Blue Light  LP |               58 |
+| 05.01.2013 |              0 |      25 |    2552 |        899 |           -1 | DEEP PURPLE  The House Of Blue Light  LP |               58 |
+| 06.01.2013 |              0 |      25 |    2554 |    1709.05 |            1 | DEEP PURPLE  Who Do You Think We Are  LP |               58 |
+| 15.01.2013 |              0 |      25 |    2555 |       1099 |            1 | DEEP PURPLE 30 Very Best Of 2CD (Фирм.)  |               56 |
+
+** Splitting the Dates
+   The =date= column has a string formatted =dd.mm.yy=. Since we want sales per month and it might change over time, I'll split the date-stamp up into day, month, and year (although I don't think I'll be keeping day).
+
+#+BEGIN_SRC python :session training :results  none :noweb-ref date-expression
+date_expression = r'(?P<{}>\d{{2}})\.(?P<{}>\d{{2}})\.(?P<{}>\d{{4}})'.format(DataKeys.day,
+                                                                              DataKeys.month,
+                                                                              DataKeys.year)
+#+END_SRC
+
+#+BEGIN_SRC python :session training :results output raw :exports both
+print("={}=".format(date_expression))
+#+END_SRC
+
+#+RESULTS:
+=(?P<day>\d{2})\.(?P<month>\d{2})\.(?P<year>\d{4})=
+
+#+BEGIN_SRC python :session training :results  none :noweb-ref split-dates
+dates = super_set.date.str.extract(date_expression)
+#+END_SRC
+
+Here's what =dates= looks like.
+
+#+BEGIN_SRC python :session training :results output raw :exports both
+Helpers.print_head(dates)
+#+END_SRC
+
+#+RESULTS:
+| day | month | year |
+|-----+-------+------|
+|  02 |    01 | 2013 |
+|  03 |    01 | 2013 |
+|  05 |    01 | 2013 |
+|  06 |    01 | 2013 |
+|  15 |    01 | 2013 |
+
+Now we can smash our new data frame onto the transactions using the [[https://pandas.pydata.org/pandas-docs/stable/generated/pandas.concat.html][concat]] function. By default it will try to add the rows from the second data frame to the rows of the first, but since we're adding new columns we need to pass in the ~axis='columns'~ argument.
+
+#+BEGIN_SRC python :session training :results  none :noweb-ref add-dates
+super_set = pandas.concat((super_set, dates), axis='columns')
+#+END_SRC
+
+Nowe we can see what our =super_set= looks like.
+
+#+BEGIN_SRC python :session training :results output raw :exports both
+Helpers.print_head(super_set)
+#+END_SRC
+
+#+RESULTS:
+|       date | date_block_num | shop_id | item_id | item_price | item_cnt_day | item_name                                | item_category_id | day | month | year |
+|------------+----------------+---------+---------+------------+--------------+------------------------------------------+------------------+-----+-------+------|
+| 02.01.2013 |              0 |      59 |   22154 |        999 |            1 | ЯВЛЕНИЕ 2012 (BD)                        |               37 |  02 |    01 | 2013 |
+| 03.01.2013 |              0 |      25 |    2552 |        899 |            1 | DEEP PURPLE  The House Of Blue Light  LP |               58 |  03 |    01 | 2013 |
+| 05.01.2013 |              0 |      25 |    2552 |        899 |           -1 | DEEP PURPLE  The House Of Blue Light  LP |               58 |  05 |    01 | 2013 |
+| 06.01.2013 |              0 |      25 |    2554 |    1709.05 |            1 | DEEP PURPLE  Who Do You Think We Are  LP |               58 |  06 |    01 | 2013 |
+| 15.01.2013 |              0 |      25 |    2555 |       1099 |            1 | DEEP PURPLE 30 Very Best Of 2CD (Фирм.)  |               56 |  15 |    01 | 2013 |
+
+** Cleaning Up
+   The =date= column is now superfluous, and I don't think we need the day, since we are predicting by month. I'm also going to assume that names aren't as useful as the numeric ids. This might not be true, but I think using the text would require pre-processing which is beyond what I'm doing here, so I'm going to leave them out (there is another file with shop names that needs to be loaded if the text turns out to be significant). I'm going to [[https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.drop.html][drop]] the columns that I don't think I'll need.
+
+#+BEGIN_SRC python :session training :results  none :noweb-ref clean-super-set
+super_set = super_set.drop([DataKeys.date, DataKeys.name, DataKeys.day], axis="columns")
+#+END_SRC
+
+#+BEGIN_SRC python :session training :results output raw :exports both
+Helpers.print_head(super_set)
+#+END_SRC
+
+#+RESULTS:
+| date_block_num | shop_id | item_id | item_price | item_cnt_day | item_category_id | month | year |
+|----------------+---------+---------+------------+--------------+------------------+-------+------|
+|              0 |      59 |   22154 |        999 |            1 |               37 |    01 | 2013 |
+|              0 |      25 |    2552 |        899 |            1 |               58 |    01 | 2013 |
+|              0 |      25 |    2552 |        899 |           -1 |               58 |    01 | 2013 |
+|              0 |      25 |    2554 |    1709.05 |            1 |               58 |    01 | 2013 |
+|              0 |      25 |    2555 |       1099 |            1 |               56 |    01 | 2013 |
+
+** Saving the Super Set
+   Now I'll pickle it up so it can be loaded later.
+
+
+#+BEGIN_SRC python :session training :results  none :noweb-ref pickle-super-set
+Helpers.pickle_it(super_set, Pickles.super_set)
+#+END_SRC
+
+* Setting up the Training and Validation Data
+  Although I went through the trouble of smashing all the values into one Data Frame, it turns out that I need things grouped by month, and doing the grouping after adding the columns just make it messy, so I'm going to back-track a little here to set up the data we need for training and testing.
+
+** The Grouper
+    Since I'm going to aggregate by the month (really the =date_block_num=), leaving in things like the price doesn't really make sense so I'll make a sub-frame that I can [[https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.groupby.html][group]].
+
+#+BEGIN_SRC python :session training :results  none :noweb-ref make-grouper
+grouper = super_set[[DataKeys.date_block, DataKeys.shop, DataKeys.item, DataKeys.day_count]].copy()
+grouped = grouper.groupby([DataKeys.date_block, DataKeys.shop, DataKeys.item]).sum()
+#+END_SRC
+
+#+BEGIN_SRC python :session training :results output raw :exports both
+Helpers.print_head(grouped)
+#+END_SRC
+
+#+RESULTS:
+| item_cnt_day |
+|--------------|
+|            6 |
+|            3 |
+|            1 |
+|            1 |
+|            2 |
+
+The reason why it looks like we lost most of the data is that the =groupy= method moved the groups into the index.
+
+#+BEGIN_SRC python :session training :results output raw :exports both
+print(grouped.head())
+#+END_SRC
+
+#+RESULTS:
+                                item_cnt_day
+date_block_num shop_id item_id              
+0              0       32                6.0
+                       33                3.0
+                       35                1.0
+                       43                1.0
+                       51                2.0
+
+So we're going to [[https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.reset_index.html][reset the index]], which will convert the [[https://pandas.pydata.org/pandas-docs/stable/advanced.html][multiindex]] into columns. I'm also going to re-name the =item_cnt_day= column since it now represents the count for the whole month, not one day.
+
+#+BEGIN_SRC python :session training :results  none :noweb-ref reset-chunked
+chunked = grouped.reset_index()
+chunked.rename(columns={DataKeys.day_count: DataKeys.month_count}, inplace=True)
+#+END_SRC
+
+#+BEGIN_SRC python :session training :results output raw :exports both
+Helpers.print_head(chunked)
+#+END_SRC
+
+#+RESULTS:
+| date_block_num | shop_id | item_id | item_count_month |
+|----------------+---------+---------+------------------|
+|              0 |       0 |      32 |                6 |
+|              0 |       0 |      33 |                3 |
+|              0 |       0 |      35 |                1 |
+|              0 |       0 |      43 |                1 |
+|              0 |       0 |      51 |                2 |
+
+** Adding the Columns Back
+*** Group the Super Set
+   Back to the super-set. Since there are multiple entries for items in a given month, I'm going to group the items by shop and date-block (month) and then grab the last entry for each group. 
+
+#+BEGIN_SRC python :session training :results  none :noweb-ref super-group
+super_group = super_set.groupby([DataKeys.date_block, DataKeys.shop, DataKeys.item]).last()
+super_group = super_group.reset_index()
+#+END_SRC
+
+#+BEGIN_SRC python :session training :results output raw :exports both
+Helpers.print_head(super_group)
+#+END_SRC
+
+#+RESULTS:
+| date_block_num | shop_id | item_id | item_price | item_cnt_day | item_category_id | month | year |
+|----------------+---------+---------+------------+--------------+------------------+-------+------|
+|              0 |       0 |      32 |        221 |            1 |               40 |    01 | 2013 |
+|              0 |       0 |      33 |        347 |            1 |               37 |    01 | 2013 |
+|              0 |       0 |      35 |        247 |            1 |               40 |    01 | 2013 |
+|              0 |       0 |      43 |        221 |            1 |               40 |    01 | 2013 |
+|              0 |       0 |      51 |        127 |            1 |               57 |    01 | 2013 |
+
+
+*** Re-add the missing columns
+Now we need to get the category id, price, etc, back into the grouped data by merging it with the de-duplicated one we just created.
+
+#+BEGIN_SRC python :session training :results  none :noweb-ref merge-chunked
+chunked = chunked.merge(super_group,
+                        on=[DataKeys.date_block, DataKeys.shop, DataKeys.item],
+                        how="left")
+#+END_SRC
+
+#+BEGIN_SRC python :session training :results output raw :exports both
+Helpers.print_head(chunked)
+#+END_SRC
+
+#+RESULTS:
+| date_block_num | shop_id | item_id | item_count_month | item_price | item_cnt_day | item_category_id | month | year |
+|----------------+---------+---------+------------------+------------+--------------+------------------+-------+------|
+|              0 |       0 |      32 |                6 |        221 |            1 |               40 |    01 | 2013 |
+|              0 |       0 |      33 |                3 |        347 |            1 |               37 |    01 | 2013 |
+|              0 |       0 |      35 |                1 |        247 |            1 |               40 |    01 | 2013 |
+|              0 |       0 |      43 |                1 |        221 |            1 |               40 |    01 | 2013 |
+|              0 |       0 |      51 |                2 |        127 |            1 |               57 |    01 | 2013 |
+
+It looks like the day-count is still there, which doesn't make sense any more so I'll remove it.
+
+#+BEGIN_SRC python :session training :results  none :noweb-ref delete-day-count
+chunked = chunked.drop([DataKeys.day_count], axis="columns")
+#+END_SRC
+
+#+BEGIN_SRC python :session training :results output raw :exports both
+Helpers.print_head(chunked)
+#+END_SRC
+
+#+RESULTS:
+| date_block_num | shop_id | item_id | item_count_month | item_price | item_category_id | month | year |
+|----------------+---------+---------+------------------+------------+------------------+-------+------|
+|              0 |       0 |      32 |                6 |        221 |               40 |    01 | 2013 |
+|              0 |       0 |      33 |                3 |        347 |               37 |    01 | 2013 |
+|              0 |       0 |      35 |                1 |        247 |               40 |    01 | 2013 |
+|              0 |       0 |      43 |                1 |        221 |               40 |    01 | 2013 |
+|              0 |       0 |      51 |                2 |        127 |               57 |    01 | 2013 |
+
+#+BEGIN_SRC python :session training :results output raw :exports both
+print(len(chunked))
+#+END_SRC
+
+#+RESULTS:
+1609124
+
+*** Save the grouped-up data
+    I'm calling it =grouped_months_data.pkl=, but since the name is in the =Pickles= class, I'll just have to remember to use =grouped=.
+
+#+BEGIN_SRC python :session training :results  none :noweb-ref pickle-grouped
+Helpers.pickle_it(chunked, Pickles.grouped)
+#+END_SRC
+
+* Creating the Validation Set
+  To make my validation and training set I'm going to use sklearn's [[http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html][train_test_split]]. 
+** Targets and Features
+First we need to split the data up into inputs and targets
+
+#+BEGIN_SRC python :session training :results  none :noweb-ref targets-features
+target = chunked[DataKeys.month_count].copy()
+features = chunked[chunked.columns[chunked.columns != DataKeys.month_count]].copy()
+#+END_SRC
+
+#+BEGIN_SRC python :session training :results output raw :exports both
+print(target.shape)
+print(features.shape)
+#+END_SRC
+
+#+RESULTS:
+(1609124,)
+(1609124, 7)
+
+** Make Like a Banana
+   I'm going to create a training set with 80% of the data and leave the other 20% as the validation data.
+
+#+BEGIN_SRC python :session training :results  none :noweb-ref train-test-split
+x_train, x_test, y_train, y_test = train_test_split(features, target,
+                                                    test_size=0.2,
+                                                    random_state=2018)
+
+Helpers.pickle_it(x_train, Pickles.x_train)
+Helpers.pickle_it(x_test, Pickles.x_test)
+Helpers.pickle_it(y_train, Pickles.y_train)
+Helpers.pickle_it(y_test, Pickles.y_test)
+#+END_SRC
+
+
+#+BEGIN_SRC python :session explore :results output raw :exports both
+print(x_train.shape)
+print(x_test.shape)
+print(y_train.shape)
+print(y_test.shape)
+#+END_SRC
+
+#+RESULTS:
+(1287299, 7)
+(321825, 7)
+(1287299,)
+(321825,)
+
+So now we're set to get started.
