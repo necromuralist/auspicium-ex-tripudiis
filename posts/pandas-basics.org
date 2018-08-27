@@ -3,7 +3,7 @@
 .. slug: pandas-basics
 .. date: 2018-08-05 12:56:23 UTC-07:00
 .. tags: pandas basics
-.. category: pandas
+.. category: practice
 .. link: 
 .. description: Some introductory pandas stuff.
 .. type: text

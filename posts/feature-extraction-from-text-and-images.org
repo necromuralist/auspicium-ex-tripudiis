@@ -2,8 +2,8 @@
 .. title: Feature Extraction From Text and Images
 .. slug: feature-extraction-from-text-and-images
 .. date: 2018-08-13 07:17:52 UTC-07:00
-.. tags: featureextraction text images
-.. category: featureextraction
+.. tags: featureextraction text images notes
+.. category: notes
 .. link: 
 .. description: Getting features from text and image data.
 .. type: text

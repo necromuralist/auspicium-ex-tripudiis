@@ -2,8 +2,8 @@
 .. title: Building The Training Set
 .. slug: building-the-training-set
 .. date: 2018-08-25 09:31:43 UTC-07:00
-.. tags: data preprocessing
-.. category: preprocessing
+.. tags: data preprocessing competition
+.. category: competition
 .. link: 
 .. description: Creating the training and validation data set.
 .. type: text
@@ -11,61 +11,40 @@
 #+OPTIONS: ^:{}
 #+TOC: headlines 1
 
-* Imports
-** Suppressing the Numpy Warnings
-   This is to suppress the warnings when we import pandas.
-#+BEGIN_SRC python :session training :results none
-import warnings
-warnings.filterwarnings("ignore", message="numpy.dtype size changed")
-warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
-#+END_SRC
-
-** From pypi
-#+BEGIN_SRC python :session training :results none
-import pandas
-from sklearn.model_selection import train_test_split
-#+END_SRC
-
-** This Project
-#+BEGIN_SRC python :session training :results none
-from helpers.helpers import (
-    DataKeys,
-    DataNames,
-    DataSource,
-    Helpers,
-)
-#+END_SRC
-
 * The Tangle
   This is the exporter for stuff to be re-used outside of this post.
-#+BEGIN_SRC python :tangle helpers/build_training_data.py
+#+BEGIN_SRC python :tangle ../kaggler/helpers/build_training_data.py
+<<python-imports>>
+
+<<suppress-warnings>>
+
+<<pypi-imports>>
+
+<<local-imports>>
+
 <<pickles>>
 
-<<data-source>>
+<<super-set-creator>>
 
-<<super-set>>
+    <<data-source>>
+
+    <<super-set>>
 
 <<load-items>>
 
-<<row-count>>
 
-<<add-category-ids>>
+<<super-duper-set>>
 
-<<date-expression>>
 
-<<split-dates>>
-
-<<add-dates>>
+<<super-dates>>
 
 <<clean-super-set>>
 
-<<pickle-super-set>>
 
 <<make-grouper>>
 
-<<make-chunked>>
 
-<<reset-chunked>>
+<<make-chunked>>
 
 <<super-group>>
 
@@ -73,11 +52,40 @@ from helpers.helpers import (
 
 <<delete-day-count>>
 
-<<pickle-grouped>>
 
 <<targets-features>>
 
 <<train-test-split>>
+#+END_SRC
+
+* Imports
+** Python Standard Library
+#+BEGIN_SRC python :session training :results none :noweb-ref python-imports
+import os
+#+END_SRC
+
+** Suppressing the Numpy Warnings
+   This is to suppress the warnings when we import pandas.
+#+BEGIN_SRC python :session training :results none :noweb-ref suppress-warnings
+import warnings
+warnings.filterwarnings("ignore", message="numpy.dtype size changed")
+warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
+#+END_SRC
+
+** From pypi
+#+BEGIN_SRC python :session training :results none :noweb-ref pypi-imports
+import pandas
+from sklearn.model_selection import train_test_split
+#+END_SRC
+
+** This Project
+#+BEGIN_SRC python :session training :results none :noweb-ref local-imports
+from kaggler.helpers.helpers import (
+    DataKeys,
+    DataNames,
+    DataSource,
+    Helpers,
+)
 #+END_SRC
 
 * Helpers
@@ -95,41 +103,74 @@ class Pickles:
     train_test = "train_test"
 #+END_SRC
 
+
 * Building Up the Super Set
   Since we have some variables in separate sets I thought it would be useful to combine them into a single training set.
+
+#+BEGIN_SRC python :session training :results none :noweb-ref super-set-creator
+class SuperSet:
+    """Creates the super-set of data"""
+    def __init__(self):
+        self._data_sources = None
+        self._data = None
+        return
+#+END_SRC
+
 ** The Data Source
    I put the paths into a class called DataSource, this is just to instantiate it.
 
 #+BEGIN_SRC python :session training :results none :noweb-ref data-source
-data_sources = DataSource()
-data_sources.set_attributes()
+@property
+def data_sources(self):
+    """string-values for the data sources"""
+    if self._data_sources is None:
+        self._data_sources = DataSource()
+        self._data_sources.set_attributes()
+    return self._data_sources
 #+END_SRC
 
 ** Building the Super Set
    The =super_set= will be a combination of the different data-sources.
 
 #+BEGIN_SRC python :session training :results none :noweb-ref super-set
-super_set = pandas.read_csv(data_sources.file_name_paths[DataNames.training])
+@property
+def data(self):
+    """the super-set"""
+    if self._data is None:
+        self._data = pandas.read_csv(
+            self.data_sources.file_name_paths[DataNames.training])
+    return self._data
 #+END_SRC
 
 #+BEGIN_SRC python :session training :results output raw :exports both
 Helpers.print_head(super_set)
 #+END_SRC
 
-#+RESULTS:
-|       date | date_block_num | shop_id | item_id | item_price | item_cnt_day |
-|------------+----------------+---------+---------+------------+--------------|
-| 02.01.2013 |              0 |      59 |   22154 |        999 |            1 |
-| 03.01.2013 |              0 |      25 |    2552 |        899 |            1 |
-| 05.01.2013 |              0 |      25 |    2552 |        899 |           -1 |
-| 06.01.2013 |              0 |      25 |    2554 |    1709.05 |            1 |
-| 15.01.2013 |              0 |      25 |    2555 |       1099 |            1 |
-
 ** Adding the Category IDs
    The =items.csv= file holds a map of the item-ids to category-ids so we can [[https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.merge.html][merge]] it in to get the category ids for our data-set.
 
 #+BEGIN_SRC python :session training :results  none :noweb-ref load-items
-items = pandas.read_csv(data_sources.file_name_paths[DataNames.items])
+class Items:
+    """sale items data"""
+    def __init__(self):
+        self._data = None
+        self._data_sources = None
+        return
+
+    @property
+    def data_sources(self):
+        """a Data-Source object"""
+        if self._data_sources is None:
+            self._data_sources = DataSource()
+        return self._data_sources
+        
+    @property
+    def data(self):
+        """dataframe of sale items"""
+        if self._data is None:
+            self._data = pandas.read_csv(
+                self.data_sources.file_name_paths[DataNames.items])
+        return self._data
 #+END_SRC
 
 #+BEGIN_SRC python :session training :results output raw :exports both
@@ -147,13 +188,39 @@ Helpers.print_head(items)
 
 This is also going to add the name of the item, which I'm thinking won't be as useful, but we can clean that out later.
 
-#+BEGIN_SRC python :session training :results  none :noweb-ref row-count
-row_count = len(super_set)
-#+END_SRC
+#+BEGIN_SRC python :session training :results  none :noweb-ref super-duper-set
+class SuperDuper:
+    """super set with item counts"""
+    def __init__(self):
+        self._data = None
+        self._super_set = None
+        self._items = None
+        return
 
-#+BEGIN_SRC python :session training :results  none :noweb-ref add-category-ids
-super_set = super_set.merge(items, on="item_id", how="left")
-assert len(super_set) == row_count
+    @property
+    def super_set(self):
+        """super-set of data"""
+        if self._super_set is None:
+            self._super_set = SuperSet().data
+        return self._super_set
+
+    @property
+    def items(self):
+        """sale-items data"""
+        if self._items is None:
+            self._items = Items().data
+        return self._items
+
+    @property
+    def data(self):
+        """super set with sale items"""
+        if self._data is None:
+            self._data = self.super_set.merge(self.items,
+                                              on=DataKeys.item,
+                                              how="left")
+        
+            assert len(self.data) == len(self.super_set)
+        return self._data
 #+END_SRC
 
 #+BEGIN_SRC python :session training :results output raw :exports both
@@ -172,10 +239,51 @@ Helpers.print_head(super_set)
 ** Splitting the Dates
    The =date= column has a string formatted =dd.mm.yy=. Since we want sales per month and it might change over time, I'll split the date-stamp up into day, month, and year (although I don't think I'll be keeping day).
 
-#+BEGIN_SRC python :session training :results  none :noweb-ref date-expression
-date_expression = r'(?P<{}>\d{{2}})\.(?P<{}>\d{{2}})\.(?P<{}>\d{{4}})'.format(DataKeys.day,
-                                                                              DataKeys.month,
-                                                                              DataKeys.year)
+#+BEGIN_SRC python :session training :results  none :noweb-ref super-dates
+class SuperDates:
+    """Super-set with dates split out"""
+    def __init__(self):
+        self._super_duper = None
+        self._date_expression = None
+        self._dates = None
+        self._data = None
+        return
+
+    @property
+    def super_duper(self):
+        """A super-duper data set"""
+        if self._super_duper is None:
+            self._super_duper = SuperDuper().data
+        return self._super_duper
+
+    @property
+    def date_expression(self):
+        """regular expression to parse the dates"""
+        if self._date_expression is None:
+            self._date_expression = (r'(?P<{}>\d{{2}})\.'
+                                     '(?P<{}>\d{{2}})\.'
+                                     '(?P<{}>\d{{4}})').format(
+                                         DataKeys.day,
+                                         DataKeys.month,
+                                         DataKeys.year)
+        return self._date_expression
+
+    @property
+    def dates(self):
+        """dataframe of dates"""
+        if self._dates is None:
+            self._dates = self.super_duper.date.str.extract(
+                self.date_expression)
+        return self._dates
+
+    @property
+    def data(self):
+        """data set with date columns"""
+        if self._data is None:
+            self._data = pandas.concat(
+                (self.super_duper, self.dates),
+                axis='columns')
+        return self._data
 #+END_SRC
 
 #+BEGIN_SRC python :session training :results output raw :exports both
@@ -185,9 +293,8 @@ print("={}=".format(date_expression))
 #+RESULTS:
 =(?P<day>\d{2})\.(?P<month>\d{2})\.(?P<year>\d{4})=
 
-#+BEGIN_SRC python :session training :results  none :noweb-ref split-dates
-dates = super_set.date.str.extract(date_expression)
-#+END_SRC
+
+
 
 Here's what =dates= looks like.
 
@@ -205,10 +312,6 @@ Helpers.print_head(dates)
 |  15 |    01 | 2013 |
 
 Now we can smash our new data frame onto the transactions using the [[https://pandas.pydata.org/pandas-docs/stable/generated/pandas.concat.html][concat]] function. By default it will try to add the rows from the second data frame to the rows of the first, but since we're adding new columns we need to pass in the ~axis='columns'~ argument.
-
-#+BEGIN_SRC python :session training :results  none :noweb-ref add-dates
-super_set = pandas.concat((super_set, dates), axis='columns')
-#+END_SRC
 
 Nowe we can see what our =super_set= looks like.
 
@@ -229,7 +332,32 @@ Helpers.print_head(super_set)
    The =date= column is now superfluous, and I don't think we need the day, since we are predicting by month. I'm also going to assume that names aren't as useful as the numeric ids. This might not be true, but I think using the text would require pre-processing which is beyond what I'm doing here, so I'm going to leave them out (there is another file with shop names that needs to be loaded if the text turns out to be significant). I'm going to [[https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.drop.html][drop]] the columns that I don't think I'll need.
 
 #+BEGIN_SRC python :session training :results  none :noweb-ref clean-super-set
-super_set = super_set.drop([DataKeys.date, DataKeys.name, DataKeys.day], axis="columns")
+class SuperClean:
+    """The super-set data with extra columns removed"""
+    def __init__(self, drop=[DataKeys.date, DataKeys.name, DataKeys.day]):
+        self.drop = drop
+        self._super_set = None
+        self._data = None
+        return
+
+    @property
+    def super_set(self):
+        """the super-set data"""
+        if self._super_set is None:
+            self._super_set = SuperDates().data
+        return self._super_set
+
+    @property
+    def data(self):
+        """The cleaned data"""
+        if self._data is None:
+            self._data = self.super_set.drop(self.drop, axis="columns")
+        return self._data
+
+    def save(self):
+        """Saves the data as a pickle"""
+        Helpers.pickle_it(self.data, Pickles.super_set)
+        return
 #+END_SRC
 
 #+BEGIN_SRC python :session training :results output raw :exports both
@@ -249,7 +377,7 @@ Helpers.print_head(super_set)
    Now I'll pickle it up so it can be loaded later.
 
 
-#+BEGIN_SRC python :session training :results  none :noweb-ref pickle-super-set
+#+BEGIN_SRC python :session training :results  none
 Helpers.pickle_it(super_set, Pickles.super_set)
 #+END_SRC
 
@@ -260,8 +388,38 @@ Helpers.pickle_it(super_set, Pickles.super_set)
     Since I'm going to aggregate by the month (really the =date_block_num=), leaving in things like the price doesn't really make sense so I'll make a sub-frame that I can [[https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.groupby.html][group]].
 
 #+BEGIN_SRC python :session training :results  none :noweb-ref make-grouper
-grouper = super_set[[DataKeys.date_block, DataKeys.shop, DataKeys.item, DataKeys.day_count]].copy()
-grouped = grouper.groupby([DataKeys.date_block, DataKeys.shop, DataKeys.item]).sum()
+class Grouper:
+    """Data Grouped by month, shop, item"""
+    def __init__(self):
+        self._cleaned = None
+        self._grouper = None
+        self._data = None
+        return
+
+    @property
+    def cleaned(self):
+        """cleaned super-set"""
+        if self._cleaned is None:
+            self._cleaned = SuperClean().data
+        return self._cleaned
+
+    @property
+    def grouper(self):
+        """goups the data by columns"""
+        if self._grouper is None:
+            self._grouper = self.cleaned[[DataKeys.date_block, DataKeys.shop,
+                                          DataKeys.item,
+                                          DataKeys.day_count]].copy()
+        return self._grouper
+
+    @property
+    def data(self):
+        """the summed group-data"""
+        if self._data is None:
+            self._data = self.grouper.groupby([DataKeys.date_block,
+                                               DataKeys.shop,
+                                               DataKeys.item]).sum()
+        return self._data
 #+END_SRC
 
 #+BEGIN_SRC python :session training :results output raw :exports both
@@ -294,9 +452,30 @@ date_block_num shop_id item_id
 
 So we're going to [[https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.reset_index.html][reset the index]], which will convert the [[https://pandas.pydata.org/pandas-docs/stable/advanced.html][multiindex]] into columns. I'm also going to re-name the =item_cnt_day= column since it now represents the count for the whole month, not one day.
 
-#+BEGIN_SRC python :session training :results  none :noweb-ref reset-chunked
-chunked = grouped.reset_index()
-chunked.rename(columns={DataKeys.day_count: DataKeys.month_count}, inplace=True)
+#+BEGIN_SRC python :session training :results  none :noweb-ref make-chunked
+class Chunked:
+    """Data set chunked-up to the months"""
+    def __init__(self):
+        self._grouped = None
+        self._data = None
+        return
+
+    @property
+    def grouped(self):
+        """grouped data"""
+        if self._grouped is None:
+            self._grouped = Grouper().data
+        return self._grouped
+
+    @property
+    def data(self):
+        """The chunked data with the counts renamed"""
+        if self._data is None:
+            self._data =  self.grouped.reset_index()
+            self._data.rename(
+                columns={DataKeys.day_count: DataKeys.month_count},
+                inplace=True)
+        return self._data
 #+END_SRC
 
 #+BEGIN_SRC python :session training :results output raw :exports both
@@ -317,8 +496,34 @@ Helpers.print_head(chunked)
    Back to the super-set. Since there are multiple entries for items in a given month, I'm going to group the items by shop and date-block (month) and then grab the last entry for each group. 
 
 #+BEGIN_SRC python :session training :results  none :noweb-ref super-group
-super_group = super_set.groupby([DataKeys.date_block, DataKeys.shop, DataKeys.item]).last()
-super_group = super_group.reset_index()
+class SuperGroup:
+    """Super Set grouped
+
+    Args:
+     groups: list of columns to form the groups
+    """
+    def __init__(self, groups=[DataKeys.date_block,
+                               DataKeys.shop,
+                               DataKeys.item]):
+        self.groups = groups
+        self._super_set = None
+        self._data = None
+        return
+
+    @property
+    def super_set(self):
+        """cleaned super set of data"""
+        if self._super_set is None:
+            self._super_set = SuperClean().data
+        return self._super_set
+
+    @property
+    def data(self):
+        """the super group data"""
+        if self._data is None:
+            self._data = self.super_set.groupby(self.groups).last()
+            self._data = self._data.reset_index()
+        return self._data
 #+END_SRC
 
 #+BEGIN_SRC python :session training :results output raw :exports both
@@ -339,13 +544,45 @@ Helpers.print_head(super_group)
 Now we need to get the category id, price, etc, back into the grouped data by merging it with the de-duplicated one we just created.
 
 #+BEGIN_SRC python :session training :results  none :noweb-ref merge-chunked
-chunked = chunked.merge(super_group,
-                        on=[DataKeys.date_block, DataKeys.shop, DataKeys.item],
+class MergeChunked:
+    """merge the super-set and the chunked data"""
+    def __init__(self):
+        self._chunked = None
+        self._super_group = None
+        self._data = None
+        return
+
+    @property
+    def chunked(self):
+        if self._chunked is None:
+            self._chunked = Chunked().data
+        return self._chunked
+
+    @property
+    def super_group(self):
+        if self._super_group is None:
+            self._super_group = SuperGroup().data
+        return self._super_group
+
+    @property
+    def data(self):
+        if self._data is None:
+            self._data = self.chunked.merge(self.super_group,
+                        on=[DataKeys.date_block,
+                            DataKeys.shop,
+                            DataKeys.item],
                         how="left")
+            self._data.drop([DataKeys.day_count], axis="columns")
+        return self._data
+
+    def __call__(self):
+        """save the data as a pickle"""
+        Helpers.pickle_it(self.data, Pickles.grouped)
+        return
 #+END_SRC
 
 #+BEGIN_SRC python :session training :results output raw :exports both
-Helpers.print_head(chunked)
+Helpers.print_head(chunked.data)
 #+END_SRC
 
 #+RESULTS:
@@ -357,38 +594,8 @@ Helpers.print_head(chunked)
 |              0 |       0 |      43 |                1 |        221 |            1 |               40 |    01 | 2013 |
 |              0 |       0 |      51 |                2 |        127 |            1 |               57 |    01 | 2013 |
 
-It looks like the day-count is still there, which doesn't make sense any more so I'll remove it.
-
-#+BEGIN_SRC python :session training :results  none :noweb-ref delete-day-count
-chunked = chunked.drop([DataKeys.day_count], axis="columns")
-#+END_SRC
-
-#+BEGIN_SRC python :session training :results output raw :exports both
-Helpers.print_head(chunked)
-#+END_SRC
-
-#+RESULTS:
-| date_block_num | shop_id | item_id | item_count_month | item_price | item_category_id | month | year |
-|----------------+---------+---------+------------------+------------+------------------+-------+------|
-|              0 |       0 |      32 |                6 |        221 |               40 |    01 | 2013 |
-|              0 |       0 |      33 |                3 |        347 |               37 |    01 | 2013 |
-|              0 |       0 |      35 |                1 |        247 |               40 |    01 | 2013 |
-|              0 |       0 |      43 |                1 |        221 |               40 |    01 | 2013 |
-|              0 |       0 |      51 |                2 |        127 |               57 |    01 | 2013 |
-
-#+BEGIN_SRC python :session training :results output raw :exports both
-print(len(chunked))
-#+END_SRC
-
-#+RESULTS:
-1609124
-
 *** Save the grouped-up data
     I'm calling it =grouped_months_data.pkl=, but since the name is in the =Pickles= class, I'll just have to remember to use =grouped=.
-
-#+BEGIN_SRC python :session training :results  none :noweb-ref pickle-grouped
-Helpers.pickle_it(chunked, Pickles.grouped)
-#+END_SRC
 
 * Creating the Validation Set
   To make my validation and training set I'm going to use sklearn's [[http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html][train_test_split]]. 
@@ -396,8 +603,102 @@ Helpers.pickle_it(chunked, Pickles.grouped)
 First we need to split the data up into inputs and targets
 
 #+BEGIN_SRC python :session training :results  none :noweb-ref targets-features
-target = chunked[DataKeys.month_count].copy()
-features = chunked[chunked.columns[chunked.columns != DataKeys.month_count]].copy()
+class TrainValidation:
+    """Makes the training and validation sets
+
+    Args:
+     test_size: fraction of data to use as validaiton data
+     seed: random seed
+    """
+    def __init__(self, test_size=0.2, seed=2018):
+        self.test_size = test_size
+        self.seed = seed
+        self._target = None
+        self._features = None
+        self._chunked = None
+        self._x_train = None
+        self._x_test = None
+        self._y_train = None
+        self._y_test = None
+        return
+
+    @property
+    def chunked(self):
+        """the data chunked by month"""
+        if self._chunked is None:
+            self._chunked = MergeChunked().data
+        return self._chunked
+
+    @property
+    def target(self):
+        """the target data"""
+        if self._target is None:
+            self._target = self.chunked[DataKeys.month_count].copy()
+        return self._target
+
+    @property
+    def features(self):
+        """The feature data"""
+        if self._features is None:
+            self._features = self.chunked[
+                self.chunked.columns[
+                    ~self.chunked.columns.isin([DataKeys.month_count,
+                                                DataKeys.day_count])]].copy()
+        return self._features
+
+    @property
+    def x_train(self):
+        if self._x_train is None:
+            self.split()
+        return self._x_train
+
+    @property
+    def x_test(self):
+        if self._x_test is None:
+            self.split()
+        return self._x_test
+
+    @property
+    def y_train(self):
+        if self._y_train is None:
+            self.split()
+        return self._y_train
+
+    @property
+    def y_test(self):
+        if self._y_test is None:
+            self.split()
+        return self._y_test
+
+    def split(self):
+        self._x_train, self._x_test, self._y_train, self._y_test = train_test_split(
+            self.features,
+            self.target,
+            test_size=self.test_size,
+            random_state=self.seed
+        )
+        return
+
+    def __call__(self):
+        """stores the data-files"""
+        Helpers.pickle_it(self.x_train, Pickles.x_train)
+        Helpers.pickle_it(self.x_test, Pickles.x_test)
+        Helpers.pickle_it(self.y_train, Pickles.y_train)
+        Helpers.pickle_it(self.y_test, Pickles.y_test)
+        return
+
+    def check(self):
+        """checks the columns for the data"""
+        assert DataKeys.month_count not in self.features.columns, "Features has target"
+        assert DataKeys.month_count not in self.x_train.columns, "x_train has target"
+        assert DataKeys.month_count not in self.x_test.columns, "x_test has target"
+        assert DataKeys.day_count not in self.features.columns, "Features has day count"
+        assert DataKeys.day_count not in self.x_train.columns, "x_train has day count"
+        assert DataKeys.day_count not in self.x_test.columns, "x_test has day count"
+        assert self.target.name == DataKeys.month_count, "Target not month count"
+        assert self.y_test.name == DataKeys.month_count, "y-test not month count"
+        assert self.y_train.name == DataKeys.month_count, "y-train not month count"
+        return
 #+END_SRC
 
 #+BEGIN_SRC python :session training :results output raw :exports both
@@ -413,16 +714,11 @@ print(features.shape)
    I'm going to create a training set with 80% of the data and leave the other 20% as the validation data.
 
 #+BEGIN_SRC python :session training :results  none :noweb-ref train-test-split
-x_train, x_test, y_train, y_test = train_test_split(features, target,
-                                                    test_size=0.2,
-                                                    random_state=2018)
-
-Helpers.pickle_it(x_train, Pickles.x_train)
-Helpers.pickle_it(x_test, Pickles.x_test)
-Helpers.pickle_it(y_train, Pickles.y_train)
-Helpers.pickle_it(y_test, Pickles.y_test)
+if __name__ == "__main__":
+    data = TrainValidation()
+    data()
+    data.check()
 #+END_SRC
-
 
 #+BEGIN_SRC python :session explore :results output raw :exports both
 print(x_train.shape)
