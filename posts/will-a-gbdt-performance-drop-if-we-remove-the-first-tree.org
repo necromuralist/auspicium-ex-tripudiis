@@ -3,7 +3,7 @@
 .. slug: will-a-gbdt-performance-drop-if-we-remove-the-first-tree
 .. date: 2018-08-04 19:02:32 UTC-07:00
 .. tags: gbdt basics
-.. category: gbdt
+.. category: practice
 .. link: 
 .. description: What happens if you remove the first tree in a Gradient Boosted Decision Tree?
 .. type: text

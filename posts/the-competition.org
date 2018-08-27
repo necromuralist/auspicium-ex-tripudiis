@@ -3,7 +3,7 @@
 .. slug: the-competition
 .. date: 2018-08-11 13:14:17 UTC-07:00
 .. tags: kaggle competition about
-.. category: about
+.. category: competition
 .. link: 
 .. description: About the kaggle competition.
 .. type: text
@@ -69,7 +69,6 @@ You are provided with daily historical sales data. The task is to forecast the t
     | item_name          | name of item                                                                                                    |
     | shop_name          | name of shop                                                                                                    |
     | item_category_name | name of item category                                                                                           |
-
 
 * How will you be evaluated?
 ** Submission Format

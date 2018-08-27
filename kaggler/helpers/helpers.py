@@ -1,14 +1,13 @@
 # python standard library
 import os
 import pickle
-
 # from pypi
 from tabulate import tabulate
 
 
 class Helpers:
     """Helper functions"""
-    pickle_target = "../pickles/"
+    pickle_target = os.path.expanduser("~/projects/kaggle-competitions/pickles/")
     pickle_target_string = pickle_target + "{}.pkl"
 
     @staticmethod
@@ -54,7 +53,7 @@ class Helpers:
     def unpickle(name):
         """loads the pickled object from the data folder
     
-        Args;
+        Args:
          name: name of the pickle without the folder or extension
     
         Returns:
@@ -65,6 +64,18 @@ class Helpers:
             unpickled = pickle.load(unpickler)
         return unpickled
 
+    @staticmethod
+    def exists(name):
+        """checks if the thing is already a pickle
+
+        Args:
+         name: name of the pickle without folder or extension
+
+        Returns:
+         bool: True if the pickle exists
+        """
+        return os.path.isfile(Helpers.pickle_target_string.format(name))
+
 
 class DataSource:
     """Strings for the files
@@ -72,11 +83,30 @@ class DataSource:
     Args:
      directory: path to the data-folder
     """
-    def __init__(self, directory="../data/"):
+    def __init__(self, directory="~/projects/kaggle-competitions/data/"):
+        self._directory = None
         self.directory = directory
         self._file_names = None
         self._paths = None
         self._file_name_paths = None
+        return
+
+    @property
+    def directory(self):
+        """The path to the data"""
+        return self._directory
+
+    @directory.setter
+    def directory(self, path):
+        """expands the user and saves the path
+
+        Args:
+         path (str): path to the data folder
+        """
+        self._directory = os.path.expanduser(path)
+        if not os.path.exists(self._directory):
+            raise Exception(
+                "This file doesn't exist: {}".format(self._directory))
         return
 
     @property

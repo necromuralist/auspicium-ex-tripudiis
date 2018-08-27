@@ -2,8 +2,8 @@
 .. title: Exploring The Data
 .. slug: exploring-the-data
 .. date: 2018-08-11 15:26:40 UTC-07:00
-.. tags: kaggle data exploration
-.. category: exploration
+.. tags: kaggle data exploration competition
+.. category: competition
 .. link: 
 .. description: Looking at the data.
 .. type: text
@@ -56,13 +56,8 @@ from tabulate import tabulate
 * The Tangle
   Exports so some of this can be re-used.
 
-<<<<<<< HEAD
-#+BEGIN_SRC python :tangle helpers/helpers.py
+#+BEGIN_SRC python :tangle ../kaggler/helpers/helpers.py :exports none
 <<python-standard-library>>
-
-=======
-#+BEGIN_SRC python :tangle helpers/helpers.py :exports none
->>>>>>> a85e5ddc79775889708a15ee57d2b07f1b5e386c
 <<imports>>
 
 
@@ -84,7 +79,7 @@ from tabulate import tabulate
 #+BEGIN_SRC python :session explore :results none :noweb-ref helpers
 class Helpers:
     """Helper functions"""
-    pickle_target = "../pickles/"
+    pickle_target = os.path.expanduser("~/projects/kaggle-competitions/pickles/")
     pickle_target_string = pickle_target + "{}.pkl"
 
     @staticmethod
@@ -130,7 +125,7 @@ class Helpers:
     def unpickle(name):
         """loads the pickled object from the data folder
     
-        Args;
+        Args:
          name: name of the pickle without the folder or extension
     
         Returns:
@@ -140,6 +135,18 @@ class Helpers:
                   "rb") as unpickler:
             unpickled = pickle.load(unpickler)
         return unpickled
+
+    @staticmethod
+    def exists(name):
+        """checks if the thing is already a pickle
+
+        Args:
+         name: name of the pickle without folder or extension
+
+        Returns:
+         bool: True if the pickle exists
+        """
+        return os.path.isfile(Helpers.pickle_target_string.format(name))
 #+END_SRC
 
 * Constants
@@ -160,31 +167,36 @@ class DataNames:
    
 #+BEGIN_SRC python :session explore :results none :noweb-ref datasource
 class DataSource:
-<<<<<<< HEAD
     """Strings for the files
 
     Args:
      directory: path to the data-folder
     """
-    def __init__(self, directory="../data/"):
+    def __init__(self, directory="~/projects/kaggle-competitions/data/"):
+        self._directory = None
         self.directory = directory
         self._file_names = None
         self._paths = None
         self._file_name_paths = None
         return
-=======
-    """Strings for the files"""
-    directory = "../data/"
-#+END_SRC
 
-#+BEGIN_SRC ipython :session explore :results none
-DataSource.file_names = sorted(os.listdir(DataSource.directory))
-for name in DataSource.file_names:
-    setattr(DataSource, name.split('.')[0], name)    
-DataSource.paths = [os.path.join(DataSource.directory, name)
-                    for name in DataSource.file_names]
-#+END_SRC
->>>>>>> a85e5ddc79775889708a15ee57d2b07f1b5e386c
+    @property
+    def directory(self):
+        """The path to the data"""
+        return self._directory
+
+    @directory.setter
+    def directory(self, path):
+        """expands the user and saves the path
+
+        Args:
+         path (str): path to the data folder
+        """
+        self._directory = os.path.expanduser(path)
+        if not os.path.exists(self._directory):
+            raise Exception(
+                "This file doesn't exist: {}".format(self._directory))
+        return
 
     @property
     def file_names(self):
@@ -766,10 +778,6 @@ print("There are {:,} categories.".format(len(frames[data_source.item_categories
 
 #+RESULTS:
 There are 84 categories.
-<<<<<<< HEAD
-
-=======
->>>>>>> a85e5ddc79775889708a15ee57d2b07f1b5e386c
 
 ** How many date-blocks are there?
 

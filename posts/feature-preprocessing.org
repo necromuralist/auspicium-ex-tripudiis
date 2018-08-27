@@ -2,13 +2,13 @@
 .. title: Feature Preprocessing
 .. slug: feature-preprocessing
 .. date: 2018-08-07 21:41:10 UTC-07:00
-.. tags: features preprocessing
-.. category: preprocessing
+.. tags: features preprocessing notes
+.. category: notes
 .. link: 
 .. description: Preprocessing data features.
 .. type: text
 #+END_COMMENT
-
+#+OPTIONS: ^:{}
 #+TOC: headlines 1
 * Preprocessing
   In every competition you need to:
@@ -20,17 +20,17 @@
 
 ** Scaling
    If features have different value ranges then the model will  treat them differently.
-   - sklearn.preprocessing.MinMaxScalar
+   - [[http://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.MinMaxScaler.html][sklearn.preprocessing.MinMaxScalar]]
      Scale by the range of values
-   - sklearn.preprocessing.StandardScalar
+   - [[http://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html][sklearn.preprocessing.StandardScalar]]
      Scale the data to have a mean of 0 and a standard deviation of 1
 ** Outliers
-   - Clip (=numpy.clip=)values to get rid of unusual values that mess with the model. (Winsorization)
-   - Rank Transform them (=scipy.stats.rankdata=) so that they
+   - Clip ([[https://docs.scipy.org/doc/numpy/reference/generated/numpy.clip.html][numpy.clip]])values to get rid of unusual values that mess with the model. (Winsorization)
+   - Rank Transform them ([[https://docs.scipy.org/doc/scipy-0.16.0/reference/generated/scipy.stats.rankdata.html][scipy.stats.rankdata]]) so that they
 ** Transformation
    For linear models and neural networks, transforming the data can sometimes help.
-   - Log Transform: =numpy.log(1 + x)=
-   - Power Less Than 1 Transform: =numpy.sqrt(x + 2/3)
+   - Log Transform: [[https://duckduckgo.com/?q=numpy+log&t=canonical&ia=web][numpy.log(1 + x)]]
+   - Power Less Than 1 Transform: [[https://docs.scipy.org/doc/numpy/reference/generated/numpy.sqrt.html][numpy.sqrt(x + 2/3)]]
 ** Feature Generation
   Sometimes you can convert separate columns to get new ones. This requires exploratory data analysis.
   - Fractional Parts: people perceive numbers with fractions differently so sometime separating out the fractional part makes the model perform better because it is the more important part
@@ -42,9 +42,9 @@
   - one-hot encoding is more common for non-tree-based models
 ** Label Encoding
    Some models need numeric values or numeric values that don't have implied ordering so you want to encode them.
-   - =sklearn.preprocessing.LabelEncoder=
+   - [[http://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.LabelEncoder.html][sklearn.preprocessing.LabelEncoder]]
      Sorts the labels then encodes them as integers
-   - =Pandas.factorize=
+   - [[https://pandas.pydata.org/pandas-docs/stable/generated/pandas.factorize.html][Pandas.factorize]]
      Encodes the labels in the order they appear. This makes more sense if there is a meaning to the order in which labels appear.
    - This is more commonly used with tree-based methods.
 ** Frequency Encoding
@@ -54,8 +54,8 @@
    - More common with tree-based methods
 ** One Hot Encoding
    Creates one column for each label and puts a 1 in the column that matches. Works with both linear and tree-based models, but can be inefficient with tree-based models.
-   - =pandas.get_dummies=
-   - =sklearn.preprocessing.OneHotEncoder=
+   - [[https://pandas.pydata.org/pandas-docs/stable/generated/pandas.get_dummies.html][pandas.get_dummies]] - converts strings into column encodings
+   - [[http://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.OneHotEncoder.html][sklearn.preprocessing.OneHotEncoder]] - converts numeric categorical data into column encodings
    - One hot encoding is better for non-tree models.
    - This allows easier feature interactions (encode combined features (e.g. gender and class) rather than encoding them separately) 
     +  This is more common with linear models and KNN
