@@ -15,13 +15,14 @@
 <!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
 </script><meta name="author" content="Cloistered Monkey">
 <link rel="prev" href="../first-naive-try/" title="First Naive Try" type="text/html">
+<link rel="next" href="../building-the-training-set/" title="Building The Training Set" type="text/html">
 <meta property="og:site_name" content="Notes on Kaggle">
 <meta property="og:title" content="Feature Extraction From Text and Images">
 <meta property="og:url" content="https://necromuralist.github.io/Kaggle-Competitions/posts/feature-extraction-from-text-and-images/">
 <meta property="og:description" content="Getting features from text and image data.">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2018-08-13T07:17:52-07:00">
-<meta property="article:tag" content="featureextraction text images">
+<meta property="article:tag" content="featureextraction text images notes">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -107,26 +108,26 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org93f54d3">How do you convert text to data?</a></li>
+<li><a href="#orge77c640">How do you convert text to data?</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org93f54d3" class="outline-2">
-<h2 id="org93f54d3">How do you convert text to data?</h2>
-<div class="outline-text-2" id="text-org93f54d3">
+<div id="outline-container-orge77c640" class="outline-2">
+<h2 id="orge77c640">How do you convert text to data?</h2>
+<div class="outline-text-2" id="text-orge77c640">
 </div>
-<div id="outline-container-org562f697" class="outline-3">
-<h3 id="org562f697">Two Main Methods</h3>
-<div class="outline-text-3" id="text-org562f697">
+<div id="outline-container-org2cffd91" class="outline-3">
+<h3 id="org2cffd91">Two Main Methods</h3>
+<div class="outline-text-3" id="text-org2cffd91">
 </div>
-<div id="outline-container-org1f1ede2" class="outline-4">
-<h4 id="org1f1ede2">Bag Of Words</h4>
-<div class="outline-text-4" id="text-org1f1ede2">
+<div id="outline-container-orgbf5f834" class="outline-4">
+<h4 id="orgbf5f834">Bag Of Words</h4>
+<div class="outline-text-4" id="text-orgbf5f834">
 </div>
 <ul class="org-ul">
 <li>
-<a id="org5bd1199"></a>Vectorization<br><div class="outline-text-5" id="text-org5bd1199">
+<a id="orgab37c14"></a>Vectorization<br><div class="outline-text-5" id="text-orgab37c14">
 <p>
 This method counts the number of occurrences of each word in the source. For each word it creates a column and then in the row puts the counts for that instance of data.
 </p>
@@ -137,7 +138,7 @@ This method counts the number of occurrences of each word in the source. For eac
 </div>
 </li>
 <li>
-<a id="orgb75d8b2"></a>Term Frequency/Inverse Document Frequency (TF/IDF)<br><div class="outline-text-5" id="text-orgb75d8b2">
+<a id="org03155df"></a>Term Frequency/Inverse Document Frequency (TF/IDF)<br><div class="outline-text-5" id="text-org03155df">
 <p>
 This method tries to make word counts comparable even if the texts are of different sizes and also to emphasize more important words.
 </p>
@@ -150,7 +151,7 @@ This method tries to make word counts comparable even if the texts are of differ
 </div>
 </li>
 <li>
-<a id="org26a407d"></a>N-Grams<br><div class="outline-text-5" id="text-org26a407d">
+<a id="orgc61dfb1"></a>N-Grams<br><div class="outline-text-5" id="text-orgc61dfb1">
 <p>
 This m
 </p>
@@ -158,18 +159,21 @@ This m
 </li>
 </ul>
 </div>
-<div id="outline-container-org253f192" class="outline-4">
-<h4 id="org253f192">Embeddings (e.g. Word2Vec)</h4>
+<div id="outline-container-orgf207144" class="outline-4">
+<h4 id="orgf207144">Embeddings (e.g. Word2Vec)</h4>
 </div>
 </div>
 </div>
     </div>
     <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
-<li><a class="tag p-category" href="../../categories/featureextraction-text-images/" rel="tag">featureextraction text images</a></li>
+<li><a class="tag p-category" href="../../categories/featureextraction-text-images-notes/" rel="tag">featureextraction text images notes</a></li>
         </ul>
 <ul class="pager hidden-print">
 <li class="previous">
                 <a href="../first-naive-try/" rel="prev" title="First Naive Try">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../building-the-training-set/" rel="next" title="Building The Training Set">Next post</a>
             </li>
         </ul></nav></aside></article>
 </div>

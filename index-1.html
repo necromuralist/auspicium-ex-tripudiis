@@ -82,7 +82,126 @@
 
     
 <div class="postindex">
-    <article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/kaggle-mechanics/" class="u-url">Kaggle Mechanics</a></h1>
+    <article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/machine-learning-recap/" class="u-url">Machine Learning Recap</a></h1>
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                Cloistered Monkey
+            </span></p>
+            <p class="dateline"><a href="posts/machine-learning-recap/" rel="bookmark"><time class="published dt-published" datetime="2018-08-04T18:13:44-07:00" title="2018-08-04 18:13">2018-08-04 18:13</time></a></p>
+        </div>
+    </header><div class="e-content entry-content">
+    <div id="outline-container-org0a35d43" class="outline-2">
+<h2 id="org0a35d43">The Main Categories</h2>
+<div class="outline-text-2" id="text-org0a35d43">
+<p>
+These are the four main categories of supervised machine learning algorithms that you'll encounter in kaggle competitions.
+</p>
+
+<ul class="org-ul">
+<li>Linear Models
+<ul class="org-ul">
+<li>sklearn</li>
+<li>vowpal rabbit (for really large datasets)</li>
+</ul>
+</li>
+<li>Tree-Based Models
+<ul class="org-ul">
+<li>sklearn</li>
+<li>xgboost: faster than sklearn</li>
+</ul>
+</li>
+<li>k-Nearest Neighbors
+<ul class="org-ul">
+<li>sklearn</li>
+</ul>
+</li>
+<li>Neural Networks</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orge4ba9cf" class="outline-2">
+<h2 id="orge4ba9cf">The No Free Lunch Theorem</h2>
+<div class="outline-text-2" id="text-orge4ba9cf">
+<blockquote>
+<p>
+There is no method which outperforms all others for all tasks.
+</p>
+</blockquote>
+
+<p>
+You cannot assume that an algorithm that did well on one set of data will do well on another. All algorithms have weaknesses, so you have to test multiple algorithms on each data set.
+</p>
+</div>
+</div>
+<div id="outline-container-orgf9bb943" class="outline-2">
+<h2 id="orgf9bb943">Summary</h2>
+<div class="outline-text-2" id="text-orgf9bb943">
+<ul class="org-ul">
+<li>there is no one algorithm to rule them all</li>
+<li>Linear models split spaces into two sub-spaces</li>
+<li>tree-based models spit spaces into boxes</li>
+<li>kNN relies on measuring the 'closeness' between points</li>
+<li>Neural Networks provide non-linear decision boundaries</li>
+</ul>
+<p>
+In general the two most powerful methods are <b>Gradient Boosted Decision Trees</b> and <b>Neural Networks</b>, but this won't always be the case.
+</p>
+</div>
+</div>
+    </div>
+    </article><article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/real-world-vs-kaggle/" class="u-url">Real-World vs Kaggle</a></h1>
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                Cloistered Monkey
+            </span></p>
+            <p class="dateline"><a href="posts/real-world-vs-kaggle/" rel="bookmark"><time class="published dt-published" datetime="2018-08-04T18:02:24-07:00" title="2018-08-04 18:02">2018-08-04 18:02</time></a></p>
+        </div>
+    </header><div class="e-content entry-content">
+    <div id="outline-container-org4e36b1f" class="outline-2">
+<h2 id="org4e36b1f">A Real World Pipeline</h2>
+<div class="outline-text-2" id="text-org4e36b1f">
+<ul class="org-ul">
+<li>What is the business problem that you are trying to solve?</li>
+<li>What is the formal version of the problem?</li>
+<li>How do you collect data?</li>
+<li>How do you preprocess the data?</li>
+<li>How do you create the model?
+<ul class="org-ul">
+<li>what is the appropriate algorithm?</li>
+<li>what is the correct metric?</li>
+</ul>
+</li>
+<li>How do you evaluate the model in a real world situation?</li>
+<li>How do you deploy the model?
+<ul class="org-ul">
+<li>How do you monitor its performance?</li>
+<li>How do you update it over time?</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org400b906" class="outline-2">
+<h2 id="org400b906">A Competition Pipeline</h2>
+<div class="outline-text-2" id="text-org400b906">
+<ul class="org-ul">
+<li>How do you pre-process the data?</li>
+<li>How do you create the model?</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org7c650ca" class="outline-2">
+<h2 id="org7c650ca">So, how do you use a competition then?</h2>
+<div class="outline-text-2" id="text-org7c650ca">
+<ul class="org-ul">
+<li>It's good to learn about machine learning</li>
+<li>It' not just about the algorithms, let the data guide what you do</li>
+<li>Try to be creative and do things that haven't been done before</li>
+</ul>
+</div>
+</div>
+    </div>
+    </article><article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/kaggle-mechanics/" class="u-url">Kaggle Mechanics</a></h1>
         <div class="metadata">
             <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
                 Cloistered Monkey
@@ -90,21 +209,21 @@
             <p class="dateline"><a href="posts/kaggle-mechanics/" rel="bookmark"><time class="published dt-published" datetime="2018-08-04T17:18:12-07:00" title="2018-08-04 17:18">2018-08-04 17:18</time></a></p>
         </div>
     </header><div class="e-content entry-content">
-    <div id="outline-container-orgce3f9e2" class="outline-2">
-<h2 id="orgce3f9e2">The Basics</h2>
-<div class="outline-text-2" id="text-orgce3f9e2">
+    <div id="outline-container-orga765a0c" class="outline-2">
+<h2 id="orga765a0c">The Basics</h2>
+<div class="outline-text-2" id="text-orga765a0c">
 </div>
-<div id="outline-container-org7f26de2" class="outline-3">
-<h3 id="org7f26de2">Data</h3>
-<div class="outline-text-3" id="text-org7f26de2">
+<div id="outline-container-org4f59197" class="outline-3">
+<h3 id="org4f59197">Data</h3>
+<div class="outline-text-3" id="text-org4f59197">
 <p>
 Every competition provides data so you can create a model, but there isn't a standardized format. Sometimes it will be CSVz, sometimes excel spreadsheets, sometimes image files, the sources can vary so you should read the data descriptions and adapt what you do to the competition. You aren't always limited to the data that is provided. If you were creating an image recognition model, for instance, it might be okay to include outside images or pre-trained models, it depends on the particulars of the competition.
 </p>
 </div>
 </div>
-<div id="outline-container-orgbecc6e6" class="outline-3">
-<h3 id="orgbecc6e6">Models</h3>
-<div class="outline-text-3" id="text-orgbecc6e6">
+<div id="outline-container-org67b1fb6" class="outline-3">
+<h3 id="org67b1fb6">Models</h3>
+<div class="outline-text-3" id="text-org67b1fb6">
 <p>
 This is what you are trying to create - a representation of the population based on the data you are given that will allow you to predict outcomes based on inputs not given in the data. The model needs two main features:
 </p>
@@ -117,34 +236,34 @@ Note that a model is not the same as an algorithm. You might have to combine mul
 </p>
 </div>
 </div>
-<div id="outline-container-orgcb52dec" class="outline-3">
-<h3 id="orgcb52dec">Submission</h3>
-<div class="outline-text-3" id="text-orgcb52dec">
+<div id="outline-container-orgdb8b9a2" class="outline-3">
+<h3 id="orgdb8b9a2">Submission</h3>
+<div class="outline-text-3" id="text-orgdb8b9a2">
 <p>
 Your submission is typically your predictions on a test set. This isn't always the case but it is the most common way that the competitions are run.
 </p>
 </div>
 </div>
-<div id="outline-container-orgfcbfdce" class="outline-3">
-<h3 id="orgfcbfdce">Evaluation</h3>
-<div class="outline-text-3" id="text-orgfcbfdce">
+<div id="outline-container-org86a2d7a" class="outline-3">
+<h3 id="org86a2d7a">Evaluation</h3>
+<div class="outline-text-3" id="text-org86a2d7a">
 <p>
 How can you tell how well your model does? You need a function that maps your model and a data set to a score that evaluates how well the model does. There are many different metrics to use (accuracy, precision, recall, etc.) but the competition will choose one and tell you what it is in the description so make sure you read the description to get it.
 </p>
 </div>
 </div>
-<div id="outline-container-org813331e" class="outline-3">
-<h3 id="org813331e">Leaderboard</h3>
-<div class="outline-text-3" id="text-org813331e">
+<div id="outline-container-orge011278" class="outline-3">
+<h3 id="orge011278">Leaderboard</h3>
+<div class="outline-text-3" id="text-orge011278">
 <p>
 This is the relative ranking of the participants in the competition. This is what makes it a competition. Even if your metric tells you your model is doing well, if you are ranked at the bottom, you still won't win. There are actually two leaderboards - public and private. The evaluation dataset is split by kaggle into two sets, public and private, and during the competition the results of testing on the public data are shown on the leaderborad. Once the competition is over the leaderboard is displayed using the evaluations using the private data.
 </p>
 </div>
 </div>
 </div>
-<div id="outline-container-org4a5b81d" class="outline-2">
-<h2 id="org4a5b81d">Other Competitions</h2>
-<div class="outline-text-2" id="text-org4a5b81d">
+<div id="outline-container-org05a15ef" class="outline-2">
+<h2 id="org05a15ef">Other Competitions</h2>
+<div class="outline-text-2" id="text-org05a15ef">
 <p>
 <a href="https://www.kaggle.com/">Kaggle</a> isn't the only one running data-science competititons. Here are some others.
 </p>

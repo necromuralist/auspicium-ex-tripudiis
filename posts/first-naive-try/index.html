@@ -22,7 +22,7 @@
 <meta property="og:description" content="A first naive model.">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2018-08-11T19:37:37-07:00">
-<meta property="article:tag" content="naive model">
+<meta property="article:tag" content="naive model competition">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -108,16 +108,16 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org60874bf">Introduction</a></li>
-<li><a href="#org8157e78">Imports</a></li>
-<li><a href="#orge860bff">Loading the Data</a></li>
-<li><a href="#orga4040b2">The Linear Model</a></li>
+<li><a href="#org09f68a6">Introduction</a></li>
+<li><a href="#org988476c">Imports</a></li>
+<li><a href="#org708798b">Loading the Data</a></li>
+<li><a href="#orga228bba">The Linear Model</a></li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org60874bf" class="outline-2">
-<h2 id="org60874bf">Introduction</h2>
-<div class="outline-text-2" id="text-org60874bf">
+<div id="outline-container-org09f68a6" class="outline-2">
+<h2 id="org09f68a6">Introduction</h2>
+<div class="outline-text-2" id="text-org09f68a6">
 <p>
 This is going to be a naive attempt to get this project running. If you look at the <a href="http://scikit-learn.org/stable/tutorial/machine_learning_map/index.html">sklearn flowchart</a> and follow the path through regression with more than 100,000 samples (we have 1,287,299 entries in the training set (after splitting out the validation set from it)) you end up with two cases:
 </p>
@@ -142,9 +142,9 @@ I kind of think there won't be too many important features, although I might be 
 </p>
 </div>
 </div>
-<div id="outline-container-org8157e78" class="outline-2">
-<h2 id="org8157e78">Imports</h2>
-<div class="outline-text-2" id="text-org8157e78">
+<div id="outline-container-org988476c" class="outline-2">
+<h2 id="org988476c">Imports</h2>
+<div class="outline-text-2" id="text-org988476c">
 <div class="highlight"><pre><span></span># python standard library
 import warnings
 import os
@@ -171,9 +171,9 @@ from helpers.helpers import (
 </pre></div>
 </div>
 </div>
-<div id="outline-container-orge860bff" class="outline-2">
-<h2 id="orge860bff">Loading the Data</h2>
-<div class="outline-text-2" id="text-orge860bff">
+<div id="outline-container-org708798b" class="outline-2">
+<h2 id="org708798b">Loading the Data</h2>
+<div class="outline-text-2" id="text-org708798b">
 <div class="highlight"><pre><span></span>DataSource = Helpers.unpickle("DataSource")
 </pre></div>
 
@@ -266,9 +266,9 @@ y_test = Helpers.unpickle(Pickles.y_test)
 </div>
 </div>
 
-<div id="outline-container-orga4040b2" class="outline-2">
-<h2 id="orga4040b2">The Linear Model</h2>
-<div class="outline-text-2" id="text-orga4040b2">
+<div id="outline-container-orga228bba" class="outline-2">
+<h2 id="orga228bba">The Linear Model</h2>
+<div class="outline-text-2" id="text-orga228bba">
 <p>
 What happens if we just use the default linear regression model? The first problem we have is that we have both non-numeric data and categorical data. I think removing the <code>item_name</code> variable seems reasonable at this point, since we have unique <code>item_id</code> values for each item, although it's possible that some text-mining might reveal something in the names, because this is just a naive approach that will use linear regression.
 </p>
@@ -283,7 +283,7 @@ regression.fit(x_train, y_train)
 </div>
     </div>
     <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
-<li><a class="tag p-category" href="../../categories/naive-model/" rel="tag">naive model</a></li>
+<li><a class="tag p-category" href="../../categories/naive-model-competition/" rel="tag">naive model competition</a></li>
         </ul>
 <ul class="pager hidden-print">
 <li class="previous">

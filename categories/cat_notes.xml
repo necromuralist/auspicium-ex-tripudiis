@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about notes)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/cat_notes.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Sat, 25 Aug 2018 22:26:55 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Feature Extraction From Text and Images</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/feature-extraction-from-text-and-images/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
+&lt;h2&gt;Table of Contents&lt;/h2&gt;
+&lt;div id="text-table-of-contents"&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/feature-extraction-from-text-and-images/#orge77c640"&gt;How do you convert text to data?&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-orge77c640" class="outline-2"&gt;
+&lt;h2 id="orge77c640"&gt;How do you convert text to data?&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orge77c640"&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org2cffd91" class="outline-3"&gt;
+&lt;h3 id="org2cffd91"&gt;Two Main Methods&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org2cffd91"&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgbf5f834" class="outline-4"&gt;
+&lt;h4 id="orgbf5f834"&gt;Bag Of Words&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-orgbf5f834"&gt;
+&lt;/div&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;&lt;a id="orgab37c14"&gt;&lt;/a&gt;Vectorization&lt;br&gt;
+&lt;div class="outline-text-5" id="text-orgab37c14"&gt;
+&lt;p&gt;
+This method counts the number of occurrences of each word in the source. For each word it creates a column and then in the row puts the counts for that instance of data.
+&lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;Sklearn implements this with &lt;a href="http://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.CountVectorizer.html"&gt;CountVectorizer&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a id="org03155df"&gt;&lt;/a&gt;Term Frequency/Inverse Document Frequency (TF/IDF)&lt;br&gt;
+&lt;div class="outline-text-5" id="text-org03155df"&gt;
+&lt;p&gt;
+This method tries to make word counts comparable even if the texts are of different sizes and also to emphasize more important words.
+&lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;Term Frequency: Normalize rows so all values are from 0 to 1 to make texts of different sizes comparable&lt;/li&gt;
+&lt;li&gt;Inverse Document Frequency: Normalize columns to make emphasize more important features&lt;/li&gt;
+&lt;li&gt;Sklearn implements this with &lt;a href="http://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html"&gt;TfidVectorizer&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a id="orgc61dfb1"&gt;&lt;/a&gt;N-Grams&lt;br&gt;
+&lt;div class="outline-text-5" id="text-orgc61dfb1"&gt;
+&lt;p&gt;
+This m
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgf207144" class="outline-4"&gt;
+&lt;h4 id="orgf207144"&gt;Embeddings (e.g. Word2Vec)&lt;/h4&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description><category>featureextraction text images notes</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/feature-extraction-from-text-and-images/</guid><pubDate>Mon, 13 Aug 2018 14:17:52 GMT</pubDate></item><item><title>Feature Preprocessing</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/feature-preprocessing/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
+&lt;h2&gt;Table of Contents&lt;/h2&gt;
+&lt;div id="text-table-of-contents"&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/feature-preprocessing/#org02e9aab"&gt;Preprocessing&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/feature-preprocessing/#orgd328052"&gt;Numeric Feature Preprocessing&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/feature-preprocessing/#orgb26fe51"&gt;Categorical And Ordinal Features&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/feature-preprocessing/#org9e98319"&gt;Dates and Times&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/feature-preprocessing/#org6778d35"&gt;Coordinates&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/feature-preprocessing/#orgc44ddc3"&gt;Missing Data&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/feature-preprocessing/#orgd645cf5"&gt;Links&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org02e9aab" class="outline-2"&gt;
+&lt;h2 id="org02e9aab"&gt;Preprocessing&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org02e9aab"&gt;
+&lt;p&gt;
+In every competition you need to:
+&lt;/p&gt;
+
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;pre-process the data&lt;/li&gt;
+&lt;li&gt;generate new features from the existing ones&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgd328052" class="outline-2"&gt;
+&lt;h2 id="orgd328052"&gt;Numeric Feature Preprocessing&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgd328052"&gt;
+&lt;p&gt;
+Some models (e.g. Linear Classification) need you to convert numeric-looking data to categorical data. Tree-based models don't need pre-processing as much as non tree-based models do.
+&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-org53b35fd" class="outline-3"&gt;
+&lt;h3 id="org53b35fd"&gt;Scaling&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org53b35fd"&gt;
+&lt;p&gt;
+If features have different value ranges then the model will  treat them differently.
+&lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;&lt;a href="http://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.MinMaxScaler.html"&gt;sklearn.preprocessing.MinMaxScalar&lt;/a&gt;
+Scale by the range of values&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html"&gt;sklearn.preprocessing.StandardScalar&lt;/a&gt;
+Scale the data to have a mean of 0 and a standard deviation of 1&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org5a81a46" class="outline-3"&gt;
+&lt;h3 id="org5a81a46"&gt;Outliers&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org5a81a46"&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;Clip (&lt;a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.clip.html"&gt;numpy.clip&lt;/a&gt;)values to get rid of unusual values that mess with the model. (Winsorization)&lt;/li&gt;
+&lt;li&gt;Rank Transform them (&lt;a href="https://docs.scipy.org/doc/scipy-0.16.0/reference/generated/scipy.stats.rankdata.html"&gt;scipy.stats.rankdata&lt;/a&gt;) so that they&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org9a96563" class="outline-3"&gt;
+&lt;h3 id="org9a96563"&gt;Transformation&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org9a96563"&gt;
+&lt;p&gt;
+For linear models and neural networks, transforming the data can sometimes help.
+&lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;Log Transform: &lt;a href="https://duckduckgo.com/?q=numpy+log&amp;amp;t=canonical&amp;amp;ia=web"&gt;numpy.log(1 + x)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Power Less Than 1 Transform: &lt;a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.sqrt.html"&gt;numpy.sqrt(x + 2/3)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org52607ae" class="outline-3"&gt;
+&lt;h3 id="org52607ae"&gt;Feature Generation&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org52607ae"&gt;
+&lt;p&gt;
+Sometimes you can convert separate columns to get new ones. This requires exploratory data analysis.
+&lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;Fractional Parts: people perceive numbers with fractions differently so sometime separating out the fractional part makes the model perform better because it is the more important part&lt;/li&gt;
+&lt;li&gt;You can derive new values mathematically (e.g. distance using height and width)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-orgb26fe51" class="outline-2"&gt;
+&lt;h2 id="orgb26fe51"&gt;Categorical And Ordinal Features&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgb26fe51"&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;Ordinal Features have an ordering but even if they are labeled numerically (e.g. 1, 2, 3) they aren't numeric because there is no implication about the distance between each&lt;/li&gt;
+&lt;li&gt;label and frequency encoding are commonly used for tree-based models&lt;/li&gt;
+&lt;li&gt;one-hot encoding is more common for non-tree-based models&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgc322d7b" class="outline-3"&gt;
+&lt;h3 id="orgc322d7b"&gt;Label Encoding&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgc322d7b"&gt;
+&lt;p&gt;
+Some models need numeric values or numeric values that don't have implied ordering so you want to encode them.
+&lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;&lt;a href="http://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.LabelEncoder.html"&gt;sklearn.preprocessing.LabelEncoder&lt;/a&gt;
+Sorts the labels then encodes them as integers&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.factorize.html"&gt;Pandas.factorize&lt;/a&gt;
+Encodes the labels in the order they appear. This makes more sense if there is a meaning to the order in which labels appear.&lt;/li&gt;
+&lt;li&gt;This is more commonly used with tree-based methods.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org53bb997" class="outline-3"&gt;
+&lt;h3 id="org53bb997"&gt;Frequency Encoding&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org53bb997"&gt;
+&lt;p&gt;
+Encode the values to a fraction of all the labels. Can work with linear models if the frequency is correlated with the target value.
+&lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;&lt;code&gt;titanic.groupby("Embarked").size()/len(titanic)&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;from scipy.stats import rankedata&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;More common with tree-based methods&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org8aed5ab" class="outline-3"&gt;
+&lt;h3 id="org8aed5ab"&gt;One Hot Encoding&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org8aed5ab"&gt;
+&lt;p&gt;
+Creates one column for each label and puts a 1 in the column that matches. Works with both linear and tree-based models, but can be inefficient with tree-based models.
+&lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;&lt;a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.get_dummies.html"&gt;pandas.get_dummies&lt;/a&gt; - converts strings into column encodings&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.OneHotEncoder.html"&gt;sklearn.preprocessing.OneHotEncoder&lt;/a&gt; - converts numeric categorical data into column encodings&lt;/li&gt;
+&lt;li&gt;One hot encoding is better for non-tree models.&lt;/li&gt;
+&lt;li&gt;This allows easier feature interactions (encode combined features (e.g. gender and class) rather than encoding them separately) 
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;This is more common with linear models and KNN&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org9e98319" class="outline-2"&gt;
+&lt;h2 id="org9e98319"&gt;Dates and Times&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org9e98319"&gt;
+&lt;p&gt;
+When working with seasonal data, sometimes the relative date-stamps are more important than the actual dates (how close to Christmas?).
+Sometimes you want the time between events.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org6778d35" class="outline-2"&gt;
+&lt;h2 id="org6778d35"&gt;Coordinates&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org6778d35"&gt;
+&lt;p&gt;
+Sometimes you want exact coordinates, but most times you want distances to some center.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgc44ddc3" class="outline-2"&gt;
+&lt;h2 id="orgc44ddc3"&gt;Missing Data&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgc44ddc3"&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;"missing" data might mean outliers - values that are probably wrong&lt;/li&gt;
+&lt;li&gt;avoid replacing missing values before feature engineering - it can throw off what you do&lt;/li&gt;
+&lt;li&gt;Gradient Boost Trees can handle isNaN, so you don't have to do anything&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org064dc8f" class="outline-3"&gt;
+&lt;h3 id="org064dc8f"&gt;Numeric&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org064dc8f"&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org1473416" class="outline-4"&gt;
+&lt;h4 id="org1473416"&gt;Fill NA Approaches&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org1473416"&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;-999, -1, other numbers
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;lets you categorize missing values&lt;/li&gt;
+&lt;li&gt;throws some models off (e.g. linear models and neural networks)&lt;/li&gt;
+&lt;li&gt;one solution is to create a new feature for missing values, but this has now increased the amount of data you need (curse of dimensionality)&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;mean, median, some central tendency
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;This can throw the model off&lt;/li&gt;
+&lt;li&gt;it is sometimes better to ignore missing data&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;recronstructed valud&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgd645cf5" class="outline-2"&gt;
+&lt;h2 id="orgd645cf5"&gt;Links&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgd645cf5"&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org0e28f21" class="outline-3"&gt;
+&lt;h3 id="org0e28f21"&gt;Feature Pre-processing&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org0e28f21"&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;&lt;a href="http://scikit-learn.org/stable/modules/preprocessing.html"&gt;SKlearn's Preprocessing Documentation&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.coursera.org/learn/machine-learning/lecture/xx3Da/gradient-descent-in-practice-i-feature-scaling"&gt;Andrew Ng on Feature Scaling and its effect on Gradient Descent&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://sebastianraschka.com/Articles/2014_about_feature_scaling.html"&gt;Sebastian Raschka on Feature Scaling&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org3b24ea9" class="outline-3"&gt;
+&lt;h3 id="org3b24ea9"&gt;Feature Engineering&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org3b24ea9"&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;&lt;a href="https://machinelearningmastery.com/discover-feature-engineering-how-to-engineer-features-and-how-to-get-good-at-it/"&gt;Machine Learning Mastery on Feature Engineering&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.quora.com/What-are-some-best-practices-in-Feature-Engineering"&gt;Quora: What are some best practices in Feature Engineering?&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description><category>features preprocessing notes</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/feature-preprocessing/</guid><pubDate>Wed, 08 Aug 2018 04:41:10 GMT</pubDate></item><item><title>Machine Learning Recap</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/machine-learning-recap/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-org0a35d43" class="outline-2"&gt;
+&lt;h2 id="org0a35d43"&gt;The Main Categories&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org0a35d43"&gt;
+&lt;p&gt;
+These are the four main categories of supervised machine learning algorithms that you'll encounter in kaggle competitions.
+&lt;/p&gt;
+
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;Linear Models
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;sklearn&lt;/li&gt;
+&lt;li&gt;vowpal rabbit (for really large datasets)&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Tree-Based Models
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;sklearn&lt;/li&gt;
+&lt;li&gt;xgboost: faster than sklearn&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;k-Nearest Neighbors
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;sklearn&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Neural Networks&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orge4ba9cf" class="outline-2"&gt;
+&lt;h2 id="orge4ba9cf"&gt;The No Free Lunch Theorem&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orge4ba9cf"&gt;
+&lt;blockquote&gt;
+&lt;p&gt;
+There is no method which outperforms all others for all tasks.
+&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;
+You cannot assume that an algorithm that did well on one set of data will do well on another. All algorithms have weaknesses, so you have to test multiple algorithms on each data set.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgf9bb943" class="outline-2"&gt;
+&lt;h2 id="orgf9bb943"&gt;Summary&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgf9bb943"&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;there is no one algorithm to rule them all&lt;/li&gt;
+&lt;li&gt;Linear models split spaces into two sub-spaces&lt;/li&gt;
+&lt;li&gt;tree-based models spit spaces into boxes&lt;/li&gt;
+&lt;li&gt;kNN relies on measuring the 'closeness' between points&lt;/li&gt;
+&lt;li&gt;Neural Networks provide non-linear decision boundaries&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;
+In general the two most powerful methods are &lt;b&gt;Gradient Boosted Decision Trees&lt;/b&gt; and &lt;b&gt;Neural Networks&lt;/b&gt;, but this won't always be the case.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description><category>basics algorithms notes</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/machine-learning-recap/</guid><pubDate>Sun, 05 Aug 2018 01:13:44 GMT</pubDate></item><item><title>Real-World vs Kaggle</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/real-world-vs-kaggle/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-org4e36b1f" class="outline-2"&gt;
+&lt;h2 id="org4e36b1f"&gt;A Real World Pipeline&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org4e36b1f"&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;What is the business problem that you are trying to solve?&lt;/li&gt;
+&lt;li&gt;What is the formal version of the problem?&lt;/li&gt;
+&lt;li&gt;How do you collect data?&lt;/li&gt;
+&lt;li&gt;How do you preprocess the data?&lt;/li&gt;
+&lt;li&gt;How do you create the model?
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;what is the appropriate algorithm?&lt;/li&gt;
+&lt;li&gt;what is the correct metric?&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;How do you evaluate the model in a real world situation?&lt;/li&gt;
+&lt;li&gt;How do you deploy the model?
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;How do you monitor its performance?&lt;/li&gt;
+&lt;li&gt;How do you update it over time?&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org400b906" class="outline-2"&gt;
+&lt;h2 id="org400b906"&gt;A Competition Pipeline&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org400b906"&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;How do you pre-process the data?&lt;/li&gt;
+&lt;li&gt;How do you create the model?&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org7c650ca" class="outline-2"&gt;
+&lt;h2 id="org7c650ca"&gt;So, how do you use a competition then?&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org7c650ca"&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;It's good to learn about machine learning&lt;/li&gt;
+&lt;li&gt;It' not just about the algorithms, let the data guide what you do&lt;/li&gt;
+&lt;li&gt;Try to be creative and do things that haven't been done before&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description><category>basics kaggle</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/real-world-vs-kaggle/</guid><pubDate>Sun, 05 Aug 2018 01:02:24 GMT</pubDate></item><item><title>Kaggle Mechanics</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/kaggle-mechanics/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-orga765a0c" class="outline-2"&gt;
+&lt;h2 id="orga765a0c"&gt;The Basics&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orga765a0c"&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org4f59197" class="outline-3"&gt;
+&lt;h3 id="org4f59197"&gt;Data&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org4f59197"&gt;
+&lt;p&gt;
+Every competition provides data so you can create a model, but there isn't a standardized format. Sometimes it will be CSVz, sometimes excel spreadsheets, sometimes image files, the sources can vary so you should read the data descriptions and adapt what you do to the competition. You aren't always limited to the data that is provided. If you were creating an image recognition model, for instance, it might be okay to include outside images or pre-trained models, it depends on the particulars of the competition.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org67b1fb6" class="outline-3"&gt;
+&lt;h3 id="org67b1fb6"&gt;Models&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org67b1fb6"&gt;
+&lt;p&gt;
+This is what you are trying to create - a representation of the population based on the data you are given that will allow you to predict outcomes based on inputs not given in the data. The model needs two main features:
+&lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;accuracy&lt;/li&gt;
+&lt;li&gt;reproducibility&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;
+Note that a model is not the same as an algorithm. You might have to combine multiple algorithms in order to build your model. The key to a model is that it maps inputs to outputs.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgdb8b9a2" class="outline-3"&gt;
+&lt;h3 id="orgdb8b9a2"&gt;Submission&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgdb8b9a2"&gt;
+&lt;p&gt;
+Your submission is typically your predictions on a test set. This isn't always the case but it is the most common way that the competitions are run.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org86a2d7a" class="outline-3"&gt;
+&lt;h3 id="org86a2d7a"&gt;Evaluation&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org86a2d7a"&gt;
+&lt;p&gt;
+How can you tell how well your model does? You need a function that maps your model and a data set to a score that evaluates how well the model does. There are many different metrics to use (accuracy, precision, recall, etc.) but the competition will choose one and tell you what it is in the description so make sure you read the description to get it.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orge011278" class="outline-3"&gt;
+&lt;h3 id="orge011278"&gt;Leaderboard&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orge011278"&gt;
+&lt;p&gt;
+This is the relative ranking of the participants in the competition. This is what makes it a competition. Even if your metric tells you your model is doing well, if you are ranked at the bottom, you still won't win. There are actually two leaderboards - public and private. The evaluation dataset is split by kaggle into two sets, public and private, and during the competition the results of testing on the public data are shown on the leaderborad. Once the competition is over the leaderboard is displayed using the evaluations using the private data.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org05a15ef" class="outline-2"&gt;
+&lt;h2 id="org05a15ef"&gt;Other Competitions&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org05a15ef"&gt;
+&lt;p&gt;
+&lt;a href="https://www.kaggle.com/"&gt;Kaggle&lt;/a&gt; isn't the only one running data-science competititons. Here are some others.
+&lt;/p&gt;
+
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;&lt;a href="https://www.drivendata.org/"&gt;Driven Data&lt;/a&gt;: Data Science competititons aimed at social problems&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://codalab.org/"&gt;Coda Lab&lt;/a&gt;: Competitions using research datasets&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.datasciencechallenge.org/"&gt;Data Science Challenge&lt;/a&gt;: Using data-science to solve government-scale problems.&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.datascience.net/fr/challenge#"&gt;Data Science dot net&lt;/a&gt;: A european data-science competition site.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description><category>basics rules</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/kaggle-mechanics/</guid><pubDate>Sun, 05 Aug 2018 00:18:12 GMT</pubDate></item></channel></rss>

@@ -22,7 +22,7 @@
 <meta property="og:description" content="Looking at the data.">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2018-08-11T15:26:40-07:00">
-<meta property="article:tag" content="kaggle data exploration">
+<meta property="article:tag" content="kaggle data exploration competition">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -108,27 +108,24 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org0026cd1">Imports</a></li>
-<li><a href="#org962ae3c">The Tangle</a></li>
-<li><a href="#orgfafdedb">Helpers</a></li>
-<li><a href="#orgfc8707f">Constants</a></li>
-<li><a href="#orge02dd76">The Files</a></li>
-<li><a href="#orgd3d4a9b">Some Counts</a></li>
-<li><a href="#orge80a645">The Official Feature Descriptions</a></li>
-<li><a href="#orgcbcfe91">The Training Set</a></li>
-<li><a href="#org782893a">Building Up the Training Set</a></li>
-<li><a href="#org8bab984">Saving the Super Set</a></li>
-<li><a href="#org74f6aae">Setting up the Training and Validation Data</a></li>
+<li><a href="#org445c4f5">Imports</a></li>
+<li><a href="#org4618c3b">The Tangle</a></li>
+<li><a href="#org8c85771">Helpers</a></li>
+<li><a href="#org103e9bf">Constants</a></li>
+<li><a href="#orge3f8d10">The Files</a></li>
+<li><a href="#orgba3f6c4">Some Counts</a></li>
+<li><a href="#org9166d52">The Official Feature Descriptions</a></li>
+<li><a href="#orgf25c73a">The Training Set</a></li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org0026cd1" class="outline-2">
-<h2 id="org0026cd1">Imports</h2>
-<div class="outline-text-2" id="text-org0026cd1">
+<div id="outline-container-org445c4f5" class="outline-2">
+<h2 id="org445c4f5">Imports</h2>
+<div class="outline-text-2" id="text-org445c4f5">
 </div>
-<div id="outline-container-orgc6d411d" class="outline-3">
-<h3 id="orgc6d411d">Suppressing the Numpy Warnings</h3>
-<div class="outline-text-3" id="text-orgc6d411d">
+<div id="outline-container-orgb2ca5ed" class="outline-3">
+<h3 id="orgb2ca5ed">Suppressing the Numpy Warnings</h3>
+<div class="outline-text-3" id="text-orgb2ca5ed">
 <p>
 When you import pandas you get some warnings:
 </p>
@@ -144,194 +141,255 @@ When you import pandas you get some warnings:
 According to <a href="https://stackoverflow.com/questions/40845304/runtimewarning-numpy-dtype-size-changed-may-indicate-binary-incompatibility">Stack Overflow</a>, this is because <a href="https://www.scipy.org/">scipy</a> is built against an older version of <a href="http://www.numpy.org/">numpy</a>, but it shouldn't actually affect the way it works, so we should just suppress it.
 </p>
 
-<div class="highlight"><pre><span></span>import warnings
-warnings.filterwarnings("ignore", message="numpy.dtype size changed")
-warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">"ignore"</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">"numpy.dtype size changed"</span><span class="p">)</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">"ignore"</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">"numpy.ufunc size changed"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 
-<div id="outline-container-orge78eaae" class="outline-3">
-<h3 id="orge78eaae">The rest of the imports</h3>
-<div class="outline-text-3" id="text-orge78eaae">
-<div class="highlight"><pre><span></span># python standard library
-import os
-
-# from pypi
-import matplotlib.pyplot as pyplot
-import numpy
-import pandas
-import seaborn
-
-from sklearn.model_selection import train_test_split
+<div id="outline-container-org4f223d3" class="outline-3">
+<h3 id="org4f223d3">The rest of the imports</h3>
+<div class="outline-text-3" id="text-org4f223d3">
+<div class="highlight"><pre><span></span><span class="c1"># python standard library</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">pickle</span>
 </pre></div>
 
-<div class="highlight"><pre><span></span>import pickle
-from tabulate import tabulate
+<div class="highlight"><pre><span></span><span class="c1"># from pypi</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">pyplot</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">pandas</span>
+<span class="kn">import</span> <span class="nn">seaborn</span>
 </pre></div>
 
-<div class="highlight"><pre><span></span>% matplotlib inline
+<div class="highlight"><pre><span></span><span class="c1"># from pypi</span>
+<span class="kn">from</span> <span class="nn">tabulate</span> <span class="kn">import</span> <span class="n">tabulate</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="o">%</span> <span class="n">matplotlib</span> <span class="n">inline</span>
 </pre></div>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org962ae3c" class="outline-2">
-<h2 id="org962ae3c">The Tangle</h2>
-<div class="outline-text-2" id="text-org962ae3c">
+<div id="outline-container-org4618c3b" class="outline-2">
+<h2 id="org4618c3b">The Tangle</h2>
+<div class="outline-text-2" id="text-org4618c3b">
 <p>
 Exports so some of this can be re-used.
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgfafdedb" class="outline-2">
-<h2 id="orgfafdedb">Helpers</h2>
-<div class="outline-text-2" id="text-orgfafdedb">
+<div id="outline-container-org8c85771" class="outline-2">
+<h2 id="org8c85771">Helpers</h2>
+<div class="outline-text-2" id="text-org8c85771">
 <p>
 Just some functions that keep coming up.
 </p>
 
-<div class="highlight"><pre><span></span>class Helpers:
-    """Helper functions"""
-    pickle_target = "../pickles/"
-    pickle_target_string = pickle_target + "{}.pkl"
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Helpers</span><span class="p">:</span>
+    <span class="sd">"""Helper functions"""</span>
+    <span class="n">pickle_target</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s2">"~/projects/kaggle-competitions/pickles/"</span><span class="p">)</span>
+    <span class="n">pickle_target_string</span> <span class="o">=</span> <span class="n">pickle_target</span> <span class="o">+</span> <span class="s2">"{}.pkl"</span>
 
-    @staticmethod
-    def print_head(frame, showindex=False):
-	"""prints the head of the given data frame
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">print_head</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">showindex</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+	<span class="sd">"""prints the head of the given data frame</span>
 
-	Args:
-	 frame (pandas.DataFrame): data frame to print as a table
-	 showindex (bool): whether to print the index
-	"""
-	print(tabulate(frame.head(), headers="keys", tablefmt="orgtbl",
-		       showindex=showindex))
-	return
+<span class="sd">	Args:</span>
+<span class="sd">	 frame (pandas.DataFrame): data frame to print as a table</span>
+<span class="sd">	 showindex (bool): whether to print the index</span>
+<span class="sd">	"""</span>
+	<span class="k">print</span><span class="p">(</span><span class="n">tabulate</span><span class="p">(</span><span class="n">frame</span><span class="o">.</span><span class="n">head</span><span class="p">(),</span> <span class="n">headers</span><span class="o">=</span><span class="s2">"keys"</span><span class="p">,</span> <span class="n">tablefmt</span><span class="o">=</span><span class="s2">"orgtbl"</span><span class="p">,</span>
+		       <span class="n">showindex</span><span class="o">=</span><span class="n">showindex</span><span class="p">))</span>
+	<span class="k">return</span>
 
-    @staticmethod
-    def print_table(data, showindex=True):
-	"""print the data
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">print_table</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">showindex</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+	<span class="sd">"""print the data</span>
 
-	Args:
-	 data: some kind of data-frame
-	"""
-	print(tabulate(data, headers="keys", tablefmt="orgtbl",
-		       showindex=showindex))
-	return
+<span class="sd">	Args:</span>
+<span class="sd">	 data: some kind of data-frame</span>
+<span class="sd">	"""</span>
+	<span class="k">print</span><span class="p">(</span><span class="n">tabulate</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="s2">"keys"</span><span class="p">,</span> <span class="n">tablefmt</span><span class="o">=</span><span class="s2">"orgtbl"</span><span class="p">,</span>
+		       <span class="n">showindex</span><span class="o">=</span><span class="n">showindex</span><span class="p">))</span>
+	<span class="k">return</span>
 
-    @staticmethod
-    def pickle_it(thing, name=None):
-	"""save the object to a pickle in the data folder
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">pickle_it</span><span class="p">(</span><span class="n">thing</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+	<span class="sd">"""save the object to a pickle in the data folder</span>
 
-	Args:
-	 thing: object to pickle
-	 name: thing to call the pickle
-	"""
-	name = name if name is not None else thing.__name__
-	with open(
-		os.path.join(
-		    Helpers.pickle_target_string.format(name)),
-		"wb") as pickler:
-	    pickle.dump(thing, pickler)
-	return
+<span class="sd">	Args:</span>
+<span class="sd">	 thing: object to pickle</span>
+<span class="sd">	 name: thing to call the pickle</span>
+<span class="sd">	"""</span>
+	<span class="n">name</span> <span class="o">=</span> <span class="n">name</span> <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="k">else</span> <span class="n">thing</span><span class="o">.</span><span class="vm">__name__</span>
+	<span class="k">with</span> <span class="nb">open</span><span class="p">(</span>
+		<span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+		    <span class="n">Helpers</span><span class="o">.</span><span class="n">pickle_target_string</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">)),</span>
+		<span class="s2">"wb"</span><span class="p">)</span> <span class="k">as</span> <span class="n">pickler</span><span class="p">:</span>
+	    <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">thing</span><span class="p">,</span> <span class="n">pickler</span><span class="p">)</span>
+	<span class="k">return</span>
 
-    @staticmethod
-    def unpickle(name):
-	"""loads the pickled object from the data folder
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">unpickle</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+	<span class="sd">"""loads the pickled object from the data folder</span>
 
-	Args;
-	 name: name of the pickle without the folder or extension
+<span class="sd">	Args:</span>
+<span class="sd">	 name: name of the pickle without the folder or extension</span>
 
-	Returns:
-	 object: the un-pickled object
-	"""
-	with open(Helpers.pickle_target_string.format(name),
-		  "rb") as unpickler:
-	    unpickled = pickle.load(unpickler)
-	return unpickled
+<span class="sd">	Returns:</span>
+<span class="sd">	 object: the un-pickled object</span>
+<span class="sd">	"""</span>
+	<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">Helpers</span><span class="o">.</span><span class="n">pickle_target_string</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">),</span>
+		  <span class="s2">"rb"</span><span class="p">)</span> <span class="k">as</span> <span class="n">unpickler</span><span class="p">:</span>
+	    <span class="n">unpickled</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">unpickler</span><span class="p">)</span>
+	<span class="k">return</span> <span class="n">unpickled</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+	<span class="sd">"""checks if the thing is already a pickle</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">	 name: name of the pickle without folder or extension</span>
+
+<span class="sd">	Returns:</span>
+<span class="sd">	 bool: True if the pickle exists</span>
+<span class="sd">	"""</span>
+	<span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">Helpers</span><span class="o">.</span><span class="n">pickle_target_string</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 
-<div id="outline-container-orgfc8707f" class="outline-2">
-<h2 id="orgfc8707f">Constants</h2>
-<div class="outline-text-2" id="text-orgfc8707f">
+<div id="outline-container-org103e9bf" class="outline-2">
+<h2 id="org103e9bf">Constants</h2>
+<div class="outline-text-2" id="text-org103e9bf">
 <p>
 As always, I'll try to put constants in the same place.
 </p>
 </div>
+<div id="outline-container-org2908de0" class="outline-3">
+<h3 id="org2908de0">Data Names</h3>
+<div class="outline-text-3" id="text-org2908de0">
+<p>
+This is just a re-mapping of the file-names since I keep forgetting them.
+</p>
 
-<div id="outline-container-orge488b96" class="outline-3">
-<h3 id="orge488b96">Data Source</h3>
-<div class="outline-text-3" id="text-orge488b96">
-<div class="highlight"><pre><span></span>class DataSource:
-    """Strings for the files"""
-    directory = "../data/"
-</pre></div>
-
-<div class="highlight"><pre><span></span>DataSource.file_names = sorted(os.listdir(DataSource.directory))
-for name in DataSource.file_names:
-    setattr(DataSource, name.split('.')[0], name)    
-DataSource.paths = [os.path.join(DataSource.directory, name)
-		    for name in DataSource.file_names]
-</pre></div>
-
-<div class="highlight"><pre><span></span>Helpers.pickle_it(DataSource)
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">DataNames</span><span class="p">:</span>
+    <span class="sd">"""thing with the data-file-names (without extensions) as attributes"""</span>
+    <span class="n">training</span> <span class="o">=</span> <span class="s2">"sales_train"</span>
+    <span class="n">items</span> <span class="o">=</span> <span class="s2">"items"</span>
+    <span class="n">item_categories</span> <span class="o">=</span> <span class="s2">"item_categories"</span>
+    <span class="n">shops</span> <span class="o">=</span> <span class="s2">"shops"</span>
 </pre></div>
 </div>
 </div>
 
-<div id="outline-container-org5354fc1" class="outline-3">
-<h3 id="org5354fc1">Data Keys</h3>
-<div class="outline-text-3" id="text-org5354fc1">
-<div class="highlight"><pre><span></span>class DataKeys:
-    """Column names/keys for the data."""
-    item_category = "item_category_id"
-    shop = "shop_id"
-    item = "item_id"
-    date = "date"
-    date_block = "date_block_num"
-    price = "item_price"
-    day_count = "item_cnt_day"
-    month_count = 'item_count_month'
-    name = "item_name"
+<div id="outline-container-org5c71afe" class="outline-3">
+<h3 id="org5c71afe">Data Source</h3>
+<div class="outline-text-3" id="text-org5c71afe">
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">DataSource</span><span class="p">:</span>
+    <span class="sd">"""Strings for the files</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">     directory: path to the data-folder</span>
+<span class="sd">    """</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory</span><span class="o">=</span><span class="s2">"~/projects/kaggle-competitions/data/"</span><span class="p">):</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">_directory</span> <span class="o">=</span> <span class="bp">None</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">directory</span> <span class="o">=</span> <span class="n">directory</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">_file_names</span> <span class="o">=</span> <span class="bp">None</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">_paths</span> <span class="o">=</span> <span class="bp">None</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">_file_name_paths</span> <span class="o">=</span> <span class="bp">None</span>
+	<span class="k">return</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">directory</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="sd">"""The path to the data"""</span>
+	<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_directory</span>
+
+    <span class="nd">@directory.setter</span>
+    <span class="k">def</span> <span class="nf">directory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+	<span class="sd">"""expands the user and saves the path</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">	 path (str): path to the data folder</span>
+<span class="sd">	"""</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">_directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+	<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_directory</span><span class="p">):</span>
+	    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
+		<span class="s2">"This file doesn't exist: {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_directory</span><span class="p">))</span>
+	<span class="k">return</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">file_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="sd">"""list of file names in the data directory"""</span>
+	<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file_names</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+	    <span class="bp">self</span><span class="o">.</span><span class="n">_file_names</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">)</span>
+	<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file_names</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">paths</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="sd">"""list of paths to the file names"""</span>
+	<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_paths</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+	    <span class="bp">self</span><span class="o">.</span><span class="n">_paths</span> <span class="o">=</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+		    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_names</span><span class="p">]</span>
+	<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_paths</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">file_name_paths</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="sd">"""dict of name: path"""</span>
+	<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file_name_paths</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+	    <span class="bp">self</span><span class="o">.</span><span class="n">_file_name_paths</span> <span class="o">=</span> <span class="p">{</span>
+		<span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'.'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]:</span> <span class="bp">self</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+		<span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_names</span><span class="p">)}</span>
+	<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file_name_paths</span>
+
+    <span class="k">def</span> <span class="nf">set_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="sd">"""attaches the file names to this object"""</span>
+	<span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_names</span><span class="p">:</span>
+	    <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'.'</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="n">name</span><span class="p">)</span>
+	<span class="k">return</span>
+</pre></div>
+</div>
+</div>
+
+<div id="outline-container-orgd944e36" class="outline-3">
+<h3 id="orgd944e36">Data Keys</h3>
+<div class="outline-text-3" id="text-orgd944e36">
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">DataKeys</span><span class="p">:</span>
+    <span class="sd">"""Column names/keys for the data."""</span>
+    <span class="n">item_category</span> <span class="o">=</span> <span class="s2">"item_category_id"</span>
+    <span class="n">shop</span> <span class="o">=</span> <span class="s2">"shop_id"</span>
+    <span class="n">item</span> <span class="o">=</span> <span class="s2">"item_id"</span>
+    <span class="n">date</span> <span class="o">=</span> <span class="s2">"date"</span>
+    <span class="n">date_block</span> <span class="o">=</span> <span class="s2">"date_block_num"</span>
+    <span class="n">price</span> <span class="o">=</span> <span class="s2">"item_price"</span>
+    <span class="n">day_count</span> <span class="o">=</span> <span class="s2">"item_cnt_day"</span>
+    <span class="n">month_count</span> <span class="o">=</span> <span class="s1">'item_count_month'</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s2">"item_name"</span>
+    <span class="n">day</span> <span class="o">=</span> <span class="s2">"day"</span>
+    <span class="n">month</span> <span class="o">=</span> <span class="s2">"month"</span>
+    <span class="n">year</span> <span class="o">=</span> <span class="s2">"year"</span>
 </pre></div>
 
-<div class="highlight"><pre><span></span>Helpers.pickle_it(DataKeys)
-</pre></div>
-</div>
-</div>
-
-<div id="outline-container-org8bc5afd" class="outline-3">
-<h3 id="org8bc5afd">Pickles</h3>
-<div class="outline-text-3" id="text-org8bc5afd">
-<div class="highlight"><pre><span></span>class Pickles:
-    """Holder of the pickle names"""
-    super_set = "training_data"
-    grouped = "grouped_months_data"
-    x_train = "x_train"
-    x_test = "x_test"
-    y_train = "y_train"
-    y_test = "y_test"
-    train_test = "train_test"
-</pre></div>
-
-<div class="highlight"><pre><span></span>Helpers.pickle_it(Pickles)
+<div class="highlight"><pre><span></span><span class="n">data_source</span> <span class="o">=</span> <span class="n">DataSource</span><span class="p">()</span>
+<span class="n">data_source</span><span class="o">.</span><span class="n">set_attributes</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orge02dd76" class="outline-2">
-<h2 id="orge02dd76">The Files</h2>
-<div class="outline-text-2" id="text-orge02dd76">
+<div id="outline-container-orge3f8d10" class="outline-2">
+<h2 id="orge3f8d10">The Files</h2>
+<div class="outline-text-2" id="text-orge3f8d10">
 <p>
 These are the files we are given.
 </p>
 
-<div class="highlight"><pre><span></span>for name in DataSource.file_names:
-    print(" - {}".format(name))
+<div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">data_source</span><span class="o">.</span><span class="n">file_names</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">" - {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
 </pre></div>
 
 <ul class="org-ul">
@@ -346,21 +404,21 @@ These are the files we are given.
 I was originally thinking I would need to unzip the gzipped files but apparently the <a href="https://pandas.pydata.org/pandas-docs/stable/io.html#io-read-csv-table"><code>Pandas.read_csv</code></a> function will decompress them automagically, so I guess I can leave them.
 </p>
 
-<div class="highlight"><pre><span></span>frames = {DataSource.file_names[index]: pandas.read_csv(path)
-	  for index, path in enumerate(DataSource.paths)}
+<div class="highlight"><pre><span></span><span class="n">frames</span> <span class="o">=</span> <span class="p">{</span><span class="n">data_source</span><span class="o">.</span><span class="n">file_names</span><span class="p">[</span><span class="n">index</span><span class="p">]:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+	  <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">path</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data_source</span><span class="o">.</span><span class="n">paths</span><span class="p">)}</span>
 </pre></div>
 
-<div class="highlight"><pre><span></span>for name, frame in frames.items():
-    print("\n** {}".format(name))
-    Helpers.print_head(frame)
-    print()
-    print(frame.info())
+<div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">frame</span> <span class="ow">in</span> <span class="n">frames</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">** {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+    <span class="n">Helpers</span><span class="o">.</span><span class="n">print_head</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">frame</span><span class="o">.</span><span class="n">info</span><span class="p">())</span>
 </pre></div>
 </div>
 
-<div id="outline-container-orgea3cc70" class="outline-3">
-<h3 id="orgea3cc70">item_categories.csv</h3>
-<div class="outline-text-3" id="text-orgea3cc70">
+<div id="outline-container-orge3f710f" class="outline-3">
+<h3 id="orge3f710f">item_categories.csv</h3>
+<div class="outline-text-3" id="text-orge3f710f">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-left">
@@ -406,9 +464,9 @@ None
 </div>
 </div>
 
-<div id="outline-container-org3764976" class="outline-3">
-<h3 id="org3764976">items.csv</h3>
-<div class="outline-text-3" id="text-org3764976">
+<div id="outline-container-org8f10a2d" class="outline-3">
+<h3 id="org8f10a2d">items.csv</h3>
+<div class="outline-text-3" id="text-org8f10a2d">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-left">
@@ -462,9 +520,9 @@ None
 </div>
 </div>
 
-<div id="outline-container-org88c8fb6" class="outline-3">
-<h3 id="org88c8fb6">sales_train.csv.gz</h3>
-<div class="outline-text-3" id="text-org88c8fb6">
+<div id="outline-container-org21902bc" class="outline-3">
+<h3 id="org21902bc">sales_train.csv.gz</h3>
+<div class="outline-text-3" id="text-org21902bc">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-right">
@@ -542,9 +600,9 @@ None
 </div>
 </div>
 
-<div id="outline-container-orgbc87e44" class="outline-3">
-<h3 id="orgbc87e44">sample_submission.csv.gz</h3>
-<div class="outline-text-3" id="text-orgbc87e44">
+<div id="outline-container-orgb97e85d" class="outline-3">
+<h3 id="orgb97e85d">sample_submission.csv.gz</h3>
+<div class="outline-text-3" id="text-orgb97e85d">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-right">
@@ -590,9 +648,9 @@ None
 </div>
 </div>
 
-<div id="outline-container-org592fc88" class="outline-3">
-<h3 id="org592fc88">shops.csv</h3>
-<div class="outline-text-3" id="text-org592fc88">
+<div id="outline-container-orgf6165d3" class="outline-3">
+<h3 id="orgf6165d3">shops.csv</h3>
+<div class="outline-text-3" id="text-orgf6165d3">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-left">
@@ -638,9 +696,9 @@ None
 </div>
 </div>
 
-<div id="outline-container-org103dd84" class="outline-3">
-<h3 id="org103dd84">test.csv.gz</h3>
-<div class="outline-text-3" id="text-org103dd84">
+<div id="outline-container-org0d8d3d1" class="outline-3">
+<h3 id="org0d8d3d1">test.csv.gz</h3>
+<div class="outline-text-3" id="text-org0d8d3d1">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-right">
@@ -694,9 +752,9 @@ None
 </div>
 </div>
 
-<div id="outline-container-orgee74fba" class="outline-3">
-<h3 id="orgee74fba">sample_submission.csv.gz</h3>
-<div class="outline-text-3" id="text-orgee74fba">
+<div id="outline-container-org4a75ad4" class="outline-3">
+<h3 id="org4a75ad4">sample_submission.csv.gz</h3>
+<div class="outline-text-3" id="text-org4a75ad4">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-right">
@@ -742,9 +800,9 @@ None
 </div>
 </div>
 
-<div id="outline-container-org4b87b32" class="outline-3">
-<h3 id="org4b87b32">shops.csv</h3>
-<div class="outline-text-3" id="text-org4b87b32">
+<div id="outline-container-org3ecc92c" class="outline-3">
+<h3 id="org3ecc92c">shops.csv</h3>
+<div class="outline-text-3" id="text-org3ecc92c">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-left">
@@ -790,9 +848,9 @@ None
 </div>
 </div>
 
-<div id="outline-container-org6b54902" class="outline-3">
-<h3 id="org6b54902">items.csv</h3>
-<div class="outline-text-3" id="text-org6b54902">
+<div id="outline-container-org32fa315" class="outline-3">
+<h3 id="org32fa315">items.csv</h3>
+<div class="outline-text-3" id="text-org32fa315">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-left">
@@ -846,9 +904,9 @@ None
 </div>
 </div>
 
-<div id="outline-container-org74d6185" class="outline-3">
-<h3 id="org74d6185">sales_train.csv.gz</h3>
-<div class="outline-text-3" id="text-org74d6185">
+<div id="outline-container-org7aa20c5" class="outline-3">
+<h3 id="org7aa20c5">sales_train.csv.gz</h3>
+<div class="outline-text-3" id="text-org7aa20c5">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-right">
@@ -926,9 +984,9 @@ None
 </div>
 </div>
 
-<div id="outline-container-org2551a70" class="outline-3">
-<h3 id="org2551a70">item_categories.csv</h3>
-<div class="outline-text-3" id="text-org2551a70">
+<div id="outline-container-org8a0c218" class="outline-3">
+<h3 id="org8a0c218">item_categories.csv</h3>
+<div class="outline-text-3" id="text-org8a0c218">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-left">
@@ -974,9 +1032,9 @@ None
 </div>
 </div>
 
-<div id="outline-container-org79079c9" class="outline-3">
-<h3 id="org79079c9">test.csv.gz</h3>
-<div class="outline-text-3" id="text-org79079c9">
+<div id="outline-container-org601ead6" class="outline-3">
+<h3 id="org601ead6">test.csv.gz</h3>
+<div class="outline-text-3" id="text-org601ead6">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-right">
@@ -1030,9 +1088,9 @@ None
 </div>
 </div>
 
-<div id="outline-container-orgbc69fd7" class="outline-3">
-<h3 id="orgbc69fd7">sample_submission.csv.gz</h3>
-<div class="outline-text-3" id="text-orgbc69fd7">
+<div id="outline-container-org2733569" class="outline-3">
+<h3 id="org2733569">sample_submission.csv.gz</h3>
+<div class="outline-text-3" id="text-org2733569">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-right">
@@ -1078,9 +1136,9 @@ None
 </div>
 </div>
 
-<div id="outline-container-orgd37579f" class="outline-3">
-<h3 id="orgd37579f">shops.csv</h3>
-<div class="outline-text-3" id="text-orgd37579f">
+<div id="outline-container-org8ec6997" class="outline-3">
+<h3 id="org8ec6997">shops.csv</h3>
+<div class="outline-text-3" id="text-org8ec6997">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-left">
@@ -1126,9 +1184,9 @@ None
 </div>
 </div>
 
-<div id="outline-container-org79d7a49" class="outline-3">
-<h3 id="org79d7a49">items.csv</h3>
-<div class="outline-text-3" id="text-org79d7a49">
+<div id="outline-container-org892eb7b" class="outline-3">
+<h3 id="org892eb7b">items.csv</h3>
+<div class="outline-text-3" id="text-org892eb7b">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-left">
@@ -1182,9 +1240,9 @@ None
 </div>
 </div>
 
-<div id="outline-container-orgc366c25" class="outline-3">
-<h3 id="orgc366c25">sales_train.csv.gz</h3>
-<div class="outline-text-3" id="text-orgc366c25">
+<div id="outline-container-orgdc3f76d" class="outline-3">
+<h3 id="orgdc3f76d">sales_train.csv.gz</h3>
+<div class="outline-text-3" id="text-orgdc3f76d">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-right">
@@ -1262,9 +1320,9 @@ None
 </div>
 </div>
 
-<div id="outline-container-orgfb2bec4" class="outline-3">
-<h3 id="orgfb2bec4">item_categories.csv</h3>
-<div class="outline-text-3" id="text-orgfb2bec4">
+<div id="outline-container-org6e84b6c" class="outline-3">
+<h3 id="org6e84b6c">item_categories.csv</h3>
+<div class="outline-text-3" id="text-org6e84b6c">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-left">
@@ -1310,9 +1368,9 @@ None
 </div>
 </div>
 
-<div id="outline-container-org560f445" class="outline-3">
-<h3 id="org560f445">test.csv.gz</h3>
-<div class="outline-text-3" id="text-org560f445">
+<div id="outline-container-org2633e5e" class="outline-3">
+<h3 id="org2633e5e">test.csv.gz</h3>
+<div class="outline-text-3" id="text-org2633e5e">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-right">
@@ -1366,9 +1424,9 @@ None
 </div>
 </div>
 
-<div id="outline-container-org64e0b69" class="outline-3">
-<h3 id="org64e0b69">sample_submission.csv.gz</h3>
-<div class="outline-text-3" id="text-org64e0b69">
+<div id="outline-container-org1656326" class="outline-3">
+<h3 id="org1656326">sample_submission.csv.gz</h3>
+<div class="outline-text-3" id="text-org1656326">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-right">
@@ -1414,9 +1472,9 @@ None
 </div>
 </div>
 
-<div id="outline-container-orgedb42fe" class="outline-3">
-<h3 id="orgedb42fe">shops.csv</h3>
-<div class="outline-text-3" id="text-orgedb42fe">
+<div id="outline-container-org6bec7ca" class="outline-3">
+<h3 id="org6bec7ca">shops.csv</h3>
+<div class="outline-text-3" id="text-org6bec7ca">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-left">
@@ -1462,9 +1520,9 @@ None
 </div>
 </div>
 
-<div id="outline-container-org3677f64" class="outline-3">
-<h3 id="org3677f64">items.csv</h3>
-<div class="outline-text-3" id="text-org3677f64">
+<div id="outline-container-org7033e83" class="outline-3">
+<h3 id="org7033e83">items.csv</h3>
+<div class="outline-text-3" id="text-org7033e83">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-left">
@@ -1518,9 +1576,9 @@ None
 </div>
 </div>
 
-<div id="outline-container-orgdf5c884" class="outline-3">
-<h3 id="orgdf5c884">sales_train.csv.gz</h3>
-<div class="outline-text-3" id="text-orgdf5c884">
+<div id="outline-container-org8fd843c" class="outline-3">
+<h3 id="org8fd843c">sales_train.csv.gz</h3>
+<div class="outline-text-3" id="text-org8fd843c">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-right">
@@ -1598,9 +1656,9 @@ None
 </div>
 </div>
 
-<div id="outline-container-org0c180dc" class="outline-3">
-<h3 id="org0c180dc">item_categories.csv</h3>
-<div class="outline-text-3" id="text-org0c180dc">
+<div id="outline-container-orgc30ecc8" class="outline-3">
+<h3 id="orgc30ecc8">item_categories.csv</h3>
+<div class="outline-text-3" id="text-orgc30ecc8">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-left">
@@ -1646,9 +1704,9 @@ None
 </div>
 </div>
 
-<div id="outline-container-org219e920" class="outline-3">
-<h3 id="org219e920">test.csv.gz</h3>
-<div class="outline-text-3" id="text-org219e920">
+<div id="outline-container-orga64fe3b" class="outline-3">
+<h3 id="orga64fe3b">test.csv.gz</h3>
+<div class="outline-text-3" id="text-orga64fe3b">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-right">
@@ -1703,14 +1761,14 @@ None
 </div>
 </div>
 
-<div id="outline-container-orgd3d4a9b" class="outline-2">
-<h2 id="orgd3d4a9b">Some Counts</h2>
-<div class="outline-text-2" id="text-orgd3d4a9b">
+<div id="outline-container-orgba3f6c4" class="outline-2">
+<h2 id="orgba3f6c4">Some Counts</h2>
+<div class="outline-text-2" id="text-orgba3f6c4">
 </div>
-<div id="outline-container-orga4a35eb" class="outline-3">
-<h3 id="orga4a35eb">How much data is there in the training set?</h3>
-<div class="outline-text-3" id="text-orga4a35eb">
-<div class="highlight"><pre><span></span>print("There are {:,} rows in the training set.".format(len(frames[DataSource.sales_train])))
+<div id="outline-container-org1b27b37" class="outline-3">
+<h3 id="org1b27b37">How much data is there in the training set?</h3>
+<div class="outline-text-3" id="text-org1b27b37">
+<div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s2">"There are {:,} rows in the training set."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">frames</span><span class="p">[</span><span class="n">data_source</span><span class="o">.</span><span class="n">sales_train</span><span class="p">])))</span>
 </pre></div>
 
 <p>
@@ -1719,10 +1777,10 @@ There are 2,935,849 rows in the training set.
 </div>
 </div>
 
-<div id="outline-container-org9e775ca" class="outline-3">
-<h3 id="org9e775ca">How many shops are there?</h3>
-<div class="outline-text-3" id="text-org9e775ca">
-<div class="highlight"><pre><span></span>print("There are {} shops.".format(len(frames[DataSource.shops])))
+<div id="outline-container-org963fae3" class="outline-3">
+<h3 id="org963fae3">How many shops are there?</h3>
+<div class="outline-text-3" id="text-org963fae3">
+<div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s2">"There are {} shops."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">frames</span><span class="p">[</span><span class="n">data_source</span><span class="o">.</span><span class="n">shops</span><span class="p">])))</span>
 </pre></div>
 
 <p>
@@ -1731,10 +1789,10 @@ There are 60 shops.
 </div>
 </div>
 
-<div id="outline-container-orgc87bf35" class="outline-3">
-<h3 id="orgc87bf35">How Many Items Are There?</h3>
-<div class="outline-text-3" id="text-orgc87bf35">
-<div class="highlight"><pre><span></span>print("There are {:,} items.".format(len(frames[DataSource.items])))
+<div id="outline-container-orgc87eddf" class="outline-3">
+<h3 id="orgc87eddf">How Many Items Are There?</h3>
+<div class="outline-text-3" id="text-orgc87eddf">
+<div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s2">"There are {:,} items."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">frames</span><span class="p">[</span><span class="n">data_source</span><span class="o">.</span><span class="n">items</span><span class="p">])))</span>
 </pre></div>
 
 <p>
@@ -1743,10 +1801,10 @@ There are 22,170 items.
 </div>
 </div>
 
-<div id="outline-container-org825ff6b" class="outline-3">
-<h3 id="org825ff6b">How Many Item Categories are there?</h3>
-<div class="outline-text-3" id="text-org825ff6b">
-<div class="highlight"><pre><span></span>print("There are {:,} categories.".format(len(frames[DataSource.item_categories])))
+<div id="outline-container-org401d931" class="outline-3">
+<h3 id="org401d931">How Many Item Categories are there?</h3>
+<div class="outline-text-3" id="text-org401d931">
+<div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s2">"There are {:,} categories."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">frames</span><span class="p">[</span><span class="n">data_source</span><span class="o">.</span><span class="n">item_categories</span><span class="p">])))</span>
 </pre></div>
 
 <p>
@@ -1755,24 +1813,23 @@ There are 84 categories.
 </div>
 </div>
 
-<div id="outline-container-orga140949" class="outline-3">
-<h3 id="orga140949">How many date-blocks are there?</h3>
-<div class="outline-text-3" id="text-orga140949">
-<div class="highlight"><pre><span></span>print("There are {} date-blocks.".format(
-    len(frames[DataSource.sales_train][DataKeys.date_block].unique())))
+<div id="outline-container-org4f0f275" class="outline-3">
+<h3 id="org4f0f275">How many date-blocks are there?</h3>
+<div class="outline-text-3" id="text-org4f0f275">
+<div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s2">"There are {} date-blocks."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+    <span class="nb">len</span><span class="p">(</span><span class="n">frames</span><span class="p">[</span><span class="n">data_source</span><span class="o">.</span><span class="n">sales_train</span><span class="p">][</span><span class="n">DataKeys</span><span class="o">.</span><span class="n">date_block</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())))</span>
 </pre></div>
 
 <p>
-There are 34 date-blocks.
 There are 34 date-blocks.
 </p>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orge80a645" class="outline-2">
-<h2 id="orge80a645">The Official Feature Descriptions</h2>
-<div class="outline-text-2" id="text-orge80a645">
+<div id="outline-container-org9166d52" class="outline-2">
+<h2 id="org9166d52">The Official Feature Descriptions</h2>
+<div class="outline-text-2" id="text-org9166d52">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-left">
@@ -1832,10 +1889,10 @@ There are 34 date-blocks.
 </div>
 </div>
 
-<div id="outline-container-orgcbcfe91" class="outline-2">
-<h2 id="orgcbcfe91">The Training Set</h2>
-<div class="outline-text-2" id="text-orgcbcfe91">
-<div class="highlight"><pre><span></span>print(frames[DataSource.sales_train].dtypes)
+<div id="outline-container-orgf25c73a" class="outline-2">
+<h2 id="orgf25c73a">The Training Set</h2>
+<div class="outline-text-2" id="text-orgf25c73a">
+<div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="n">frames</span><span class="p">[</span><span class="n">data_source</span><span class="o">.</span><span class="n">sales_train</span><span class="p">]</span><span class="o">.</span><span class="n">dtypes</span><span class="p">)</span>
 </pre></div>
 
 <p>
@@ -1846,20 +1903,13 @@ item_id             int64
 item_price        float64
 item_cnt_day      float64
 dtype: object
-date               object
-date_block_num      int64
-shop_id             int64
-item_id             int64
-item_price        float64
-item_cnt_day      float64
-dtype: object
 </p>
 </div>
 
-<div id="outline-container-orge3f9030" class="outline-3">
-<h3 id="orge3f9030">Numeric Features</h3>
-<div class="outline-text-3" id="text-orge3f9030">
-<div class="highlight"><pre><span></span>Helpers.print_table(frames[DataSource.sales_train].describe(include=numpy.number).T)
+<div id="outline-container-org26679fc" class="outline-3">
+<h3 id="org26679fc">Numeric Features</h3>
+<div class="outline-text-3" id="text-org26679fc">
+<div class="highlight"><pre><span></span><span class="n">Helpers</span><span class="o">.</span><span class="n">print_table</span><span class="p">(</span><span class="n">frames</span><span class="p">[</span><span class="n">data_source</span><span class="o">.</span><span class="n">sales_train</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">number</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
 </pre></div>
 
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
@@ -1946,10 +1996,10 @@ dtype: object
 </div>
 </div>
 
-<div id="outline-container-orga1aca4e" class="outline-3">
-<h3 id="orga1aca4e">Categorical Features</h3>
-<div class="outline-text-3" id="text-orga1aca4e">
-<div class="highlight"><pre><span></span>Helpers.print_table(frames[DataSource.sales_train].describe(include=[numpy.object, pandas.Categorical]).T)
+<div id="outline-container-orgbfaf455" class="outline-3">
+<h3 id="orgbfaf455">Categorical Features</h3>
+<div class="outline-text-3" id="text-orgbfaf455">
+<div class="highlight"><pre><span></span><span class="n">Helpers</span><span class="o">.</span><span class="n">print_table</span><span class="p">(</span><span class="n">frames</span><span class="p">[</span><span class="n">data_source</span><span class="o">.</span><span class="n">sales_train</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">object</span><span class="p">,</span> <span class="n">pandas</span><span class="o">.</span><span class="n">Categorical</span><span class="p">])</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
 </pre></div>
 
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
@@ -1978,762 +2028,9 @@ dtype: object
 </div>
 </div>
 </div>
-
-<div id="outline-container-org782893a" class="outline-2">
-<h2 id="org782893a">Building Up the Training Set</h2>
-<div class="outline-text-2" id="text-org782893a">
-<p>
-Since we have some variables in separate sets I thought it would be useful to combine them into a single training set.
-</p>
-</div>
-
-<div id="outline-container-org788e8e6" class="outline-3">
-<h3 id="org788e8e6">Building the Super Set</h3>
-<div class="outline-text-3" id="text-org788e8e6">
-<div class="highlight"><pre><span></span>super_set = frames[DataSource.sales_train].copy()
-</pre></div>
-
-<div class="highlight"><pre><span></span>Helpers.print_head(super_set)
-</pre></div>
-
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-<colgroup>
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-</colgroup>
-<thead><tr>
-<th scope="col" class="org-right">date</th>
-<th scope="col" class="org-right">date_block_num</th>
-<th scope="col" class="org-right">shop_id</th>
-<th scope="col" class="org-right">item_id</th>
-<th scope="col" class="org-right">item_price</th>
-<th scope="col" class="org-right">item_cnt_day</th>
-</tr></thead>
-<tbody>
-<tr>
-<td class="org-right">02.01.2013</td>
-<td class="org-right">0</td>
-<td class="org-right">59</td>
-<td class="org-right">22154</td>
-<td class="org-right">999</td>
-<td class="org-right">1</td>
-</tr>
-<tr>
-<td class="org-right">03.01.2013</td>
-<td class="org-right">0</td>
-<td class="org-right">25</td>
-<td class="org-right">2552</td>
-<td class="org-right">899</td>
-<td class="org-right">1</td>
-</tr>
-<tr>
-<td class="org-right">05.01.2013</td>
-<td class="org-right">0</td>
-<td class="org-right">25</td>
-<td class="org-right">2552</td>
-<td class="org-right">899</td>
-<td class="org-right">-1</td>
-</tr>
-<tr>
-<td class="org-right">06.01.2013</td>
-<td class="org-right">0</td>
-<td class="org-right">25</td>
-<td class="org-right">2554</td>
-<td class="org-right">1709.05</td>
-<td class="org-right">1</td>
-</tr>
-<tr>
-<td class="org-right">15.01.2013</td>
-<td class="org-right">0</td>
-<td class="org-right">25</td>
-<td class="org-right">2555</td>
-<td class="org-right">1099</td>
-<td class="org-right">1</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-
-<div id="outline-container-orgf08604d" class="outline-3">
-<h3 id="orgf08604d">Adding The Category ID</h3>
-<div class="outline-text-3" id="text-orgf08604d">
-<div class="highlight"><pre><span></span>super_set = pandas.merge(super_set, frames[DataSource.items], on=DataKeys.item, how="left")
-</pre></div>
-
-<div class="highlight"><pre><span></span>Helpers.print_head(super_set)
-</pre></div>
-
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-<colgroup>
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-<col class="org-left">
-<col class="org-right">
-</colgroup>
-<thead><tr>
-<th scope="col" class="org-right">date</th>
-<th scope="col" class="org-right">date_block_num</th>
-<th scope="col" class="org-right">shop_id</th>
-<th scope="col" class="org-right">item_id</th>
-<th scope="col" class="org-right">item_price</th>
-<th scope="col" class="org-right">item_cnt_day</th>
-<th scope="col" class="org-left">item_name</th>
-<th scope="col" class="org-right">item_category_id</th>
-</tr></thead>
-<tbody>
-<tr>
-<td class="org-right">02.01.2013</td>
-<td class="org-right">0</td>
-<td class="org-right">59</td>
-<td class="org-right">22154</td>
-<td class="org-right">999</td>
-<td class="org-right">1</td>
-<td class="org-left">ЯВЛЕНИЕ 2012 (BD)</td>
-<td class="org-right">37</td>
-</tr>
-<tr>
-<td class="org-right">03.01.2013</td>
-<td class="org-right">0</td>
-<td class="org-right">25</td>
-<td class="org-right">2552</td>
-<td class="org-right">899</td>
-<td class="org-right">1</td>
-<td class="org-left">DEEP PURPLE  The House Of Blue Light  LP</td>
-<td class="org-right">58</td>
-</tr>
-<tr>
-<td class="org-right">05.01.2013</td>
-<td class="org-right">0</td>
-<td class="org-right">25</td>
-<td class="org-right">2552</td>
-<td class="org-right">899</td>
-<td class="org-right">-1</td>
-<td class="org-left">DEEP PURPLE  The House Of Blue Light  LP</td>
-<td class="org-right">58</td>
-</tr>
-<tr>
-<td class="org-right">06.01.2013</td>
-<td class="org-right">0</td>
-<td class="org-right">25</td>
-<td class="org-right">2554</td>
-<td class="org-right">1709.05</td>
-<td class="org-right">1</td>
-<td class="org-left">DEEP PURPLE  Who Do You Think We Are  LP</td>
-<td class="org-right">58</td>
-</tr>
-<tr>
-<td class="org-right">15.01.2013</td>
-<td class="org-right">0</td>
-<td class="org-right">25</td>
-<td class="org-right">2555</td>
-<td class="org-right">1099</td>
-<td class="org-right">1</td>
-<td class="org-left">DEEP PURPLE 30 Very Best Of 2CD (Фирм.)</td>
-<td class="org-right">56</td>
-</tr>
-</tbody>
-</table>
-<div class="highlight"><pre><span></span>counts = super_set[DataKeys.item_category].value_counts(sort=True)
-</pre></div>
-
-<div class="highlight"><pre><span></span>figure = pyplot.figure(figsize=(10, 8))
-axe = figure.gca()
-axe.set_title("Category Counts")
-axe.set_ylabel("Category")
-axe.set_xlabel("Count")
-# plot = axe.plot(counts.index, counts.item_id, 'o')
-plot = counts.plot.barh(ax=axe)
-</pre></div>
-
-
-<div class="figure">
-<p><img src="../files/posts/exploring-the-data/categories.png" alt="categories.png"></p>
-</div>
-
-<p>
-<img src="../files/posts/exploring-the-data/categories.png" alt="categories.png"><img src="categories.png" alt="categories.png"></p>
-
-<p>
-It looks like a few categories dominate the sales.
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgb5605c1" class="outline-3">
-<h3 id="orgb5605c1">What do the dates mean?</h3>
-<div class="outline-text-3" id="text-orgb5605c1">
-<p>
-If you look at the head of the training data it looks like only one item was sold or returned per day. This seems like it wouldn't be the case, so lets see how many shops and items there are per day.
-</p>
-
-<div class="highlight"><pre><span></span>days = super_set.groupby(DataKeys.date)
-day_counts = days.count()
-</pre></div>
-
-<p>
-<code>day_counts</code> is just the number of entries there are for each day, regardless of how many of each item were sold per day.
-</p>
-
-<div class="highlight"><pre><span></span>figure =  pyplot.figure(figsize=(12, 10))
-axe = figure.gca()
-axe.set_title("Entries Per Day")
-axe.set_ylabel("Entries")
-axe.set_xlabel("Date")
-axe = axe.plot(day_counts.item_id, '.')
-</pre></div>
-
-<p>
-<img src="../files/posts/exploring-the-data/items_per_date.png" alt="items_per_date.png"><img src="items_per_date.png" alt="items_per_date.png"></p>
-
-<p>
-It looks like there was actually a lot of entries per date.
-</p>
-</div>
-</div>
-
-<div id="outline-container-org7707bfd" class="outline-3">
-<h3 id="org7707bfd">Splitting the Dates</h3>
-<div class="outline-text-3" id="text-org7707bfd">
-<div class="highlight"><pre><span></span>class Dates:
-    date_expression = r'(?P&lt;day&gt;\d{2})\.(?P&lt;month&gt;\d{2})\.(?P&lt;year&gt;\d{4})'
-</pre></div>
-
-<div class="highlight"><pre><span></span>dates = super_set.date.str.extract(Dates.date_expression)
-</pre></div>
-
-<div class="highlight"><pre><span></span>print(tabulate(dates.head(), headers="keys", showindex='never', tablefmt='orgtbl'))
-</pre></div>
-
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-<colgroup>
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-</colgroup>
-<thead><tr>
-<th scope="col" class="org-right">day</th>
-<th scope="col" class="org-right">month</th>
-<th scope="col" class="org-right">year</th>
-</tr></thead>
-<tbody>
-<tr>
-<td class="org-right">02</td>
-<td class="org-right">01</td>
-<td class="org-right">2013</td>
-</tr>
-<tr>
-<td class="org-right">03</td>
-<td class="org-right">01</td>
-<td class="org-right">2013</td>
-</tr>
-<tr>
-<td class="org-right">05</td>
-<td class="org-right">01</td>
-<td class="org-right">2013</td>
-</tr>
-<tr>
-<td class="org-right">06</td>
-<td class="org-right">01</td>
-<td class="org-right">2013</td>
-</tr>
-<tr>
-<td class="org-right">15</td>
-<td class="org-right">01</td>
-<td class="org-right">2013</td>
-</tr>
-</tbody>
-</table>
-<p>
-Now we can smash our new data frame onto the transactions using the <a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.concat.html">concat</a> function. by default it will try to add the rows from the second data frame to the rows of the first, but since we're adding new columns we need to pass in the <code>axis='columns'</code> argument.
-</p>
-
-<div class="highlight"><pre><span></span>super_set = pandas.concat((super_set, dates), axis='columns')
-</pre></div>
-
-<div class="highlight"><pre><span></span>Helpers.print_head(super_set)
-</pre></div>
-
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-<colgroup>
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-<col class="org-left">
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-</colgroup>
-<thead><tr>
-<th scope="col" class="org-right">date</th>
-<th scope="col" class="org-right">date_block_num</th>
-<th scope="col" class="org-right">shop_id</th>
-<th scope="col" class="org-right">item_id</th>
-<th scope="col" class="org-right">item_price</th>
-<th scope="col" class="org-right">item_cnt_day</th>
-<th scope="col" class="org-left">item_name</th>
-<th scope="col" class="org-right">item_category_id</th>
-<th scope="col" class="org-right">day</th>
-<th scope="col" class="org-right">month</th>
-<th scope="col" class="org-right">year</th>
-</tr></thead>
-<tbody>
-<tr>
-<td class="org-right">02.01.2013</td>
-<td class="org-right">0</td>
-<td class="org-right">59</td>
-<td class="org-right">22154</td>
-<td class="org-right">999</td>
-<td class="org-right">1</td>
-<td class="org-left">ЯВЛЕНИЕ 2012 (BD)</td>
-<td class="org-right">37</td>
-<td class="org-right">02</td>
-<td class="org-right">01</td>
-<td class="org-right">2013</td>
-</tr>
-<tr>
-<td class="org-right">03.01.2013</td>
-<td class="org-right">0</td>
-<td class="org-right">25</td>
-<td class="org-right">2552</td>
-<td class="org-right">899</td>
-<td class="org-right">1</td>
-<td class="org-left">DEEP PURPLE  The House Of Blue Light  LP</td>
-<td class="org-right">58</td>
-<td class="org-right">03</td>
-<td class="org-right">01</td>
-<td class="org-right">2013</td>
-</tr>
-<tr>
-<td class="org-right">05.01.2013</td>
-<td class="org-right">0</td>
-<td class="org-right">25</td>
-<td class="org-right">2552</td>
-<td class="org-right">899</td>
-<td class="org-right">-1</td>
-<td class="org-left">DEEP PURPLE  The House Of Blue Light  LP</td>
-<td class="org-right">58</td>
-<td class="org-right">05</td>
-<td class="org-right">01</td>
-<td class="org-right">2013</td>
-</tr>
-<tr>
-<td class="org-right">06.01.2013</td>
-<td class="org-right">0</td>
-<td class="org-right">25</td>
-<td class="org-right">2554</td>
-<td class="org-right">1709.05</td>
-<td class="org-right">1</td>
-<td class="org-left">DEEP PURPLE  Who Do You Think We Are  LP</td>
-<td class="org-right">58</td>
-<td class="org-right">06</td>
-<td class="org-right">01</td>
-<td class="org-right">2013</td>
-</tr>
-<tr>
-<td class="org-right">15.01.2013</td>
-<td class="org-right">0</td>
-<td class="org-right">25</td>
-<td class="org-right">2555</td>
-<td class="org-right">1099</td>
-<td class="org-right">1</td>
-<td class="org-left">DEEP PURPLE 30 Very Best Of 2CD (Фирм.)</td>
-<td class="org-right">56</td>
-<td class="org-right">15</td>
-<td class="org-right">01</td>
-<td class="org-right">2013</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org8bab984" class="outline-2">
-<h2 id="org8bab984">Saving the Super Set</h2>
-<div class="outline-text-2" id="text-org8bab984">
-<div class="highlight"><pre><span></span>Helpers.pickle_it(super_set, Pickles.super_set)
-</pre></div>
-</div>
-</div>
-
-<div id="outline-container-org74f6aae" class="outline-2">
-<h2 id="org74f6aae">Setting up the Training and Validation Data</h2>
-<div class="outline-text-2" id="text-org74f6aae">
-<p>
-Although I went through the trouble of smashing all the values into one Data Frame, it turns out that I need things grouped by month, and doing the grouping after adding the columns just make it messy, so I'm going to back-track a little here to set up the data we need for training and testing.
-</p>
-</div>
-
-<div id="outline-container-org513b8f7" class="outline-3">
-<h3 id="org513b8f7">The Grouper</h3>
-<div class="outline-text-3" id="text-org513b8f7">
-<p>
-Since I'm going to aggregate by the month (really the <code>date_block_num</code>), leaving in things like the price doesn't really make sense so I'll make a sub-frame that I can group.
-</p>
-<div class="highlight"><pre><span></span>grouper = super_set[[DataKeys.date_block, DataKeys.shop, DataKeys.item, DataKeys.day_count]].copy()
-grouped = grouper.groupby([DataKeys.date_block, DataKeys.shop, DataKeys.item]).sum()
-</pre></div>
-
-<div class="highlight"><pre><span></span>chunked = grouped.reset_index()
-chunked.rename(columns={DataKeys.day_count: DataKeys.month_count}, inplace=True)
-print(chunked.head())
-</pre></div>
-
-<p>
-   date_block_num  shop_id  item_id  item_count_month
-0               0        0       32               6.0
-1               0        0       33               3.0
-2               0        0       35               1.0
-3               0        0       43               1.0
-4               0        0       51               2.0
-   date_block_num  shop_id  item_id  item_count_month
-0               0        0       32               6.0
-1               0        0       33               3.0
-2               0        0       35               1.0
-3               0        0       43               1.0
-4               0        0       51               2.0
-</p>
-</div>
-</div>
-
-<div id="outline-container-org74f5536" class="outline-3">
-<h3 id="org74f5536">Adding the Columns Back</h3>
-<div class="outline-text-3" id="text-org74f5536">
-<p>
-Since there are multiple entries for items in a given month, I'm going to group the items by shop and date-block (month) and then grab the last entry for each group. I'm also going to delete the <i>date</i> column since we don't really need it.
-</p>
-
-<div class="highlight"><pre><span></span>del(super_set["date"])
-</pre></div>
-
-<div class="highlight"><pre><span></span>super_group = super_set.groupby([DataKeys.date_block, DataKeys.shop, DataKeys.item]).last()
-super_group = super_group.reset_index()
-</pre></div>
-
-<div class="highlight"><pre><span></span>Helpers.print_head(super_group, True)
-</pre></div>
-
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-<colgroup>
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-<col class="org-left">
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-</colgroup>
-<thead><tr>
-<th scope="col" class="org-right"> </th>
-<th scope="col" class="org-right">date_block_num</th>
-<th scope="col" class="org-right">shop_id</th>
-<th scope="col" class="org-right">item_id</th>
-<th scope="col" class="org-right">item_price</th>
-<th scope="col" class="org-right">item_cnt_day</th>
-<th scope="col" class="org-left">item_name</th>
-<th scope="col" class="org-right">item_category_id</th>
-<th scope="col" class="org-right">day</th>
-<th scope="col" class="org-right">month</th>
-<th scope="col" class="org-right">year</th>
-</tr></thead>
-<tbody>
-<tr>
-<td class="org-right">0</td>
-<td class="org-right">0</td>
-<td class="org-right">0</td>
-<td class="org-right">32</td>
-<td class="org-right">221</td>
-<td class="org-right">1</td>
-<td class="org-left">1+1</td>
-<td class="org-right">40</td>
-<td class="org-right">31</td>
-<td class="org-right">01</td>
-<td class="org-right">2013</td>
-</tr>
-<tr>
-<td class="org-right">1</td>
-<td class="org-right">0</td>
-<td class="org-right">0</td>
-<td class="org-right">33</td>
-<td class="org-right">347</td>
-<td class="org-right">1</td>
-<td class="org-left">1+1 (BD)</td>
-<td class="org-right">37</td>
-<td class="org-right">28</td>
-<td class="org-right">01</td>
-<td class="org-right">2013</td>
-</tr>
-<tr>
-<td class="org-right">2</td>
-<td class="org-right">0</td>
-<td class="org-right">0</td>
-<td class="org-right">35</td>
-<td class="org-right">247</td>
-<td class="org-right">1</td>
-<td class="org-left">10 ЛЕТ СПУСТЯ</td>
-<td class="org-right">40</td>
-<td class="org-right">31</td>
-<td class="org-right">01</td>
-<td class="org-right">2013</td>
-</tr>
-<tr>
-<td class="org-right">3</td>
-<td class="org-right">0</td>
-<td class="org-right">0</td>
-<td class="org-right">43</td>
-<td class="org-right">221</td>
-<td class="org-right">1</td>
-<td class="org-left">100 МИЛЛИОНОВ ЕВРО</td>
-<td class="org-right">40</td>
-<td class="org-right">31</td>
-<td class="org-right">01</td>
-<td class="org-right">2013</td>
-</tr>
-<tr>
-<td class="org-right">4</td>
-<td class="org-right">0</td>
-<td class="org-right">0</td>
-<td class="org-right">51</td>
-<td class="org-right">127</td>
-<td class="org-right">1</td>
-<td class="org-left">100 лучших произведений классики (mp3-CD) (Digipack)</td>
-<td class="org-right">57</td>
-<td class="org-right">31</td>
-<td class="org-right">01</td>
-<td class="org-right">2013</td>
-</tr>
-</tbody>
-</table>
-<p>
-Now we need to get the category id, price, etc, back into the grouped data by merging it with the de-duplicated one we just created.
-</p>
-<div class="highlight"><pre><span></span>chunked = pandas.merge(chunked, super_group,
-		       on=[DataKeys.date_block, DataKeys.shop, DataKeys.item], how="left")
-</pre></div>
-
-
-<div class="highlight"><pre><span></span>print(chunked.head())
-</pre></div>
-
-<p>
-   date_block_num  shop_id  item_id  item_count_month  item_price  \
-0               0        0       32               6.0       221.0   
-1               0        0       33               3.0       347.0   
-2               0        0       35               1.0       247.0   
-3               0        0       43               1.0       221.0   
-4               0        0       51               2.0       127.0   
-</p>
-
-<p>
-   item_cnt_day                                          item_name  \
-0           1.0                                                1+1   
-1           1.0                                           1+1 (BD)   
-2           1.0                                      10 ЛЕТ СПУСТЯ   
-3           1.0                                 100 МИЛЛИОНОВ ЕВРО   
-4           1.0  100 лучших произведений классики (mp3-CD) (Dig…   
-</p>
-
-<p>
-   item_category_id day month  year  
-0                40  31    01  2013  
-1                37  28    01  2013  
-2                40  31    01  2013  
-3                40  31    01  2013  
-4                57  31    01  2013  
-   date_block_num  shop_id  item_id  item_count_month  item_price  \
-0               0        0       32               6.0       221.0   
-1               0        0       33               3.0       347.0   
-2               0        0       35               1.0       247.0   
-3               0        0       43               1.0       221.0   
-4               0        0       51               2.0       127.0   
-</p>
-
-<p>
-   item_cnt_day  item_category_id day month  year  
-0           1.0                40  31    01  2013  
-1           1.0                37  28    01  2013  
-2           1.0                40  31    01  2013  
-3           1.0                40  31    01  2013  
-4           1.0                57  31    01  2013  
-</p>
-
-
-<p>
-It looks like the day-count is still there, which doesn't make sense any more so I'll remove it, along with the <code>day</code> column.
-</p>
-
-<div class="highlight"><pre><span></span>del(chunked[DataKeys.day_count])
-del(chunked['day'])
-</pre></div>
-
-<div class="highlight"><pre><span></span>Helpers.print_head(chunked)
-</pre></div>
-
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-<colgroup>
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-<col class="org-left">
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-</colgroup>
-<thead><tr>
-<th scope="col" class="org-right">date_block_num</th>
-<th scope="col" class="org-right">shop_id</th>
-<th scope="col" class="org-right">item_id</th>
-<th scope="col" class="org-right">item_count_month</th>
-<th scope="col" class="org-right">item_price</th>
-<th scope="col" class="org-left">item_name</th>
-<th scope="col" class="org-right">item_category_id</th>
-<th scope="col" class="org-right">month</th>
-<th scope="col" class="org-right">year</th>
-</tr></thead>
-<tbody>
-<tr>
-<td class="org-right">0</td>
-<td class="org-right">0</td>
-<td class="org-right">32</td>
-<td class="org-right">6</td>
-<td class="org-right">221</td>
-<td class="org-left">1+1</td>
-<td class="org-right">40</td>
-<td class="org-right">01</td>
-<td class="org-right">2013</td>
-</tr>
-<tr>
-<td class="org-right">0</td>
-<td class="org-right">0</td>
-<td class="org-right">33</td>
-<td class="org-right">3</td>
-<td class="org-right">347</td>
-<td class="org-left">1+1 (BD)</td>
-<td class="org-right">37</td>
-<td class="org-right">01</td>
-<td class="org-right">2013</td>
-</tr>
-<tr>
-<td class="org-right">0</td>
-<td class="org-right">0</td>
-<td class="org-right">35</td>
-<td class="org-right">1</td>
-<td class="org-right">247</td>
-<td class="org-left">10 ЛЕТ СПУСТЯ</td>
-<td class="org-right">40</td>
-<td class="org-right">01</td>
-<td class="org-right">2013</td>
-</tr>
-<tr>
-<td class="org-right">0</td>
-<td class="org-right">0</td>
-<td class="org-right">43</td>
-<td class="org-right">1</td>
-<td class="org-right">221</td>
-<td class="org-left">100 МИЛЛИОНОВ ЕВРО</td>
-<td class="org-right">40</td>
-<td class="org-right">01</td>
-<td class="org-right">2013</td>
-</tr>
-<tr>
-<td class="org-right">0</td>
-<td class="org-right">0</td>
-<td class="org-right">51</td>
-<td class="org-right">2</td>
-<td class="org-right">127</td>
-<td class="org-left">100 лучших произведений классики (mp3-CD) (Digipack)</td>
-<td class="org-right">57</td>
-<td class="org-right">01</td>
-<td class="org-right">2013</td>
-</tr>
-</tbody>
-</table>
-<div class="highlight"><pre><span></span>print(len(chunked))
-</pre></div>
-
-<p>
-1609124
-1609124
-</p>
-
-<div class="highlight"><pre><span></span>Helpers.pickle_it(chunked, Pickles.grouped)
-</pre></div>
-
-<p>
-To make my validation and training set I'm going to use sklearn's <a href="http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html">train_test_split</a>. First we need to split the data up into inputs and targets
-</p>
-<div class="highlight"><pre><span></span>target = chunked[DataKeys.month_count].copy()
-features = chunked[chunked.columns[chunked.columns != DataKeys.month_count]].copy()
-</pre></div>
-
-<div class="highlight"><pre><span></span>print(target.shape)
-print(features.shape)
-</pre></div>
-
-<p>
-(1609124,)
-(1609124, 8)
-(1609124,)
-(1609124, 7)
-</p>
-
-<div class="highlight"><pre><span></span>x_train, x_test, y_train, y_test = train_test_split(features, target,
-						    test_size=0.2,
-						    random_state=2018)
-
-Helpers.pickle_it(x_train, Pickles.x_train)
-Helpers.pickle_it(x_test, Pickles.x_test)
-Helpers.pickle_it(y_train, Pickles.y_train)
-Helpers.pickle_it(y_test, Pickles.y_test)
-</pre></div>
-
-<div class="highlight"><pre><span></span>class TrainTest:
-    x_train = x_train
-    x_test = x_test
-    y_train = y_train
-    y_test = y_test
-</pre></div>
-
-<div class="highlight"><pre><span></span>Helpers.pickle_it(TrainTest, Pickles.train_test)
-</pre></div>
-
-<div class="highlight"><pre><span></span>print(x_train.shape)
-print(x_test.shape)
-print(y_train.shape)
-print(y_test.shape)
-</pre></div>
-
-<p>
-(1287299, 7)
-(321825, 7)
-(1287299,)
-(321825,)
-</p>
-</div>
-</div>
-</div>
     </div>
     <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
-<li><a class="tag p-category" href="../../categories/kaggle-data-exploration/" rel="tag">kaggle data exploration</a></li>
+<li><a class="tag p-category" href="../../categories/kaggle-data-exploration-competition/" rel="tag">kaggle data exploration competition</a></li>
         </ul>
 <ul class="pager hidden-print">
 <li class="previous">

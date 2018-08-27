@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about naive model competition)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/naive-model-competition.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Sat, 25 Aug 2018 20:18:42 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>First Naive Try</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/first-naive-try/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
+&lt;h2&gt;Table of Contents&lt;/h2&gt;
+&lt;div id="text-table-of-contents"&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/first-naive-try/#org09f68a6"&gt;Introduction&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/first-naive-try/#org988476c"&gt;Imports&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/first-naive-try/#org708798b"&gt;Loading the Data&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/first-naive-try/#orga228bba"&gt;The Linear Model&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org09f68a6" class="outline-2"&gt;
+&lt;h2 id="org09f68a6"&gt;Introduction&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org09f68a6"&gt;
+&lt;p&gt;
+This is going to be a naive attempt to get this project running. If you look at the &lt;a href="http://scikit-learn.org/stable/tutorial/machine_learning_map/index.html"&gt;sklearn flowchart&lt;/a&gt; and follow the path through regression with more than 100,000 samples (we have 1,287,299 entries in the training set (after splitting out the validation set from it)) you end up with two cases:
+&lt;/p&gt;
+
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;a few important features
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;lasso&lt;/li&gt;
+&lt;li&gt;electric net&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Many important Features
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;ridge regression&lt;/li&gt;
+&lt;li&gt;svr&lt;/li&gt;
+&lt;li&gt;ensemble regressors&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;
+I kind of think there won't be too many important features, although I might be wrong. This chart might not be up-to-date, since it says that the ensemble regressors don't work, but I'm pretty sure Random Forest Regression is implemented. In any case, I'm going to see what each of the models does if I just use the defaults in order to get a baseline.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org988476c" class="outline-2"&gt;
+&lt;h2 id="org988476c"&gt;Imports&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org988476c"&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# python standard library
+import warnings
+import os
+import pickle
+
+warnings.filterwarnings("ignore", message="numpy.dtype size changed")
+warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
+
+# from pypi
+import numpy
+import pandas
+from sklearn.metrics import mean_squared_error
+from sklearn.model_selection import cross_val_score
+from sklearn.ensemble import RandomTreesRegressor
+from tabulate import tabulate
+
+# this project
+from helpers.helpers import (
+    Helpers,
+    DataSource,
+    DataKeys,
+    Pickles,
+    )
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org708798b" class="outline-2"&gt;
+&lt;h2 id="org708798b"&gt;Loading the Data&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org708798b"&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;DataSource = Helpers.unpickle("DataSource")
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;
+This probably doesn't make sense anymore. Better to just get the random seed and use &lt;code&gt;train_test_split&lt;/code&gt;, maybe.
+&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;x_train = Helpers.unpickle(Pickles.x_train)
+x_test = Helpers.unpickle(Pickles.x_test)
+y_train = Helpers.unpickle(Pickles.y_train)
+y_test = Helpers.unpickle(Pickles.y_test)
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;Helpers.print_head(x_train)
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
+
+
+&lt;colgroup&gt;
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-left"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope="col" class="org-right"&gt;date_block_num&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;shop_id&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;item_id&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;item_price&lt;/th&gt;
+&lt;th scope="col" class="org-left"&gt;item_name&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;item_category_id&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;month&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;year&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class="org-right"&gt;11&lt;/td&gt;
+&lt;td class="org-right"&gt;15&lt;/td&gt;
+&lt;td class="org-right"&gt;1324&lt;/td&gt;
+&lt;td class="org-right"&gt;499&lt;/td&gt;
+&lt;td class="org-left"&gt;ARMSTRONG LOUIS  Essential Collection  3CD&lt;/td&gt;
+&lt;td class="org-right"&gt;55&lt;/td&gt;
+&lt;td class="org-right"&gt;12&lt;/td&gt;
+&lt;td class="org-right"&gt;2013&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;18&lt;/td&gt;
+&lt;td class="org-right"&gt;31&lt;/td&gt;
+&lt;td class="org-right"&gt;19981&lt;/td&gt;
+&lt;td class="org-right"&gt;499&lt;/td&gt;
+&lt;td class="org-left"&gt;Толстой Л.Н.  Война и мир  Роман-эпопея  4CD (mp3-CD) (Jewel)&lt;/td&gt;
+&lt;td class="org-right"&gt;43&lt;/td&gt;
+&lt;td class="org-right"&gt;07&lt;/td&gt;
+&lt;td class="org-right"&gt;2014&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;32&lt;/td&gt;
+&lt;td class="org-right"&gt;28&lt;/td&gt;
+&lt;td class="org-right"&gt;7934&lt;/td&gt;
+&lt;td class="org-right"&gt;398&lt;/td&gt;
+&lt;td class="org-left"&gt;XOne: Пульт дистанционного управления для Xbox One [6DV-00006]&lt;/td&gt;
+&lt;td class="org-right"&gt;7&lt;/td&gt;
+&lt;td class="org-right"&gt;09&lt;/td&gt;
+&lt;td class="org-right"&gt;2015&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;12&lt;/td&gt;
+&lt;td class="org-right"&gt;43&lt;/td&gt;
+&lt;td class="org-right"&gt;13518&lt;/td&gt;
+&lt;td class="org-right"&gt;1499&lt;/td&gt;
+&lt;td class="org-left"&gt;Комплект Прогулки с динозаврами (только для PS Move) [PS3, русская версия] + Wonderbook&lt;/td&gt;
+&lt;td class="org-right"&gt;19&lt;/td&gt;
+&lt;td class="org-right"&gt;01&lt;/td&gt;
+&lt;td class="org-right"&gt;2014&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;28&lt;/td&gt;
+&lt;td class="org-right"&gt;25&lt;/td&gt;
+&lt;td class="org-right"&gt;19927&lt;/td&gt;
+&lt;td class="org-right"&gt;329&lt;/td&gt;
+&lt;td class="org-left"&gt;Таривердиев М. Инструментальные кинохиты (подар. уп.) (mp3-CD) (Jewel)&lt;/td&gt;
+&lt;td class="org-right"&gt;57&lt;/td&gt;
+&lt;td class="org-right"&gt;05&lt;/td&gt;
+&lt;td class="org-right"&gt;2015&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-orga228bba" class="outline-2"&gt;
+&lt;h2 id="orga228bba"&gt;The Linear Model&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orga228bba"&gt;
+&lt;p&gt;
+What happens if we just use the default linear regression model? The first problem we have is that we have both non-numeric data and categorical data. I think removing the &lt;code&gt;item_name&lt;/code&gt; variable seems reasonable at this point, since we have unique &lt;code&gt;item_id&lt;/code&gt; values for each item, although it's possible that some text-mining might reveal something in the names, because this is just a naive approach that will use linear regression.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;del(x_train[DataKeys.name])
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;regression = linear_model.LinearRegression()
+regression.fit(x_train, y_train)
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description><category>naive model competition</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/first-naive-try/</guid><pubDate>Sun, 12 Aug 2018 02:37:37 GMT</pubDate></item></channel></rss>
