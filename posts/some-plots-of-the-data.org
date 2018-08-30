@@ -27,6 +27,7 @@ import seaborn
 
 #+BEGIN_SRC ipython :session plotting :results none
 %matplotlib inline
+seaborn.set_style("whitegrid")
 #+END_SRC
 
 ** This project
@@ -86,7 +87,7 @@ grid = seaborn.catplot(ax=axis, x=DataKeys.date_block, kind="count", data=x_trai
 
 #+RESULTS:
 :RESULTS:
-# Out[80]:
+# Out[51]:
 [[file:../files/posts/some-plots-of-the-data/date_block.png]]
 :END:
 
@@ -104,7 +105,7 @@ grid = seaborn.relplot(x=DataKeys.date_block, y=DataKeys.target, ax=axis,
 
 #+RESULTS:
 :RESULTS:
-# Out[81]:
+# Out[8]:
 [[file:../files/posts/some-plots-of-the-data/date_block_vs_count.png]]
 :END:
 
@@ -118,15 +119,31 @@ month_summed = month_grouped.sum().reset_index()
 #+END_SRC
 
 #+BEGIN_SRC ipython :session plotting :results raw drawer :ipyfile ../files/posts/some-plots-of-the-data/month_vs_count.png
+top_two = month_summed.sort_values(DataKeys.target, ascending=False)[:2]
 figure, axis = make_figure_and_axis("Month", "Count", "Items Sold Per Month",
                                     figsize=(12,10))
-pyplot.xticks(rotation=45)
+
+pyplot.xticks(rotation=45, ha="right")
 grid = seaborn.relplot(x=DataKeys.date, y=DataKeys.target, data=month_summed,
                        ax=axis, kind="line")
+axis.axvline(top_two.index[0], color='r')
+line = axis.axvline(top_two.index[1], color='r')
 #+END_SRC
 
 #+RESULTS:
 :RESULTS:
-# Out[91]:
+# Out[52]:
 [[file:../files/posts/some-plots-of-the-data/month_vs_count.png]]
 :END:
+
+#+BEGIN_SRC ipython :session plotting :results output raw :exports both
+Helpers.print_table(top_two[[DataKeys.date, DataKeys.target]])
+#+END_SRC
+
+#+RESULTS:
+|    |    Date | Month Count |
+|----+---------+-------------|
+| 11 | 2013-12 |      147909 |
+| 23 | 2014-12 |      134785 |
+
+Perhaps not surprisingly, the month of December, when holiday sales spike, is the month with the most sales.
