@@ -8,6 +8,8 @@
 .. description: 
 .. type: text
 #+END_COMMENT
+#+OPTIONS: ^:{}
+#+TOC: headlines 1
 
 * Introduction
   This is a post to do some basic pre-processing on the data. It won't do anything fancy (i.e. no Feature Engineering), but will just get the data ready to be used by the models. In particular, the rules say that the test data target will be limited to a range and the features are categorical so we need to transform them for non-tree models.
@@ -23,6 +25,12 @@
 #+END_SRC
 
 * Imports
+#+BEGIN_SRC ipython :session preprocessing :results none :noweb-ref suppress-warnings
+import warnings
+warnings.filterwarnings("ignore", message="numpy.dtype size changed")
+warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
+#+END_SRC
+
 ** From pypi
 #+BEGIN_SRC ipython :session preprocessing :results none :noweb-ref pypi-imports
 import matplotlib.pyplot as pyplot

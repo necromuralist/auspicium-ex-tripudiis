@@ -1,0 +1,132 @@
+#+BEGIN_COMMENT
+.. title: Some Plots of the Data
+.. slug: some-plots-of-the-data
+.. date: 2018-08-29 14:19:26 UTC-07:00
+.. tags: competition plotting data
+.. category: competition
+.. link: 
+.. description: Some plots of the data.
+.. type: text
+#+END_COMMENT
+#+OPTIONS: ^:{}
+#+TOC: headlines 1
+
+* Imports
+#+BEGIN_SRC ipython :session plotting :results none
+import warnings
+warnings.filterwarnings("ignore", message="numpy.dtype size changed")
+warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
+#+END_SRC
+
+** From pypi
+#+BEGIN_SRC ipython :session plotting :results none
+import matplotlib.pyplot as pyplot
+import numpy
+import seaborn
+#+END_SRC
+
+#+BEGIN_SRC ipython :session plotting :results none
+%matplotlib inline
+#+END_SRC
+
+** This project
+#+BEGIN_SRC ipython :session plotting :results none
+from kaggler.helpers.build_training_data import Pickles
+from kaggler.helpers.helpers import (
+    DataKeys,
+    Helpers,
+    )
+#+END_SRC
+
+* Build the data
+
+#+BEGIN_SRC ipython :session plotting :results output raw :exports both
+x_train = Helpers.unpickle(Pickles.x_train)
+y_train = Helpers.unpickle(Pickles.y_train)
+DataKeys.target = "Month Count"
+x_train[DataKeys.target] = y_train.values
+Helpers.print_head(x_train)
+#+END_SRC
+
+#+RESULTS:
+| date_block_num | shop_id | item_id | item_price | item_category_id | month | year | Month Count |
+|----------------+---------+---------+------------+------------------+-------+------+-------------|
+|             11 |      15 |    1324 |        499 |               55 |    12 | 2013 |           1 |
+|             18 |      31 |   19981 |        499 |               43 |    07 | 2014 |           2 |
+|             32 |      28 |    7934 |        398 |                7 |    09 | 2015 |           1 |
+|             12 |      43 |   13518 |       1499 |               19 |    01 | 2014 |           1 |
+|             28 |      25 |   19927 |        329 |               57 |    05 | 2015 |           2 |
+* More Helpers
+
+#+BEGIN_SRC ipython :session plotting :results none
+def make_figure_and_axis(x_label, y_label, title, figsize=(10, 8)):
+    """make a matplotlib figure
+
+    Args:
+     x_label (str): label for the x-axis
+     y_label (str): label for the y-axis
+     title (str): title for the plot
+     figsize: tuple of width, height
+    Returns:
+     tuple: figure, axis
+    """
+    figure = pyplot.figure(figsize=figsize)
+    axe = figure.gca()
+    axe.set_xlabel(x_label)
+    axe.set_ylabel(y_label)
+    axe.set_title(title)
+    return figure, axe
+#+END_SRC
+* Features vs Target
+
+#+BEGIN_SRC ipython :session plotting :results raw drawer :ipyfile ../files/posts/some-plots-of-the-data/date_block.png
+figure, axis = make_figure_and_axis("Date Block", "Count", "Date-Block Counts")
+grid = seaborn.catplot(ax=axis, x=DataKeys.date_block, kind="count", data=x_train)
+#+END_SRC
+
+#+RESULTS:
+:RESULTS:
+# Out[80]:
+[[file:../files/posts/some-plots-of-the-data/date_block.png]]
+:END:
+
+The counts represent the number of shop-product pairs per-month, which isn't really what we want. We want the count per-product per month. As an intermediary step, why don't we look at the total count as it changes over time.
+
+#+BEGIN_SRC ipython :session plotting :results raw drawer :ipyfile ../files/posts/some-plots-of-the-data/date_block_vs_count.png
+date_group = x_train.groupby(DataKeys.date_block)
+summed = date_group.sum()
+summed = summed.reset_index()
+figure, axis = make_figure_and_axis("Date Block", "Monthly Count",
+                                    "Total Items Sold Per Month")
+grid = seaborn.relplot(x=DataKeys.date_block, y=DataKeys.target, ax=axis,
+                       data=summed, kind="line")
+#+END_SRC
+
+#+RESULTS:
+:RESULTS:
+# Out[81]:
+[[file:../files/posts/some-plots-of-the-data/date_block_vs_count.png]]
+:END:
+
+This seems to indicate that sales are going down overall over time. Those spikes are interesting, maybe the months would be interesting. First we need to re-join the month and year together so the sorting of the x-axis will work okay.
+
+#+BEGIN_SRC ipython :session plotting :results none
+DataKeys.date = "Date"
+x_train[DataKeys.date] = x_train.year + "-" + x_train.month
+month_grouped = x_train.groupby(DataKeys.date)
+month_summed = month_grouped.sum().reset_index()
+#+END_SRC
+
+#+BEGIN_SRC ipython :session plotting :results raw drawer :ipyfile ../files/posts/some-plots-of-the-data/month_vs_count.png
+figure, axis = make_figure_and_axis("Month", "Count", "Items Sold Per Month",
+                                    figsize=(12,10))
+pyplot.xticks(rotation=45)
+grid = seaborn.relplot(x=DataKeys.date, y=DataKeys.target, data=month_summed,
+                       ax=axis, kind="line")
+#+END_SRC
+
+#+RESULTS:
+:RESULTS:
+# Out[91]:
+[[file:../files/posts/some-plots-of-the-data/month_vs_count.png]]
+:END:
