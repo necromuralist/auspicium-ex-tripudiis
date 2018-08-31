@@ -79,7 +79,7 @@ def make_figure_and_axis(x_label, y_label, title, figsize=(10, 8)):
     return figure, axe
 #+END_SRC
 * Features vs Target
-
+** Date Block
 #+BEGIN_SRC ipython :session plotting :results raw drawer :ipyfile ../files/posts/some-plots-of-the-data/date_block.png
 figure, axis = make_figure_and_axis("Date Block", "Count", "Date-Block Counts")
 grid = seaborn.catplot(ax=axis, x=DataKeys.date_block, kind="count", data=x_train)
@@ -87,7 +87,7 @@ grid = seaborn.catplot(ax=axis, x=DataKeys.date_block, kind="count", data=x_trai
 
 #+RESULTS:
 :RESULTS:
-# Out[51]:
+# Out[12]:
 [[file:../files/posts/some-plots-of-the-data/date_block.png]]
 :END:
 
@@ -105,7 +105,7 @@ grid = seaborn.relplot(x=DataKeys.date_block, y=DataKeys.target, ax=axis,
 
 #+RESULTS:
 :RESULTS:
-# Out[8]:
+# Out[13]:
 [[file:../files/posts/some-plots-of-the-data/date_block_vs_count.png]]
 :END:
 
@@ -147,3 +147,82 @@ Helpers.print_table(top_two[[DataKeys.date, DataKeys.target]])
 | 23 | 2014-12 |      134785 |
 
 Perhaps not surprisingly, the month of December, when holiday sales spike, is the month with the most sales.
+** Shop
+
+#+BEGIN_SRC ipython :session plotting :results none
+group = x_train.groupby(DataKeys.shop).sum().reset_index().sort_values(DataKeys.target)
+#+END_SRC
+
+
+#+BEGIN_SRC ipython :session plotting :results raw drawer :ipyfile ../files/posts/some-plots-of-the-data/shop_counts.png
+figure, axis = make_figure_and_axis("Shop", "Count", "Shop Sales For Total Time")
+grid = seaborn.relplot(x=DataKeys.shop, y=DataKeys.target, data=group,
+                       ax=axis)
+#+END_SRC
+
+#+RESULTS:
+:RESULTS:
+# Out[45]:
+[[file:../files/posts/some-plots-of-the-data/shop_counts.png]]
+:END:
+
+There appears to be seven or eight shops that dominate the sales.
+
+** Item Category
+
+#+BEGIN_SRC ipython :session plotting :results none
+group = x_train.groupby(DataKeys.item_category).sum().reset_index()
+#+END_SRC
+
+#+BEGIN_SRC ipython :session plotting :results raw drawer :ipyfile ../files/posts/some-plots-of-the-data/category_sales.png
+figure, axis = make_figure_and_axis("Category", "Count", "Category Sales For Total Time")
+grid = seaborn.relplot(x=DataKeys.item_category, y=DataKeys.target, data=group,
+                       ax=axis)
+#+END_SRC
+
+#+RESULTS:
+:RESULTS:
+# Out[46]:
+[[file:../files/posts/some-plots-of-the-data/category_sales.png]]
+:END:
+
+Some kind of weirdly coincidental linear relationship between the category ID and the total sales. 
+
+** Biggest Over Time
+*** Category
+
+#+BEGIN_SRC ipython :session plotting :results raw drawer :ipyfile ../files/posts/some-plots-of-the-data/max_category.png
+category_group = x_train.groupby([DataKeys.date, DataKeys.item_category]).sum().reset_index()
+biggest = category_group.iloc[category_group[DataKeys.target].idxmax()]
+biggest_category = category_group[category_group.item_category_id == biggest.item_category_id]
+figure, axis = make_figure_and_axis("Month", "Count", "Category {} Sales For Total Time".format(biggest[DataKeys.item_category]))
+pyplot.xticks(rotation=45, ha="right")
+grid = seaborn.relplot(x=DataKeys.date, y=DataKeys.target, data=biggest_category,
+                       ax=axis, kind="line")
+#+END_SRC
+
+#+RESULTS:
+:RESULTS:
+# Out[86]:
+[[file:../files/posts/some-plots-of-the-data/max_category.png]]
+:END:
+
+Even the most popular item declines over time.
+
+#+BEGIN_SRC ipython :session plotting :results output raw :exports both
+big = biggest_category[DataKeys.target]
+big_max = big.max()
+big_min = big.min()
+difference = big_max - big_min
+print("Max: {}".format(big_max))
+print("Min: {}".format(big_min))
+print("Difference: {}".format(difference))
+print("Percent Decline: {:.1f} %".format(100 * (difference/big_max)))
+#+END_SRC
+
+#+RESULTS:
+Max: 28987.0
+Min: 5413.0
+Difference: 23574.0
+Percent Decline: 81.3 %
+
