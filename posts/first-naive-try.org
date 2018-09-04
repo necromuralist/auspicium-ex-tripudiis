@@ -11,35 +11,35 @@
 #+OPTIONS: ^:{}
 #+TOC: headlines 1
 * Introduction
-  This is going to be a naive attempt to get this project running. If you look at the [[http://scikit-learn.org/stable/tutorial/machine_learning_map/index.html][sklearn flowchart]] and follow the path through regression with more than 100,000 samples (we have 1,287,299 entries in the training set (after splitting out the validation set from it)) you end up with two cases:
-
-  + a few important features
-    - lasso
-    - electric net
-  + Many important Features
-    - ridge regression
-    - svr
-    - ensemble regressors
-
-I kind of think there won't be too many important features, although I might be wrong. This chart might not be up-to-date, since it says that the ensemble regressors don't work, but I'm pretty sure Random Forest Regression is implemented. In any case, I'm going to see what each of the models does if I just use the defaults in order to get a baseline.
+  Our goal is to predict the number of sales for each shop for November 2015 (based on the prior months). I'm going to make some very naive guesses here with some models that only use the prior dates and the target counts.
 * Imports
+** Python Standard Library
 #+BEGIN_SRC ipython :session naive :results none
 # python standard library
 import warnings
 import os
 import pickle
+#+END_SRC
 
+** Supress the Warnings
+#+BEGIN_SRC ipython :session naive :results none
 warnings.filterwarnings("ignore", message="numpy.dtype size changed")
 warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
+#+END_SRC
 
-# from pypi
+** From pypi
+
+#+BEGIN_SRC ipython :session naive :results none
 import numpy
 import pandas
 from sklearn.metrics import mean_squared_error
 from sklearn.model_selection import cross_val_score
 from sklearn.ensemble import RandomTreesRegressor
 from tabulate import tabulate
+#+END_SRC
 
+** This Project
+#+BEGIN_SRC ipython :session naive :results none
 # this project
 from helpers.helpers import (
     Helpers,
@@ -51,15 +51,18 @@ from helpers.helpers import (
 * Loading the Data
 
 #+BEGIN_SRC ipython :session naive :results none
-DataSource = Helpers.unpickle("DataSource")
-#+END_SRC
-
-This probably doesn't make sense anymore. Better to just get the random seed and use =train_test_split=, maybe.
-#+BEGIN_SRC ipython :session naive :results none
 x_train = Helpers.unpickle(Pickles.x_train)
 x_test = Helpers.unpickle(Pickles.x_test)
 y_train = Helpers.unpickle(Pickles.y_train)
 y_test = Helpers.unpickle(Pickles.y_test)
+#+END_SRC
+
+To make it easier to filter I'm going to combine the x and y data.
+
+#+BEGIN_SRC ipython :session naive :results none
+DataKeys.target = "Month Count"
+x_train[DataKeys.target] = y_train.values
+x_test[DataKeys.target] = y_test.values
 #+END_SRC
 
 #+BEGIN_SRC ipython :session naive :results output raw :exports both
@@ -67,14 +70,23 @@ Helpers.print_head(x_train)
 #+END_SRC
 
 #+RESULTS:
-| date_block_num | shop_id | item_id | item_price | item_name                                                                               | item_category_id | month | year |
-|----------------+---------+---------+------------+-----------------------------------------------------------------------------------------+------------------+-------+------|
-|             11 |      15 |    1324 |        499 | ARMSTRONG LOUIS  Essential Collection  3CD                                              |               55 |    12 | 2013 |
-|             18 |      31 |   19981 |        499 | Толстой Л.Н.  Война и мир  Роман-эпопея  4CD (mp3-CD) (Jewel)                           |               43 |    07 | 2014 |
-|             32 |      28 |    7934 |        398 | XOne: Пульт дистанционного управления для Xbox One [6DV-00006]                          |                7 |    09 | 2015 |
-|             12 |      43 |   13518 |       1499 | Комплект Прогулки с динозаврами (только для PS Move) [PS3, русская версия] + Wonderbook |               19 |    01 | 2014 |
-|             28 |      25 |   19927 |        329 | Таривердиев М. Инструментальные кинохиты (подар. уп.) (mp3-CD) (Jewel)                  |               57 |    05 | 2015 |
+| date_block_num | shop_id | item_id | item_price | item_category_id | month | year | Month Count |
+|----------------+---------+---------+------------+------------------+-------+------+-------------|
+|             11 |      15 |    1324 |        499 |               55 |    12 | 2013 |           1 |
+|             18 |      31 |   19981 |        499 |               43 |    07 | 2014 |           2 |
+|             32 |      28 |    7934 |        398 |                7 |    09 | 2015 |           1 |
+|             12 |      43 |   13518 |       1499 |               19 |    01 | 2014 |           1 |
+|             28 |      25 |   19927 |        329 |               57 |    05 | 2015 |           2 |
+* November Only
+What happens if we only use the month of November in the data?
 
+#+BEGIN_SRC ipython :session naive :results none
+training = x_train[x_train.month == "11"]
+#+END_SRC
+
+#+BEGIN_SRC ipython :session naive :results output raw :exports both
+
+#+END_SRC
 * The Linear Model
   What happens if we just use the default linear regression model? The first problem we have is that we have both non-numeric data and categorical data. I think removing the =item_name= variable seems reasonable at this point, since we have unique =item_id= values for each item, although it's possible that some text-mining might reveal something in the names, because this is just a naive approach that will use linear regression.
 

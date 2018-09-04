@@ -23,5 +23,100 @@
      + Inverse Document Frequency: Normalize columns to make emphasize more important features
      + Sklearn implements this with [[http://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html][TfidVectorizer]]
 **** N-Grams
-     This m
+     This method that creates a bag of words by grouping them into sub-sequences of words. A 3-gram, for instance, sweeps the text to create sequences of words made up of 3 adjacent words.
+     - [[http://sklearn.feature_extraction.text.CountVectorizer][Count Vectorizer]] is sklearn's implementation
+**** Text Preprocessing
+   - lowercase
+     Change all the words to lower-case
+   - lemmatization
+     Try to reduce word to a common case (e.g. democratization, democracy, democratic all become democracy)
+   - stemming
+     Try to reduce word to a root (e.g. democratization, democracy, democratic all become democ)
+   - stopwords
+     Remove common words (e.g. a, and, or, etc.)       
+**** The Bag Of Words Pipeline
+     1. Preprocessing (lowercase, lemmatization, stemming, stopwords)
+     2. Create n-grams
+     3. Postprocessing: TF/IDF
 *** Embeddings (e.g. Word2Vec)
+    - Uses neural-nets
+    - much smaller vectors than bag of words
+    - But each word gets a vector so many more vectors
+    - similar words have similar word-vectors
+* Practice Quiz
+** One
+   TF-IDF is applied to a matrix where each column represents a word, each row represents a document, and each value shows the number of times a particular word occurred in a particular document. Choose the correct statements.
+   - [X] IDF scales features inversely proprotionally to a number of word occurrences over documents
+   - [ ] IDF scales features proportionally to the frequency of the a word's occurrences
+   - [X] TF normalizes sums of the row values to 1
+   - [ ] TF normalizes sums of the column values to 1
+** Two
+   Which of these methods can be used to preprocess text?
+   - [X] stemming
+   - [X] Lower-case transformation
+   - [X] Lemmatization
+   - [X] Stopword removal
+   - [ ] Levenshteining
+   - [ ] plumping
+   - [ ] plumbing
+** Three
+   What is the main purpose of lemmatization and stemming?
+   - [ ] to remove words which are not useful
+   - [X] to remove inflectional forms and sometimes derivationally related forms of a word to a common base form
+   - [ ] To reduce the significance of common words
+   - [ ] to induce common word amplification standards to the most useful for machine learning algorithms form
+** Four
+   To learn Word2Vec embeddings we need:
+   - [ ] GloVe embeddings
+   - [ ] Labels for the documents in the corpora
+   - [X] Labels for each word in the documents in the corpora
+   - [X] Text corpora
+* Quiz
+** One
+   Select true statements about n-grams.
+   - [ ] Levenshteining should always be applied before computing n-grams (there is no such thing as Levenshteining)
+   - [ ] n-grams always help increase significance of important words (n-grams are about counts, not importance)
+   - [X] n-grams features are typically sparse (n-grams count occurrences of words and not every word will be found in every document)
+   - [X] n-grams can help utilize local context around each word (n-grams encode sequences of words)
+** Two
+   Select the true statements.
+   - [X] Bag of words usually produces longer vectors than Word2Vec (The number of features with BOW is equal to the number of unique words, Word2Vec limit is set beforehand)
+   - [X] Semantically similar words usually have similar word2vec embeddings
+   - [ ] You do not need bag of words features in a competition if you have word2vec features (both approaches are useful and can work together)
+    - [ ] The meaning of each value in the Bag of Words matrix is unknown (The meaning of each value is how many times it occurred)
+** Three
+   Suppose in a new competition we are given a dataset of 2D medical images. We want to extract image descriptors from a hidden layer of a neural network pretrained on the ImageNet dataset. We will then use extracted descriptors to train a simple logistic regression model to classify images from our dataset.
+
+   We are considering using two networks: ResNet-50 with an ImageNet accuracy of X and VGG-16 with an ImageNet accuracy of Y (X < Y). Select the true statements.
+
+   - [ ] With one pretrained CNN model you can get only one vector of descriptors for an image
+   - [ ] Descriptors from ResNet 50 will always be better than the ones from VG-16 in our pipeline
+   - [X] It is not clear what descriptors are better on our dataset. We should evaluate both.
+     - [ ] Descriptors from ResNet-50 and VGG-16 are always very similar in cosine distance
+     - [ ] For any image, descriptors from the last hidden layer of ResNet-50 are the same as the descriptors from the last hidden layer of VGG-16
+** Four
+   Data augmentation can be used at (1) train time and (2) test time
+   - [ ] True, False
+   - [ ] False, True
+   - [X] True, True
+   - [ ] False, False
+* Links
+** Text
+*** Bag Of Words
+    - [[http://scikit-learn.org/stable/modules/feature_extraction.html][SKlearn on feature extraction]]
+    - [[https://andhint.github.io/machine-learning/nlp/Feature-Extraction-From-Text/][blog post]] on extracting features from text
+*** Word2Vec
+    - [[https://www.tensorflow.org/tutorials/representation/word2vec][TensorFlow tutorial]]
+    - [[https://rare-technologies.com/word2vec-tutorial/][Blog post tutorial]] by the author of gensim
+    - [[https://nadbordrozd.github.io/blog/2016/05/20/text-classification-with-word2vec/][Text Classification post]]
+    - [[https://taylorwhitten.github.io/blog/word2vec][Another introduction]]
+*** Natural Language Processing with Python
+    - [[http://www.nltk.org/][nltk]]
+    - [[https://textblob.readthedocs.io/en/dev/][TextBlob]]
+** Images
+*** Pre-trained Models
+    - [[https://keras.io/applications/][Keras]]
+    - [[https://www.kernix.com/blog/image-classification-with-a-pre-trained-deep-neural-network_p11][How To use a pre-trained model]]
+*** Fine-Tuning
+    - [[https://www.tensorflow.org/hub/tutorials/image_retraining][Re-train a tensorflow image classifier]]
+    - [[https://flyyufelix.github.io/2016/10/08/fine-tuning-in-keras-part2.html][Fine-tuning deep learning models in keras]]
