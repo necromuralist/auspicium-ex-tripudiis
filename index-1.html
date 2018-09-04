@@ -82,7 +82,2227 @@
 
     
 <div class="postindex">
-    <article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/machine-learning-recap/" class="u-url">Machine Learning Recap</a></h1>
+    <article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/feature-preprocessing/" class="u-url">Feature Preprocessing</a></h1>
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                Cloistered Monkey
+            </span></p>
+            <p class="dateline"><a href="posts/feature-preprocessing/" rel="bookmark"><time class="published dt-published" datetime="2018-08-07T21:41:10-07:00" title="2018-08-07 21:41">2018-08-07 21:41</time></a></p>
+        </div>
+    </header><div class="e-content entry-content">
+    <div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="posts/feature-preprocessing/#org02e9aab">Preprocessing</a></li>
+<li><a href="posts/feature-preprocessing/#orgd328052">Numeric Feature Preprocessing</a></li>
+<li><a href="posts/feature-preprocessing/#orgb26fe51">Categorical And Ordinal Features</a></li>
+<li><a href="posts/feature-preprocessing/#org9e98319">Dates and Times</a></li>
+<li><a href="posts/feature-preprocessing/#org6778d35">Coordinates</a></li>
+<li><a href="posts/feature-preprocessing/#orgc44ddc3">Missing Data</a></li>
+<li><a href="posts/feature-preprocessing/#orgd645cf5">Links</a></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org02e9aab" class="outline-2">
+<h2 id="org02e9aab">Preprocessing</h2>
+<div class="outline-text-2" id="text-org02e9aab">
+<p>
+In every competition you need to:
+</p>
+
+<ul class="org-ul">
+<li>pre-process the data</li>
+<li>generate new features from the existing ones</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgd328052" class="outline-2">
+<h2 id="orgd328052">Numeric Feature Preprocessing</h2>
+<div class="outline-text-2" id="text-orgd328052">
+<p>
+Some models (e.g. Linear Classification) need you to convert numeric-looking data to categorical data. Tree-based models don't need pre-processing as much as non tree-based models do.
+</p>
+</div>
+
+<div id="outline-container-org53b35fd" class="outline-3">
+<h3 id="org53b35fd">Scaling</h3>
+<div class="outline-text-3" id="text-org53b35fd">
+<p>
+If features have different value ranges then the model will  treat them differently.
+</p>
+<ul class="org-ul">
+<li>
+<a href="http://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.MinMaxScaler.html">sklearn.preprocessing.MinMaxScalar</a>
+Scale by the range of values</li>
+<li>
+<a href="http://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html">sklearn.preprocessing.StandardScalar</a>
+Scale the data to have a mean of 0 and a standard deviation of 1</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org5a81a46" class="outline-3">
+<h3 id="org5a81a46">Outliers</h3>
+<div class="outline-text-3" id="text-org5a81a46">
+<ul class="org-ul">
+<li>Clip (<a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.clip.html">numpy.clip</a>)values to get rid of unusual values that mess with the model. (Winsorization)</li>
+<li>Rank Transform them (<a href="https://docs.scipy.org/doc/scipy-0.16.0/reference/generated/scipy.stats.rankdata.html">scipy.stats.rankdata</a>) so that they</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org9a96563" class="outline-3">
+<h3 id="org9a96563">Transformation</h3>
+<div class="outline-text-3" id="text-org9a96563">
+<p>
+For linear models and neural networks, transforming the data can sometimes help.
+</p>
+<ul class="org-ul">
+<li>Log Transform: <a href="https://duckduckgo.com/?q=numpy+log&amp;t=canonical&amp;ia=web">numpy.log(1 + x)</a>
+</li>
+<li>Power Less Than 1 Transform: <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.sqrt.html">numpy.sqrt(x + 2/3)</a>
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org52607ae" class="outline-3">
+<h3 id="org52607ae">Feature Generation</h3>
+<div class="outline-text-3" id="text-org52607ae">
+<p>
+Sometimes you can convert separate columns to get new ones. This requires exploratory data analysis.
+</p>
+<ul class="org-ul">
+<li>Fractional Parts: people perceive numbers with fractions differently so sometime separating out the fractional part makes the model perform better because it is the more important part</li>
+<li>You can derive new values mathematically (e.g. distance using height and width)</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgb26fe51" class="outline-2">
+<h2 id="orgb26fe51">Categorical And Ordinal Features</h2>
+<div class="outline-text-2" id="text-orgb26fe51">
+<ul class="org-ul">
+<li>Ordinal Features have an ordering but even if they are labeled numerically (e.g. 1, 2, 3) they aren't numeric because there is no implication about the distance between each</li>
+<li>label and frequency encoding are commonly used for tree-based models</li>
+<li>one-hot encoding is more common for non-tree-based models</li>
+</ul>
+</div>
+<div id="outline-container-orgc322d7b" class="outline-3">
+<h3 id="orgc322d7b">Label Encoding</h3>
+<div class="outline-text-3" id="text-orgc322d7b">
+<p>
+Some models need numeric values or numeric values that don't have implied ordering so you want to encode them.
+</p>
+<ul class="org-ul">
+<li>
+<a href="http://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.LabelEncoder.html">sklearn.preprocessing.LabelEncoder</a>
+Sorts the labels then encodes them as integers</li>
+<li>
+<a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.factorize.html">Pandas.factorize</a>
+Encodes the labels in the order they appear. This makes more sense if there is a meaning to the order in which labels appear.</li>
+<li>This is more commonly used with tree-based methods.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org53bb997" class="outline-3">
+<h3 id="org53bb997">Frequency Encoding</h3>
+<div class="outline-text-3" id="text-org53bb997">
+<p>
+Encode the values to a fraction of all the labels. Can work with linear models if the frequency is correlated with the target value.
+</p>
+<ul class="org-ul">
+<li><code>titanic.groupby("Embarked").size()/len(titanic)</code></li>
+<li><code>from scipy.stats import rankedata</code></li>
+<li>More common with tree-based methods</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org8aed5ab" class="outline-3">
+<h3 id="org8aed5ab">One Hot Encoding</h3>
+<div class="outline-text-3" id="text-org8aed5ab">
+<p>
+Creates one column for each label and puts a 1 in the column that matches. Works with both linear and tree-based models, but can be inefficient with tree-based models.
+</p>
+<ul class="org-ul">
+<li>
+<a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.get_dummies.html">pandas.get_dummies</a> - converts strings into column encodings</li>
+<li>
+<a href="http://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.OneHotEncoder.html">sklearn.preprocessing.OneHotEncoder</a> - converts numeric categorical data into column encodings</li>
+<li>One hot encoding is better for non-tree models.</li>
+<li>This allows easier feature interactions (encode combined features (e.g. gender and class) rather than encoding them separately) 
+<ul class="org-ul">
+<li>This is more common with linear models and KNN</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org9e98319" class="outline-2">
+<h2 id="org9e98319">Dates and Times</h2>
+<div class="outline-text-2" id="text-org9e98319">
+<p>
+When working with seasonal data, sometimes the relative date-stamps are more important than the actual dates (how close to Christmas?).
+Sometimes you want the time between events.
+</p>
+</div>
+</div>
+<div id="outline-container-org6778d35" class="outline-2">
+<h2 id="org6778d35">Coordinates</h2>
+<div class="outline-text-2" id="text-org6778d35">
+<p>
+Sometimes you want exact coordinates, but most times you want distances to some center.
+</p>
+</div>
+</div>
+<div id="outline-container-orgc44ddc3" class="outline-2">
+<h2 id="orgc44ddc3">Missing Data</h2>
+<div class="outline-text-2" id="text-orgc44ddc3">
+<ul class="org-ul">
+<li>"missing" data might mean outliers - values that are probably wrong</li>
+<li>avoid replacing missing values before feature engineering - it can throw off what you do</li>
+<li>Gradient Boost Trees can handle isNaN, so you don't have to do anything</li>
+</ul>
+</div>
+<div id="outline-container-org064dc8f" class="outline-3">
+<h3 id="org064dc8f">Numeric</h3>
+<div class="outline-text-3" id="text-org064dc8f">
+</div>
+<div id="outline-container-org1473416" class="outline-4">
+<h4 id="org1473416">Fill NA Approaches</h4>
+<div class="outline-text-4" id="text-org1473416">
+<ul class="org-ul">
+<li>-999, -1, other numbers
+<ul class="org-ul">
+<li>lets you categorize missing values</li>
+<li>throws some models off (e.g. linear models and neural networks)</li>
+<li>one solution is to create a new feature for missing values, but this has now increased the amount of data you need (curse of dimensionality)</li>
+</ul>
+</li>
+<li>mean, median, some central tendency
+<ul class="org-ul">
+<li>This can throw the model off</li>
+<li>it is sometimes better to ignore missing data</li>
+</ul>
+</li>
+<li>recronstructed valud</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orgd645cf5" class="outline-2">
+<h2 id="orgd645cf5">Links</h2>
+<div class="outline-text-2" id="text-orgd645cf5">
+</div>
+<div id="outline-container-org0e28f21" class="outline-3">
+<h3 id="org0e28f21">Feature Pre-processing</h3>
+<div class="outline-text-3" id="text-org0e28f21">
+<ul class="org-ul">
+<li><a href="http://scikit-learn.org/stable/modules/preprocessing.html">SKlearn's Preprocessing Documentation</a></li>
+<li><a href="https://www.coursera.org/learn/machine-learning/lecture/xx3Da/gradient-descent-in-practice-i-feature-scaling">Andrew Ng on Feature Scaling and its effect on Gradient Descent</a></li>
+<li><a href="http://sebastianraschka.com/Articles/2014_about_feature_scaling.html">Sebastian Raschka on Feature Scaling</a></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org3b24ea9" class="outline-3">
+<h3 id="org3b24ea9">Feature Engineering</h3>
+<div class="outline-text-3" id="text-org3b24ea9">
+<ul class="org-ul">
+<li><a href="https://machinelearningmastery.com/discover-feature-engineering-how-to-engineer-features-and-how-to-get-good-at-it/">Machine Learning Mastery on Feature Engineering</a></li>
+<li><a href="https://www.quora.com/What-are-some-best-practices-in-Feature-Engineering">Quora: What are some best practices in Feature Engineering?</a></li>
+</ul>
+</div>
+</div>
+</div>
+    </div>
+    </article><article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/pandas-basics/" class="u-url">Revisiting Pandas (Yet Again)</a></h1>
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                Cloistered Monkey
+            </span></p>
+            <p class="dateline"><a href="posts/pandas-basics/" rel="bookmark"><time class="published dt-published" datetime="2018-08-05T12:56:23-07:00" title="2018-08-05 12:56">2018-08-05 12:56</time></a></p>
+        </div>
+    </header><div class="e-content entry-content">
+    <div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="posts/pandas-basics/#orgd99f624">Description</a></li>
+<li><a href="posts/pandas-basics/#org571f3bb">Pandas Functions and Methods Used</a></li>
+<li><a href="posts/pandas-basics/#orgee5c745">Imports</a></li>
+<li><a href="posts/pandas-basics/#org5867c2f">Confirmed</a></li>
+<li><a href="posts/pandas-basics/#orge840081">The Data</a></li>
+<li>
+<a href="posts/pandas-basics/#org5ade478">Data Description</a>
+<ul>
+<li><a href="posts/pandas-basics/#orgd8f2c37">File descriptions</a></li>
+<li><a href="posts/pandas-basics/#orgd123c34">Data Fields</a></li>
+</ul>
+</li>
+<li>
+<a href="posts/pandas-basics/#orgf474240">A Warm Up</a>
+<ul>
+<li><a href="posts/pandas-basics/#orgdba352f">transactions</a></li>
+<li><a href="posts/pandas-basics/#orge102f77">items</a></li>
+<li><a href="posts/pandas-basics/#org1775ea5">item_categories</a></li>
+<li><a href="posts/pandas-basics/#orgd395f4c">shops</a></li>
+</ul>
+</li>
+<li>
+<a href="posts/pandas-basics/#org8a18f8b">Questions</a>
+<ul>
+<li><a href="posts/pandas-basics/#org91d7be2">Question 1: <b>What was the maximum total revenue among all the shops in September, 2014?</b></a></li>
+<li><a href="posts/pandas-basics/#org79e58e8">Question 2: <b>What item category generated the highest revenue in the Summer of 2014?</b></a></li>
+<li><a href="posts/pandas-basics/#orgf281da6">Question 3: <b>How many items have the same price throughout the data set?</b></a></li>
+<li><a href="posts/pandas-basics/#org61e053f">Question 4: <b>What was the variance of the number of items sold per day for shop 25 in December, 2014?</b></a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgd99f624" class="outline-2">
+<h2 id="orgd99f624">Description</h2>
+<div class="outline-text-2" id="text-orgd99f624">
+<p>
+This is a review of Pandas' Basics with an emphasis on using <a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.groupby.html">groupby</a>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org571f3bb" class="outline-2">
+<h2 id="org571f3bb">Pandas Functions and Methods Used</h2>
+<div class="outline-text-2" id="text-org571f3bb">
+<ul class="org-ul">
+<li><a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.describe.html"><code>describe</code></a></li>
+<li><a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.groupby.html"><code>groupby</code></a></li>
+<li><a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.head.html"><code>head</code></a></li>
+<li><a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.idxmax.html"><code>idxmax</code></a></li>
+<li><a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.isin.html"><code>isin</code></a></li>
+<li><a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.loc.html"><code>loc</code></a></li>
+<li><a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.var.html"><code>var</code></a></li>
+<li><a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.Series.abs.html"><code>abs</code></a></li>
+<li><a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.Series.nunique.html"><code>nunique</code></a></li>
+<li><a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.Series.str.extract.html"><code>str.extract</code></a></li>
+<li><a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.concat.html"><code>concat</code></a></li>
+<li><a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.core.groupby.DataFrameGroupBy.agg.html"><code>agg</code></a></li>
+<li><a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.read_csv.html"><code>read_csv</code></a></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgee5c745" class="outline-2">
+<h2 id="orgee5c745">Imports</h2>
+<div class="outline-text-2" id="text-orgee5c745">
+<p>
+Here's our dependencies.
+</p>
+
+<div class="highlight"><pre><span></span><span class="c1"># python standard library</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="c1"># from pypi</span>
+<span class="kn">import</span> <span class="nn">pandas</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">pyplot</span>
+<span class="kn">import</span> <span class="nn">seaborn</span>
+
+<span class="kn">from</span> <span class="nn">tabulate</span> <span class="kn">import</span> <span class="n">tabulate</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">get_python</span><span class="p">()</span><span class="o">.</span><span class="n">run_line_magic</span><span class="p">(</span><span class="s1">'matplotlib'</span><span class="p">,</span> <span class="s1">'inline'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div id="outline-container-org5867c2f" class="outline-2">
+<h2 id="org5867c2f">Confirmed</h2>
+<div class="outline-text-2" id="text-org5867c2f">
+<p>
+These are values that we know to be correct so you can use them to check the outcomes.
+</p>
+
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Confirmed</span><span class="p">:</span>
+    <span class="sd">"""This holds confirmed values"""</span>
+    <span class="n">september_max_revenue</span> <span class="o">=</span> <span class="mf">7982852.199999956</span>
+    <span class="n">september_max_category_id</span> <span class="o">=</span> <span class="mi">20</span>
+    <span class="n">number_of_items_whose_price_didnt_change</span> <span class="o">=</span> <span class="mi">5926</span>
+    <span class="n">variance_per_day</span> <span class="o">=</span> <span class="mf">117167.70229885059</span>
+</pre></div>
+</div>
+</div>
+
+<div id="outline-container-orge840081" class="outline-2">
+<h2 id="orge840081">The Data</h2>
+<div class="outline-text-2" id="text-orge840081">
+<p>
+We have four data-sets to load, all of them in csv format, although the file with all the transactions is compressed.
+</p>
+
+<div class="highlight"><pre><span></span><span class="n">DATA_FOLDER</span> <span class="o">=</span> <span class="s1">'../readonly/final_project_data/'</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">transactions</span>    <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DATA_FOLDER</span><span class="p">,</span>
+					       <span class="s1">'sales_train.csv.gz'</span><span class="p">))</span>
+<span class="n">items</span>           <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DATA_FOLDER</span><span class="p">,</span>
+					       <span class="s1">'items.csv'</span><span class="p">))</span>
+<span class="n">item_categories</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DATA_FOLDER</span><span class="p">,</span>
+					       <span class="s1">'item_categories.csv'</span><span class="p">))</span>
+<span class="n">shops</span>           <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DATA_FOLDER</span><span class="p">,</span>
+					       <span class="s1">'shops.csv'</span><span class="p">))</span>
+</pre></div>
+
+<p>
+The <code>frames</code> dictionary is just a convenience thing to make printing the descriptive tables below a little easier.
+</p>
+
+<div class="highlight"><pre><span></span><span class="n">frames</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">transactions</span><span class="o">=</span><span class="n">transactions</span><span class="p">,</span>
+	      <span class="n">items</span><span class="o">=</span><span class="n">items</span><span class="p">,</span>
+	      <span class="n">item_categories</span><span class="o">=</span><span class="n">item_categories</span><span class="p">,</span>
+	      <span class="n">shops</span><span class="o">=</span><span class="n">shops</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+
+<div id="outline-container-org5ade478" class="outline-2">
+<h2 id="org5ade478">Data Description</h2>
+<div class="outline-text-2" id="text-org5ade478">
+<p>
+The dataset we loaded is taken from a kaggle competititon. You can find complete data description at the <a href="https://www.kaggle.com/c/competitive-data-science-final-project/data">competition web page</a>. To join the competition use <a href="https://www.kaggle.com/t/1ea93815dca248e99221df42ebde3540">this link</a>. The descriptions below cover all the files, not just the ones we use here.
+</p>
+
+<blockquote>
+<p>
+You are provided with daily historical sales data from what appears to be a software retailer, although that isn't explicitly stated. The task is to forecast the total amount of products sold in every shop for the test set. Note that the list of shops and products changes slightly every month. Creating a robust model that can handle such situations is part of the challenge.
+</p>
+</blockquote>
+</div>
+
+<div id="outline-container-orgd8f2c37" class="outline-3">
+<h3 id="orgd8f2c37">File descriptions</h3>
+<div class="outline-text-3" id="text-orgd8f2c37">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-left">
+<col class="org-left">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-left">File Name</th>
+<th scope="col" class="org-left">Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-left">sales_train.csv</td>
+<td class="org-left">the training set. Daily historical data from January 2013 to October 2015.</td>
+</tr>
+<tr>
+<td class="org-left">test.csv</td>
+<td class="org-left">the test set. You need to forecast the sales for these shops and products for November 2015.</td>
+</tr>
+<tr>
+<td class="org-left">sample_submission.csv</td>
+<td class="org-left">a sample submission file in the correct format.</td>
+</tr>
+<tr>
+<td class="org-left">items.csv</td>
+<td class="org-left">supplemental information about the items/products.</td>
+</tr>
+<tr>
+<td class="org-left">item_categories.csv</td>
+<td class="org-left">supplemental information about the items categories.</td>
+</tr>
+<tr>
+<td class="org-left">shops.csv</td>
+<td class="org-left">supplemental information about the shops.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-orgd123c34" class="outline-3">
+<h3 id="orgd123c34">Data Fields</h3>
+<div class="outline-text-3" id="text-orgd123c34">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-left">
+<col class="org-left">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-left">Column</th>
+<th scope="col" class="org-left">Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-left">ID</td>
+<td class="org-left">an Id that represents a (Shop, Item) tuple within the test set</td>
+</tr>
+<tr>
+<td class="org-left">shop_id</td>
+<td class="org-left">unique identifier of a shop</td>
+</tr>
+<tr>
+<td class="org-left">item_id</td>
+<td class="org-left">unique identifier of a product</td>
+</tr>
+<tr>
+<td class="org-left">item_category_id</td>
+<td class="org-left">unique identifier of item category</td>
+</tr>
+<tr>
+<td class="org-left">item_cnt_day</td>
+<td class="org-left">number of products sold. You are predicting a monthly amount of this measure</td>
+</tr>
+<tr>
+<td class="org-left">item_price</td>
+<td class="org-left">current price of an item</td>
+</tr>
+<tr>
+<td class="org-left">date</td>
+<td class="org-left">date in format dd/mm/yyyy</td>
+</tr>
+<tr>
+<td class="org-left">date_block_num</td>
+<td class="org-left">a consecutive month number, used for convenience. January 2013 is 0, February 2013 is 1,…, October 2015 is 33</td>
+</tr>
+<tr>
+<td class="org-left">item_name</td>
+<td class="org-left">name of item</td>
+</tr>
+<tr>
+<td class="org-left">shop_name</td>
+<td class="org-left">name of shop</td>
+</tr>
+<tr>
+<td class="org-left">item_category_name</td>
+<td class="org-left">name of item category</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgf474240" class="outline-2">
+<h2 id="orgf474240">A Warm Up</h2>
+<div class="outline-text-2" id="text-orgf474240">
+<p>
+Let's start with a simple task. 
+</p>
+
+<p>
+Print the shape of the loaded dataframes and use the <a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.head.html"><code>df.head</code></a> function to print several rows. Examine the features you are given.
+</p>
+
+<div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s2">"| DataFrame | Rows| Columns|"</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">"|-+-+-|"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">frame</span> <span class="ow">in</span> <span class="n">frames</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">rows</span><span class="p">,</span> <span class="n">columns</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">shape</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">"|{}| {}|{}|"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">rows</span><span class="p">,</span> <span class="n">columns</span><span class="p">))</span>
+</pre></div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-left">
+<col class="org-right">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-left">DataFrame</th>
+<th scope="col" class="org-right">Rows</th>
+<th scope="col" class="org-right">Columns</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-left">transactions</td>
+<td class="org-right">2935849</td>
+<td class="org-right">6</td>
+</tr>
+<tr>
+<td class="org-left">items</td>
+<td class="org-right">22170</td>
+<td class="org-right">3</td>
+</tr>
+<tr>
+<td class="org-left">item_categories</td>
+<td class="org-right">84</td>
+<td class="org-right">2</td>
+</tr>
+<tr>
+<td class="org-left">shops</td>
+<td class="org-right">60</td>
+<td class="org-right">2</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">frame</span> <span class="ow">in</span> <span class="n">frames</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">"** {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+    <span class="n">head</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">tabulate</span><span class="p">(</span><span class="n">head</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="s2">"keys"</span><span class="p">,</span> <span class="n">tablefmt</span><span class="o">=</span><span class="s2">"orgtbl"</span><span class="p">,</span> <span class="n">showindex</span><span class="o">=</span><span class="bp">False</span><span class="p">))</span>
+</pre></div>
+</div>
+<div id="outline-container-orgdba352f" class="outline-3">
+<h3 id="orgdba352f">transactions</h3>
+<div class="outline-text-3" id="text-orgdba352f">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-right">date</th>
+<th scope="col" class="org-right">date_block_num</th>
+<th scope="col" class="org-right">shop_id</th>
+<th scope="col" class="org-right">item_id</th>
+<th scope="col" class="org-right">item_price</th>
+<th scope="col" class="org-right">item_cnt_day</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-right">02.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">59</td>
+<td class="org-right">22154</td>
+<td class="org-right">999</td>
+<td class="org-right">1</td>
+</tr>
+<tr>
+<td class="org-right">03.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2552</td>
+<td class="org-right">899</td>
+<td class="org-right">1</td>
+</tr>
+<tr>
+<td class="org-right">05.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2552</td>
+<td class="org-right">899</td>
+<td class="org-right">-1</td>
+</tr>
+<tr>
+<td class="org-right">06.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2554</td>
+<td class="org-right">1709.05</td>
+<td class="org-right">1</td>
+</tr>
+<tr>
+<td class="org-right">15.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2555</td>
+<td class="org-right">1099</td>
+<td class="org-right">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="outline-container-orge102f77" class="outline-3">
+<h3 id="orge102f77">items</h3>
+<div class="outline-text-3" id="text-orge102f77">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-left">
+<col class="org-right">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-left">item_name</th>
+<th scope="col" class="org-right">item_id</th>
+<th scope="col" class="org-right">item_category_id</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-left">! ВО ВЛАСТИ НАВАЖДЕНИЯ (ПЛАСТ.)         D</td>
+<td class="org-right">0</td>
+<td class="org-right">40</td>
+</tr>
+<tr>
+<td class="org-left">!ABBYY FineReader 12 Professional Edition Full [PC, Цифровая версия]</td>
+<td class="org-right">1</td>
+<td class="org-right">76</td>
+</tr>
+<tr>
+<td class="org-left">***В ЛУЧАХ СЛАВЫ   (UNV)                    D</td>
+<td class="org-right">2</td>
+<td class="org-right">40</td>
+</tr>
+<tr>
+<td class="org-left">***ГОЛУБАЯ ВОЛНА  (Univ)                      D</td>
+<td class="org-right">3</td>
+<td class="org-right">40</td>
+</tr>
+<tr>
+<td class="org-left">***КОРОБКА (СТЕКЛО)                       D</td>
+<td class="org-right">4</td>
+<td class="org-right">40</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="outline-container-org1775ea5" class="outline-3">
+<h3 id="org1775ea5">item_categories</h3>
+<div class="outline-text-3" id="text-org1775ea5">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-left">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-left">item_category_name</th>
+<th scope="col" class="org-right">item_category_id</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-left">PC - Гарнитуры/Наушники</td>
+<td class="org-right">0</td>
+</tr>
+<tr>
+<td class="org-left">Аксессуары - PS2</td>
+<td class="org-right">1</td>
+</tr>
+<tr>
+<td class="org-left">Аксессуары - PS3</td>
+<td class="org-right">2</td>
+</tr>
+<tr>
+<td class="org-left">Аксессуары - PS4</td>
+<td class="org-right">3</td>
+</tr>
+<tr>
+<td class="org-left">Аксессуары - PSP</td>
+<td class="org-right">4</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="outline-container-orgd395f4c" class="outline-3">
+<h3 id="orgd395f4c">shops</h3>
+<div class="outline-text-3" id="text-orgd395f4c">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-left">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-left">shop_name</th>
+<th scope="col" class="org-right">shop_id</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-left">!Якутск Орджоникидзе, 56 фран</td>
+<td class="org-right">0</td>
+</tr>
+<tr>
+<td class="org-left">!Якутск ТЦ "Центральный" фран</td>
+<td class="org-right">1</td>
+</tr>
+<tr>
+<td class="org-left">Адыгея ТЦ "Мега"</td>
+<td class="org-right">2</td>
+</tr>
+<tr>
+<td class="org-left">Балашиха ТРК "Октябрь-Киномир"</td>
+<td class="org-right">3</td>
+</tr>
+<tr>
+<td class="org-left">Волжский ТЦ "Волга Молл"</td>
+<td class="org-right">4</td>
+</tr>
+</tbody>
+</table>
+<p>
+Unexpectedly, the names are all in <a href="https://en.wikipedia.org/wiki/Cyrillic_script">cyrillic</a>, so I guess this will be a black-box in more ways than is usual
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org8a18f8b" class="outline-2">
+<h2 id="org8a18f8b">Questions</h2>
+<div class="outline-text-2" id="text-org8a18f8b">
+</div>
+<div id="outline-container-org91d7be2" class="outline-3">
+<h3 id="org91d7be2">Question 1: <b>What was the maximum total revenue among all the shops in September, 2014?</b>
+</h3>
+<div class="outline-text-3" id="text-org91d7be2">
+<p>
+From here on out <b>revenue</b> refers to total sales minus value of goods returned.
+</p>
+
+<ul class="org-ul">
+<li>Sometimes items are returned, find such examples in the dataset.</li>
+<li>It is handy to split `date` field into [`day`, `month`, `year`] components and use ` df.year <code>= 14` and `df.month =</code> 9` in order to select target subset of dates.</li>
+<li>You may work with `date` feature as with srings, or you may first convert it to ` pd.datetime` type with `pd.to_datetime` function, but do not forget to set correct <code>format</code> argument.</li>
+</ul>
+</div>
+
+<div id="outline-container-orgb783586" class="outline-4">
+<h4 id="orgb783586">Answer</h4>
+<div class="outline-text-4" id="text-orgb783586">
+</div>
+<ul class="org-ul">
+<li>
+<a id="orge59bac5"></a>Sales Per Item<br><div class="outline-text-5" id="text-orge59bac5">
+<p>
+First I'll add a column with the total revenue for each item (the \(price \times \textit{number sold}\)).
+</p>
+
+<div class="highlight"><pre><span></span><span class="n">transactions</span><span class="p">[</span><span class="s2">"item_revenue"</span><span class="p">]</span> <span class="o">=</span> <span class="n">transactions</span><span class="o">.</span><span class="n">item_price</span> <span class="o">*</span> <span class="n">transactions</span><span class="o">.</span><span class="n">item_cnt_day</span>
+</pre></div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-left">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-left"> </th>
+<th scope="col" class="org-right">date_block_num</th>
+<th scope="col" class="org-right">shop_id</th>
+<th scope="col" class="org-right">item_id</th>
+<th scope="col" class="org-right">item_price</th>
+<th scope="col" class="org-right">item_cnt_day</th>
+<th scope="col" class="org-right">item_revenue</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-left">count</td>
+<td class="org-right">2.93585e+06</td>
+<td class="org-right">2.93585e+06</td>
+<td class="org-right">2.93585e+06</td>
+<td class="org-right">2.93585e+06</td>
+<td class="org-right">2.93585e+06</td>
+<td class="org-right">2.93585e+06</td>
+</tr>
+<tr>
+<td class="org-left">mean</td>
+<td class="org-right">14.5699</td>
+<td class="org-right">33.0017</td>
+<td class="org-right">10197.2</td>
+<td class="org-right">890.853</td>
+<td class="org-right">1.24264</td>
+<td class="org-right">1157.73</td>
+</tr>
+<tr>
+<td class="org-left">std</td>
+<td class="org-right">9.42299</td>
+<td class="org-right">16.227</td>
+<td class="org-right">6324.3</td>
+<td class="org-right">1729.8</td>
+<td class="org-right">2.61883</td>
+<td class="org-right">5683.6</td>
+</tr>
+<tr>
+<td class="org-left">min</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">-1</td>
+<td class="org-right">-22</td>
+<td class="org-right">-68970</td>
+</tr>
+<tr>
+<td class="org-left">25%</td>
+<td class="org-right">7</td>
+<td class="org-right">22</td>
+<td class="org-right">4476</td>
+<td class="org-right">249</td>
+<td class="org-right">1</td>
+<td class="org-right">249</td>
+</tr>
+<tr>
+<td class="org-left">50%</td>
+<td class="org-right">14</td>
+<td class="org-right">31</td>
+<td class="org-right">9343</td>
+<td class="org-right">399</td>
+<td class="org-right">1</td>
+<td class="org-right">449</td>
+</tr>
+<tr>
+<td class="org-left">75%</td>
+<td class="org-right">23</td>
+<td class="org-right">47</td>
+<td class="org-right">15684</td>
+<td class="org-right">999</td>
+<td class="org-right">1</td>
+<td class="org-right">1078.2</td>
+</tr>
+<tr>
+<td class="org-left">max</td>
+<td class="org-right">33</td>
+<td class="org-right">59</td>
+<td class="org-right">22169</td>
+<td class="org-right">307980</td>
+<td class="org-right">2169</td>
+<td class="org-right">1.82999e+06</td>
+</tr>
+</tbody>
+</table>
+</div>
+</li>
+
+
+<li>
+<a id="org63df0a8"></a>Filter Out the Month<br><div class="outline-text-5" id="text-org63df0a8">
+<p>
+I was originally filtering using a regular expression, but the other questions use date-filtering too so I decided to create the extra day, month, and year columns once to avoid the extra regular expression overhead later on. The <a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.Series.str.extract.html"><code>str.extract</code></a> method uses python regular expression groups to pull out values and create columns in a DataFrame. If you use named expressions (as I do here) then it will use the names as the column-names in the dataframe.
+</p>
+
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Dates</span><span class="p">:</span>
+    <span class="n">date_expression</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">'(?P&lt;day&gt;\d{2})\.(?P&lt;month&gt;\d{2})\.(?P&lt;year&gt;\d{4})'</span>
+    <span class="n">september</span> <span class="o">=</span> <span class="s1">'09'</span>
+    <span class="n">december</span> <span class="o">=</span> <span class="s1">'12'</span>
+    <span class="n">summer</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'06'</span><span class="p">,</span> <span class="s1">'07'</span><span class="p">,</span> <span class="s1">'08'</span><span class="p">]</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">dates</span> <span class="o">=</span> <span class="n">transactions</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">Dates</span><span class="o">.</span><span class="n">date_expression</span><span class="p">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="n">tabulate</span><span class="p">(</span><span class="n">dates</span><span class="o">.</span><span class="n">head</span><span class="p">(),</span> <span class="n">headers</span><span class="o">=</span><span class="s2">"keys"</span><span class="p">,</span> <span class="n">showindex</span><span class="o">=</span><span class="s1">'never'</span><span class="p">,</span> <span class="n">tablefmt</span><span class="o">=</span><span class="s1">'orgtbl'</span><span class="p">))</span>
+</pre></div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-right">day</th>
+<th scope="col" class="org-right">month</th>
+<th scope="col" class="org-right">year</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-right">02</td>
+<td class="org-right">01</td>
+<td class="org-right">2013</td>
+</tr>
+<tr>
+<td class="org-right">03</td>
+<td class="org-right">01</td>
+<td class="org-right">2013</td>
+</tr>
+<tr>
+<td class="org-right">05</td>
+<td class="org-right">01</td>
+<td class="org-right">2013</td>
+</tr>
+<tr>
+<td class="org-right">06</td>
+<td class="org-right">01</td>
+<td class="org-right">2013</td>
+</tr>
+<tr>
+<td class="org-right">15</td>
+<td class="org-right">01</td>
+<td class="org-right">2013</td>
+</tr>
+</tbody>
+</table>
+<p>
+Now we can smash our new data frame onto the transactions using the <a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.concat.html">concat</a> function. by default it will try to add the rows from the second data frame to the rows of the first, but since we're adding new columns we need to pass in the <code>axis='columns'</code> argument.
+</p>
+
+<div class="highlight"><pre><span></span><span class="n">transactions</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">concat</span><span class="p">((</span><span class="n">transactions</span><span class="p">,</span> <span class="n">dates</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="s1">'columns'</span><span class="p">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="n">tabulate</span><span class="p">(</span><span class="n">transactions</span><span class="o">.</span><span class="n">head</span><span class="p">(),</span> <span class="n">headers</span><span class="o">=</span><span class="s2">"keys"</span><span class="p">,</span> <span class="n">tablefmt</span><span class="o">=</span><span class="s2">"orgtbl"</span><span class="p">,</span> <span class="n">showindex</span><span class="o">=</span><span class="s2">"never"</span><span class="p">))</span>
+</pre></div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-right">date</th>
+<th scope="col" class="org-right">date_block_num</th>
+<th scope="col" class="org-right">shop_id</th>
+<th scope="col" class="org-right">item_id</th>
+<th scope="col" class="org-right">item_price</th>
+<th scope="col" class="org-right">item_cnt_day</th>
+<th scope="col" class="org-right">item_revenue</th>
+<th scope="col" class="org-right">day</th>
+<th scope="col" class="org-right">month</th>
+<th scope="col" class="org-right">year</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-right">02.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">59</td>
+<td class="org-right">22154</td>
+<td class="org-right">999</td>
+<td class="org-right">1</td>
+<td class="org-right">999</td>
+<td class="org-right">02</td>
+<td class="org-right">01</td>
+<td class="org-right">2013</td>
+</tr>
+<tr>
+<td class="org-right">03.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2552</td>
+<td class="org-right">899</td>
+<td class="org-right">1</td>
+<td class="org-right">899</td>
+<td class="org-right">03</td>
+<td class="org-right">01</td>
+<td class="org-right">2013</td>
+</tr>
+<tr>
+<td class="org-right">05.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2552</td>
+<td class="org-right">899</td>
+<td class="org-right">-1</td>
+<td class="org-right">-899</td>
+<td class="org-right">05</td>
+<td class="org-right">01</td>
+<td class="org-right">2013</td>
+</tr>
+<tr>
+<td class="org-right">06.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2554</td>
+<td class="org-right">1709.05</td>
+<td class="org-right">1</td>
+<td class="org-right">1709.05</td>
+<td class="org-right">06</td>
+<td class="org-right">01</td>
+<td class="org-right">2013</td>
+</tr>
+<tr>
+<td class="org-right">15.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2555</td>
+<td class="org-right">1099</td>
+<td class="org-right">1</td>
+<td class="org-right">1099</td>
+<td class="org-right">15</td>
+<td class="org-right">01</td>
+<td class="org-right">2013</td>
+</tr>
+</tbody>
+</table>
+<p>
+first, as a sanity check, we'll make sure that all the date cells have values.
+</p>
+
+<div class="highlight"><pre><span></span><span class="k">assert</span> <span class="ow">not</span> <span class="n">transactions</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">hasnans</span>
+</pre></div>
+
+<p>
+now let's filter on the date-expression we created for september. the next <i>Question</i> also uses 2014 so I'll preserve that as a separate sub-set.
+</p>
+
+<div class="highlight"><pre><span></span><span class="n">twenty_fourteen</span> <span class="o">=</span> <span class="n">transactions</span><span class="p">[</span><span class="n">transactions</span><span class="o">.</span><span class="n">year</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s2">"2014"</span><span class="p">])]</span>
+<span class="n">september</span> <span class="o">=</span> <span class="n">twenty_fourteen</span><span class="p">[</span><span class="n">twenty_fourteen</span><span class="o">.</span><span class="n">month</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="n">Dates</span><span class="o">.</span><span class="n">september</span><span class="p">])]</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="n">tabulate</span><span class="p">(</span><span class="n">september</span><span class="o">.</span><span class="n">head</span><span class="p">(),</span> <span class="n">headers</span><span class="o">=</span><span class="s2">"keys"</span><span class="p">,</span> <span class="n">tablefmt</span><span class="o">=</span><span class="s2">"orgtbl"</span><span class="p">))</span>
+</pre></div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-right"> </th>
+<th scope="col" class="org-right">date</th>
+<th scope="col" class="org-right">date_block_num</th>
+<th scope="col" class="org-right">shop_id</th>
+<th scope="col" class="org-right">item_id</th>
+<th scope="col" class="org-right">item_price</th>
+<th scope="col" class="org-right">item_cnt_day</th>
+<th scope="col" class="org-right">item_revenue</th>
+<th scope="col" class="org-right">day</th>
+<th scope="col" class="org-right">month</th>
+<th scope="col" class="org-right">year</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-right">1953691</td>
+<td class="org-right">24.09.2014</td>
+<td class="org-right">20</td>
+<td class="org-right">5</td>
+<td class="org-right">1039</td>
+<td class="org-right">899</td>
+<td class="org-right">1</td>
+<td class="org-right">899</td>
+<td class="org-right">24</td>
+<td class="org-right">09</td>
+<td class="org-right">2014</td>
+</tr>
+<tr>
+<td class="org-right">1953692</td>
+<td class="org-right">27.09.2014</td>
+<td class="org-right">20</td>
+<td class="org-right">5</td>
+<td class="org-right">1015</td>
+<td class="org-right">449</td>
+<td class="org-right">1</td>
+<td class="org-right">449</td>
+<td class="org-right">27</td>
+<td class="org-right">09</td>
+<td class="org-right">2014</td>
+</tr>
+<tr>
+<td class="org-right">1953693</td>
+<td class="org-right">07.09.2014</td>
+<td class="org-right">20</td>
+<td class="org-right">5</td>
+<td class="org-right">1329</td>
+<td class="org-right">399</td>
+<td class="org-right">1</td>
+<td class="org-right">399</td>
+<td class="org-right">07</td>
+<td class="org-right">09</td>
+<td class="org-right">2014</td>
+</tr>
+<tr>
+<td class="org-right">1953694</td>
+<td class="org-right">27.09.2014</td>
+<td class="org-right">20</td>
+<td class="org-right">5</td>
+<td class="org-right">984</td>
+<td class="org-right">399</td>
+<td class="org-right">1</td>
+<td class="org-right">399</td>
+<td class="org-right">27</td>
+<td class="org-right">09</td>
+<td class="org-right">2014</td>
+</tr>
+<tr>
+<td class="org-right">1953695</td>
+<td class="org-right">08.09.2014</td>
+<td class="org-right">20</td>
+<td class="org-right">5</td>
+<td class="org-right">984</td>
+<td class="org-right">399</td>
+<td class="org-right">1</td>
+<td class="org-right">399</td>
+<td class="org-right">08</td>
+<td class="org-right">09</td>
+<td class="org-right">2014</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><span class="k">assert</span> <span class="nb">all</span><span class="p">(</span><span class="n">twenty_fourteen</span><span class="o">.</span><span class="n">year</span> <span class="o">==</span> <span class="s2">"2014"</span><span class="p">)</span>
+<span class="k">assert</span> <span class="nb">all</span><span class="p">(</span><span class="n">september</span><span class="o">.</span><span class="n">month</span> <span class="o">==</span> <span class="s2">"09"</span><span class="p">)</span>
+</pre></div>
+
+<p>
+That seems like a lot of transactions. What fraction of the total is it?
+</p>
+
+<div class="highlight"><pre><span></span><span class="n">rows</span><span class="p">,</span> <span class="n">columns</span> <span class="o">=</span> <span class="n">september</span><span class="o">.</span><span class="n">shape</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">"{:.2f} %"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="n">rows</span><span class="o">/</span><span class="n">transactions</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+</pre></div>
+
+<p>
+2.49 %
+</p>
+
+<p>
+Not as much as I would have thought, <code>transactions</code> is much larger than I first took it to be.
+</p>
+
+<div class="highlight"><pre><span></span><span class="n">grouped</span> <span class="o">=</span> <span class="n">september</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s2">"shop_id"</span><span class="p">])</span>
+<span class="n">summed</span> <span class="o">=</span> <span class="n">grouped</span><span class="o">.</span><span class="n">item_revenue</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">sum</span><span class="p">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="n">summed</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+
+<pre class="example">
+shop_id
+2    1473540.00
+3    1228425.00
+4    1211556.00
+5    1350828.02
+6    3480397.00
+Name: item_revenue, dtype: float64
+
+</pre>
+
+<div class="highlight"><pre><span></span><span class="n">max_revenue</span> <span class="o">=</span> <span class="n">summed</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">summed</span><span class="o">.</span><span class="n">idxmax</span><span class="p">()]</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">"Highest Revenue Earned by a shop in September of 2014: $ {:,.2f}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">max_revenue</span><span class="p">))</span>
+</pre></div>
+
+<p>
+Highest Revenue Earned by a shop in September of 2014: $ 7,982,852.20
+</p>
+</div>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org79e58e8" class="outline-3">
+<h3 id="org79e58e8">Question 2: <b>What item category generated the highest revenue in the Summer of 2014?</b>
+</h3>
+<div class="outline-text-3" id="text-org79e58e8">
+<ul class="org-ul">
+<li>Submit the <code>id</code> of the category found.</li>
+<li>Here we call "summer" the period from June to August.</li>
+</ul>
+<p>
+<b>Hints:</b>
+</p>
+
+<p>
+Note, that for an object `x` of type `pd.Series`: `x.argmax()` returns <b><b>index</b></b> of the maximum element. `pd.Series` can have non-trivial index (not `[1, 2, 3, … ]`).
+</p>
+</div>
+<div id="outline-container-orgc158e04" class="outline-4">
+<h4 id="orgc158e04">Get the Summer months</h4>
+<div class="outline-text-4" id="text-orgc158e04">
+<p>
+To filter what we want I'll use the <a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.isin.html"><code>isin</code></a> method to remove every row that has a value that isn't in <code>Dates.summer</code>.
+</p>
+<div class="highlight"><pre><span></span><span class="n">summer</span> <span class="o">=</span> <span class="n">twenty_fourteen</span><span class="p">[</span><span class="n">twenty_fourteen</span><span class="o">.</span><span class="n">month</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">Dates</span><span class="o">.</span><span class="n">summer</span><span class="p">)]</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="n">tabulate</span><span class="p">(</span><span class="n">summer</span><span class="o">.</span><span class="n">head</span><span class="p">(),</span> <span class="n">headers</span><span class="o">=</span><span class="s2">"keys"</span><span class="p">,</span> <span class="n">tablefmt</span><span class="o">=</span><span class="s1">'orgtbl'</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">month</span> <span class="ow">in</span> <span class="n">summer</span><span class="o">.</span><span class="n">month</span><span class="o">.</span><span class="n">unique</span><span class="p">():</span>
+    <span class="k">assert</span> <span class="n">month</span> <span class="ow">in</span> <span class="n">Dates</span><span class="o">.</span><span class="n">summer</span>
+</pre></div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-right"> </th>
+<th scope="col" class="org-right">date</th>
+<th scope="col" class="org-right">date_block_num</th>
+<th scope="col" class="org-right">shop_id</th>
+<th scope="col" class="org-right">item_id</th>
+<th scope="col" class="org-right">item_price</th>
+<th scope="col" class="org-right">item_cnt_day</th>
+<th scope="col" class="org-right">item_revenue</th>
+<th scope="col" class="org-right">day</th>
+<th scope="col" class="org-right">month</th>
+<th scope="col" class="org-right">year</th>
+<th scope="col" class="org-right">item_category_id</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-right">1705909</td>
+<td class="org-right">15.06.2014</td>
+<td class="org-right">17</td>
+<td class="org-right">26</td>
+<td class="org-right">9532</td>
+<td class="org-right">399</td>
+<td class="org-right">1</td>
+<td class="org-right">399</td>
+<td class="org-right">15</td>
+<td class="org-right">06</td>
+<td class="org-right">2014</td>
+<td class="org-right">30</td>
+</tr>
+<tr>
+<td class="org-right">1705910</td>
+<td class="org-right">10.06.2014</td>
+<td class="org-right">17</td>
+<td class="org-right">26</td>
+<td class="org-right">9507</td>
+<td class="org-right">149</td>
+<td class="org-right">1</td>
+<td class="org-right">149</td>
+<td class="org-right">10</td>
+<td class="org-right">06</td>
+<td class="org-right">2014</td>
+<td class="org-right">40</td>
+</tr>
+<tr>
+<td class="org-right">1705911</td>
+<td class="org-right">13.06.2014</td>
+<td class="org-right">17</td>
+<td class="org-right">26</td>
+<td class="org-right">9509</td>
+<td class="org-right">246.32</td>
+<td class="org-right">1</td>
+<td class="org-right">246.32</td>
+<td class="org-right">13</td>
+<td class="org-right">06</td>
+<td class="org-right">2014</td>
+<td class="org-right">37</td>
+</tr>
+<tr>
+<td class="org-right">1705912</td>
+<td class="org-right">03.06.2014</td>
+<td class="org-right">17</td>
+<td class="org-right">26</td>
+<td class="org-right">9532</td>
+<td class="org-right">399</td>
+<td class="org-right">1</td>
+<td class="org-right">399</td>
+<td class="org-right">03</td>
+<td class="org-right">06</td>
+<td class="org-right">2014</td>
+<td class="org-right">30</td>
+</tr>
+<tr>
+<td class="org-right">1705913</td>
+<td class="org-right">08.06.2014</td>
+<td class="org-right">17</td>
+<td class="org-right">26</td>
+<td class="org-right">9532</td>
+<td class="org-right">399</td>
+<td class="org-right">1</td>
+<td class="org-right">399</td>
+<td class="org-right">08</td>
+<td class="org-right">06</td>
+<td class="org-right">2014</td>
+<td class="org-right">30</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-org707817f" class="outline-4">
+<h4 id="org707817f">Map in the Category IDs</h4>
+<div class="outline-text-4" id="text-org707817f">
+<p>
+If you look at <code>items.item_id</code> you can see that the id's are really just the numerical index to the <code>items.item_category_id</code> series. I was originally add the category ids for all the transactions but it takes a long time so I'm just adding it to this group.
+</p>
+
+<div class="highlight"><pre><span></span><span class="k">assert</span> <span class="nb">all</span><span class="p">(</span><span class="n">items</span><span class="o">.</span><span class="n">item_id</span> <span class="o">==</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">items</span><span class="p">)))</span>
+</pre></div>
+
+<p>
+So we can map them back into our summer transactions.
+</p>
+
+<div class="highlight"><pre><span></span><span class="n">summer</span><span class="p">[</span><span class="s2">"item_category_id"</span><span class="p">]</span> <span class="o">=</span> <span class="n">summer</span><span class="o">.</span><span class="n">item_id</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">items</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">item</span><span class="p">,</span> <span class="s1">'item_category_id'</span><span class="p">])</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="n">tabulate</span><span class="p">(</span><span class="n">summer</span><span class="o">.</span><span class="n">head</span><span class="p">(),</span> <span class="n">headers</span><span class="o">=</span><span class="s1">'keys'</span><span class="p">,</span> <span class="n">tablefmt</span><span class="o">=</span><span class="s2">"orgtbl"</span><span class="p">))</span>
+</pre></div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-right"> </th>
+<th scope="col" class="org-right">date</th>
+<th scope="col" class="org-right">date_block_num</th>
+<th scope="col" class="org-right">shop_id</th>
+<th scope="col" class="org-right">item_id</th>
+<th scope="col" class="org-right">item_price</th>
+<th scope="col" class="org-right">item_cnt_day</th>
+<th scope="col" class="org-right">item_revenue</th>
+<th scope="col" class="org-right">day</th>
+<th scope="col" class="org-right">month</th>
+<th scope="col" class="org-right">year</th>
+<th scope="col" class="org-right">item_category_id</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-right">1705909</td>
+<td class="org-right">15.06.2014</td>
+<td class="org-right">17</td>
+<td class="org-right">26</td>
+<td class="org-right">9532</td>
+<td class="org-right">399</td>
+<td class="org-right">1</td>
+<td class="org-right">399</td>
+<td class="org-right">15</td>
+<td class="org-right">06</td>
+<td class="org-right">2014</td>
+<td class="org-right">30</td>
+</tr>
+<tr>
+<td class="org-right">1705910</td>
+<td class="org-right">10.06.2014</td>
+<td class="org-right">17</td>
+<td class="org-right">26</td>
+<td class="org-right">9507</td>
+<td class="org-right">149</td>
+<td class="org-right">1</td>
+<td class="org-right">149</td>
+<td class="org-right">10</td>
+<td class="org-right">06</td>
+<td class="org-right">2014</td>
+<td class="org-right">40</td>
+</tr>
+<tr>
+<td class="org-right">1705911</td>
+<td class="org-right">13.06.2014</td>
+<td class="org-right">17</td>
+<td class="org-right">26</td>
+<td class="org-right">9509</td>
+<td class="org-right">246.32</td>
+<td class="org-right">1</td>
+<td class="org-right">246.32</td>
+<td class="org-right">13</td>
+<td class="org-right">06</td>
+<td class="org-right">2014</td>
+<td class="org-right">37</td>
+</tr>
+<tr>
+<td class="org-right">1705912</td>
+<td class="org-right">03.06.2014</td>
+<td class="org-right">17</td>
+<td class="org-right">26</td>
+<td class="org-right">9532</td>
+<td class="org-right">399</td>
+<td class="org-right">1</td>
+<td class="org-right">399</td>
+<td class="org-right">03</td>
+<td class="org-right">06</td>
+<td class="org-right">2014</td>
+<td class="org-right">30</td>
+</tr>
+<tr>
+<td class="org-right">1705913</td>
+<td class="org-right">08.06.2014</td>
+<td class="org-right">17</td>
+<td class="org-right">26</td>
+<td class="org-right">9532</td>
+<td class="org-right">399</td>
+<td class="org-right">1</td>
+<td class="org-right">399</td>
+<td class="org-right">08</td>
+<td class="org-right">06</td>
+<td class="org-right">2014</td>
+<td class="org-right">30</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><span class="n">categories</span> <span class="o">=</span> <span class="n">summer</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s2">"item_category_id"</span><span class="p">])</span>
+<span class="n">categories_summed</span> <span class="o">=</span> <span class="n">categories</span><span class="o">.</span><span class="n">item_revenue</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">sum</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">categories_summed</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+
+<pre class="example">
+item_category_id
+2    2755520.0
+3    6854669.8
+4      38833.2
+5     418233.1
+6    3360382.5
+Name: item_revenue, dtype: float64
+
+</pre>
+
+<div class="highlight"><pre><span></span><span class="n">category_id_with_max_revenue</span> <span class="o">=</span> <span class="n">categories_summed</span><span class="o">.</span><span class="n">idxmax</span><span class="p">()</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s2">"Category Id with the Maximum Value: {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">category_id_with_max_revenue</span><span class="p">))</span>
+</pre></div>
+
+<p>
+Category Id with the Maximum Value: 20
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgf281da6" class="outline-3">
+<h3 id="orgf281da6">Question 3: <b>How many items have the same price throughout the data set?</b>
+</h3>
+<div class="outline-text-3" id="text-orgf281da6">
+<p>
+How many items are there, such that their price stays constant (to the best of our knowledge) during the whole period of time?
+</p>
+
+<p>
+Let's assume, that the items are returned for the same price as they had been sold.
+</p>
+</div>
+
+<div id="outline-container-orgbb20b94" class="outline-4">
+<h4 id="orgbb20b94">Isolate the ID and Price</h4>
+<div class="outline-text-4" id="text-orgbb20b94">
+<div class="highlight"><pre><span></span><span class="n">id_price</span> <span class="o">=</span> <span class="n">transactions</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="p">[</span><span class="s2">"item_id"</span><span class="p">,</span> <span class="s2">"item_price"</span><span class="p">]]</span>
+<span class="n">id_price</span><span class="p">[</span><span class="s2">"item_price"</span><span class="p">]</span> <span class="o">=</span> <span class="n">id_price</span><span class="o">.</span><span class="n">item_price</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span>
+<span class="n">group</span> <span class="o">=</span> <span class="n">id_price</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">"item_id"</span><span class="p">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">counts</span> <span class="o">=</span> <span class="n">group</span><span class="o">.</span><span class="n">item_price</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span>
+
+<span class="n">constant_prices</span> <span class="o">=</span> <span class="nb">len</span><span class="p">([</span><span class="n">index</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">counts</span><span class="o">.</span><span class="n">index</span> <span class="k">if</span> <span class="n">counts</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">])</span>
+<span class="k">assert</span> <span class="n">constant_prices</span> <span class="o">==</span> <span class="n">Confirmed</span><span class="o">.</span><span class="n">number_of_items_whose_price_didnt_change</span>
+<span class="k">print</span><span class="p">(</span><span class="n">constant_prices</span><span class="p">)</span>
+</pre></div>
+
+<p>
+5926
+</p>
+
+<div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s2">"Number of items whose price didn't change: {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">constant_prices</span><span class="p">))</span>
+</pre></div>
+
+<p>
+Number of items whose price didn't change: 5926
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org61e053f" class="outline-3">
+<h3 id="org61e053f">Question 4: <b>What was the variance of the number of items sold per day for shop 25 in December, 2014?</b>
+</h3>
+<div class="outline-text-3" id="text-org61e053f">
+<p>
+Remember, the data can sometimes be noisy.
+Do not count the items, that were sold but returned back later.
+</p>
+
+<ul class="org-ul">
+<li>Fill <code>total_num_items_sold</code> and <code>days</code> arrays, and plot the sequence with the code below.</li>
+<li>Then compute variance. Remember, there can be differences in how you normalize variance (biased or unbiased estimate, see <a href="https://math.stackexchange.com/questions/496627/the-difference-between-unbiased-biased-estimator-variance">this Stack Overflow post</a>). Compute the <b><b><b>unbiased</b></b></b> estimate (use the right value for <code>ddof</code> argument in <code>pd.var</code> or <code>np.var</code>).</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="n">shop_id</span> <span class="o">=</span> <span class="mi">25</span>
+</pre></div>
+</div>
+
+<div id="outline-container-orgfb1544b" class="outline-4">
+<h4 id="orgfb1544b">Filter to the Shop and Dates</h4>
+<div class="outline-text-4" id="text-orgfb1544b">
+<div class="highlight"><pre><span></span><span class="n">twenty_fives</span> <span class="o">=</span> <span class="n">twenty_fourteen</span><span class="p">[(</span><span class="n">transactions</span><span class="o">.</span><span class="n">shop_id</span><span class="o">==</span><span class="n">shop_id</span><span class="p">)</span>
+				<span class="o">&amp;</span> <span class="p">(</span><span class="n">transactions</span><span class="o">.</span><span class="n">month</span><span class="o">==</span><span class="n">Dates</span><span class="o">.</span><span class="n">december</span><span class="p">)]</span>
+<span class="k">print</span><span class="p">(</span><span class="n">tabulate</span><span class="p">(</span><span class="n">twenty_fives</span><span class="o">.</span><span class="n">head</span><span class="p">(),</span> <span class="n">headers</span><span class="o">=</span><span class="s1">'keys'</span><span class="p">,</span> <span class="n">tablefmt</span><span class="o">=</span><span class="s1">'orgtbl'</span><span class="p">))</span>
+<span class="k">assert</span><span class="p">(</span><span class="nb">all</span><span class="p">(</span><span class="n">twenty_fives</span><span class="o">.</span><span class="n">shop_id</span> <span class="o">==</span> <span class="n">shop_id</span><span class="p">))</span>
+</pre></div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-right"> </th>
+<th scope="col" class="org-right">date</th>
+<th scope="col" class="org-right">date_block_num</th>
+<th scope="col" class="org-right">shop_id</th>
+<th scope="col" class="org-right">item_id</th>
+<th scope="col" class="org-right">item_price</th>
+<th scope="col" class="org-right">item_cnt_day</th>
+<th scope="col" class="org-right">item_revenue</th>
+<th scope="col" class="org-right">day</th>
+<th scope="col" class="org-right">month</th>
+<th scope="col" class="org-right">year</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-right">2295837</td>
+<td class="org-right">14.12.2014</td>
+<td class="org-right">23</td>
+<td class="org-right">25</td>
+<td class="org-right">21752</td>
+<td class="org-right">399</td>
+<td class="org-right">1</td>
+<td class="org-right">399</td>
+<td class="org-right">14</td>
+<td class="org-right">12</td>
+<td class="org-right">2014</td>
+</tr>
+<tr>
+<td class="org-right">2295838</td>
+<td class="org-right">13.12.2014</td>
+<td class="org-right">23</td>
+<td class="org-right">25</td>
+<td class="org-right">21752</td>
+<td class="org-right">399</td>
+<td class="org-right">3</td>
+<td class="org-right">1197</td>
+<td class="org-right">13</td>
+<td class="org-right">12</td>
+<td class="org-right">2014</td>
+</tr>
+<tr>
+<td class="org-right">2295839</td>
+<td class="org-right">26.12.2014</td>
+<td class="org-right">23</td>
+<td class="org-right">25</td>
+<td class="org-right">21733</td>
+<td class="org-right">149</td>
+<td class="org-right">1</td>
+<td class="org-right">149</td>
+<td class="org-right">26</td>
+<td class="org-right">12</td>
+<td class="org-right">2014</td>
+</tr>
+<tr>
+<td class="org-right">2295840</td>
+<td class="org-right">31.12.2014</td>
+<td class="org-right">23</td>
+<td class="org-right">25</td>
+<td class="org-right">21732</td>
+<td class="org-right">149</td>
+<td class="org-right">1</td>
+<td class="org-right">149</td>
+<td class="org-right">31</td>
+<td class="org-right">12</td>
+<td class="org-right">2014</td>
+</tr>
+<tr>
+<td class="org-right">2295841</td>
+<td class="org-right">30.12.2014</td>
+<td class="org-right">23</td>
+<td class="org-right">25</td>
+<td class="org-right">21726</td>
+<td class="org-right">149</td>
+<td class="org-right">1</td>
+<td class="org-right">149</td>
+<td class="org-right">30</td>
+<td class="org-right">12</td>
+<td class="org-right">2014</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-orga85c1c4" class="outline-4">
+<h4 id="orga85c1c4">Group by date</h4>
+<div class="outline-text-4" id="text-orga85c1c4">
+<div class="highlight"><pre><span></span><span class="n">shop_grouped</span> <span class="o">=</span> <span class="n">twenty_fives</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">"date"</span><span class="p">)</span>
+<span class="n">count_per_day</span> <span class="o">=</span> <span class="n">shop_grouped</span><span class="o">.</span><span class="n">item_cnt_day</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="n">count_per_day</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+
+<pre class="example">
+date
+01.12.2014    153.0
+02.12.2014    169.0
+03.12.2014    195.0
+04.12.2014    164.0
+05.12.2014    300.0
+Name: item_cnt_day, dtype: float64
+
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org9413ad7" class="outline-4">
+<h4 id="org9413ad7">Add a date-time to make it sortable for print</h4>
+<div class="outline-text-4" id="text-org9413ad7">
+<div class="highlight"><pre><span></span><span class="n">pandas</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">mode</span><span class="o">.</span><span class="n">chained_assignment</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="n">count_per_day</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">count_per_day</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">format</span><span class="o">=</span><span class="s2">"</span><span class="si">%d</span><span class="s2">.%m.%Y"</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">count_per_day</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+
+<pre class="example">
+date
+2014-12-01    153.0
+2014-12-02    169.0
+2014-12-03    195.0
+2014-12-04    164.0
+2014-12-05    300.0
+Name: item_cnt_day, dtype: float64
+
+</pre>
+
+
+<div class="highlight"><pre><span></span><span class="n">figure</span> <span class="o">=</span> <span class="n">pyplot</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">15</span><span class="p">))</span>
+<span class="n">axe</span> <span class="o">=</span> <span class="n">figure</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">count_per_day</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">count_per_day</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Num items'</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Day'</span><span class="p">)</span>
+<span class="n">axe</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="n">count_per_day</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">count_per_day</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
+<span class="n">title</span> <span class="o">=</span> <span class="n">pyplot</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">"Daily revenue for shop_id = 25"</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="figure">
+<p><img src="posts/files/posts/pandas-basics/items_per_day.png" alt="items_per_day.png"></p>
+</div>
+
+
+<div class="figure">
+<p><img src="posts/pandas-basics/items_per_day.png" alt="items_per_day.png"></p>
+</div>
+
+<div class="highlight"><pre><span></span><span class="c1"># pandas uses 1/n-1 by default, numpy uses 1/n</span>
+<span class="n">total_num_items_sold_var</span> <span class="o">=</span> <span class="n">count_per_day</span><span class="o">.</span><span class="n">var</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">"Variance for items sold per day: {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">total_num_items_sold_var</span><span class="p">))</span>
+</pre></div>
+
+<p>
+Variance for items sold per day: 117167.70229885059
+</p>
+</div>
+</div>
+</div>
+</div>
+    </div>
+    </article><article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/will-a-gbdt-performance-drop-if-we-remove-the-first-tree/" class="u-url">Will a GBDT's performance drop if we remove the first tree?</a></h1>
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                Cloistered Monkey
+            </span></p>
+            <p class="dateline"><a href="posts/will-a-gbdt-performance-drop-if-we-remove-the-first-tree/" rel="bookmark"><time class="published dt-published" datetime="2018-08-04T19:02:32-07:00" title="2018-08-04 19:02">2018-08-04 19:02</time></a></p>
+        </div>
+    </header><div class="e-content entry-content">
+    <div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="posts/will-a-gbdt-performance-drop-if-we-remove-the-first-tree/#orgaa1041c">Define the Sigmoid</a></li>
+<li><a href="posts/will-a-gbdt-performance-drop-if-we-remove-the-first-tree/#orgadc9caa">Make the dataset</a></li>
+<li><a href="posts/will-a-gbdt-performance-drop-if-we-remove-the-first-tree/#org3838d1c">A Decision Tree Classifier</a></li>
+<li><a href="posts/will-a-gbdt-performance-drop-if-we-remove-the-first-tree/#org9230eaf">A Gradient Boosting Classifier</a></li>
+<li><a href="posts/will-a-gbdt-performance-drop-if-we-remove-the-first-tree/#orgb1d899d">A More Realistic Data Set</a></li>
+<li><a href="posts/will-a-gbdt-performance-drop-if-we-remove-the-first-tree/#orgf80a937">Source</a></li>
+</ul>
+</div>
+</div>
+
+<p>
+We'll look at how <a href="http://blog.kaggle.com/2017/01/23/a-kaggle-master-explains-gradient-boosting/"><b>Gradient Boosting</b></a> works and  answer the question:
+</p>
+
+<blockquote>
+<p>
+Will the performance of a  GBDT model drop dramatically if we remove the first tree?
+</p>
+</blockquote>
+
+<div class="highlight"><pre><span></span><span class="c1"># from pypi</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">pyplot</span>
+<span class="kn">import</span> <span class="nn">seaborn</span>
+
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">log_loss</span>
+<span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="kn">import</span> <span class="n">DecisionTreeClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">GradientBoostingClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_hastie_10_2</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+
+<span class="kn">from</span> <span class="nn">xgboost</span> <span class="kn">import</span> <span class="n">XGBClassifier</span>
+</pre></div>
+
+<div id="outline-container-orgaa1041c" class="outline-2">
+<h2 id="orgaa1041c">Define the Sigmoid</h2>
+<div class="outline-text-2" id="text-orgaa1041c">
+<p>
+This is a function to calculate the <a href="https://en.wikipedia.org/wiki/Sigmoid_function">sigmoid</a> which we'll use to convert probabilities to classifications.
+</p>
+
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sigmoid</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">numpy</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+
+<div id="outline-container-orgadc9caa" class="outline-2">
+<h2 id="orgadc9caa">Make the dataset</h2>
+<div class="outline-text-2" id="text-orgadc9caa">
+<p>
+This will be a very simple synthetic dataset. We'll use numpy's <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.random.randn.html">randn</a> function to generate a dataset of random values that come from a normal distribution and then predict that the class is <i>1</i> if the value is positive and that it is <i>0</i> otherwise.
+</p>
+</div>
+
+<div id="outline-container-orgaa034a9" class="outline-3">
+<h3 id="orgaa034a9">Generating the Random Data</h3>
+<div class="outline-text-3" id="text-orgaa034a9">
+<p>
+First we'll generate an array of 5000 random numbers taken from a normal distribution.
+</p>
+
+<div class="highlight"><pre><span></span><span class="n">X_all</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">5000</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+
+<p>
+Next we'll create a target array which will have 1's for all non-negative numbers and 0's otherwise.
+</p>
+
+<div class="highlight"><pre><span></span><span class="n">y_all</span> <span class="o">=</span> <span class="p">(</span><span class="n">X_all</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span>
+</pre></div>
+
+<p>
+Now we'll use sklearn's <a href="http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html">train_test_split</a> function to create the training and testing data, with half the data using for training and half for testing.
+</p>
+
+<div class="highlight"><pre><span></span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X_all</span><span class="p">,</span> <span class="n">y_all</span><span class="p">,</span>
+						    <span class="n">test_size</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+						    <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org3838d1c" class="outline-2">
+<h2 id="org3838d1c">A Decision Tree Classifier</h2>
+<div class="outline-text-2" id="text-org3838d1c">
+<p>
+We'll build a <a href="https://en.wikipedia.org/wiki/Decision_tree">Decision Tree</a> using sklearn's <a href="http://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html">Decision Tree Classifier</a> for this model.
+</p>
+</div>
+
+<div id="outline-container-orge40b432" class="outline-3">
+<h3 id="orge40b432">Building and Training the Model</h3>
+<div class="outline-text-3" id="text-orge40b432">
+<p>
+This will be a very simple tree with a depth of 1 (a <a href="https://en.wikipedia.org/wiki/Decision_stump">decision stump</a>).
+</p>
+
+<div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">DecisionTreeClassifier</span><span class="p">(</span><span class="n">max_depth</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+
+<div id="outline-container-org3159d01" class="outline-3">
+<h3 id="org3159d01">Measuring the Accuracy</h3>
+<div class="outline-text-3" id="text-org3159d01">
+<div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s1">'Accuracy for a single decision stump: {}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)))</span>
+</pre></div>
+
+<p>
+Accuracy for a single decision stump: 1.0
+</p>
+
+
+<p>
+The 'tree' was able to classify all the testing data correctly.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org9230eaf" class="outline-2">
+<h2 id="org9230eaf">A Gradient Boosting Classifier</h2>
+<div class="outline-text-2" id="text-org9230eaf">
+<p>
+While the Decision Tree Classifier only needed 1 layer, We will need 800 trees in the Gradient Boosting Classifier for it to classify the data correctly.
+</p>
+
+<p>
+For convenience we will use sklearn's <a href="http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingClassifier.html">GradientBoostingClassifier</a>, the situation will be similar if you use <a href="https://xgboost.readthedocs.io/en/latest/">XGBoost</a> or other Gradient Boosting implementations.
+</p>
+</div>
+
+<div id="outline-container-org52c039c" class="outline-3">
+<h3 id="org52c039c">Training and Fitting the Model</h3>
+<div class="outline-text-3" id="text-org52c039c">
+<div class="highlight"><pre><span></span><span class="n">gbc_model</span> <span class="o">=</span> <span class="n">GradientBoostingClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+				 <span class="n">max_depth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+				 <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">gbc_model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s1">'Accuracy for Gradient Booing: {}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">gbc_model</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)))</span>
+</pre></div>
+
+<p>
+Accuracy for Gradient Booing: 1.0
+</p>
+</div>
+</div>
+
+<div id="outline-container-org68e96a9" class="outline-3">
+<h3 id="org68e96a9">Checking the log Loss Metric</h3>
+<div class="outline-text-3" id="text-org68e96a9">
+<p>
+The <a href="http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingClassifier.html#sklearn.ensemble.GradientBoostingClassifier.predict_proba"><code>predict_proba</code></a> method will give us the probabilities that a data-point belongs to a class.
+</p>
+
+<div class="highlight"><pre><span></span><span class="n">y_pred</span> <span class="o">=</span> <span class="n">gbc_model</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_test</span><span class="p">)[:,</span> <span class="mi">1</span><span class="p">]</span>
+</pre></div>
+
+<p>
+We'll use <a href="http://scikit-learn.org/stable/modules/generated/sklearn.metrics.log_loss.html">log loss</a> as our metric to see how the model did.
+</p>
+
+<div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s2">"Test logloss: {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">log_loss</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)))</span>
+</pre></div>
+
+<p>
+Test logloss: 0.0003138777469167194
+</p>
+</div>
+</div>
+
+<div id="outline-container-org9d44ec5" class="outline-3">
+<h3 id="org9d44ec5">Some Helper Functions</h3>
+<div class="outline-text-3" id="text-org9d44ec5">
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_loss</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">predicted_probabilities</span><span class="p">):</span>
+    <span class="sd">"""applies sigmoid to predictions before calling log_loss</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">     y_true: the actual classifications</span>
+<span class="sd">     predicted_probabilities: probabilities that class was 1</span>
+<span class="sd">    """</span>
+    <span class="k">return</span> <span class="n">log_loss</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">predicted_probabilities</span><span class="p">))</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">print_loss</span><span class="p">(</span><span class="n">cumulative_predictions</span><span class="p">,</span> <span class="n">y_test</span><span class="p">):</span>
+    <span class="sd">"""prints the log-loss for the predictions</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">     cumulative_predictions (numpy.Array): The cumulative predictions for the model</span>
+<span class="sd">    """</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">" - Logloss using all trees:           {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+	<span class="n">compute_loss</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">cumulative_predictions</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:])))</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">" - Logloss using all trees but last:  {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+	<span class="n">compute_loss</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">cumulative_predictions</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="p">:])))</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">" - Logloss using all trees but first: {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+	<span class="n">compute_loss</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">cumulative_predictions</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span> <span class="o">-</span> <span class="n">cumulative_predictions</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:])))</span>
+    <span class="k">return</span>
+</pre></div>
+</div>
+</div>
+
+<div id="outline-container-orga09a0e8" class="outline-3">
+<h3 id="orga09a0e8">Checking The loss</h3>
+<div class="outline-text-3" id="text-orga09a0e8">
+<p>
+Now we get the cummulative sum of the <b>decision function</b> (<a href="http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingClassifier.html#sklearn.ensemble.GradientBoostingClassifier.staged_decision_function"><code>staged_decision_function</code></a>) for our trees. The <i>i</i>-th element is a sum of trees \[0 \ldots i-1\]. We cannot use <a href="http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingClassifier.html#sklearn.ensemble.GradientBoostingClassifier.staged_predict_proba">staged_predict_proba</a>, since we want to maniputate raw scores
+(not probabilities). And only in the end convert the scores to probabilities using the <code>sigmoid</code>.
+</p>
+
+<div class="highlight"><pre><span></span><span class="n">gbc_cumulative_predictions</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+    <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">gbc_model</span><span class="o">.</span><span class="n">staged_decision_function</span><span class="p">(</span><span class="n">X_test</span><span class="p">)])[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span> 
+</pre></div>
+
+<p>
+Here we'll use the <code>compute_loss</code> function that we defined above to find the log loss with and without some trees.
+</p>
+
+<div class="highlight"><pre><span></span><span class="n">print_loss</span><span class="p">(</span><span class="n">gbc_cumulative_predictions</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+</pre></div>
+
+<ul class="org-ul">
+<li>Logloss using all trees:           0.0003138777469167194</li>
+<li>Logloss using all trees but last:  0.0003138777469168316</li>
+<li>Logloss using all trees but first: 0.0003202438533122706</li>
+</ul>
+<p>
+You can see that when you remove the first tree there is a difference, but not as much as you might expect. Of particular note is that if we get rid of the last tree the model performs the same as is does with it. 
+</p>
+
+<p>
+Let's take a look at the plot of the cummulative decision function with differing numbers of trees. We'll plot the Cumulative Decision Score when predicting the classification of 1 as the number of stages (trees?) increases.
+</p>
+
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_predictions</span><span class="p">(</span><span class="n">cumulative_predictions</span><span class="p">,</span> <span class="n">identifier</span><span class="p">):</span>
+    <span class="sd">"""plots the cumulative predictions</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">     identifier (str): something to identify the model</span>
+<span class="sd">     cumulative_predictions: predictions from trees</span>
+<span class="sd">    """</span>
+    <span class="n">figure</span> <span class="o">=</span> <span class="n">pyplot</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+    <span class="n">axe</span> <span class="o">=</span> <span class="n">figure</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+    <span class="n">axe</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">cumulative_predictions</span><span class="p">[:,</span> <span class="n">y_test</span> <span class="o">==</span> <span class="mi">1</span><span class="p">][:,</span> <span class="mi">0</span><span class="p">])</span>
+
+    <span class="n">axe</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"({}) Score vs Trees"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">identifier</span><span class="p">))</span>
+    <span class="n">axe</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">'Number of Trees'</span><span class="p">)</span>
+    <span class="n">label</span> <span class="o">=</span> <span class="n">axe</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'Cumulative Decision Score'</span><span class="p">)</span>
+    <span class="k">return</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">plot_predictions</span><span class="p">(</span><span class="n">gbc_cumulative_predictions</span><span class="p">,</span> <span class="s2">"eta=0.01"</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="figure">
+<p><img src="posts/will-a-gbdt-performance-drop-if-we-remove-the-first-tree/cumulative_plot.png" alt=" cumulative_plot.png"></p>
+</div>
+
+
+<p>
+You can see that the decision function improves almost linearly until about the 800th iteration and then the improvement stops. The slope of this line is connected to the learning rate, which we set in the Gradient Boosting machine.
+</p>
+
+<p>
+If you remember the main formula for boosting, it is written something like this:
+</p>
+
+<p>
+\[ F(x) = const + \sum\limits_{i=1}^{n}\gamma_i h_i(x) \]
+</p>
+
+<p>
+In our case, \(\gamma_i\) are constant and equal to the learning rate \[\eta = 0.01\] It takes about <i>800</i> iterations to get a score of <i>8</i>, which means at every iteration the score goes up about <i>0.01</i>. This means that the first 800 terms are approximately equal to <i>0.01</i>, and the rest are almost <i>0</i>. 
+</p>
+
+<p>
+Which in turn means that if we drop the last tree we lower \(F(x)\) by <i>0</i> and if we drop the first tree we lower \(F(x)\) by <i>0.01</i>, which results in a very, very small performance drop. So, even in the case of a simple dataset which can be solved with a single decision stump, with a Gradient Boosting Machine we need to sum a lot of trees (roughly \(\frac{1}{\eta}\)) to approximate our golden single decision stump.
+</p>
+</div>
+
+<div id="outline-container-org1b9d6bd" class="outline-4">
+<h4 id="org1b9d6bd">A Bigger \(\eta\)</h4>
+<div class="outline-text-4" id="text-org1b9d6bd">
+<p>
+To prove that last point let's try a larger learning rate of <i>8</i>.
+</p>
+
+<div class="highlight"><pre><span></span><span class="n">big_eta</span> <span class="o">=</span> <span class="n">GradientBoostingClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+				     <span class="n">max_depth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">big_eta</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">y_pred</span> <span class="o">=</span> <span class="n">big_eta</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_test</span><span class="p">)[:,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">"Test logloss: {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">log_loss</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)))</span>
+</pre></div>
+
+<p>
+Test logloss: 3.0443902682648675e-06
+</p>
+
+<div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s1">'Accuracy for Big Eta: {}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">big_eta</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)))</span>
+</pre></div>
+
+<p>
+Accuracy for Big Eta: 1.0
+</p>
+
+<div class="highlight"><pre><span></span><span class="n">big_eta_cumulative_predictions</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+    <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">big_eta</span><span class="o">.</span><span class="n">staged_decision_function</span><span class="p">(</span><span class="n">X_test</span><span class="p">)])[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span> 
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">print_loss</span><span class="p">(</span><span class="n">big_eta_cumulative_predictions</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+</pre></div>
+
+<ul class="org-ul">
+<li>Logloss using all trees:           3.0443902682648675e-06</li>
+<li>Logloss using all trees but last:  3.0836959336434695e-06</li>
+<li>Logloss using all trees but first: 2.0247047109196954</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="n">plot_predictions</span><span class="p">(</span><span class="n">big_eta_cumulative_predictions</span><span class="p">,</span> <span class="s2">"eta=8"</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="figure">
+<p><img src="posts/will-a-gbdt-performance-drop-if-we-remove-the-first-tree/big_eta_plot.png" alt="big_eta_plot.png"></p>
+</div>
+
+<p>
+Now we see that it is crucial to have the first tree in the ensemble, the last one maybe not so much.
+</p>
+
+<p>
+Even though the dataset is synthetic, a similar intuition will work with real data, except the Gradient Boosting Machine can diverge with higher learning rates and a more complex dataset. 
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orgb1d899d" class="outline-2">
+<h2 id="orgb1d899d">A More Realistic Data Set</h2>
+<div class="outline-text-2" id="text-orgb1d899d">
+<p>
+Sklearn's <a href="http://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_hastie_10_2.html">make_hastie_10_2</a> function makes a ten-dimensional data set with two classifications as targets.
+</p>
+</div>
+<div id="outline-container-orga5a49ed" class="outline-3">
+<h3 id="orga5a49ed">Building the Data Set</h3>
+<div class="outline-text-3" id="text-orga5a49ed">
+<div class="highlight"><pre><span></span><span class="n">X_hastie</span><span class="p">,</span> <span class="n">y_hastie</span> <span class="o">=</span> <span class="n">make_hastie_10_2</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">X_train_hastie</span><span class="p">,</span> <span class="n">X_test_hastie</span><span class="p">,</span> <span class="n">y_train_hastie</span><span class="p">,</span> <span class="n">y_test_hastie</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+    <span class="n">X_hastie</span><span class="p">,</span>
+    <span class="n">y_hastie</span><span class="p">,</span>
+    <span class="n">test_size</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+
+<div id="outline-container-org962c0b2" class="outline-3">
+<h3 id="org962c0b2">Our Decision Stump Again</h3>
+<div class="outline-text-3" id="text-org962c0b2">
+<p>
+Let's try the decision stump on the new dataset.
+</p>
+<div class="highlight"><pre><span></span><span class="n">stump</span> <span class="o">=</span> <span class="n">DecisionTreeClassifier</span><span class="p">(</span><span class="n">max_depth</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">stump</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_hastie</span><span class="p">,</span> <span class="n">y_train_hastie</span><span class="p">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s1">'Accuracy for a single decision stump: {}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+    <span class="n">stump</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test_hastie</span><span class="p">,</span> <span class="n">y_test_hastie</span><span class="p">)))</span>
+</pre></div>
+
+<p>
+Accuracy for a single decision stump: 0.5405
+</p>
+
+<p>
+It dids't do quite so well, what about a decision tree in general?
+</p>
+
+<div class="highlight"><pre><span></span><span class="n">tree</span> <span class="o">=</span> <span class="n">DecisionTreeClassifier</span><span class="p">()</span>
+<span class="n">tree</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_hastie</span><span class="p">,</span> <span class="n">y_train_hastie</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'Accuracy for the Decision Tree: {}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+    <span class="n">tree</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test_hastie</span><span class="p">,</span> <span class="n">y_test_hastie</span><span class="p">)))</span>
+</pre></div>
+
+<p>
+Accuracy for the Decision Tree: 0.7765
+</p>
+
+<p>
+It does a little better, anyway.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org1130326" class="outline-3">
+<h3 id="org1130326">The Gradient Boosting Classifier</h3>
+<div class="outline-text-3" id="text-org1130326">
+<div class="highlight"><pre><span></span><span class="n">gbc2_model</span> <span class="o">=</span> <span class="n">GradientBoostingClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+					<span class="n">max_depth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+					<span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">gbc2_model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_hastie</span><span class="p">,</span> <span class="n">y_train_hastie</span><span class="p">)</span>
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">gbc2_model</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_test_hastie</span><span class="p">)[:,</span> <span class="mi">1</span><span class="p">]</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s1">'Accuracy for Gradient Boosting: {}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+    <span class="n">gbc2_model</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test_hastie</span><span class="p">,</span> <span class="n">y_test_hastie</span><span class="p">)))</span>
+</pre></div>
+
+<p>
+Accuracy for Gradient Boosting: 0.9436666666666667
+</p>
+
+<div class="highlight"><pre><span></span><span class="n">gbc2_cumulative_predictions</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+    <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">gbc2_model</span><span class="o">.</span><span class="n">staged_decision_function</span><span class="p">(</span><span class="n">X_test_hastie</span><span class="p">)])[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">print_loss</span><span class="p">(</span><span class="n">gbc2_cumulative_predictions</span><span class="p">,</span> <span class="n">y_test_hastie</span><span class="p">)</span>
+</pre></div>
+
+<ul class="org-ul">
+<li>Logloss using all trees:           0.18059661273530772</li>
+<li>Logloss using all trees but last:  0.180624604367416</li>
+<li>Logloss using all trees but first: 0.18064882642423313</li>
+</ul>
+<p>
+In this case, although there is a difference, removing the last doesn't seem to be much better than removing the first.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org7fb9524" class="outline-3">
+<h3 id="org7fb9524">XGBoost</h3>
+<div class="outline-text-3" id="text-org7fb9524">
+<p>
+We stated earlier that the result should be the same with other implementations of Gradient Boosting so let's see what happens if we use XGBoost instead.
+</p>
+
+<div class="highlight"><pre><span></span><span class="n">xg_model</span> <span class="o">=</span> <span class="n">XGBClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">xg_model</span><span class="p">)</span>
+<span class="n">xg_model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_hastie</span><span class="p">,</span> <span class="n">y_train_hastie</span><span class="p">)</span>
+</pre></div>
+
+<pre class="example">
+XGBClassifier(base_score=0.5, booster='gbtree', colsample_bylevel=1,
+       colsample_bytree=1, gamma=0, learning_rate=0.01, max_delta_step=0,
+       max_depth=3, min_child_weight=1, missing=None, n_estimators=5000,
+       n_jobs=1, nthread=None, objective='binary:logistic', random_state=0,
+       reg_alpha=0, reg_lambda=1, scale_pos_weight=1, seed=None,
+       silent=True, subsample=1)
+
+</pre>
+
+<div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s1">'Accuracy for XGBoost: {}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">xg_model</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test_hastie</span><span class="p">,</span> <span class="n">y_test_hastie</span><span class="p">)))</span>
+</pre></div>
+
+<p>
+Accuracy for XGBoost: 0.9408333333333333
+</p>
+
+<div class="highlight"><pre><span></span><span class="n">y_pred</span> <span class="o">=</span> <span class="n">xg_model</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_test_hastie</span><span class="p">)[:,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">xg_cumulative_predictions</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+    <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">xg_model</span><span class="o">.</span><span class="n">staged_decision_function</span><span class="p">(</span><span class="n">X_test_hastie</span><span class="p">)])[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">print_loss</span><span class="p">(</span><span class="n">xg_cumulative_loss</span><span class="p">)</span>
+</pre></div>
+
+<p>
+If you read the documentation for the python package for <a href="https://xgboost.readthedocs.io/en/latest/python/index.html">xgboost</a> you'll see that they didn't implement the <code>staged_decision_function</code> for the <code>XGBClassifier</code> so you can't actually run the previous block. The XGBoost classifier ran much faster than the sklearn version did, and did almost as well in accuracy.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgf80a937" class="outline-2">
+<h2 id="orgf80a937">Source</h2>
+<div class="outline-text-2" id="text-orgf80a937">
+<ul class="org-ul">
+<li>“Will Performance of GBDT Model Drop Dramatically If We Remove the First Tree?” Coursera. Accessed August 5, 2018. <a href="https://www.coursera.org/learn/competitive-data-science/home/welcome">https://www.coursera.org/learn/competitive-data-science/home/welcome</a>.</li>
+</ul>
+</div>
+</div>
+    </div>
+    </article><article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/machine-learning-recap/" class="u-url">Machine Learning Recap</a></h1>
         <div class="metadata">
             <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
                 Cloistered Monkey

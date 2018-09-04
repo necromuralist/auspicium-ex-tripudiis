@@ -1,15 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about preprocessing data kaggle)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/preprocessing-data-kaggle.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Mon, 27 Aug 2018 16:39:14 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Preprocessing the Kaggle Data</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/preprocessing-the-kaggle-data/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-org2d93121" class="outline-2"&gt;
-&lt;h2 id="org2d93121"&gt;Introduction&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org2d93121"&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about preprocessing data kaggle)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/preprocessing-data-kaggle.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Tue, 04 Sep 2018 01:24:15 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Preprocessing the Kaggle Data</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/preprocessing-the-kaggle-data/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
+&lt;h2&gt;Table of Contents&lt;/h2&gt;
+&lt;div id="text-table-of-contents"&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/preprocessing-the-kaggle-data/#orged6c8f9"&gt;Introduction&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/preprocessing-the-kaggle-data/#orga0a03fe"&gt;Tangle&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/preprocessing-the-kaggle-data/#org669470e"&gt;Imports&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/preprocessing-the-kaggle-data/#org1372e04"&gt;Loading the Data&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/preprocessing-the-kaggle-data/#org05825a1"&gt;Limit the Target Range&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-orged6c8f9" class="outline-2"&gt;
+&lt;h2 id="orged6c8f9"&gt;Introduction&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orged6c8f9"&gt;
 &lt;p&gt;
 This is a post to do some basic pre-processing on the data. It won't do anything fancy (i.e. no Feature Engineering), but will just get the data ready to be used by the models. In particular, the rules say that the test data target will be limited to a range and the features are categorical so we need to transform them for non-tree models.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org888f96d" class="outline-2"&gt;
-&lt;h2 id="org888f96d"&gt;Tangle&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org888f96d"&gt;
+&lt;div id="outline-container-orga0a03fe" class="outline-2"&gt;
+&lt;h2 id="orga0a03fe"&gt;Tangle&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orga0a03fe"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;pypi&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;imports&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&lt;/span&gt;
 
 &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;local&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;imports&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&lt;/span&gt;
@@ -18,52 +31,67 @@ This is a post to do some basic pre-processing on the data. It won't do anything
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org93b1991" class="outline-2"&gt;
-&lt;h2 id="org93b1991"&gt;Imports&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org93b1991"&gt;
+&lt;div id="outline-container-org669470e" class="outline-2"&gt;
+&lt;h2 id="org669470e"&gt;Imports&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org669470e"&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;warnings&lt;/span&gt;
+&lt;span class="n"&gt;warnings&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;filterwarnings&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"ignore"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;message&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"numpy.dtype size changed"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;warnings&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;filterwarnings&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"ignore"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;message&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"numpy.ufunc size changed"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org413172e" class="outline-3"&gt;
-&lt;h3 id="org413172e"&gt;From pypi&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org413172e"&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;import numpy
+
+&lt;div id="outline-container-org0eb96df" class="outline-3"&gt;
+&lt;h3 id="org0eb96df"&gt;From pypi&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org0eb96df"&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;matplotlib.pyplot&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;pyplot&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;numpy&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;seaborn&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="n"&gt;matplotlib&lt;/span&gt; &lt;span class="n"&gt;inline&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org0e22c2e" class="outline-3"&gt;
-&lt;h3 id="org0e22c2e"&gt;This project&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org0e22c2e"&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;from kaggler.helpers.build_training_data import Pickles
-from kaggler.helpers.helpers import Helpers
+&lt;div id="outline-container-orgef2cfb6" class="outline-3"&gt;
+&lt;h3 id="orgef2cfb6"&gt;This project&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgef2cfb6"&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;kaggler.helpers.build_training_data&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Pickles&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;kaggler.helpers.helpers&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Helpers&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org8d77a47" class="outline-2"&gt;
-&lt;h2 id="org8d77a47"&gt;Loading the Data&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org8d77a47"&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;x_train = Helpers.unpickle(Pickles.x_train)
-x_test = Helpers.unpickle(Pickles.x_test)
-y_train = Helpers.unpickle(Pickles.y_train)
-y_test = Helpers.unpickle(Pickles.y_test)
+&lt;div id="outline-container-org1372e04" class="outline-2"&gt;
+&lt;h2 id="org1372e04"&gt;Loading the Data&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org1372e04"&gt;
+&lt;p&gt;
+This assumes you've run the &lt;code&gt;build_training_data.py&lt;/code&gt; code to get the testing and training data sets. The &lt;code&gt;Helpers&lt;/code&gt; class also expects a specific path, so you have to have the repository set up in &lt;code&gt;~/projects/kaggle-competitions/&lt;/code&gt;.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;x_train&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Helpers&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;unpickle&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Pickles&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;x_train&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;x_test&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Helpers&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;unpickle&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Pickles&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;x_test&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;y_train&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Helpers&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;unpickle&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Pickles&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;y_train&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;y_test&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Helpers&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;unpickle&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Pickles&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;y_test&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;print(x_train.shape)
-print(x_test.shape)
-print(y_train.shape)
-print(y_test.shape)
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x_train&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x_test&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;y_train&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;y_test&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgc08c76f" class="outline-2"&gt;
-&lt;h2 id="orgc08c76f"&gt;Limit the Target Range&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgc08c76f"&gt;
+&lt;div id="outline-container-org05825a1" class="outline-2"&gt;
+&lt;h2 id="org05825a1"&gt;Limit the Target Range&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org05825a1"&gt;
 &lt;p&gt;
 According to the contest description the true target values are clipped to the &lt;code&gt;[0,20]&lt;/code&gt; range, so it might make sense to clip the target data in our training and testing data to the given range.
 &lt;/p&gt;
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;Helpers.print_head(x_test)
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;Helpers&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;print_head&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x_train&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
@@ -86,96 +114,11 @@ According to the contest description the true target values are clipped to the &
 &lt;/colgroup&gt;
 &lt;thead&gt;
 &lt;tr&gt;
-&lt;th scope="col" class="org-right"&gt;date&lt;sub&gt;block&lt;/sub&gt;&lt;sub&gt;num&lt;/sub&gt;&lt;/th&gt;
-&lt;th scope="col" class="org-right"&gt;shop&lt;sub&gt;id&lt;/sub&gt;&lt;/th&gt;
-&lt;th scope="col" class="org-right"&gt;item&lt;sub&gt;id&lt;/sub&gt;&lt;/th&gt;
-&lt;th scope="col" class="org-right"&gt;item&lt;sub&gt;price&lt;/sub&gt;&lt;/th&gt;
-&lt;th scope="col" class="org-right"&gt;item&lt;sub&gt;category&lt;/sub&gt;&lt;sub&gt;id&lt;/sub&gt;&lt;/th&gt;
-&lt;th scope="col" class="org-right"&gt;month&lt;/th&gt;
-&lt;th scope="col" class="org-right"&gt;year&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td class="org-right"&gt;18&lt;/td&gt;
-&lt;td class="org-right"&gt;48&lt;/td&gt;
-&lt;td class="org-right"&gt;5440&lt;/td&gt;
-&lt;td class="org-right"&gt;399&lt;/td&gt;
-&lt;td class="org-right"&gt;55&lt;/td&gt;
-&lt;td class="org-right"&gt;07&lt;/td&gt;
-&lt;td class="org-right"&gt;2014&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-right"&gt;13&lt;/td&gt;
-&lt;td class="org-right"&gt;5&lt;/td&gt;
-&lt;td class="org-right"&gt;10487&lt;/td&gt;
-&lt;td class="org-right"&gt;399&lt;/td&gt;
-&lt;td class="org-right"&gt;40&lt;/td&gt;
-&lt;td class="org-right"&gt;02&lt;/td&gt;
-&lt;td class="org-right"&gt;2014&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-right"&gt;12&lt;/td&gt;
-&lt;td class="org-right"&gt;28&lt;/td&gt;
-&lt;td class="org-right"&gt;12616&lt;/td&gt;
-&lt;td class="org-right"&gt;98&lt;/td&gt;
-&lt;td class="org-right"&gt;40&lt;/td&gt;
-&lt;td class="org-right"&gt;01&lt;/td&gt;
-&lt;td class="org-right"&gt;2014&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-right"&gt;20&lt;/td&gt;
-&lt;td class="org-right"&gt;56&lt;/td&gt;
-&lt;td class="org-right"&gt;18361&lt;/td&gt;
-&lt;td class="org-right"&gt;299&lt;/td&gt;
-&lt;td class="org-right"&gt;57&lt;/td&gt;
-&lt;td class="org-right"&gt;09&lt;/td&gt;
-&lt;td class="org-right"&gt;2014&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-right"&gt;4&lt;/td&gt;
-&lt;td class="org-right"&gt;35&lt;/td&gt;
-&lt;td class="org-right"&gt;1249&lt;/td&gt;
-&lt;td class="org-right"&gt;299&lt;/td&gt;
-&lt;td class="org-right"&gt;55&lt;/td&gt;
-&lt;td class="org-right"&gt;05&lt;/td&gt;
-&lt;td class="org-right"&gt;2013&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;Helpers.print_head(x_train)
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
-
-
-&lt;colgroup&gt;
-&lt;col class="org-right"&gt;
-
-&lt;col class="org-right"&gt;
-
-&lt;col class="org-right"&gt;
-
-&lt;col class="org-right"&gt;
-
-&lt;col class="org-right"&gt;
-
-&lt;col class="org-right"&gt;
-
-&lt;col class="org-right"&gt;
-&lt;/colgroup&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th scope="col" class="org-right"&gt;date&lt;sub&gt;block&lt;/sub&gt;&lt;sub&gt;num&lt;/sub&gt;&lt;/th&gt;
-&lt;th scope="col" class="org-right"&gt;shop&lt;sub&gt;id&lt;/sub&gt;&lt;/th&gt;
-&lt;th scope="col" class="org-right"&gt;item&lt;sub&gt;id&lt;/sub&gt;&lt;/th&gt;
-&lt;th scope="col" class="org-right"&gt;item&lt;sub&gt;price&lt;/sub&gt;&lt;/th&gt;
-&lt;th scope="col" class="org-right"&gt;item&lt;sub&gt;category&lt;/sub&gt;&lt;sub&gt;id&lt;/sub&gt;&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;date_block_num&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;shop_id&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;item_id&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;item_price&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;item_category_id&lt;/th&gt;
 &lt;th scope="col" class="org-right"&gt;month&lt;/th&gt;
 &lt;th scope="col" class="org-right"&gt;year&lt;/th&gt;
 &lt;/tr&gt;
@@ -233,7 +176,65 @@ According to the contest description the true target values are clipped to the &
 &lt;/tbody&gt;
 &lt;/table&gt;
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;y_train&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;describe&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
+
+&lt;pre class="example"&gt;
+count    1.287299e+06
+mean     2.264775e+00
+std      8.693074e+00
+min     -2.200000e+01
+25%      1.000000e+00
+50%      1.000000e+00
+75%      2.000000e+00
+max      2.253000e+03
+Name: item_count_month, dtype: float64
+
+&lt;/pre&gt;
+
+&lt;p&gt;
+Looking at the y-train data you can see that it ranges for -22 to 2,253 - so there is actually a huge amount of reduction in the range of the target data, but the median is only 1, so it might be that there are outliers in the data.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;figure&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pyplot&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;figure&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;figsize&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="n"&gt;axe&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;figure&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;gca&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="n"&gt;seaborn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;kdeplot&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;y_train&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;ax&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;axe&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;axe&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_title&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"Monthly Sales Distribution"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;label&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;axe&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_ylabel&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"Monthly Sales"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="figure"&gt;
+&lt;p&gt;&lt;img src="https://necromuralist.github.io/Kaggle-Competitions/posts/preprocessing-the-kaggle-data/target_distribution.png" alt="target_distribution.png"&gt;
+&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;p&gt;
+It looks like the target is strongly right-skewed. So I guess it makes sense to &lt;a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.clip.html"&gt;clip&lt;/a&gt; it.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;y_train_clipped&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;numpy&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;clip&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;y_train&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;20&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;y_test_clipped&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;numpy&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;clip&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;y_test&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;20&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;y_train_clipped&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y_test_clipped&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;assert&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;min&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;
+    &lt;span class="k"&gt;assert&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;max&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;20&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;figure&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pyplot&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;figure&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;figsize&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="n"&gt;axe&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;figure&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;gca&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="n"&gt;seaborn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;kdeplot&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;y_train_clipped&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;ax&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;axe&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;axe&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_title&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"Monthly Sales Distribution Clipped"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;label&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;axe&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_ylabel&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"Monthly Sales"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="figure"&gt;
+&lt;p&gt;&lt;img src="https://necromuralist.github.io/Kaggle-Competitions/posts/preprocessing-the-kaggle-data/y_train_clipped.png" alt="y_train_clipped.png"&gt;
+&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;p&gt;
+That actually didn't really fix the distribution, strangely.
+&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;</description><category>preprocessing data kaggle</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/preprocessing-the-kaggle-data/</guid><pubDate>Sat, 25 Aug 2018 20:05:56 GMT</pubDate></item></channel></rss>

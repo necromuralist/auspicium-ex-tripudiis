@@ -1,0 +1,228 @@
+#+BEGIN_COMMENT
+.. title: Some Plots of the Data
+.. slug: some-plots-of-the-data
+.. date: 2018-08-29 14:19:26 UTC-07:00
+.. tags: competition plotting data
+.. category: competition
+.. link: 
+.. description: Some plots of the data.
+.. type: text
+#+END_COMMENT
+#+OPTIONS: ^:{}
+#+TOC: headlines 1
+
+* Imports
+#+BEGIN_SRC ipython :session plotting :results none
+import warnings
+warnings.filterwarnings("ignore", message="numpy.dtype size changed")
+warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
+#+END_SRC
+
+** From pypi
+#+BEGIN_SRC ipython :session plotting :results none
+import matplotlib.pyplot as pyplot
+import numpy
+import seaborn
+#+END_SRC
+
+#+BEGIN_SRC ipython :session plotting :results none
+%matplotlib inline
+seaborn.set_style("whitegrid")
+#+END_SRC
+
+** This project
+#+BEGIN_SRC ipython :session plotting :results none
+from kaggler.helpers.build_training_data import Pickles
+from kaggler.helpers.helpers import (
+    DataKeys,
+    Helpers,
+    )
+#+END_SRC
+
+* Build the data
+
+#+BEGIN_SRC ipython :session plotting :results output raw :exports both
+x_train = Helpers.unpickle(Pickles.x_train)
+y_train = Helpers.unpickle(Pickles.y_train)
+DataKeys.target = "Month Count"
+x_train[DataKeys.target] = y_train.values
+Helpers.print_head(x_train)
+#+END_SRC
+
+#+RESULTS:
+| date_block_num | shop_id | item_id | item_price | item_category_id | month | year | Month Count |
+|----------------+---------+---------+------------+------------------+-------+------+-------------|
+|             11 |      15 |    1324 |        499 |               55 |    12 | 2013 |           1 |
+|             18 |      31 |   19981 |        499 |               43 |    07 | 2014 |           2 |
+|             32 |      28 |    7934 |        398 |                7 |    09 | 2015 |           1 |
+|             12 |      43 |   13518 |       1499 |               19 |    01 | 2014 |           1 |
+|             28 |      25 |   19927 |        329 |               57 |    05 | 2015 |           2 |
+* More Helpers
+
+#+BEGIN_SRC ipython :session plotting :results none
+def make_figure_and_axis(x_label, y_label, title, figsize=(10, 8)):
+    """make a matplotlib figure
+
+    Args:
+     x_label (str): label for the x-axis
+     y_label (str): label for the y-axis
+     title (str): title for the plot
+     figsize: tuple of width, height
+    Returns:
+     tuple: figure, axis
+    """
+    figure = pyplot.figure(figsize=figsize)
+    axe = figure.gca()
+    axe.set_xlabel(x_label)
+    axe.set_ylabel(y_label)
+    axe.set_title(title)
+    return figure, axe
+#+END_SRC
+* Features vs Target
+** Date Block
+#+BEGIN_SRC ipython :session plotting :results raw drawer :ipyfile ../files/posts/some-plots-of-the-data/date_block.png
+figure, axis = make_figure_and_axis("Date Block", "Count", "Date-Block Counts")
+grid = seaborn.catplot(ax=axis, x=DataKeys.date_block, kind="count", data=x_train)
+#+END_SRC
+
+#+RESULTS:
+:RESULTS:
+# Out[12]:
+[[file:../files/posts/some-plots-of-the-data/date_block.png]]
+:END:
+
+The counts represent the number of shop-product pairs per-month, which isn't really what we want. We want the count per-product per month. As an intermediary step, why don't we look at the total count as it changes over time.
+
+#+BEGIN_SRC ipython :session plotting :results raw drawer :ipyfile ../files/posts/some-plots-of-the-data/date_block_vs_count.png
+date_group = x_train.groupby(DataKeys.date_block)
+summed = date_group.sum()
+summed = summed.reset_index()
+figure, axis = make_figure_and_axis("Date Block", "Monthly Count",
+                                    "Total Items Sold Per Month")
+grid = seaborn.relplot(x=DataKeys.date_block, y=DataKeys.target, ax=axis,
+                       data=summed, kind="line")
+#+END_SRC
+
+#+RESULTS:
+:RESULTS:
+# Out[13]:
+[[file:../files/posts/some-plots-of-the-data/date_block_vs_count.png]]
+:END:
+
+This seems to indicate that sales are going down overall over time. Those spikes are interesting, maybe the months would be interesting. First we need to re-join the month and year together so the sorting of the x-axis will work okay.
+
+#+BEGIN_SRC ipython :session plotting :results none
+DataKeys.date = "Date"
+x_train[DataKeys.date] = x_train.year + "-" + x_train.month
+month_grouped = x_train.groupby(DataKeys.date)
+month_summed = month_grouped.sum().reset_index()
+#+END_SRC
+
+#+BEGIN_SRC ipython :session plotting :results raw drawer :ipyfile ../files/posts/some-plots-of-the-data/month_vs_count.png
+top_two = month_summed.sort_values(DataKeys.target, ascending=False)[:2]
+figure, axis = make_figure_and_axis("Month", "Count", "Items Sold Per Month",
+                                    figsize=(12,10))
+
+pyplot.xticks(rotation=45, ha="right")
+grid = seaborn.relplot(x=DataKeys.date, y=DataKeys.target, data=month_summed,
+                       ax=axis, kind="line")
+axis.axvline(top_two.index[0], color='r')
+line = axis.axvline(top_two.index[1], color='r')
+#+END_SRC
+
+#+RESULTS:
+:RESULTS:
+# Out[52]:
+[[file:../files/posts/some-plots-of-the-data/month_vs_count.png]]
+:END:
+
+#+BEGIN_SRC ipython :session plotting :results output raw :exports both
+Helpers.print_table(top_two[[DataKeys.date, DataKeys.target]])
+#+END_SRC
+
+#+RESULTS:
+|    |    Date | Month Count |
+|----+---------+-------------|
+| 11 | 2013-12 |      147909 |
+| 23 | 2014-12 |      134785 |
+
+Perhaps not surprisingly, the month of December, when holiday sales spike, is the month with the most sales.
+** Shop
+
+#+BEGIN_SRC ipython :session plotting :results none
+group = x_train.groupby(DataKeys.shop).sum().reset_index().sort_values(DataKeys.target)
+#+END_SRC
+
+
+#+BEGIN_SRC ipython :session plotting :results raw drawer :ipyfile ../files/posts/some-plots-of-the-data/shop_counts.png
+figure, axis = make_figure_and_axis("Shop", "Count", "Shop Sales For Total Time")
+grid = seaborn.relplot(x=DataKeys.shop, y=DataKeys.target, data=group,
+                       ax=axis)
+#+END_SRC
+
+#+RESULTS:
+:RESULTS:
+# Out[45]:
+[[file:../files/posts/some-plots-of-the-data/shop_counts.png]]
+:END:
+
+There appears to be seven or eight shops that dominate the sales.
+
+** Item Category
+
+#+BEGIN_SRC ipython :session plotting :results none
+group = x_train.groupby(DataKeys.item_category).sum().reset_index()
+#+END_SRC
+
+#+BEGIN_SRC ipython :session plotting :results raw drawer :ipyfile ../files/posts/some-plots-of-the-data/category_sales.png
+figure, axis = make_figure_and_axis("Category", "Count", "Category Sales For Total Time")
+grid = seaborn.relplot(x=DataKeys.item_category, y=DataKeys.target, data=group,
+                       ax=axis)
+#+END_SRC
+
+#+RESULTS:
+:RESULTS:
+# Out[46]:
+[[file:../files/posts/some-plots-of-the-data/category_sales.png]]
+:END:
+
+Some kind of weirdly coincidental linear relationship between the category ID and the total sales. 
+
+** Biggest Over Time
+*** Category
+
+#+BEGIN_SRC ipython :session plotting :results raw drawer :ipyfile ../files/posts/some-plots-of-the-data/max_category.png
+category_group = x_train.groupby([DataKeys.date, DataKeys.item_category]).sum().reset_index()
+biggest = category_group.iloc[category_group[DataKeys.target].idxmax()]
+biggest_category = category_group[category_group.item_category_id == biggest.item_category_id]
+figure, axis = make_figure_and_axis("Month", "Count", "Category {} Sales For Total Time".format(biggest[DataKeys.item_category]))
+pyplot.xticks(rotation=45, ha="right")
+grid = seaborn.relplot(x=DataKeys.date, y=DataKeys.target, data=biggest_category,
+                       ax=axis, kind="line")
+#+END_SRC
+
+#+RESULTS:
+:RESULTS:
+# Out[86]:
+[[file:../files/posts/some-plots-of-the-data/max_category.png]]
+:END:
+
+Even the most popular item declines over time.
+
+#+BEGIN_SRC ipython :session plotting :results output raw :exports both
+big = biggest_category[DataKeys.target]
+big_max = big.max()
+big_min = big.min()
+difference = big_max - big_min
+print("Max: {}".format(big_max))
+print("Min: {}".format(big_min))
+print("Difference: {}".format(difference))
+print("Percent Decline: {:.1f} %".format(100 * (difference/big_max)))
+#+END_SRC
+
+#+RESULTS:
+Max: 28987.0
+Min: 5413.0
+Difference: 23574.0
+Percent Decline: 81.3 %
+

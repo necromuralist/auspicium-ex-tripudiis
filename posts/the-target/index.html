@@ -2,27 +2,27 @@
 <html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="description" content="A first naive model.">
+<meta name="description" content="Information about the what we are trying to predict.">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>First Naive Try | Notes on Kaggle</title>
+<title>The Target | Notes on Kaggle</title>
 <link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
 <link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
 <link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
 <meta name="theme-color" content="#5670d4">
 <meta name="generator" content="Nikola (getnikola.com)">
 <link rel="alternate" type="application/rss+xml" title="RSS" href="../../rss.xml">
-<link rel="canonical" href="https://necromuralist.github.io/Kaggle-Competitions/posts/first-naive-try/">
+<link rel="canonical" href="https://necromuralist.github.io/Kaggle-Competitions/posts/the-target/">
 <!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
 </script><meta name="author" content="Cloistered Monkey">
-<link rel="prev" href="../exploring-the-data/" title="Exploring The Data" type="text/html">
-<link rel="next" href="../feature-extraction-from-text-and-images/" title="Feature Extraction From Text and Images" type="text/html">
+<link rel="prev" href="../some-plots-of-the-data/" title="Some Plots of the Data" type="text/html">
+<link rel="next" href="../references/" title="References" type="text/html">
 <meta property="og:site_name" content="Notes on Kaggle">
-<meta property="og:title" content="First Naive Try">
-<meta property="og:url" content="https://necromuralist.github.io/Kaggle-Competitions/posts/first-naive-try/">
-<meta property="og:description" content="A first naive model.">
+<meta property="og:title" content="The Target">
+<meta property="og:url" content="https://necromuralist.github.io/Kaggle-Competitions/posts/the-target/">
+<meta property="og:description" content="Information about the what we are trying to predict.">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2018-08-11T19:37:37-07:00">
-<meta property="article:tag" content="naive model competition">
+<meta property="article:published_time" content="2018-08-31T13:29:42-07:00">
+<meta property="article:tag" content="competition data target">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -90,13 +90,13 @@
         <div class="row">
             
             
-<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">First Naive Try</a></h1>
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">The Target</a></h1>
 
         <div class="metadata">
             <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
                     Cloistered Monkey
             </span></p>
-            <p class="dateline"><a href="." rel="bookmark"><time class="published dt-published" datetime="2018-08-11T19:37:37-07:00" itemprop="datePublished" title="2018-08-11 19:37">2018-08-11 19:37</time></a></p>
+            <p class="dateline"><a href="." rel="bookmark"><time class="published dt-published" datetime="2018-08-31T13:29:42-07:00" itemprop="datePublished" title="2018-08-31 13:29">2018-08-31 13:29</time></a></p>
             
         <p class="sourceline"><a href="index.org" class="sourcelink">Source</a></p>
 
@@ -108,92 +108,94 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org6a9b6df">Introduction</a></li>
-<li><a href="#orgdf4f390">Imports</a></li>
-<li><a href="#orgaff2504">Loading the Data</a></li>
-<li><a href="#orgad199c8">November Only</a></li>
-<li><a href="#orgf6caac3">The Linear Model</a></li>
+<li><a href="#org0f6a87e">Introduction</a></li>
+<li><a href="#orgc89b38d">Imports</a></li>
+<li><a href="#orgfa55ea5">The Data</a></li>
+<li><a href="#orgd91ba5e">Dates</a></li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org6a9b6df" class="outline-2">
-<h2 id="org6a9b6df">Introduction</h2>
-<div class="outline-text-2" id="text-org6a9b6df">
+
+<div id="outline-container-org0f6a87e" class="outline-2">
+<h2 id="org0f6a87e">Introduction</h2>
+<div class="outline-text-2" id="text-org0f6a87e">
 <p>
-Our goal is to predict the number of sales for each shop for November 2015 (based on the prior months). I'm going to make some very naive guesses here with some models that only use the prior dates and the target counts.
+This is some stuff about what we are trying to predict. I realized that the description of the competition says that we are trying to predict the number of items sold per shop for the next month after the data, but I never said what that month is, so I'm making this just to put it somewhere.
 </p>
 </div>
 </div>
-<div id="outline-container-orgdf4f390" class="outline-2">
-<h2 id="orgdf4f390">Imports</h2>
-<div class="outline-text-2" id="text-orgdf4f390">
-</div>
-<div id="outline-container-org5297699" class="outline-3">
-<h3 id="org5297699">Python Standard Library</h3>
-<div class="outline-text-3" id="text-org5297699">
-<div class="highlight"><pre><span></span># python standard library
-import warnings
-import os
-import pickle
-</pre></div>
-</div>
-</div>
-
-<div id="outline-container-org1e06f9e" class="outline-3">
-<h3 id="org1e06f9e">Supress the Warnings</h3>
-<div class="outline-text-3" id="text-org1e06f9e">
-<div class="highlight"><pre><span></span>warnings.filterwarnings("ignore", message="numpy.dtype size changed")
+<div id="outline-container-orgc89b38d" class="outline-2">
+<h2 id="orgc89b38d">Imports</h2>
+<div class="outline-text-2" id="text-orgc89b38d">
+<div class="highlight"><pre><span></span>import warnings
+warnings.filterwarnings("ignore", message="numpy.dtype size changed")
 warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
 </pre></div>
 </div>
-</div>
 
-<div id="outline-container-org1f76a2f" class="outline-3">
-<h3 id="org1f76a2f">From pypi</h3>
-<div class="outline-text-3" id="text-org1f76a2f">
-<div class="highlight"><pre><span></span>import numpy
-import pandas
-from sklearn.metrics import mean_squared_error
-from sklearn.model_selection import cross_val_score
-from sklearn.ensemble import RandomTreesRegressor
-from tabulate import tabulate
+<div id="outline-container-org20ac23e" class="outline-3">
+<h3 id="org20ac23e">From pypi</h3>
+<div class="outline-text-3" id="text-org20ac23e">
+<div class="highlight"><pre><span></span>import pandas
+import matplotlib.pyplot as pyplot
+import seaborn
 </pre></div>
 </div>
 </div>
 
-<div id="outline-container-org6cdd4e0" class="outline-3">
-<h3 id="org6cdd4e0">This Project</h3>
-<div class="outline-text-3" id="text-org6cdd4e0">
-<div class="highlight"><pre><span></span># this project
-from helpers.helpers import (
-    Helpers,
-    DataSource,
+<div id="outline-container-org6614d60" class="outline-3">
+<h3 id="org6614d60">This project</h3>
+<div class="outline-text-3" id="text-org6614d60">
+<div class="highlight"><pre><span></span>from kaggler.helpers.build_training_data import Pickles
+from kaggler.helpers.helpers import (
     DataKeys,
-    Pickles,
+    Helpers,
     )
 </pre></div>
 </div>
 </div>
+
+<div id="outline-container-orgcab3349" class="outline-3">
+<h3 id="orgcab3349">Setting up the plotting</h3>
+<div class="outline-text-3" id="text-orgcab3349">
+<div class="highlight"><pre><span></span>% matplotlib inline
+seaborn.set_style("whitegrid")
+</pre></div>
 </div>
-<div id="outline-container-orgaff2504" class="outline-2">
-<h2 id="orgaff2504">Loading the Data</h2>
-<div class="outline-text-2" id="text-orgaff2504">
+</div>
+</div>
+
+<div id="outline-container-orgfa55ea5" class="outline-2">
+<h2 id="orgfa55ea5">The Data</h2>
+<div class="outline-text-2" id="text-orgfa55ea5">
 <div class="highlight"><pre><span></span>x_train = Helpers.unpickle(Pickles.x_train)
-x_test = Helpers.unpickle(Pickles.x_test)
 y_train = Helpers.unpickle(Pickles.y_train)
-y_test = Helpers.unpickle(Pickles.y_test)
+x_test = Helpers.unpickle(Pickles.x_test)
 </pre></div>
 
 <p>
-To make it easier to filter I'm going to combine the x and y data.
+Although it seem unlikely, it's possible that there are months in either the test or training set that aren't shared, so I'm going to concatenate them.
 </p>
 
-<div class="highlight"><pre><span></span>DataKeys.target = "Month Count"
-x_train[DataKeys.target] = y_train.values
-x_test[DataKeys.target] = y_test.values
+<div class="highlight"><pre><span></span>concatenated = pandas.concat([x_train, x_test], axis="rows")
+assert concatenated.shape == (len(x_train) + len(x_test), len(x_train.columns))
 </pre></div>
+</div>
+</div>
 
-<div class="highlight"><pre><span></span>Helpers.print_head(x_train)
+<div id="outline-container-orgd91ba5e" class="outline-2">
+<h2 id="orgd91ba5e">Dates</h2>
+<div class="outline-text-2" id="text-orgd91ba5e">
+<p>
+Unfortunately I got rid of the days, which are required by the <a href="https://pandas.pydata.org/pandas-docs/stable/timeseries.html">to_datetime</a> function provided by pandas, so I'm going to construct a new date column with a day of 1 for each date.
+</p>
+
+<div class="highlight"><pre><span></span>DataKeys.date = "Date"
+DataKeys.datetime = "Date Time"
+concatenated[DataKeys.date] = "01-" + concatenated.month + '-' + concatenated.year
+concatenated[DataKeys.datetime] = pandas.to_datetime(
+    concatenated[DataKeys.date], format="%d-%m-%Y")
+Helpers.print_head(concatenated)
 </pre></div>
 
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
@@ -206,6 +208,7 @@ x_test[DataKeys.target] = y_test.values
 <col class="org-right">
 <col class="org-right">
 <col class="org-right">
+<col class="org-left">
 </colgroup>
 <thead><tr>
 <th scope="col" class="org-right">date_block_num</th>
@@ -215,7 +218,8 @@ x_test[DataKeys.target] = y_test.values
 <th scope="col" class="org-right">item_category_id</th>
 <th scope="col" class="org-right">month</th>
 <th scope="col" class="org-right">year</th>
-<th scope="col" class="org-right">Month Count</th>
+<th scope="col" class="org-right">Date</th>
+<th scope="col" class="org-left">Date Time</th>
 </tr></thead>
 <tbody>
 <tr>
@@ -226,7 +230,8 @@ x_test[DataKeys.target] = y_test.values
 <td class="org-right">55</td>
 <td class="org-right">12</td>
 <td class="org-right">2013</td>
-<td class="org-right">1</td>
+<td class="org-right">01-12-2013</td>
+<td class="org-left">2013-12-01 00:00:00</td>
 </tr>
 <tr>
 <td class="org-right">18</td>
@@ -236,7 +241,8 @@ x_test[DataKeys.target] = y_test.values
 <td class="org-right">43</td>
 <td class="org-right">07</td>
 <td class="org-right">2014</td>
-<td class="org-right">2</td>
+<td class="org-right">01-07-2014</td>
+<td class="org-left">2014-07-01 00:00:00</td>
 </tr>
 <tr>
 <td class="org-right">32</td>
@@ -246,7 +252,8 @@ x_test[DataKeys.target] = y_test.values
 <td class="org-right">7</td>
 <td class="org-right">09</td>
 <td class="org-right">2015</td>
-<td class="org-right">1</td>
+<td class="org-right">01-09-2015</td>
+<td class="org-left">2015-09-01 00:00:00</td>
 </tr>
 <tr>
 <td class="org-right">12</td>
@@ -256,7 +263,8 @@ x_test[DataKeys.target] = y_test.values
 <td class="org-right">19</td>
 <td class="org-right">01</td>
 <td class="org-right">2014</td>
-<td class="org-right">1</td>
+<td class="org-right">01-01-2014</td>
+<td class="org-left">2014-01-01 00:00:00</td>
 </tr>
 <tr>
 <td class="org-right">28</td>
@@ -266,51 +274,29 @@ x_test[DataKeys.target] = y_test.values
 <td class="org-right">57</td>
 <td class="org-right">05</td>
 <td class="org-right">2015</td>
-<td class="org-right">2</td>
+<td class="org-right">01-05-2015</td>
+<td class="org-left">2015-05-01 00:00:00</td>
 </tr>
 </tbody>
 </table>
-</div>
-</div>
-<div id="outline-container-orgad199c8" class="outline-2">
-<h2 id="orgad199c8">November Only</h2>
-<div class="outline-text-2" id="text-orgad199c8">
+<div class="highlight"><pre><span></span>print(concatenated[DataKeys.datetime].max())
+</pre></div>
+
 <p>
-What happens if we only use the month of November in the data?
+So the last month in the data-set is October 2015, and we want to predict what the counts will be for November 2015.
 </p>
-
-<div class="highlight"><pre><span></span>training = x_train[x_train.month == "11"]
-</pre></div>
-
-<div class="highlight"><pre><span></span>
-</pre></div>
-</div>
-</div>
-<div id="outline-container-orgf6caac3" class="outline-2">
-<h2 id="orgf6caac3">The Linear Model</h2>
-<div class="outline-text-2" id="text-orgf6caac3">
-<p>
-What happens if we just use the default linear regression model? The first problem we have is that we have both non-numeric data and categorical data. I think removing the <code>item_name</code> variable seems reasonable at this point, since we have unique <code>item_id</code> values for each item, although it's possible that some text-mining might reveal something in the names, because this is just a naive approach that will use linear regression.
-</p>
-
-<div class="highlight"><pre><span></span>del(x_train[DataKeys.name])
-</pre></div>
-
-<div class="highlight"><pre><span></span>regression = linear_model.LinearRegression()
-regression.fit(x_train, y_train)
-</pre></div>
 </div>
 </div>
     </div>
     <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
-<li><a class="tag p-category" href="../../categories/naive-model-competition/" rel="tag">naive model competition</a></li>
+<li><a class="tag p-category" href="../../categories/competition-data-target/" rel="tag">competition data target</a></li>
         </ul>
 <ul class="pager hidden-print">
 <li class="previous">
-                <a href="../exploring-the-data/" rel="prev" title="Exploring The Data">Previous post</a>
+                <a href="../some-plots-of-the-data/" rel="prev" title="Some Plots of the Data">Previous post</a>
             </li>
             <li class="next">
-                <a href="../feature-extraction-from-text-and-images/" rel="next" title="Feature Extraction From Text and Images">Next post</a>
+                <a href="../references/" rel="next" title="References">Next post</a>
             </li>
         </ul></nav></aside></article>
 </div>

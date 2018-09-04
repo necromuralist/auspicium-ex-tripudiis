@@ -1,0 +1,14 @@
+#+BEGIN_COMMENT
+.. title: References
+.. slug: references
+.. date: 2018-09-01 12:16:46 UTC-07:00
+.. tags: bilbiography references
+.. category: references
+.. link: 
+.. description: Things I've referred to along the way.
+.. type: text
+#+END_COMMENT
+
+* Bibliography
+
+  - [B1] 1. Albon C. Machine learning with Python cookbook: practical solutions from preprocessing to deep learning. First edition. Beijing Boston Farnham: O’Reilly; 2018. 349 p. 

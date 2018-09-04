@@ -108,24 +108,24 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org445c4f5">Imports</a></li>
-<li><a href="#org4618c3b">The Tangle</a></li>
-<li><a href="#org8c85771">Helpers</a></li>
-<li><a href="#org103e9bf">Constants</a></li>
-<li><a href="#orge3f8d10">The Files</a></li>
-<li><a href="#orgba3f6c4">Some Counts</a></li>
-<li><a href="#org9166d52">The Official Feature Descriptions</a></li>
-<li><a href="#orgf25c73a">The Training Set</a></li>
+<li><a href="#org0ee684d">Imports</a></li>
+<li><a href="#org8af51fe">The Tangle</a></li>
+<li><a href="#org6b4e49d">Helpers</a></li>
+<li><a href="#org7cf0494">Constants</a></li>
+<li><a href="#org749d6e3">The Files</a></li>
+<li><a href="#org39c0786">Some Counts</a></li>
+<li><a href="#org8be93ec">The Official Feature Descriptions</a></li>
+<li><a href="#org019513e">The Training Set</a></li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org445c4f5" class="outline-2">
-<h2 id="org445c4f5">Imports</h2>
-<div class="outline-text-2" id="text-org445c4f5">
+<div id="outline-container-org0ee684d" class="outline-2">
+<h2 id="org0ee684d">Imports</h2>
+<div class="outline-text-2" id="text-org0ee684d">
 </div>
-<div id="outline-container-orgb2ca5ed" class="outline-3">
-<h3 id="orgb2ca5ed">Suppressing the Numpy Warnings</h3>
-<div class="outline-text-3" id="text-orgb2ca5ed">
+<div id="outline-container-org445967f" class="outline-3">
+<h3 id="org445967f">Suppressing the Numpy Warnings</h3>
+<div class="outline-text-3" id="text-org445967f">
 <p>
 When you import pandas you get some warnings:
 </p>
@@ -148,9 +148,9 @@ According to <a href="https://stackoverflow.com/questions/40845304/runtimewarnin
 </div>
 </div>
 
-<div id="outline-container-org4f223d3" class="outline-3">
-<h3 id="org4f223d3">The rest of the imports</h3>
-<div class="outline-text-3" id="text-org4f223d3">
+<div id="outline-container-org2832107" class="outline-3">
+<h3 id="org2832107">The rest of the imports</h3>
+<div class="outline-text-3" id="text-org2832107">
 <div class="highlight"><pre><span></span><span class="c1"># python standard library</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">pickle</span>
@@ -163,28 +163,42 @@ According to <a href="https://stackoverflow.com/questions/40845304/runtimewarnin
 <span class="kn">import</span> <span class="nn">seaborn</span>
 </pre></div>
 
+
+<p>
+<code>=====</code>
+</p>
+</div>
+</div>
+<div id="outline-container-orgd50493f" class="outline-3">
+<h3 id="orgd50493f">This is used for the tangle</h3>
+<div class="outline-text-3" id="text-orgd50493f">
 <div class="highlight"><pre><span></span><span class="c1"># from pypi</span>
 <span class="kn">from</span> <span class="nn">tabulate</span> <span class="kn">import</span> <span class="n">tabulate</span>
 </pre></div>
-
-<div class="highlight"><pre><span></span><span class="o">%</span> <span class="n">matplotlib</span> <span class="n">inline</span>
+</div>
+</div>
+<div id="outline-container-org1bcd3df" class="outline-3">
+<h3 id="org1bcd3df">Set up the plotting</h3>
+<div class="outline-text-3" id="text-org1bcd3df">
+<div class="highlight"><pre><span></span>% matplotlib inline
+seaborn.set_style("whitegrid")
 </pre></div>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org4618c3b" class="outline-2">
-<h2 id="org4618c3b">The Tangle</h2>
-<div class="outline-text-2" id="text-org4618c3b">
+<div id="outline-container-org8af51fe" class="outline-2">
+<h2 id="org8af51fe">The Tangle</h2>
+<div class="outline-text-2" id="text-org8af51fe">
 <p>
 Exports so some of this can be re-used.
 </p>
 </div>
 </div>
 
-<div id="outline-container-org8c85771" class="outline-2">
-<h2 id="org8c85771">Helpers</h2>
-<div class="outline-text-2" id="text-org8c85771">
+<div id="outline-container-org6b4e49d" class="outline-2">
+<h2 id="org6b4e49d">Helpers</h2>
+<div class="outline-text-2" id="text-org6b4e49d">
 <p>
 Just some functions that keep coming up.
 </p>
@@ -263,16 +277,16 @@ Just some functions that keep coming up.
 </div>
 </div>
 
-<div id="outline-container-org103e9bf" class="outline-2">
-<h2 id="org103e9bf">Constants</h2>
-<div class="outline-text-2" id="text-org103e9bf">
+<div id="outline-container-org7cf0494" class="outline-2">
+<h2 id="org7cf0494">Constants</h2>
+<div class="outline-text-2" id="text-org7cf0494">
 <p>
 As always, I'll try to put constants in the same place.
 </p>
 </div>
-<div id="outline-container-org2908de0" class="outline-3">
-<h3 id="org2908de0">Data Names</h3>
-<div class="outline-text-3" id="text-org2908de0">
+<div id="outline-container-org64be644" class="outline-3">
+<h3 id="org64be644">Data Names</h3>
+<div class="outline-text-3" id="text-org64be644">
 <p>
 This is just a re-mapping of the file-names since I keep forgetting them.
 </p>
@@ -287,9 +301,9 @@ This is just a re-mapping of the file-names since I keep forgetting them.
 </div>
 </div>
 
-<div id="outline-container-org5c71afe" class="outline-3">
-<h3 id="org5c71afe">Data Source</h3>
-<div class="outline-text-3" id="text-org5c71afe">
+<div id="outline-container-org393abec" class="outline-3">
+<h3 id="org393abec">Data Source</h3>
+<div class="outline-text-3" id="text-org393abec">
 <div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">DataSource</span><span class="p">:</span>
     <span class="sd">"""Strings for the files</span>
 
@@ -326,7 +340,7 @@ This is just a re-mapping of the file-names since I keep forgetting them.
     <span class="k">def</span> <span class="nf">file_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 	<span class="sd">"""list of file names in the data directory"""</span>
 	<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file_names</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-	    <span class="bp">self</span><span class="o">.</span><span class="n">_file_names</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">)</span>
+	    <span class="bp">self</span><span class="o">.</span><span class="n">_file_names</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">))</span>
 	<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file_names</span>
 
     <span class="nd">@property</span>
@@ -355,9 +369,9 @@ This is just a re-mapping of the file-names since I keep forgetting them.
 </div>
 </div>
 
-<div id="outline-container-orgd944e36" class="outline-3">
-<h3 id="orgd944e36">Data Keys</h3>
-<div class="outline-text-3" id="text-orgd944e36">
+<div id="outline-container-org4b211b0" class="outline-3">
+<h3 id="org4b211b0">Data Keys</h3>
+<div class="outline-text-3" id="text-org4b211b0">
 <div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">DataKeys</span><span class="p">:</span>
     <span class="sd">"""Column names/keys for the data."""</span>
     <span class="n">item_category</span> <span class="o">=</span> <span class="s2">"item_category_id"</span>
@@ -381,9 +395,9 @@ This is just a re-mapping of the file-names since I keep forgetting them.
 </div>
 </div>
 
-<div id="outline-container-orge3f8d10" class="outline-2">
-<h2 id="orge3f8d10">The Files</h2>
-<div class="outline-text-2" id="text-orge3f8d10">
+<div id="outline-container-org749d6e3" class="outline-2">
+<h2 id="org749d6e3">The Files</h2>
+<div class="outline-text-2" id="text-org749d6e3">
 <p>
 These are the files we are given.
 </p>
@@ -416,9 +430,9 @@ I was originally thinking I would need to unzip the gzipped files but apparently
 </pre></div>
 </div>
 
-<div id="outline-container-orge3f710f" class="outline-3">
-<h3 id="orge3f710f">item_categories.csv</h3>
-<div class="outline-text-3" id="text-orge3f710f">
+<div id="outline-container-org446d5f8" class="outline-3">
+<h3 id="org446d5f8">item_categories.csv</h3>
+<div class="outline-text-3" id="text-org446d5f8">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-left">
@@ -464,9 +478,9 @@ None
 </div>
 </div>
 
-<div id="outline-container-org8f10a2d" class="outline-3">
-<h3 id="org8f10a2d">items.csv</h3>
-<div class="outline-text-3" id="text-org8f10a2d">
+<div id="outline-container-org82beb4a" class="outline-3">
+<h3 id="org82beb4a">items.csv</h3>
+<div class="outline-text-3" id="text-org82beb4a">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-left">
@@ -520,9 +534,9 @@ None
 </div>
 </div>
 
-<div id="outline-container-org21902bc" class="outline-3">
-<h3 id="org21902bc">sales_train.csv.gz</h3>
-<div class="outline-text-3" id="text-org21902bc">
+<div id="outline-container-org14aa6d5" class="outline-3">
+<h3 id="org14aa6d5">sales_train.csv.gz</h3>
+<div class="outline-text-3" id="text-org14aa6d5">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-right">
@@ -600,9 +614,9 @@ None
 </div>
 </div>
 
-<div id="outline-container-orgb97e85d" class="outline-3">
-<h3 id="orgb97e85d">sample_submission.csv.gz</h3>
-<div class="outline-text-3" id="text-orgb97e85d">
+<div id="outline-container-orgd967f54" class="outline-3">
+<h3 id="orgd967f54">sample_submission.csv.gz</h3>
+<div class="outline-text-3" id="text-orgd967f54">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-right">
@@ -648,9 +662,9 @@ None
 </div>
 </div>
 
-<div id="outline-container-orgf6165d3" class="outline-3">
-<h3 id="orgf6165d3">shops.csv</h3>
-<div class="outline-text-3" id="text-orgf6165d3">
+<div id="outline-container-org609b7ac" class="outline-3">
+<h3 id="org609b7ac">shops.csv</h3>
+<div class="outline-text-3" id="text-org609b7ac">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-left">
@@ -696,1017 +710,9 @@ None
 </div>
 </div>
 
-<div id="outline-container-org0d8d3d1" class="outline-3">
-<h3 id="org0d8d3d1">test.csv.gz</h3>
-<div class="outline-text-3" id="text-org0d8d3d1">
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-<colgroup>
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-</colgroup>
-<thead><tr>
-<th scope="col" class="org-right">ID</th>
-<th scope="col" class="org-right">shop_id</th>
-<th scope="col" class="org-right">item_id</th>
-</tr></thead>
-<tbody>
-<tr>
-<td class="org-right">0</td>
-<td class="org-right">5</td>
-<td class="org-right">5037</td>
-</tr>
-<tr>
-<td class="org-right">1</td>
-<td class="org-right">5</td>
-<td class="org-right">5320</td>
-</tr>
-<tr>
-<td class="org-right">2</td>
-<td class="org-right">5</td>
-<td class="org-right">5233</td>
-</tr>
-<tr>
-<td class="org-right">3</td>
-<td class="org-right">5</td>
-<td class="org-right">5232</td>
-</tr>
-<tr>
-<td class="org-right">4</td>
-<td class="org-right">5</td>
-<td class="org-right">5268</td>
-</tr>
-</tbody>
-</table>
-<p>
-&lt;class 'pandas.core.frame.DataFrame'&gt;
-RangeIndex: 214200 entries, 0 to 214199
-Data columns (total 3 columns):
-ID         214200 non-null int64
-shop_id    214200 non-null int64
-item_id    214200 non-null int64
-dtypes: int64(3)
-memory usage: 4.9 MB
-None
-</p>
-</div>
-</div>
-
-<div id="outline-container-org4a75ad4" class="outline-3">
-<h3 id="org4a75ad4">sample_submission.csv.gz</h3>
-<div class="outline-text-3" id="text-org4a75ad4">
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-<colgroup>
-<col class="org-right">
-<col class="org-right">
-</colgroup>
-<thead><tr>
-<th scope="col" class="org-right">ID</th>
-<th scope="col" class="org-right">item_cnt_month</th>
-</tr></thead>
-<tbody>
-<tr>
-<td class="org-right">0</td>
-<td class="org-right">0.5</td>
-</tr>
-<tr>
-<td class="org-right">1</td>
-<td class="org-right">0.5</td>
-</tr>
-<tr>
-<td class="org-right">2</td>
-<td class="org-right">0.5</td>
-</tr>
-<tr>
-<td class="org-right">3</td>
-<td class="org-right">0.5</td>
-</tr>
-<tr>
-<td class="org-right">4</td>
-<td class="org-right">0.5</td>
-</tr>
-</tbody>
-</table>
-<p>
-&lt;class 'pandas.core.frame.DataFrame'&gt;
-RangeIndex: 214200 entries, 0 to 214199
-Data columns (total 2 columns):
-ID                214200 non-null int64
-item_cnt_month    214200 non-null float64
-dtypes: float64(1), int64(1)
-memory usage: 3.3 MB
-None
-</p>
-</div>
-</div>
-
-<div id="outline-container-org3ecc92c" class="outline-3">
-<h3 id="org3ecc92c">shops.csv</h3>
-<div class="outline-text-3" id="text-org3ecc92c">
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-<colgroup>
-<col class="org-left">
-<col class="org-right">
-</colgroup>
-<thead><tr>
-<th scope="col" class="org-left">shop_name</th>
-<th scope="col" class="org-right">shop_id</th>
-</tr></thead>
-<tbody>
-<tr>
-<td class="org-left">!Якутск Орджоникидзе, 56 фран</td>
-<td class="org-right">0</td>
-</tr>
-<tr>
-<td class="org-left">!Якутск ТЦ "Центральный" фран</td>
-<td class="org-right">1</td>
-</tr>
-<tr>
-<td class="org-left">Адыгея ТЦ "Мега"</td>
-<td class="org-right">2</td>
-</tr>
-<tr>
-<td class="org-left">Балашиха ТРК "Октябрь-Киномир"</td>
-<td class="org-right">3</td>
-</tr>
-<tr>
-<td class="org-left">Волжский ТЦ "Волга Молл"</td>
-<td class="org-right">4</td>
-</tr>
-</tbody>
-</table>
-<p>
-&lt;class 'pandas.core.frame.DataFrame'&gt;
-RangeIndex: 60 entries, 0 to 59
-Data columns (total 2 columns):
-shop_name    60 non-null object
-shop_id      60 non-null int64
-dtypes: int64(1), object(1)
-memory usage: 1.0+ KB
-None
-</p>
-</div>
-</div>
-
-<div id="outline-container-org32fa315" class="outline-3">
-<h3 id="org32fa315">items.csv</h3>
-<div class="outline-text-3" id="text-org32fa315">
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-<colgroup>
-<col class="org-left">
-<col class="org-right">
-<col class="org-right">
-</colgroup>
-<thead><tr>
-<th scope="col" class="org-left">item_name</th>
-<th scope="col" class="org-right">item_id</th>
-<th scope="col" class="org-right">item_category_id</th>
-</tr></thead>
-<tbody>
-<tr>
-<td class="org-left">! ВО ВЛАСТИ НАВАЖДЕНИЯ (ПЛАСТ.)         D</td>
-<td class="org-right">0</td>
-<td class="org-right">40</td>
-</tr>
-<tr>
-<td class="org-left">!ABBYY FineReader 12 Professional Edition Full [PC, Цифровая версия]</td>
-<td class="org-right">1</td>
-<td class="org-right">76</td>
-</tr>
-<tr>
-<td class="org-left">***В ЛУЧАХ СЛАВЫ   (UNV)                    D</td>
-<td class="org-right">2</td>
-<td class="org-right">40</td>
-</tr>
-<tr>
-<td class="org-left">***ГОЛУБАЯ ВОЛНА  (Univ)                      D</td>
-<td class="org-right">3</td>
-<td class="org-right">40</td>
-</tr>
-<tr>
-<td class="org-left">***КОРОБКА (СТЕКЛО)                       D</td>
-<td class="org-right">4</td>
-<td class="org-right">40</td>
-</tr>
-</tbody>
-</table>
-<p>
-&lt;class 'pandas.core.frame.DataFrame'&gt;
-RangeIndex: 22170 entries, 0 to 22169
-Data columns (total 3 columns):
-item_name           22170 non-null object
-item_id             22170 non-null int64
-item_category_id    22170 non-null int64
-dtypes: int64(2), object(1)
-memory usage: 519.7+ KB
-None
-</p>
-</div>
-</div>
-
-<div id="outline-container-org7aa20c5" class="outline-3">
-<h3 id="org7aa20c5">sales_train.csv.gz</h3>
-<div class="outline-text-3" id="text-org7aa20c5">
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-<colgroup>
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-</colgroup>
-<thead><tr>
-<th scope="col" class="org-right">date</th>
-<th scope="col" class="org-right">date_block_num</th>
-<th scope="col" class="org-right">shop_id</th>
-<th scope="col" class="org-right">item_id</th>
-<th scope="col" class="org-right">item_price</th>
-<th scope="col" class="org-right">item_cnt_day</th>
-</tr></thead>
-<tbody>
-<tr>
-<td class="org-right">02.01.2013</td>
-<td class="org-right">0</td>
-<td class="org-right">59</td>
-<td class="org-right">22154</td>
-<td class="org-right">999</td>
-<td class="org-right">1</td>
-</tr>
-<tr>
-<td class="org-right">03.01.2013</td>
-<td class="org-right">0</td>
-<td class="org-right">25</td>
-<td class="org-right">2552</td>
-<td class="org-right">899</td>
-<td class="org-right">1</td>
-</tr>
-<tr>
-<td class="org-right">05.01.2013</td>
-<td class="org-right">0</td>
-<td class="org-right">25</td>
-<td class="org-right">2552</td>
-<td class="org-right">899</td>
-<td class="org-right">-1</td>
-</tr>
-<tr>
-<td class="org-right">06.01.2013</td>
-<td class="org-right">0</td>
-<td class="org-right">25</td>
-<td class="org-right">2554</td>
-<td class="org-right">1709.05</td>
-<td class="org-right">1</td>
-</tr>
-<tr>
-<td class="org-right">15.01.2013</td>
-<td class="org-right">0</td>
-<td class="org-right">25</td>
-<td class="org-right">2555</td>
-<td class="org-right">1099</td>
-<td class="org-right">1</td>
-</tr>
-</tbody>
-</table>
-<p>
-&lt;class 'pandas.core.frame.DataFrame'&gt;
-RangeIndex: 2935849 entries, 0 to 2935848
-Data columns (total 6 columns):
-date              object
-date_block_num    int64
-shop_id           int64
-item_id           int64
-item_price        float64
-item_cnt_day      float64
-dtypes: float64(2), int64(3), object(1)
-memory usage: 134.4+ MB
-None
-</p>
-</div>
-</div>
-
-<div id="outline-container-org8a0c218" class="outline-3">
-<h3 id="org8a0c218">item_categories.csv</h3>
-<div class="outline-text-3" id="text-org8a0c218">
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-<colgroup>
-<col class="org-left">
-<col class="org-right">
-</colgroup>
-<thead><tr>
-<th scope="col" class="org-left">item_category_name</th>
-<th scope="col" class="org-right">item_category_id</th>
-</tr></thead>
-<tbody>
-<tr>
-<td class="org-left">PC - Гарнитуры/Наушники</td>
-<td class="org-right">0</td>
-</tr>
-<tr>
-<td class="org-left">Аксессуары - PS2</td>
-<td class="org-right">1</td>
-</tr>
-<tr>
-<td class="org-left">Аксессуары - PS3</td>
-<td class="org-right">2</td>
-</tr>
-<tr>
-<td class="org-left">Аксессуары - PS4</td>
-<td class="org-right">3</td>
-</tr>
-<tr>
-<td class="org-left">Аксессуары - PSP</td>
-<td class="org-right">4</td>
-</tr>
-</tbody>
-</table>
-<p>
-&lt;class 'pandas.core.frame.DataFrame'&gt;
-RangeIndex: 84 entries, 0 to 83
-Data columns (total 2 columns):
-item_category_name    84 non-null object
-item_category_id      84 non-null int64
-dtypes: int64(1), object(1)
-memory usage: 1.4+ KB
-None
-</p>
-</div>
-</div>
-
-<div id="outline-container-org601ead6" class="outline-3">
-<h3 id="org601ead6">test.csv.gz</h3>
-<div class="outline-text-3" id="text-org601ead6">
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-<colgroup>
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-</colgroup>
-<thead><tr>
-<th scope="col" class="org-right">ID</th>
-<th scope="col" class="org-right">shop_id</th>
-<th scope="col" class="org-right">item_id</th>
-</tr></thead>
-<tbody>
-<tr>
-<td class="org-right">0</td>
-<td class="org-right">5</td>
-<td class="org-right">5037</td>
-</tr>
-<tr>
-<td class="org-right">1</td>
-<td class="org-right">5</td>
-<td class="org-right">5320</td>
-</tr>
-<tr>
-<td class="org-right">2</td>
-<td class="org-right">5</td>
-<td class="org-right">5233</td>
-</tr>
-<tr>
-<td class="org-right">3</td>
-<td class="org-right">5</td>
-<td class="org-right">5232</td>
-</tr>
-<tr>
-<td class="org-right">4</td>
-<td class="org-right">5</td>
-<td class="org-right">5268</td>
-</tr>
-</tbody>
-</table>
-<p>
-&lt;class 'pandas.core.frame.DataFrame'&gt;
-RangeIndex: 214200 entries, 0 to 214199
-Data columns (total 3 columns):
-ID         214200 non-null int64
-shop_id    214200 non-null int64
-item_id    214200 non-null int64
-dtypes: int64(3)
-memory usage: 4.9 MB
-None
-</p>
-</div>
-</div>
-
-<div id="outline-container-org2733569" class="outline-3">
-<h3 id="org2733569">sample_submission.csv.gz</h3>
-<div class="outline-text-3" id="text-org2733569">
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-<colgroup>
-<col class="org-right">
-<col class="org-right">
-</colgroup>
-<thead><tr>
-<th scope="col" class="org-right">ID</th>
-<th scope="col" class="org-right">item_cnt_month</th>
-</tr></thead>
-<tbody>
-<tr>
-<td class="org-right">0</td>
-<td class="org-right">0.5</td>
-</tr>
-<tr>
-<td class="org-right">1</td>
-<td class="org-right">0.5</td>
-</tr>
-<tr>
-<td class="org-right">2</td>
-<td class="org-right">0.5</td>
-</tr>
-<tr>
-<td class="org-right">3</td>
-<td class="org-right">0.5</td>
-</tr>
-<tr>
-<td class="org-right">4</td>
-<td class="org-right">0.5</td>
-</tr>
-</tbody>
-</table>
-<p>
-&lt;class 'pandas.core.frame.DataFrame'&gt;
-RangeIndex: 214200 entries, 0 to 214199
-Data columns (total 2 columns):
-ID                214200 non-null int64
-item_cnt_month    214200 non-null float64
-dtypes: float64(1), int64(1)
-memory usage: 3.3 MB
-None
-</p>
-</div>
-</div>
-
-<div id="outline-container-org8ec6997" class="outline-3">
-<h3 id="org8ec6997">shops.csv</h3>
-<div class="outline-text-3" id="text-org8ec6997">
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-<colgroup>
-<col class="org-left">
-<col class="org-right">
-</colgroup>
-<thead><tr>
-<th scope="col" class="org-left">shop_name</th>
-<th scope="col" class="org-right">shop_id</th>
-</tr></thead>
-<tbody>
-<tr>
-<td class="org-left">!Якутск Орджоникидзе, 56 фран</td>
-<td class="org-right">0</td>
-</tr>
-<tr>
-<td class="org-left">!Якутск ТЦ "Центральный" фран</td>
-<td class="org-right">1</td>
-</tr>
-<tr>
-<td class="org-left">Адыгея ТЦ "Мега"</td>
-<td class="org-right">2</td>
-</tr>
-<tr>
-<td class="org-left">Балашиха ТРК "Октябрь-Киномир"</td>
-<td class="org-right">3</td>
-</tr>
-<tr>
-<td class="org-left">Волжский ТЦ "Волга Молл"</td>
-<td class="org-right">4</td>
-</tr>
-</tbody>
-</table>
-<p>
-&lt;class 'pandas.core.frame.DataFrame'&gt;
-RangeIndex: 60 entries, 0 to 59
-Data columns (total 2 columns):
-shop_name    60 non-null object
-shop_id      60 non-null int64
-dtypes: int64(1), object(1)
-memory usage: 1.0+ KB
-None
-</p>
-</div>
-</div>
-
-<div id="outline-container-org892eb7b" class="outline-3">
-<h3 id="org892eb7b">items.csv</h3>
-<div class="outline-text-3" id="text-org892eb7b">
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-<colgroup>
-<col class="org-left">
-<col class="org-right">
-<col class="org-right">
-</colgroup>
-<thead><tr>
-<th scope="col" class="org-left">item_name</th>
-<th scope="col" class="org-right">item_id</th>
-<th scope="col" class="org-right">item_category_id</th>
-</tr></thead>
-<tbody>
-<tr>
-<td class="org-left">! ВО ВЛАСТИ НАВАЖДЕНИЯ (ПЛАСТ.)         D</td>
-<td class="org-right">0</td>
-<td class="org-right">40</td>
-</tr>
-<tr>
-<td class="org-left">!ABBYY FineReader 12 Professional Edition Full [PC, Цифровая версия]</td>
-<td class="org-right">1</td>
-<td class="org-right">76</td>
-</tr>
-<tr>
-<td class="org-left">***В ЛУЧАХ СЛАВЫ   (UNV)                    D</td>
-<td class="org-right">2</td>
-<td class="org-right">40</td>
-</tr>
-<tr>
-<td class="org-left">***ГОЛУБАЯ ВОЛНА  (Univ)                      D</td>
-<td class="org-right">3</td>
-<td class="org-right">40</td>
-</tr>
-<tr>
-<td class="org-left">***КОРОБКА (СТЕКЛО)                       D</td>
-<td class="org-right">4</td>
-<td class="org-right">40</td>
-</tr>
-</tbody>
-</table>
-<p>
-&lt;class 'pandas.core.frame.DataFrame'&gt;
-RangeIndex: 22170 entries, 0 to 22169
-Data columns (total 3 columns):
-item_name           22170 non-null object
-item_id             22170 non-null int64
-item_category_id    22170 non-null int64
-dtypes: int64(2), object(1)
-memory usage: 519.7+ KB
-None
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgdc3f76d" class="outline-3">
-<h3 id="orgdc3f76d">sales_train.csv.gz</h3>
-<div class="outline-text-3" id="text-orgdc3f76d">
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-<colgroup>
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-</colgroup>
-<thead><tr>
-<th scope="col" class="org-right">date</th>
-<th scope="col" class="org-right">date_block_num</th>
-<th scope="col" class="org-right">shop_id</th>
-<th scope="col" class="org-right">item_id</th>
-<th scope="col" class="org-right">item_price</th>
-<th scope="col" class="org-right">item_cnt_day</th>
-</tr></thead>
-<tbody>
-<tr>
-<td class="org-right">02.01.2013</td>
-<td class="org-right">0</td>
-<td class="org-right">59</td>
-<td class="org-right">22154</td>
-<td class="org-right">999</td>
-<td class="org-right">1</td>
-</tr>
-<tr>
-<td class="org-right">03.01.2013</td>
-<td class="org-right">0</td>
-<td class="org-right">25</td>
-<td class="org-right">2552</td>
-<td class="org-right">899</td>
-<td class="org-right">1</td>
-</tr>
-<tr>
-<td class="org-right">05.01.2013</td>
-<td class="org-right">0</td>
-<td class="org-right">25</td>
-<td class="org-right">2552</td>
-<td class="org-right">899</td>
-<td class="org-right">-1</td>
-</tr>
-<tr>
-<td class="org-right">06.01.2013</td>
-<td class="org-right">0</td>
-<td class="org-right">25</td>
-<td class="org-right">2554</td>
-<td class="org-right">1709.05</td>
-<td class="org-right">1</td>
-</tr>
-<tr>
-<td class="org-right">15.01.2013</td>
-<td class="org-right">0</td>
-<td class="org-right">25</td>
-<td class="org-right">2555</td>
-<td class="org-right">1099</td>
-<td class="org-right">1</td>
-</tr>
-</tbody>
-</table>
-<p>
-&lt;class 'pandas.core.frame.DataFrame'&gt;
-RangeIndex: 2935849 entries, 0 to 2935848
-Data columns (total 6 columns):
-date              object
-date_block_num    int64
-shop_id           int64
-item_id           int64
-item_price        float64
-item_cnt_day      float64
-dtypes: float64(2), int64(3), object(1)
-memory usage: 134.4+ MB
-None
-</p>
-</div>
-</div>
-
-<div id="outline-container-org6e84b6c" class="outline-3">
-<h3 id="org6e84b6c">item_categories.csv</h3>
-<div class="outline-text-3" id="text-org6e84b6c">
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-<colgroup>
-<col class="org-left">
-<col class="org-right">
-</colgroup>
-<thead><tr>
-<th scope="col" class="org-left">item_category_name</th>
-<th scope="col" class="org-right">item_category_id</th>
-</tr></thead>
-<tbody>
-<tr>
-<td class="org-left">PC - Гарнитуры/Наушники</td>
-<td class="org-right">0</td>
-</tr>
-<tr>
-<td class="org-left">Аксессуары - PS2</td>
-<td class="org-right">1</td>
-</tr>
-<tr>
-<td class="org-left">Аксессуары - PS3</td>
-<td class="org-right">2</td>
-</tr>
-<tr>
-<td class="org-left">Аксессуары - PS4</td>
-<td class="org-right">3</td>
-</tr>
-<tr>
-<td class="org-left">Аксессуары - PSP</td>
-<td class="org-right">4</td>
-</tr>
-</tbody>
-</table>
-<p>
-&lt;class 'pandas.core.frame.DataFrame'&gt;
-RangeIndex: 84 entries, 0 to 83
-Data columns (total 2 columns):
-item_category_name    84 non-null object
-item_category_id      84 non-null int64
-dtypes: int64(1), object(1)
-memory usage: 1.4+ KB
-None
-</p>
-</div>
-</div>
-
-<div id="outline-container-org2633e5e" class="outline-3">
-<h3 id="org2633e5e">test.csv.gz</h3>
-<div class="outline-text-3" id="text-org2633e5e">
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-<colgroup>
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-</colgroup>
-<thead><tr>
-<th scope="col" class="org-right">ID</th>
-<th scope="col" class="org-right">shop_id</th>
-<th scope="col" class="org-right">item_id</th>
-</tr></thead>
-<tbody>
-<tr>
-<td class="org-right">0</td>
-<td class="org-right">5</td>
-<td class="org-right">5037</td>
-</tr>
-<tr>
-<td class="org-right">1</td>
-<td class="org-right">5</td>
-<td class="org-right">5320</td>
-</tr>
-<tr>
-<td class="org-right">2</td>
-<td class="org-right">5</td>
-<td class="org-right">5233</td>
-</tr>
-<tr>
-<td class="org-right">3</td>
-<td class="org-right">5</td>
-<td class="org-right">5232</td>
-</tr>
-<tr>
-<td class="org-right">4</td>
-<td class="org-right">5</td>
-<td class="org-right">5268</td>
-</tr>
-</tbody>
-</table>
-<p>
-&lt;class 'pandas.core.frame.DataFrame'&gt;
-RangeIndex: 214200 entries, 0 to 214199
-Data columns (total 3 columns):
-ID         214200 non-null int64
-shop_id    214200 non-null int64
-item_id    214200 non-null int64
-dtypes: int64(3)
-memory usage: 4.9 MB
-None
-</p>
-</div>
-</div>
-
-<div id="outline-container-org1656326" class="outline-3">
-<h3 id="org1656326">sample_submission.csv.gz</h3>
-<div class="outline-text-3" id="text-org1656326">
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-<colgroup>
-<col class="org-right">
-<col class="org-right">
-</colgroup>
-<thead><tr>
-<th scope="col" class="org-right">ID</th>
-<th scope="col" class="org-right">item_cnt_month</th>
-</tr></thead>
-<tbody>
-<tr>
-<td class="org-right">0</td>
-<td class="org-right">0.5</td>
-</tr>
-<tr>
-<td class="org-right">1</td>
-<td class="org-right">0.5</td>
-</tr>
-<tr>
-<td class="org-right">2</td>
-<td class="org-right">0.5</td>
-</tr>
-<tr>
-<td class="org-right">3</td>
-<td class="org-right">0.5</td>
-</tr>
-<tr>
-<td class="org-right">4</td>
-<td class="org-right">0.5</td>
-</tr>
-</tbody>
-</table>
-<p>
-&lt;class 'pandas.core.frame.DataFrame'&gt;
-RangeIndex: 214200 entries, 0 to 214199
-Data columns (total 2 columns):
-ID                214200 non-null int64
-item_cnt_month    214200 non-null float64
-dtypes: float64(1), int64(1)
-memory usage: 3.3 MB
-None
-</p>
-</div>
-</div>
-
-<div id="outline-container-org6bec7ca" class="outline-3">
-<h3 id="org6bec7ca">shops.csv</h3>
-<div class="outline-text-3" id="text-org6bec7ca">
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-<colgroup>
-<col class="org-left">
-<col class="org-right">
-</colgroup>
-<thead><tr>
-<th scope="col" class="org-left">shop_name</th>
-<th scope="col" class="org-right">shop_id</th>
-</tr></thead>
-<tbody>
-<tr>
-<td class="org-left">!Якутск Орджоникидзе, 56 фран</td>
-<td class="org-right">0</td>
-</tr>
-<tr>
-<td class="org-left">!Якутск ТЦ "Центральный" фран</td>
-<td class="org-right">1</td>
-</tr>
-<tr>
-<td class="org-left">Адыгея ТЦ "Мега"</td>
-<td class="org-right">2</td>
-</tr>
-<tr>
-<td class="org-left">Балашиха ТРК "Октябрь-Киномир"</td>
-<td class="org-right">3</td>
-</tr>
-<tr>
-<td class="org-left">Волжский ТЦ "Волга Молл"</td>
-<td class="org-right">4</td>
-</tr>
-</tbody>
-</table>
-<p>
-&lt;class 'pandas.core.frame.DataFrame'&gt;
-RangeIndex: 60 entries, 0 to 59
-Data columns (total 2 columns):
-shop_name    60 non-null object
-shop_id      60 non-null int64
-dtypes: int64(1), object(1)
-memory usage: 1.0+ KB
-None
-</p>
-</div>
-</div>
-
-<div id="outline-container-org7033e83" class="outline-3">
-<h3 id="org7033e83">items.csv</h3>
-<div class="outline-text-3" id="text-org7033e83">
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-<colgroup>
-<col class="org-left">
-<col class="org-right">
-<col class="org-right">
-</colgroup>
-<thead><tr>
-<th scope="col" class="org-left">item_name</th>
-<th scope="col" class="org-right">item_id</th>
-<th scope="col" class="org-right">item_category_id</th>
-</tr></thead>
-<tbody>
-<tr>
-<td class="org-left">! ВО ВЛАСТИ НАВАЖДЕНИЯ (ПЛАСТ.)         D</td>
-<td class="org-right">0</td>
-<td class="org-right">40</td>
-</tr>
-<tr>
-<td class="org-left">!ABBYY FineReader 12 Professional Edition Full [PC, Цифровая версия]</td>
-<td class="org-right">1</td>
-<td class="org-right">76</td>
-</tr>
-<tr>
-<td class="org-left">***В ЛУЧАХ СЛАВЫ   (UNV)                    D</td>
-<td class="org-right">2</td>
-<td class="org-right">40</td>
-</tr>
-<tr>
-<td class="org-left">***ГОЛУБАЯ ВОЛНА  (Univ)                      D</td>
-<td class="org-right">3</td>
-<td class="org-right">40</td>
-</tr>
-<tr>
-<td class="org-left">***КОРОБКА (СТЕКЛО)                       D</td>
-<td class="org-right">4</td>
-<td class="org-right">40</td>
-</tr>
-</tbody>
-</table>
-<p>
-&lt;class 'pandas.core.frame.DataFrame'&gt;
-RangeIndex: 22170 entries, 0 to 22169
-Data columns (total 3 columns):
-item_name           22170 non-null object
-item_id             22170 non-null int64
-item_category_id    22170 non-null int64
-dtypes: int64(2), object(1)
-memory usage: 519.7+ KB
-None
-</p>
-</div>
-</div>
-
-<div id="outline-container-org8fd843c" class="outline-3">
-<h3 id="org8fd843c">sales_train.csv.gz</h3>
-<div class="outline-text-3" id="text-org8fd843c">
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-<colgroup>
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-</colgroup>
-<thead><tr>
-<th scope="col" class="org-right">date</th>
-<th scope="col" class="org-right">date_block_num</th>
-<th scope="col" class="org-right">shop_id</th>
-<th scope="col" class="org-right">item_id</th>
-<th scope="col" class="org-right">item_price</th>
-<th scope="col" class="org-right">item_cnt_day</th>
-</tr></thead>
-<tbody>
-<tr>
-<td class="org-right">02.01.2013</td>
-<td class="org-right">0</td>
-<td class="org-right">59</td>
-<td class="org-right">22154</td>
-<td class="org-right">999</td>
-<td class="org-right">1</td>
-</tr>
-<tr>
-<td class="org-right">03.01.2013</td>
-<td class="org-right">0</td>
-<td class="org-right">25</td>
-<td class="org-right">2552</td>
-<td class="org-right">899</td>
-<td class="org-right">1</td>
-</tr>
-<tr>
-<td class="org-right">05.01.2013</td>
-<td class="org-right">0</td>
-<td class="org-right">25</td>
-<td class="org-right">2552</td>
-<td class="org-right">899</td>
-<td class="org-right">-1</td>
-</tr>
-<tr>
-<td class="org-right">06.01.2013</td>
-<td class="org-right">0</td>
-<td class="org-right">25</td>
-<td class="org-right">2554</td>
-<td class="org-right">1709.05</td>
-<td class="org-right">1</td>
-</tr>
-<tr>
-<td class="org-right">15.01.2013</td>
-<td class="org-right">0</td>
-<td class="org-right">25</td>
-<td class="org-right">2555</td>
-<td class="org-right">1099</td>
-<td class="org-right">1</td>
-</tr>
-</tbody>
-</table>
-<p>
-&lt;class 'pandas.core.frame.DataFrame'&gt;
-RangeIndex: 2935849 entries, 0 to 2935848
-Data columns (total 6 columns):
-date              object
-date_block_num    int64
-shop_id           int64
-item_id           int64
-item_price        float64
-item_cnt_day      float64
-dtypes: float64(2), int64(3), object(1)
-memory usage: 134.4+ MB
-None
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgc30ecc8" class="outline-3">
-<h3 id="orgc30ecc8">item_categories.csv</h3>
-<div class="outline-text-3" id="text-orgc30ecc8">
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-<colgroup>
-<col class="org-left">
-<col class="org-right">
-</colgroup>
-<thead><tr>
-<th scope="col" class="org-left">item_category_name</th>
-<th scope="col" class="org-right">item_category_id</th>
-</tr></thead>
-<tbody>
-<tr>
-<td class="org-left">PC - Гарнитуры/Наушники</td>
-<td class="org-right">0</td>
-</tr>
-<tr>
-<td class="org-left">Аксессуары - PS2</td>
-<td class="org-right">1</td>
-</tr>
-<tr>
-<td class="org-left">Аксессуары - PS3</td>
-<td class="org-right">2</td>
-</tr>
-<tr>
-<td class="org-left">Аксессуары - PS4</td>
-<td class="org-right">3</td>
-</tr>
-<tr>
-<td class="org-left">Аксессуары - PSP</td>
-<td class="org-right">4</td>
-</tr>
-</tbody>
-</table>
-<p>
-&lt;class 'pandas.core.frame.DataFrame'&gt;
-RangeIndex: 84 entries, 0 to 83
-Data columns (total 2 columns):
-item_category_name    84 non-null object
-item_category_id      84 non-null int64
-dtypes: int64(1), object(1)
-memory usage: 1.4+ KB
-None
-</p>
-</div>
-</div>
-
-<div id="outline-container-orga64fe3b" class="outline-3">
-<h3 id="orga64fe3b">test.csv.gz</h3>
-<div class="outline-text-3" id="text-orga64fe3b">
+<div id="outline-container-org8a88d1c" class="outline-3">
+<h3 id="org8a88d1c">test.csv.gz</h3>
+<div class="outline-text-3" id="text-org8a88d1c">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-right">
@@ -1761,13 +767,13 @@ None
 </div>
 </div>
 
-<div id="outline-container-orgba3f6c4" class="outline-2">
-<h2 id="orgba3f6c4">Some Counts</h2>
-<div class="outline-text-2" id="text-orgba3f6c4">
+<div id="outline-container-org39c0786" class="outline-2">
+<h2 id="org39c0786">Some Counts</h2>
+<div class="outline-text-2" id="text-org39c0786">
 </div>
-<div id="outline-container-org1b27b37" class="outline-3">
-<h3 id="org1b27b37">How much data is there in the training set?</h3>
-<div class="outline-text-3" id="text-org1b27b37">
+<div id="outline-container-org8dfba4f" class="outline-3">
+<h3 id="org8dfba4f">How much data is there in the training set?</h3>
+<div class="outline-text-3" id="text-org8dfba4f">
 <div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s2">"There are {:,} rows in the training set."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">frames</span><span class="p">[</span><span class="n">data_source</span><span class="o">.</span><span class="n">sales_train</span><span class="p">])))</span>
 </pre></div>
 
@@ -1777,9 +783,9 @@ There are 2,935,849 rows in the training set.
 </div>
 </div>
 
-<div id="outline-container-org963fae3" class="outline-3">
-<h3 id="org963fae3">How many shops are there?</h3>
-<div class="outline-text-3" id="text-org963fae3">
+<div id="outline-container-orgf502243" class="outline-3">
+<h3 id="orgf502243">How many shops are there?</h3>
+<div class="outline-text-3" id="text-orgf502243">
 <div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s2">"There are {} shops."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">frames</span><span class="p">[</span><span class="n">data_source</span><span class="o">.</span><span class="n">shops</span><span class="p">])))</span>
 </pre></div>
 
@@ -1789,9 +795,9 @@ There are 60 shops.
 </div>
 </div>
 
-<div id="outline-container-orgc87eddf" class="outline-3">
-<h3 id="orgc87eddf">How Many Items Are There?</h3>
-<div class="outline-text-3" id="text-orgc87eddf">
+<div id="outline-container-org8a69099" class="outline-3">
+<h3 id="org8a69099">How Many Items Are There?</h3>
+<div class="outline-text-3" id="text-org8a69099">
 <div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s2">"There are {:,} items."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">frames</span><span class="p">[</span><span class="n">data_source</span><span class="o">.</span><span class="n">items</span><span class="p">])))</span>
 </pre></div>
 
@@ -1801,9 +807,9 @@ There are 22,170 items.
 </div>
 </div>
 
-<div id="outline-container-org401d931" class="outline-3">
-<h3 id="org401d931">How Many Item Categories are there?</h3>
-<div class="outline-text-3" id="text-org401d931">
+<div id="outline-container-org0d8b21c" class="outline-3">
+<h3 id="org0d8b21c">How Many Item Categories are there?</h3>
+<div class="outline-text-3" id="text-org0d8b21c">
 <div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s2">"There are {:,} categories."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">frames</span><span class="p">[</span><span class="n">data_source</span><span class="o">.</span><span class="n">item_categories</span><span class="p">])))</span>
 </pre></div>
 
@@ -1813,9 +819,9 @@ There are 84 categories.
 </div>
 </div>
 
-<div id="outline-container-org4f0f275" class="outline-3">
-<h3 id="org4f0f275">How many date-blocks are there?</h3>
-<div class="outline-text-3" id="text-org4f0f275">
+<div id="outline-container-org1d47463" class="outline-3">
+<h3 id="org1d47463">How many date-blocks are there?</h3>
+<div class="outline-text-3" id="text-org1d47463">
 <div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s2">"There are {} date-blocks."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
     <span class="nb">len</span><span class="p">(</span><span class="n">frames</span><span class="p">[</span><span class="n">data_source</span><span class="o">.</span><span class="n">sales_train</span><span class="p">][</span><span class="n">DataKeys</span><span class="o">.</span><span class="n">date_block</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())))</span>
 </pre></div>
@@ -1827,9 +833,9 @@ There are 34 date-blocks.
 </div>
 </div>
 
-<div id="outline-container-org9166d52" class="outline-2">
-<h2 id="org9166d52">The Official Feature Descriptions</h2>
-<div class="outline-text-2" id="text-org9166d52">
+<div id="outline-container-org8be93ec" class="outline-2">
+<h2 id="org8be93ec">The Official Feature Descriptions</h2>
+<div class="outline-text-2" id="text-org8be93ec">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-left">
@@ -1889,9 +895,9 @@ There are 34 date-blocks.
 </div>
 </div>
 
-<div id="outline-container-orgf25c73a" class="outline-2">
-<h2 id="orgf25c73a">The Training Set</h2>
-<div class="outline-text-2" id="text-orgf25c73a">
+<div id="outline-container-org019513e" class="outline-2">
+<h2 id="org019513e">The Training Set</h2>
+<div class="outline-text-2" id="text-org019513e">
 <div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="n">frames</span><span class="p">[</span><span class="n">data_source</span><span class="o">.</span><span class="n">sales_train</span><span class="p">]</span><span class="o">.</span><span class="n">dtypes</span><span class="p">)</span>
 </pre></div>
 
@@ -1906,9 +912,9 @@ dtype: object
 </p>
 </div>
 
-<div id="outline-container-org26679fc" class="outline-3">
-<h3 id="org26679fc">Numeric Features</h3>
-<div class="outline-text-3" id="text-org26679fc">
+<div id="outline-container-orge4364c1" class="outline-3">
+<h3 id="orge4364c1">Numeric Features</h3>
+<div class="outline-text-3" id="text-orge4364c1">
 <div class="highlight"><pre><span></span><span class="n">Helpers</span><span class="o">.</span><span class="n">print_table</span><span class="p">(</span><span class="n">frames</span><span class="p">[</span><span class="n">data_source</span><span class="o">.</span><span class="n">sales_train</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">number</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
 </pre></div>
 
@@ -1996,9 +1002,9 @@ dtype: object
 </div>
 </div>
 
-<div id="outline-container-orgbfaf455" class="outline-3">
-<h3 id="orgbfaf455">Categorical Features</h3>
-<div class="outline-text-3" id="text-orgbfaf455">
+<div id="outline-container-orgb869d73" class="outline-3">
+<h3 id="orgb869d73">Categorical Features</h3>
+<div class="outline-text-3" id="text-orgb869d73">
 <div class="highlight"><pre><span></span><span class="n">Helpers</span><span class="o">.</span><span class="n">print_table</span><span class="p">(</span><span class="n">frames</span><span class="p">[</span><span class="n">data_source</span><span class="o">.</span><span class="n">sales_train</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">object</span><span class="p">,</span> <span class="n">pandas</span><span class="o">.</span><span class="n">Categorical</span><span class="p">])</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
 </pre></div>
 

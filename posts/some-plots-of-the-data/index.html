@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="Some plots of the data.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Some Plots of the Data | Notes on Kaggle</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="../../rss.xml">
+<link rel="canonical" href="https://necromuralist.github.io/Kaggle-Competitions/posts/some-plots-of-the-data/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script><meta name="author" content="Cloistered Monkey">
+<link rel="prev" href="../preprocessing-the-kaggle-data/" title="Preprocessing the Kaggle Data" type="text/html">
+<link rel="next" href="../the-target/" title="The Target" type="text/html">
+<meta property="og:site_name" content="Notes on Kaggle">
+<meta property="og:title" content="Some Plots of the Data">
+<meta property="og:url" content="https://necromuralist.github.io/Kaggle-Competitions/posts/some-plots-of-the-data/">
+<meta property="og:description" content="Some plots of the data.">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2018-08-29T14:19:26-07:00">
+<meta property="article:tag" content="competition plotting data">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-default navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://necromuralist.github.io/Kaggle-Competitions/">
+
+                <span id="blog-title">Notes on Kaggle</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="https://necromuralist.github.io/">The Cloistered Monkey</a>
+                </li>
+<li>
+<a href="../../archive.html">Archive</a>
+                </li>
+<li>
+<a href="../../categories/">Tags</a>
+                </li>
+<li>
+<a href="../../rss.xml">RSS feed</a>
+
+                
+            </li>
+</ul>
+<!-- Google custom search --><form method="get" action="https://www.google.com/search" class="navbar-form navbar-right" role="search">
+<div class="form-group">
+<input type="text" name="q" class="form-control" placeholder="Search">
+</div>
+<button type="submit" class="btn btn-primary">
+	<span class="glyphicon glyphicon-search"></span>
+</button>
+<input type="hidden" name="sitesearch" value="https://necromuralist.github.io/Kaggle-Competitions/">
+</form>
+<!-- End of custom search -->
+
+
+            <ul class="nav navbar-nav navbar-right">
+<li>
+    <a href="index.org" id="sourcelink">Source</a>
+    </li>
+
+                
+            </ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+            
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Some Plots of the Data</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                    Cloistered Monkey
+            </span></p>
+            <p class="dateline"><a href="." rel="bookmark"><time class="published dt-published" datetime="2018-08-29T14:19:26-07:00" itemprop="datePublished" title="2018-08-29 14:19">2018-08-29 14:19</time></a></p>
+            
+        <p class="sourceline"><a href="index.org" class="sourcelink">Source</a></p>
+
+        </div>
+        
+
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org43496dc">Imports</a></li>
+<li><a href="#org681b960">Build the data</a></li>
+<li><a href="#org60f4748">More Helpers</a></li>
+<li><a href="#orgb501729">Features vs Target</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org43496dc" class="outline-2">
+<h2 id="org43496dc">Imports</h2>
+<div class="outline-text-2" id="text-org43496dc">
+<div class="highlight"><pre><span></span>import warnings
+warnings.filterwarnings("ignore", message="numpy.dtype size changed")
+warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
+</pre></div>
+</div>
+
+<div id="outline-container-org39cccf3" class="outline-3">
+<h3 id="org39cccf3">From pypi</h3>
+<div class="outline-text-3" id="text-org39cccf3">
+<div class="highlight"><pre><span></span>import matplotlib.pyplot as pyplot
+import numpy
+import seaborn
+</pre></div>
+
+<div class="highlight"><pre><span></span>%matplotlib inline
+seaborn.set_style("whitegrid")
+</pre></div>
+</div>
+</div>
+
+<div id="outline-container-org03cdeac" class="outline-3">
+<h3 id="org03cdeac">This project</h3>
+<div class="outline-text-3" id="text-org03cdeac">
+<div class="highlight"><pre><span></span>from kaggler.helpers.build_training_data import Pickles
+from kaggler.helpers.helpers import (
+    DataKeys,
+    Helpers,
+    )
+</pre></div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org681b960" class="outline-2">
+<h2 id="org681b960">Build the data</h2>
+<div class="outline-text-2" id="text-org681b960">
+<div class="highlight"><pre><span></span>x_train = Helpers.unpickle(Pickles.x_train)
+y_train = Helpers.unpickle(Pickles.y_train)
+DataKeys.target = "Month Count"
+x_train[DataKeys.target] = y_train.values
+Helpers.print_head(x_train)
+</pre></div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-right">date_block_num</th>
+<th scope="col" class="org-right">shop_id</th>
+<th scope="col" class="org-right">item_id</th>
+<th scope="col" class="org-right">item_price</th>
+<th scope="col" class="org-right">item_category_id</th>
+<th scope="col" class="org-right">month</th>
+<th scope="col" class="org-right">year</th>
+<th scope="col" class="org-right">Month Count</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-right">11</td>
+<td class="org-right">15</td>
+<td class="org-right">1324</td>
+<td class="org-right">499</td>
+<td class="org-right">55</td>
+<td class="org-right">12</td>
+<td class="org-right">2013</td>
+<td class="org-right">1</td>
+</tr>
+<tr>
+<td class="org-right">18</td>
+<td class="org-right">31</td>
+<td class="org-right">19981</td>
+<td class="org-right">499</td>
+<td class="org-right">43</td>
+<td class="org-right">07</td>
+<td class="org-right">2014</td>
+<td class="org-right">2</td>
+</tr>
+<tr>
+<td class="org-right">32</td>
+<td class="org-right">28</td>
+<td class="org-right">7934</td>
+<td class="org-right">398</td>
+<td class="org-right">7</td>
+<td class="org-right">09</td>
+<td class="org-right">2015</td>
+<td class="org-right">1</td>
+</tr>
+<tr>
+<td class="org-right">12</td>
+<td class="org-right">43</td>
+<td class="org-right">13518</td>
+<td class="org-right">1499</td>
+<td class="org-right">19</td>
+<td class="org-right">01</td>
+<td class="org-right">2014</td>
+<td class="org-right">1</td>
+</tr>
+<tr>
+<td class="org-right">28</td>
+<td class="org-right">25</td>
+<td class="org-right">19927</td>
+<td class="org-right">329</td>
+<td class="org-right">57</td>
+<td class="org-right">05</td>
+<td class="org-right">2015</td>
+<td class="org-right">2</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="outline-container-org60f4748" class="outline-2">
+<h2 id="org60f4748">More Helpers</h2>
+<div class="outline-text-2" id="text-org60f4748">
+<div class="highlight"><pre><span></span>def make_figure_and_axis(x_label, y_label, title, figsize=(10, 8)):
+    """make a matplotlib figure
+
+    Args:
+     x_label (str): label for the x-axis
+     y_label (str): label for the y-axis
+     title (str): title for the plot
+     figsize: tuple of width, height
+    Returns:
+     tuple: figure, axis
+    """
+    figure = pyplot.figure(figsize=figsize)
+    axe = figure.gca()
+    axe.set_xlabel(x_label)
+    axe.set_ylabel(y_label)
+    axe.set_title(title)
+    return figure, axe
+</pre></div>
+</div>
+</div>
+<div id="outline-container-orgb501729" class="outline-2">
+<h2 id="orgb501729">Features vs Target</h2>
+<div class="outline-text-2" id="text-orgb501729">
+</div>
+<div id="outline-container-org5282eb5" class="outline-3">
+<h3 id="org5282eb5">Date Block</h3>
+<div class="outline-text-3" id="text-org5282eb5">
+<div class="highlight"><pre><span></span>figure, axis = make_figure_and_axis("Date Block", "Count", "Date-Block Counts")
+grid = seaborn.catplot(ax=axis, x=DataKeys.date_block, kind="count", data=x_train)
+</pre></div>
+
+<p>
+The counts represent the number of shop-product pairs per-month, which isn't really what we want. We want the count per-product per month. As an intermediary step, why don't we look at the total count as it changes over time.
+</p>
+
+<div class="highlight"><pre><span></span>date_group = x_train.groupby(DataKeys.date_block)
+summed = date_group.sum()
+summed = summed.reset_index()
+figure, axis = make_figure_and_axis("Date Block", "Monthly Count",
+				    "Total Items Sold Per Month")
+grid = seaborn.relplot(x=DataKeys.date_block, y=DataKeys.target, ax=axis,
+		       data=summed, kind="line")
+</pre></div>
+
+<p>
+This seems to indicate that sales are going down overall over time. Those spikes are interesting, maybe the months would be interesting. First we need to re-join the month and year together so the sorting of the x-axis will work okay.
+</p>
+
+<div class="highlight"><pre><span></span>DataKeys.date = "Date"
+x_train[DataKeys.date] = x_train.year + "-" + x_train.month
+month_grouped = x_train.groupby(DataKeys.date)
+month_summed = month_grouped.sum().reset_index()
+</pre></div>
+
+<div class="highlight"><pre><span></span>top_two = month_summed.sort_values(DataKeys.target, ascending=False)[:2]
+figure, axis = make_figure_and_axis("Month", "Count", "Items Sold Per Month",
+				    figsize=(12,10))
+
+pyplot.xticks(rotation=45, ha="right")
+grid = seaborn.relplot(x=DataKeys.date, y=DataKeys.target, data=month_summed,
+		       ax=axis, kind="line")
+axis.axvline(top_two.index[0], color='r')
+line = axis.axvline(top_two.index[1], color='r')
+</pre></div>
+
+<div class="highlight"><pre><span></span>Helpers.print_table(top_two[[DataKeys.date, DataKeys.target]])
+</pre></div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-right"> </th>
+<th scope="col" class="org-right">Date</th>
+<th scope="col" class="org-right">Month Count</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-right">11</td>
+<td class="org-right">2013-12</td>
+<td class="org-right">147909</td>
+</tr>
+<tr>
+<td class="org-right">23</td>
+<td class="org-right">2014-12</td>
+<td class="org-right">134785</td>
+</tr>
+</tbody>
+</table>
+<p>
+Perhaps not surprisingly, the month of December, when holiday sales spike, is the month with the most sales.
+</p>
+</div>
+</div>
+<div id="outline-container-orge521700" class="outline-3">
+<h3 id="orge521700">Shop</h3>
+<div class="outline-text-3" id="text-orge521700">
+<div class="highlight"><pre><span></span>group = x_train.groupby(DataKeys.shop).sum().reset_index().sort_values(DataKeys.target)
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>figure, axis = make_figure_and_axis("Shop", "Count", "Shop Sales For Total Time")
+grid = seaborn.relplot(x=DataKeys.shop, y=DataKeys.target, data=group,
+		       ax=axis)
+</pre></div>
+
+<p>
+There appears to be seven or eight shops that dominate the sales.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgfbe0bc4" class="outline-3">
+<h3 id="orgfbe0bc4">Item Category</h3>
+<div class="outline-text-3" id="text-orgfbe0bc4">
+<div class="highlight"><pre><span></span>group = x_train.groupby(DataKeys.item_category).sum().reset_index()
+</pre></div>
+
+<div class="highlight"><pre><span></span>figure, axis = make_figure_and_axis("Category", "Count", "Category Sales For Total Time")
+grid = seaborn.relplot(x=DataKeys.item_category, y=DataKeys.target, data=group,
+		       ax=axis)
+</pre></div>
+
+<p>
+Some kind of weirdly coincidental linear relationship between the category ID and the total sales. 
+</p>
+</div>
+</div>
+
+<div id="outline-container-org4018aae" class="outline-3">
+<h3 id="org4018aae">Biggest Over Time</h3>
+<div class="outline-text-3" id="text-org4018aae">
+</div>
+<div id="outline-container-orgf1535ce" class="outline-4">
+<h4 id="orgf1535ce">Category</h4>
+<div class="outline-text-4" id="text-orgf1535ce">
+<div class="highlight"><pre><span></span>category_group = x_train.groupby([DataKeys.date, DataKeys.item_category]).sum().reset_index()
+biggest = category_group.iloc[category_group[DataKeys.target].idxmax()]
+biggest_category = category_group[category_group.item_category_id == biggest.item_category_id]
+figure, axis = make_figure_and_axis("Month", "Count", "Category {} Sales For Total Time".format(biggest[DataKeys.item_category]))
+pyplot.xticks(rotation=45, ha="right")
+grid = seaborn.relplot(x=DataKeys.date, y=DataKeys.target, data=biggest_category,
+		       ax=axis, kind="line")
+</pre></div>
+
+<p>
+Even the most popular item declines over time.
+</p>
+
+<div class="highlight"><pre><span></span>big = biggest_category[DataKeys.target]
+big_max = big.max()
+big_min = big.min()
+difference = big_max - big_min
+print("Max: {}".format(big_max))
+print("Min: {}".format(big_min))
+print("Difference: {}".format(difference))
+print("Percent Decline: {:.1f} %".format(100 * (difference/big_max)))
+</pre></div>
+
+<p>
+Max: 28987.0
+Min: 5413.0
+Difference: 23574.0
+Percent Decline: 81.3 %
+</p>
+</div>
+</div>
+</div>
+</div>
+    </div>
+    <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
+<li><a class="tag p-category" href="../../categories/competition-plotting-data/" rel="tag">competition plotting data</a></li>
+        </ul>
+<ul class="pager hidden-print">
+<li class="previous">
+                <a href="../preprocessing-the-kaggle-data/" rel="prev" title="Preprocessing the Kaggle Data">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../the-target/" rel="next" title="The Target">Next post</a>
+            </li>
+        </ul></nav></aside></article>
+</div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            Contents © 2018         <a href="mailto:necromuralist@protonmail.com">Cloistered Monkey</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png"></a><br>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+            
+        </footer>
+</div>
+</div>
+
+
+            <script src="../../assets/js/all-nocdn.js"></script><script>$('a.image-reference:not(.islink) img:not(.islink)').parent().colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates -->
+</body>
+</html>

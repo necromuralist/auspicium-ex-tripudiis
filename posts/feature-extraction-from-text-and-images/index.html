@@ -108,26 +108,29 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orge77c640">How do you convert text to data?</a></li>
+<li><a href="#org74c7872">How do you convert text to data?</a></li>
+<li><a href="#orga937f80">Practice Quiz</a></li>
+<li><a href="#orga832511">Quiz</a></li>
+<li><a href="#org6ebf169">Links</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orge77c640" class="outline-2">
-<h2 id="orge77c640">How do you convert text to data?</h2>
-<div class="outline-text-2" id="text-orge77c640">
+<div id="outline-container-org74c7872" class="outline-2">
+<h2 id="org74c7872">How do you convert text to data?</h2>
+<div class="outline-text-2" id="text-org74c7872">
 </div>
-<div id="outline-container-org2cffd91" class="outline-3">
-<h3 id="org2cffd91">Two Main Methods</h3>
-<div class="outline-text-3" id="text-org2cffd91">
+<div id="outline-container-org274b922" class="outline-3">
+<h3 id="org274b922">Two Main Methods</h3>
+<div class="outline-text-3" id="text-org274b922">
 </div>
-<div id="outline-container-orgbf5f834" class="outline-4">
-<h4 id="orgbf5f834">Bag Of Words</h4>
-<div class="outline-text-4" id="text-orgbf5f834">
+<div id="outline-container-org47dbf05" class="outline-4">
+<h4 id="org47dbf05">Bag Of Words</h4>
+<div class="outline-text-4" id="text-org47dbf05">
 </div>
 <ul class="org-ul">
 <li>
-<a id="orgab37c14"></a>Vectorization<br><div class="outline-text-5" id="text-orgab37c14">
+<a id="orgb8c8631"></a>Vectorization<br><div class="outline-text-5" id="text-orgb8c8631">
 <p>
 This method counts the number of occurrences of each word in the source. For each word it creates a column and then in the row puts the counts for that instance of data.
 </p>
@@ -138,7 +141,7 @@ This method counts the number of occurrences of each word in the source. For eac
 </div>
 </li>
 <li>
-<a id="org03155df"></a>Term Frequency/Inverse Document Frequency (TF/IDF)<br><div class="outline-text-5" id="text-org03155df">
+<a id="orga56eb05"></a>Term Frequency/Inverse Document Frequency (TF/IDF)<br><div class="outline-text-5" id="text-orga56eb05">
 <p>
 This method tries to make word counts comparable even if the texts are of different sizes and also to emphasize more important words.
 </p>
@@ -151,16 +154,288 @@ This method tries to make word counts comparable even if the texts are of differ
 </div>
 </li>
 <li>
-<a id="orgc61dfb1"></a>N-Grams<br><div class="outline-text-5" id="text-orgc61dfb1">
+<a id="org04f849d"></a>N-Grams<br><div class="outline-text-5" id="text-org04f849d">
 <p>
-This m
+This method that creates a bag of words by grouping them into sub-sequences of words. A 3-gram, for instance, sweeps the text to create sequences of words made up of 3 adjacent words.
 </p>
+<ul class="org-ul">
+<li>
+<a href="http://sklearn.feature_extraction.text.countvectorizer">Count Vectorizer</a> is sklearn's implementation</li>
+</ul>
+</div>
+</li>
+<li>
+<a id="orgef78e4c"></a>Text Preprocessing<br><div class="outline-text-5" id="text-orgef78e4c">
+<ul class="org-ul">
+<li>lowercase
+Change all the words to lower-case</li>
+<li>lemmatization
+Try to reduce word to a common case (e.g. democratization, democracy, democratic all become democracy)</li>
+<li>stemming
+Try to reduce word to a root (e.g. democratization, democracy, democratic all become democ)</li>
+<li>stopwords
+Remove common words (e.g. a, and, or, etc.)</li>
+</ul>
+</div>
+</li>
+<li>
+<a id="orge8c4797"></a>The Bag Of Words Pipeline<br><div class="outline-text-5" id="text-orge8c4797">
+<ol class="org-ol">
+<li>Preprocessing (lowercase, lemmatization, stemming, stopwords)</li>
+<li>Create n-grams</li>
+<li>Postprocessing: TF/IDF</li>
+</ol>
 </div>
 </li>
 </ul>
 </div>
-<div id="outline-container-orgf207144" class="outline-4">
-<h4 id="orgf207144">Embeddings (e.g. Word2Vec)</h4>
+<div id="outline-container-org83df017" class="outline-4">
+<h4 id="org83df017">Embeddings (e.g. Word2Vec)</h4>
+<div class="outline-text-4" id="text-org83df017">
+<ul class="org-ul">
+<li>Uses neural-nets</li>
+<li>much smaller vectors than bag of words</li>
+<li>But each word gets a vector so many more vectors</li>
+<li>similar words have similar word-vectors</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orga937f80" class="outline-2">
+<h2 id="orga937f80">Practice Quiz</h2>
+<div class="outline-text-2" id="text-orga937f80">
+</div>
+<div id="outline-container-org1b7954e" class="outline-3">
+<h3 id="org1b7954e">One</h3>
+<div class="outline-text-3" id="text-org1b7954e">
+<p>
+TF-IDF is applied to a matrix where each column represents a word, each row represents a document, and each value shows the number of times a particular word occurred in a particular document. Choose the correct statements.
+</p>
+<ul class="org-ul">
+<li class="on">
+<code>[X]</code> IDF scales features inversely proprotionally to a number of word occurrences over documents</li>
+<li class="off">
+<code>[ ]</code> IDF scales features proportionally to the frequency of the a word's occurrences</li>
+<li class="on">
+<code>[X]</code> TF normalizes sums of the row values to 1</li>
+<li class="off">
+<code>[ ]</code> TF normalizes sums of the column values to 1</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org9830be7" class="outline-3">
+<h3 id="org9830be7">Two</h3>
+<div class="outline-text-3" id="text-org9830be7">
+<p>
+Which of these methods can be used to preprocess text?
+</p>
+<ul class="org-ul">
+<li class="on">
+<code>[X]</code> stemming</li>
+<li class="on">
+<code>[X]</code> Lower-case transformation</li>
+<li class="on">
+<code>[X]</code> Lemmatization</li>
+<li class="on">
+<code>[X]</code> Stopword removal</li>
+<li class="off">
+<code>[ ]</code> Levenshteining</li>
+<li class="off">
+<code>[ ]</code> plumping</li>
+<li class="off">
+<code>[ ]</code> plumbing</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org7757a35" class="outline-3">
+<h3 id="org7757a35">Three</h3>
+<div class="outline-text-3" id="text-org7757a35">
+<p>
+What is the main purpose of lemmatization and stemming?
+</p>
+<ul class="org-ul">
+<li class="off">
+<code>[ ]</code> to remove words which are not useful</li>
+<li class="on">
+<code>[X]</code> to remove inflectional forms and sometimes derivationally related forms of a word to a common base form</li>
+<li class="off">
+<code>[ ]</code> To reduce the significance of common words</li>
+<li class="off">
+<code>[ ]</code> to induce common word amplification standards to the most useful for machine learning algorithms form</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org916272d" class="outline-3">
+<h3 id="org916272d">Four</h3>
+<div class="outline-text-3" id="text-org916272d">
+<p>
+To learn Word2Vec embeddings we need:
+</p>
+<ul class="org-ul">
+<li class="off">
+<code>[ ]</code> GloVe embeddings</li>
+<li class="off">
+<code>[ ]</code> Labels for the documents in the corpora</li>
+<li class="on">
+<code>[X]</code> Labels for each word in the documents in the corpora</li>
+<li class="on">
+<code>[X]</code> Text corpora</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-orga832511" class="outline-2">
+<h2 id="orga832511">Quiz</h2>
+<div class="outline-text-2" id="text-orga832511">
+</div>
+<div id="outline-container-org288ffdf" class="outline-3">
+<h3 id="org288ffdf">One</h3>
+<div class="outline-text-3" id="text-org288ffdf">
+<p>
+Select true statements about n-grams.
+</p>
+<ul class="org-ul">
+<li class="off">
+<code>[ ]</code> Levenshteining should always be applied before computing n-grams (there is no such thing as Levenshteining)</li>
+<li class="off">
+<code>[ ]</code> n-grams always help increase significance of important words (n-grams are about counts, not importance)</li>
+<li class="on">
+<code>[X]</code> n-grams features are typically sparse (n-grams count occurrences of words and not every word will be found in every document)</li>
+<li class="on">
+<code>[X]</code> n-grams can help utilize local context around each word (n-grams encode sequences of words)</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org34de6b2" class="outline-3">
+<h3 id="org34de6b2">Two</h3>
+<div class="outline-text-3" id="text-org34de6b2">
+<p>
+Select the true statements.
+</p>
+<ul class="org-ul">
+<li class="on">
+<code>[X]</code> Bag of words usually produces longer vectors than Word2Vec (The number of features with BOW is equal to the number of unique words, Word2Vec limit is set beforehand)</li>
+<li class="on">
+<code>[X]</code> Semantically similar words usually have similar word2vec embeddings</li>
+<li class="off">
+<code>[ ]</code> You do not need bag of words features in a competition if you have word2vec features (both approaches are useful and can work together)
+<ul class="org-ul">
+<li class="off">
+<code>[ ]</code> The meaning of each value in the Bag of Words matrix is unknown (The meaning of each value is how many times it occurred)</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org4c77f05" class="outline-3">
+<h3 id="org4c77f05">Three</h3>
+<div class="outline-text-3" id="text-org4c77f05">
+<p>
+Suppose in a new competition we are given a dataset of 2D medical images. We want to extract image descriptors from a hidden layer of a neural network pretrained on the ImageNet dataset. We will then use extracted descriptors to train a simple logistic regression model to classify images from our dataset.
+</p>
+
+<p>
+We are considering using two networks: ResNet-50 with an ImageNet accuracy of X and VGG-16 with an ImageNet accuracy of Y (X &lt; Y). Select the true statements.
+</p>
+
+<ul class="org-ul">
+<li class="off">
+<code>[ ]</code> With one pretrained CNN model you can get only one vector of descriptors for an image</li>
+<li class="off">
+<code>[ ]</code> Descriptors from ResNet 50 will always be better than the ones from VG-16 in our pipeline</li>
+<li class="on">
+<code>[X]</code> It is not clear what descriptors are better on our dataset. We should evaluate both.
+<ul class="org-ul">
+<li class="off">
+<code>[ ]</code> Descriptors from ResNet-50 and VGG-16 are always very similar in cosine distance</li>
+<li class="off">
+<code>[ ]</code> For any image, descriptors from the last hidden layer of ResNet-50 are the same as the descriptors from the last hidden layer of VGG-16</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org8c22edd" class="outline-3">
+<h3 id="org8c22edd">Four</h3>
+<div class="outline-text-3" id="text-org8c22edd">
+<p>
+Data augmentation can be used at (1) train time and (2) test time
+</p>
+<ul class="org-ul">
+<li class="off">
+<code>[ ]</code> True, False</li>
+<li class="off">
+<code>[ ]</code> False, True</li>
+<li class="on">
+<code>[X]</code> True, True</li>
+<li class="off">
+<code>[ ]</code> False, False</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org6ebf169" class="outline-2">
+<h2 id="org6ebf169">Links</h2>
+<div class="outline-text-2" id="text-org6ebf169">
+</div>
+<div id="outline-container-org8c5af0f" class="outline-3">
+<h3 id="org8c5af0f">Text</h3>
+<div class="outline-text-3" id="text-org8c5af0f">
+</div>
+<div id="outline-container-orgd94221f" class="outline-4">
+<h4 id="orgd94221f">Bag Of Words</h4>
+<div class="outline-text-4" id="text-orgd94221f">
+<ul class="org-ul">
+<li><a href="http://scikit-learn.org/stable/modules/feature_extraction.html">SKlearn on feature extraction</a></li>
+<li>
+<a href="https://andhint.github.io/machine-learning/nlp/Feature-Extraction-From-Text/">blog post</a> on extracting features from text</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org5740868" class="outline-4">
+<h4 id="org5740868">Word2Vec</h4>
+<div class="outline-text-4" id="text-org5740868">
+<ul class="org-ul">
+<li><a href="https://www.tensorflow.org/tutorials/representation/word2vec">TensorFlow tutorial</a></li>
+<li>
+<a href="https://rare-technologies.com/word2vec-tutorial/">Blog post tutorial</a> by the author of gensim</li>
+<li><a href="https://nadbordrozd.github.io/blog/2016/05/20/text-classification-with-word2vec/">Text Classification post</a></li>
+<li><a href="https://taylorwhitten.github.io/blog/word2vec">Another introduction</a></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgb566b02" class="outline-4">
+<h4 id="orgb566b02">Natural Language Processing with Python</h4>
+<div class="outline-text-4" id="text-orgb566b02">
+<ul class="org-ul">
+<li><a href="http://www.nltk.org/">nltk</a></li>
+<li><a href="https://textblob.readthedocs.io/en/dev/">TextBlob</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-orga03e1f7" class="outline-3">
+<h3 id="orga03e1f7">Images</h3>
+<div class="outline-text-3" id="text-orga03e1f7">
+</div>
+<div id="outline-container-org301a6c6" class="outline-4">
+<h4 id="org301a6c6">Pre-trained Models</h4>
+<div class="outline-text-4" id="text-org301a6c6">
+<ul class="org-ul">
+<li><a href="https://keras.io/applications/">Keras</a></li>
+<li><a href="https://www.kernix.com/blog/image-classification-with-a-pre-trained-deep-neural-network_p11">How To use a pre-trained model</a></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orge2b3820" class="outline-4">
+<h4 id="orge2b3820">Fine-Tuning</h4>
+<div class="outline-text-4" id="text-orge2b3820">
+<ul class="org-ul">
+<li><a href="https://www.tensorflow.org/hub/tutorials/image_retraining">Re-train a tensorflow image classifier</a></li>
+<li><a href="https://flyyufelix.github.io/2016/10/08/fine-tuning-in-keras-part2.html">Fine-tuning deep learning models in keras</a></li>
+</ul>
+</div>
 </div>
 </div>
 </div>
