@@ -1,0 +1,20 @@
+#+BEGIN_COMMENT
+.. title: Springleaf Competition
+.. slug: springleaf-competition
+.. date: 2018-09-04 06:35:25 UTC-07:00
+.. tags: example competition notes
+.. category: notes
+.. link: 
+.. description: Exploratory Data Analysis with the Springleaf competition.
+.. type: text
+#+END_COMMENT
+
+* Introduction
+  The data comes from the [[https://www.kaggle.com/c/springleaf-marketing-response][Springleaf Marketing Response]] competition. Springleaf makes personal loans and wanted to be able to predict who would respond to their direct mail offers. Submissions are evaluated on the area under the ROC curve between the predicted probability and the target. The submission file should have an ID and the probability that the person would respond.
+
+#+BEGIN_EXAMPLE
+ID,target
+1,0.35
+3,0.01
+6,0.93333
+#+END_EXAMPLE
