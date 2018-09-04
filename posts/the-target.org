@@ -1,0 +1,88 @@
+#+BEGIN_COMMENT
+.. title: The Target
+.. slug: the-target
+.. date: 2018-08-31 13:29:42 UTC-07:00
+.. tags: competition data target
+.. category: competition
+.. link: 
+.. description: Information about the what we are trying to predict.
+.. type: text
+#+END_COMMENT
+#+OPTIONS: ^:{}
+#+TOC: headlines 1
+
+* Introduction
+  This is some stuff about what we are trying to predict. I realized that the description of the competition says that we are trying to predict the number of items sold per shop for the next month after the data, but I never said what that month is, so I'm making this just to put it somewhere.
+* Imports
+#+BEGIN_SRC ipython :session target :results none
+import warnings
+warnings.filterwarnings("ignore", message="numpy.dtype size changed")
+warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
+#+END_SRC
+
+** From pypi
+#+BEGIN_SRC ipython :session target :results none
+import pandas
+import matplotlib.pyplot as pyplot
+import seaborn
+#+END_SRC
+
+** This project
+#+BEGIN_SRC ipython :session target :results none
+from kaggler.helpers.build_training_data import Pickles
+from kaggler.helpers.helpers import (
+    DataKeys,
+    Helpers,
+    )
+#+END_SRC
+
+** Setting up the plotting
+#+BEGIN_SRC ipython :session target :results none
+% matplotlib inline
+seaborn.set_style("whitegrid")
+#+END_SRC
+
+* The Data
+
+#+BEGIN_SRC ipython :session target :results none
+x_train = Helpers.unpickle(Pickles.x_train)
+y_train = Helpers.unpickle(Pickles.y_train)
+x_test = Helpers.unpickle(Pickles.x_test)
+#+END_SRC
+
+Although it seem unlikely, it's possible that there are months in either the test or training set that aren't shared, so I'm going to concatenate them.
+
+#+BEGIN_SRC ipython :session target :results none
+concatenated = pandas.concat([x_train, x_test], axis="rows")
+assert concatenated.shape == (len(x_train) + len(x_test), len(x_train.columns))
+#+END_SRC
+
+* Dates
+Unfortunately I got rid of the days, which are required by the [[https://pandas.pydata.org/pandas-docs/stable/timeseries.html][to_datetime]] function provided by pandas, so I'm going to construct a new date column with a day of 1 for each date.
+
+#+BEGIN_SRC ipython :session target :results output raw :exports both
+DataKeys.date = "Date"
+DataKeys.datetime = "Date Time"
+concatenated[DataKeys.date] = "01-" + concatenated.month + '-' + concatenated.year
+concatenated[DataKeys.datetime] = pandas.to_datetime(
+    concatenated[DataKeys.date], format="%d-%m-%Y")
+Helpers.print_head(concatenated)
+#+END_SRC
+
+#+RESULTS:
+| date_block_num | shop_id | item_id | item_price | item_category_id | month | year |       Date | Date Time           |
+|----------------+---------+---------+------------+------------------+-------+------+------------+---------------------|
+|             11 |      15 |    1324 |        499 |               55 |    12 | 2013 | 01-12-2013 | 2013-12-01 00:00:00 |
+|             18 |      31 |   19981 |        499 |               43 |    07 | 2014 | 01-07-2014 | 2014-07-01 00:00:00 |
+|             32 |      28 |    7934 |        398 |                7 |    09 | 2015 | 01-09-2015 | 2015-09-01 00:00:00 |
+|             12 |      43 |   13518 |       1499 |               19 |    01 | 2014 | 01-01-2014 | 2014-01-01 00:00:00 |
+|             28 |      25 |   19927 |        329 |               57 |    05 | 2015 | 01-05-2015 | 2015-05-01 00:00:00 |
+
+#+BEGIN_SRC ipython :session target :results output
+print(concatenated[DataKeys.datetime].max())
+#+END_SRC
+
+#+RESULTS:
+: 2015-10-01 00:00:00
+
+So the last month in the data-set is October 2015, and we want to predict what the counts will be for November 2015.
