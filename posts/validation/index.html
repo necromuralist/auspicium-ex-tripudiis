@@ -2,27 +2,26 @@
 <html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="description" content="Things I've referred to along the way.">
+<meta name="description" content="Validating your model.">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>References | Notes on Kaggle</title>
+<title>Validation | Notes on Kaggle</title>
 <link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
 <link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
 <link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
 <meta name="theme-color" content="#5670d4">
 <meta name="generator" content="Nikola (getnikola.com)">
 <link rel="alternate" type="application/rss+xml" title="RSS" href="../../rss.xml">
-<link rel="canonical" href="https://necromuralist.github.io/Kaggle-Competitions/posts/references/">
+<link rel="canonical" href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/">
 <!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
 </script><meta name="author" content="Cloistered Monkey">
-<link rel="prev" href="../the-target/" title="The Target" type="text/html">
-<link rel="next" href="../exploratory-data-analysis/" title="Exploratory Data Analysis" type="text/html">
+<link rel="prev" href="../springleaf-competition/" title="Springleaf Competition" type="text/html">
 <meta property="og:site_name" content="Notes on Kaggle">
-<meta property="og:title" content="References">
-<meta property="og:url" content="https://necromuralist.github.io/Kaggle-Competitions/posts/references/">
-<meta property="og:description" content="Things I've referred to along the way.">
+<meta property="og:title" content="Validation">
+<meta property="og:url" content="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/">
+<meta property="og:description" content="Validating your model.">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2018-09-01T12:16:46-07:00">
-<meta property="article:tag" content="bilbiography references">
+<meta property="article:published_time" content="2018-09-04T08:01:59-07:00">
+<meta property="article:tag" content="notes validation">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -90,13 +89,13 @@
         <div class="row">
             
             
-<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">References</a></h1>
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Validation</a></h1>
 
         <div class="metadata">
             <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
                     Cloistered Monkey
             </span></p>
-            <p class="dateline"><a href="." rel="bookmark"><time class="published dt-published" datetime="2018-09-01T12:16:46-07:00" itemprop="datePublished" title="2018-09-01 12:16">2018-09-01 12:16</time></a></p>
+            <p class="dateline"><a href="." rel="bookmark"><time class="published dt-published" datetime="2018-09-04T08:01:59-07:00" itemprop="datePublished" title="2018-09-04 08:01">2018-09-04 08:01</time></a></p>
             
         <p class="sourceline"><a href="index.org" class="sourcelink">Source</a></p>
 
@@ -104,24 +103,26 @@
         
 
     </header><div class="e-content entry-content" itemprop="articleBody text">
-    <div id="outline-container-orge20137e" class="outline-2">
-<h2 id="orge20137e">Bibliography</h2>
-<div class="outline-text-2" id="text-orge20137e">
+    <div id="outline-container-org1dae6f9" class="outline-2">
+<h2 id="org1dae6f9">Validation and Overfitting</h2>
+<div class="outline-text-2" id="text-org1dae6f9">
+<p>
+To prevent your model from overfitting to the training set, you can hold out some of the training set and use it to validate the model after it has been fit to the rest of the training set.
+</p>
 <ul class="org-ul">
-<li>[B1] 1. Albon C. Machine learning with Python cookbook: practical solutions from preprocessing to deep learning. First edition. Beijing Boston Farnham: O’Reilly; 2018. 349 p.</li>
+<li>Underfitting: your model isn't complex enough to capture the data</li>
+<li>Overfitting: your model is too complex and it is modelling noise in the data</li>
+<li>In a competition, if your model does well on the validation set but not on the test set, then it probably overfit the data you had</li>
 </ul>
 </div>
 </div>
     </div>
     <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
-<li><a class="tag p-category" href="../../categories/bilbiography-references/" rel="tag">bilbiography references</a></li>
+<li><a class="tag p-category" href="../../categories/notes-validation/" rel="tag">notes validation</a></li>
         </ul>
 <ul class="pager hidden-print">
 <li class="previous">
-                <a href="../the-target/" rel="prev" title="The Target">Previous post</a>
-            </li>
-            <li class="next">
-                <a href="../exploratory-data-analysis/" rel="next" title="Exploratory Data Analysis">Next post</a>
+                <a href="../springleaf-competition/" rel="prev" title="Springleaf Competition">Previous post</a>
             </li>
         </ul></nav></aside></article>
 </div>

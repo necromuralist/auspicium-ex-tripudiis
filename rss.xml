@@ -1,5 +1,305 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description>Notes on studying kaggle.</description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Tue, 04 Sep 2018 01:24:15 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>References</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/references/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-orge20137e" class="outline-2"&gt;
+<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description>Notes on studying kaggle.</description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Tue, 04 Sep 2018 17:07:00 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Validation</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/validation/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-org1dae6f9" class="outline-2"&gt;
+&lt;h2 id="org1dae6f9"&gt;Validation and Overfitting&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org1dae6f9"&gt;
+&lt;p&gt;
+To prevent your model from overfitting to the training set, you can hold out some of the training set and use it to validate the model after it has been fit to the rest of the training set.
+&lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;Underfitting: your model isn't complex enough to capture the data&lt;/li&gt;
+&lt;li&gt;Overfitting: your model is too complex and it is modelling noise in the data&lt;/li&gt;
+&lt;li&gt;In a competition, if your model does well on the validation set but not on the test set, then it probably overfit the data you had&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description><category>notes validation</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/validation/</guid><pubDate>Tue, 04 Sep 2018 15:01:59 GMT</pubDate></item><item><title>Springleaf Competition</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/springleaf-competition/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-orge357c55" class="outline-2"&gt;
+&lt;h2 id="orge357c55"&gt;Introduction&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orge357c55"&gt;
+&lt;p&gt;
+The data comes from the &lt;a href="https://www.kaggle.com/c/springleaf-marketing-response"&gt;Springleaf Marketing Response&lt;/a&gt; competition. Springleaf makes personal loans and wanted to be able to predict who would respond to their direct mail offers. Submissions are evaluated on the area under the ROC curve between the predicted probability and the target. The submission file should have an ID and the probability that the person would respond.
+&lt;/p&gt;
+
+&lt;pre class="example"&gt;
+ID,target
+1,0.35
+3,0.01
+6,0.93333
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description><category>example competition notes</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/springleaf-competition/</guid><pubDate>Tue, 04 Sep 2018 13:35:25 GMT</pubDate></item><item><title>Exploratory Data Analysis</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-orgfd31e4e" class="outline-2"&gt;
+&lt;h2 id="orgfd31e4e"&gt;Building Your Intuition About the Data&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgfd31e4e"&gt;
+&lt;p&gt;
+The first thing to do is to see if you can build up a mental model of what the data is about.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgb70a1bc" class="outline-3"&gt;
+&lt;h3 id="orgb70a1bc"&gt;Get Domain Knowledge&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgb70a1bc"&gt;
+&lt;p&gt;
+Find out something about the topic that the data describes.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org2b3ad6a" class="outline-3"&gt;
+&lt;h3 id="org2b3ad6a"&gt;Check if the Data is intuitive&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org2b3ad6a"&gt;
+&lt;p&gt;
+See if there are any strange values and see if it makes sense given the data description.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgee6065f" class="outline-3"&gt;
+&lt;h3 id="orgee6065f"&gt;Understand how the data was generated&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgee6065f"&gt;
+&lt;p&gt;
+Is any of it synthetic? Was the training data generated the same way as the testing data?
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org52989b0" class="outline-2"&gt;
+&lt;h2 id="org52989b0"&gt;Exploring Anonymized Data&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org52989b0"&gt;
+&lt;p&gt;
+Organizers sometimes encode data so you can't tell what it is.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org4e95d36" class="outline-3"&gt;
+&lt;h3 id="org4e95d36"&gt;Try To Decode the Data&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org4e95d36"&gt;
+&lt;p&gt;
+You generally won't be able to figure out what the data is if it's encoded, but sometimes they were created using simple shifting schemes that will let you figure out their original values.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org10716fa" class="outline-3"&gt;
+&lt;h3 id="org10716fa"&gt;Explore Individual Features&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org10716fa"&gt;
+&lt;p&gt;
+Even if you don't know what the data is, it's important to know what type of data it is so that you can use the right data preprocessing for your model.
+&lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;&lt;code&gt;df.dtypes&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;df.info()&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;x.value_counts()&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;x.isnull()&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org1890ea3" class="outline-2"&gt;
+&lt;h2 id="org1890ea3"&gt;Visualizations&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org1890ea3"&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgb8c9af1" class="outline-3"&gt;
+&lt;h3 id="orgb8c9af1"&gt;Features&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgb8c9af1"&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org83717d2" class="outline-4"&gt;
+&lt;h4 id="org83717d2"&gt;Histograms&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org83717d2"&gt;
+&lt;p&gt;
+This is useful for seeing the shape of the data.
+&lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;&lt;code&gt;pyplot.hist(x)&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org1a83eba" class="outline-4"&gt;
+&lt;h4 id="org1a83eba"&gt;Index vs Value&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org1a83eba"&gt;
+&lt;p&gt;
+This will show you how well distributed the data is within the data frame. Horizontal lines indicate repeated values and empty bands show areas where none of the data had this value. If you don't have vertical lines then the data was probably shuffled.
+&lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;&lt;code&gt;pyplot.plot(x, '.')&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org1b77b3f" class="outline-4"&gt;
+&lt;h4 id="org1b77b3f"&gt;Index vs Valuue Colorede By Class Label&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org1b77b3f"&gt;
+&lt;p&gt;
+If you plot the classes with different colors you can see if there are clusters and clear separations between them. (&lt;code&gt;y&lt;/code&gt; in the function call has the target values).
+&lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;&lt;code&gt;pyplot.scatter(range(len(x)), x, c=y)&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orge74baaa" class="outline-4"&gt;
+&lt;h4 id="orge74baaa"&gt;Plot Other Things&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-orge74baaa"&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;Row vs Feature&lt;/li&gt;
+&lt;li&gt;Nan-values&lt;/li&gt;
+&lt;li&gt;Value Counts&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org86a14dd" class="outline-3"&gt;
+&lt;h3 id="org86a14dd"&gt;Relationships&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org86a14dd"&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orga4bcc14" class="outline-4"&gt;
+&lt;h4 id="orga4bcc14"&gt;Scatter Plots&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-orga4bcc14"&gt;
+&lt;/div&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;&lt;a id="org6287d76"&gt;&lt;/a&gt;Pairwise Relationships&lt;br&gt;
+&lt;div class="outline-text-5" id="text-org6287d76"&gt;
+&lt;p&gt;
+To make it eaiser to see relationships, you can plot them in pairs.
+&lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;&lt;code&gt;pyplot.scatter(x1, x2)&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a id="org74dff39"&gt;&lt;/a&gt;Compare the Test Set&lt;br&gt;
+&lt;div class="outline-text-5" id="text-org74dff39"&gt;
+&lt;p&gt;
+Plot the features and the test-set (using different colors) to see how well your training data matches your test data.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a id="org9cdc141"&gt;&lt;/a&gt;Scatter Matrix&lt;br&gt;
+&lt;div class="outline-text-5" id="text-org9cdc141"&gt;
+&lt;p&gt;
+Pandas has a convenience function that will plot all the pairwise scatter-plots for you.
+&lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;&lt;code&gt;pandas.scatter_matrix(X)&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgc5368c4" class="outline-4"&gt;
+&lt;h4 id="orgc5368c4"&gt;Corellation&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-orgc5368c4"&gt;
+&lt;p&gt;
+Plot the corellation matrix to see if there are feature-pairs that are related so you can make a new feature out of them and see if they help.
+&lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;&lt;code&gt;X.corr(), pyplot.matshow()&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;
+A straight correllation matrix might give you a sense of how correllated the features are, but it's more useful to use a clustering algorithm to see if there are groups within the correlation matrix.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org86aa3b0" class="outline-4"&gt;
+&lt;h4 id="org86aa3b0"&gt;Plot Statistics&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org86aa3b0"&gt;
+&lt;p&gt;
+Try plotting mean, differences, combination counts, etc. and see if you can create groups out of them.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgc480036" class="outline-2"&gt;
+&lt;h2 id="orgc480036"&gt;Data Set Cleaning&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgc480036"&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org2c12ae8" class="outline-3"&gt;
+&lt;h3 id="org2c12ae8"&gt;Duplicated and Constant Features&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org2c12ae8"&gt;
+&lt;p&gt;
+Sometimes a feature will have the same value in all the rows. If it's this way in both the training and test sets you can just remove it, but if there are different values in the test set you have to figure out how to handle them.
+&lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;&lt;code&gt;x_train.nunique(axis&lt;/code&gt;"columns") &lt;code&gt;= 1&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;
+Sometimes columns will get duplicated in which case you should drop one of them.
+&lt;/p&gt;
+
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;&lt;code&gt;x_train.T.drop_duplicates()&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;
+This can happen with rows as well, but it can be harder to decide whether this is a mistake or not.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org146bdce" class="outline-3"&gt;
+&lt;h3 id="org146bdce"&gt;Non-shuffled Data&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org146bdce"&gt;
+&lt;p&gt;
+If you plot the mean as a horizontal line the data should be evenly distributed around it, if not it might not have been shuffled and there could be an inadvertent pattern in the data. You might not be able to use it, but you should understand all the things about the data that you can find out.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orga8dad9f" class="outline-2"&gt;
+&lt;h2 id="orga8dad9f"&gt;Quiz&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orga8dad9f"&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgb924588" class="outline-3"&gt;
+&lt;h3 id="orgb924588"&gt;One&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgb924588"&gt;
+&lt;p&gt;
+Suppose we are given a data set with features &lt;i&gt;X&lt;/i&gt;, &lt;i&gt;Y&lt;/i&gt;, and &lt;i&gt;Z&lt;/i&gt;. Can you recover &lt;i&gt;z&lt;/i&gt; as a function of &lt;i&gt;x&lt;/i&gt; and &lt;i&gt;y&lt;/i&gt;?
+&lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; Z = X/Y&lt;/li&gt;
+&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; Z = X - Y&lt;/li&gt;
+&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; Z = X + Y&lt;/li&gt;
+&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; Z = XY&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org2f3e94e" class="outline-3"&gt;
+&lt;h3 id="org2f3e94e"&gt;Two&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org2f3e94e"&gt;
+&lt;p&gt;
+What value do the red dots have?
+0.5 (wrong)
+2 (next try)
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org21dc155" class="outline-3"&gt;
+&lt;h3 id="org21dc155"&gt;Three&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org21dc155"&gt;
+&lt;p&gt;
+What hypothesis about X can we not reject based on the plots?
+&lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; X is a counter or label encoded categorical feature&lt;/li&gt;
+&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; X can be the temperature (in Celsius) in different cities at different times. (the values are probably out of range)&lt;/li&gt;
+&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; X can take a value of zero (The log plot would have values at 0 but it doesn't)&lt;/li&gt;
+&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; X takes only discrete values (the horizontal lines indicate that there are repeated values with discrete values)&lt;/li&gt;
+&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; 2 &amp;lt;= X &amp;lt; 3 happens more frequently than 3 &amp;lt;= X &amp;lt; 4&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org0e93faf" class="outline-3"&gt;
+&lt;h3 id="org0e93faf"&gt;Four&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org0e93faf"&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; Target is completely determined by coordinates (x,y)(x,y)(x,y), i.e. the label of the point is completely determined by point's position (x,y)(x,y)(x,y). Saying the same in other words: if we only had two features (x,y)(x,y)(x,y), we could build a classifier, that is accurate 100% of time.&lt;/li&gt;
+&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; The top right plot is better than the top left in that everything you get from the top left can also be gotten from the top right, but not the other way around.&lt;/li&gt;
+&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; standard deviation for jittering is the largest on the bottom right.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org7baac80" class="outline-2"&gt;
+&lt;h2 id="org7baac80"&gt;Links&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org7baac80"&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;&lt;a href="http://scikit-learn.org/stable/auto_examples/bicluster/plot_spectral_biclustering.html"&gt;Sorting Correlation Plots&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description><category>notes data</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/</guid><pubDate>Tue, 04 Sep 2018 04:24:53 GMT</pubDate></item><item><title>References</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/references/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-orge20137e" class="outline-2"&gt;
 &lt;h2 id="orge20137e"&gt;Bibliography&lt;/h2&gt;
 &lt;div class="outline-text-2" id="text-orge20137e"&gt;
 &lt;ul class="org-ul"&gt;
@@ -2721,1450 +3021,4 @@ What happens if we just use the default linear regression model? The first probl
 regression.fit(x_train, y_train)
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description><category>naive model competition</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/first-naive-try/</guid><pubDate>Sun, 12 Aug 2018 02:37:37 GMT</pubDate></item><item><title>Exploring The Data</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/exploring-the-data/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
-&lt;h2&gt;Table of Contents&lt;/h2&gt;
-&lt;div id="text-table-of-contents"&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploring-the-data/#org0ee684d"&gt;Imports&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploring-the-data/#org8af51fe"&gt;The Tangle&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploring-the-data/#org6b4e49d"&gt;Helpers&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploring-the-data/#org7cf0494"&gt;Constants&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploring-the-data/#org749d6e3"&gt;The Files&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploring-the-data/#org39c0786"&gt;Some Counts&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploring-the-data/#org8be93ec"&gt;The Official Feature Descriptions&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploring-the-data/#org019513e"&gt;The Training Set&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-org0ee684d" class="outline-2"&gt;
-&lt;h2 id="org0ee684d"&gt;Imports&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org0ee684d"&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-org445967f" class="outline-3"&gt;
-&lt;h3 id="org445967f"&gt;Suppressing the Numpy Warnings&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org445967f"&gt;
-&lt;p&gt;
-When you import pandas you get some warnings:
-&lt;/p&gt;
-
-&lt;pre class="example"&gt;
-/usr/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
-  return f(*args, **kwds)
-/usr/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility. Expected 96, got 88
-  return f(*args, **kwds)
-&lt;/pre&gt;
-
-&lt;p&gt;
-According to &lt;a href="https://stackoverflow.com/questions/40845304/runtimewarning-numpy-dtype-size-changed-may-indicate-binary-incompatibility"&gt;Stack Overflow&lt;/a&gt;, this is because &lt;a href="https://www.scipy.org/"&gt;scipy&lt;/a&gt; is built against an older version of &lt;a href="http://www.numpy.org/"&gt;numpy&lt;/a&gt;, but it shouldn't actually affect the way it works, so we should just suppress it.
-&lt;/p&gt;
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;warnings&lt;/span&gt;
-&lt;span class="n"&gt;warnings&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;filterwarnings&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"ignore"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;message&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"numpy.dtype size changed"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="n"&gt;warnings&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;filterwarnings&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"ignore"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;message&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"numpy.ufunc size changed"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id="outline-container-org2832107" class="outline-3"&gt;
-&lt;h3 id="org2832107"&gt;The rest of the imports&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org2832107"&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# python standard library&lt;/span&gt;
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;os&lt;/span&gt;
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;pickle&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# from pypi&lt;/span&gt;
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;matplotlib.pyplot&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;pyplot&lt;/span&gt;
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;numpy&lt;/span&gt;
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;pandas&lt;/span&gt;
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;seaborn&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;
-&lt;code&gt;=====&lt;/code&gt;
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-orgd50493f" class="outline-3"&gt;
-&lt;h3 id="orgd50493f"&gt;This is used for the tangle&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgd50493f"&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# from pypi&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;tabulate&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;tabulate&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-org1bcd3df" class="outline-3"&gt;
-&lt;h3 id="org1bcd3df"&gt;Set up the plotting&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org1bcd3df"&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;% matplotlib inline
-seaborn.set_style("whitegrid")
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id="outline-container-org8af51fe" class="outline-2"&gt;
-&lt;h2 id="org8af51fe"&gt;The Tangle&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org8af51fe"&gt;
-&lt;p&gt;
-Exports so some of this can be re-used.
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id="outline-container-org6b4e49d" class="outline-2"&gt;
-&lt;h2 id="org6b4e49d"&gt;Helpers&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org6b4e49d"&gt;
-&lt;p&gt;
-Just some functions that keep coming up.
-&lt;/p&gt;
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Helpers&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-    &lt;span class="sd"&gt;"""Helper functions"""&lt;/span&gt;
-    &lt;span class="n"&gt;pickle_target&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;os&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;expanduser&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"~/projects/kaggle-competitions/pickles/"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="n"&gt;pickle_target_string&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pickle_target&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="s2"&gt;"{}.pkl"&lt;/span&gt;
-
-    &lt;span class="nd"&gt;@staticmethod&lt;/span&gt;
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;print_head&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;frame&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;showindex&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
-	&lt;span class="sd"&gt;"""prints the head of the given data frame&lt;/span&gt;
-
-&lt;span class="sd"&gt;	Args:&lt;/span&gt;
-&lt;span class="sd"&gt;	 frame (pandas.DataFrame): data frame to print as a table&lt;/span&gt;
-&lt;span class="sd"&gt;	 showindex (bool): whether to print the index&lt;/span&gt;
-&lt;span class="sd"&gt;	"""&lt;/span&gt;
-	&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;tabulate&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;frame&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;head&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt; &lt;span class="n"&gt;headers&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"keys"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;tablefmt&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"orgtbl"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-		       &lt;span class="n"&gt;showindex&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;showindex&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
-	&lt;span class="k"&gt;return&lt;/span&gt;
-
-    &lt;span class="nd"&gt;@staticmethod&lt;/span&gt;
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;print_table&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;showindex&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
-	&lt;span class="sd"&gt;"""print the data&lt;/span&gt;
-
-&lt;span class="sd"&gt;	Args:&lt;/span&gt;
-&lt;span class="sd"&gt;	 data: some kind of data-frame&lt;/span&gt;
-&lt;span class="sd"&gt;	"""&lt;/span&gt;
-	&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;tabulate&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;headers&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"keys"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;tablefmt&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"orgtbl"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-		       &lt;span class="n"&gt;showindex&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;showindex&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
-	&lt;span class="k"&gt;return&lt;/span&gt;
-
-    &lt;span class="nd"&gt;@staticmethod&lt;/span&gt;
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;pickle_it&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;thing&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
-	&lt;span class="sd"&gt;"""save the object to a pickle in the data folder&lt;/span&gt;
-
-&lt;span class="sd"&gt;	Args:&lt;/span&gt;
-&lt;span class="sd"&gt;	 thing: object to pickle&lt;/span&gt;
-&lt;span class="sd"&gt;	 name: thing to call the pickle&lt;/span&gt;
-&lt;span class="sd"&gt;	"""&lt;/span&gt;
-	&lt;span class="n"&gt;name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt; &lt;span class="ow"&gt;is&lt;/span&gt; &lt;span class="ow"&gt;not&lt;/span&gt; &lt;span class="bp"&gt;None&lt;/span&gt; &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="n"&gt;thing&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="vm"&gt;__name__&lt;/span&gt;
-	&lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="nb"&gt;open&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
-		&lt;span class="n"&gt;os&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;join&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
-		    &lt;span class="n"&gt;Helpers&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;pickle_target_string&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;)),&lt;/span&gt;
-		&lt;span class="s2"&gt;"wb"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;pickler&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-	    &lt;span class="n"&gt;pickle&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;dump&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;thing&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;pickler&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-	&lt;span class="k"&gt;return&lt;/span&gt;
-
-    &lt;span class="nd"&gt;@staticmethod&lt;/span&gt;
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;unpickle&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
-	&lt;span class="sd"&gt;"""loads the pickled object from the data folder&lt;/span&gt;
-
-&lt;span class="sd"&gt;	Args:&lt;/span&gt;
-&lt;span class="sd"&gt;	 name: name of the pickle without the folder or extension&lt;/span&gt;
-
-&lt;span class="sd"&gt;	Returns:&lt;/span&gt;
-&lt;span class="sd"&gt;	 object: the un-pickled object&lt;/span&gt;
-&lt;span class="sd"&gt;	"""&lt;/span&gt;
-	&lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="nb"&gt;open&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Helpers&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;pickle_target_string&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
-		  &lt;span class="s2"&gt;"rb"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;unpickler&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-	    &lt;span class="n"&gt;unpickled&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pickle&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;load&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;unpickler&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-	&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;unpickled&lt;/span&gt;
-
-    &lt;span class="nd"&gt;@staticmethod&lt;/span&gt;
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;exists&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
-	&lt;span class="sd"&gt;"""checks if the thing is already a pickle&lt;/span&gt;
-
-&lt;span class="sd"&gt;	Args:&lt;/span&gt;
-&lt;span class="sd"&gt;	 name: name of the pickle without folder or extension&lt;/span&gt;
-
-&lt;span class="sd"&gt;	Returns:&lt;/span&gt;
-&lt;span class="sd"&gt;	 bool: True if the pickle exists&lt;/span&gt;
-&lt;span class="sd"&gt;	"""&lt;/span&gt;
-	&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;os&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;isfile&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Helpers&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;pickle_target_string&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id="outline-container-org7cf0494" class="outline-2"&gt;
-&lt;h2 id="org7cf0494"&gt;Constants&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org7cf0494"&gt;
-&lt;p&gt;
-As always, I'll try to put constants in the same place.
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-org64be644" class="outline-3"&gt;
-&lt;h3 id="org64be644"&gt;Data Names&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org64be644"&gt;
-&lt;p&gt;
-This is just a re-mapping of the file-names since I keep forgetting them.
-&lt;/p&gt;
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;DataNames&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-    &lt;span class="sd"&gt;"""thing with the data-file-names (without extensions) as attributes"""&lt;/span&gt;
-    &lt;span class="n"&gt;training&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"sales_train"&lt;/span&gt;
-    &lt;span class="n"&gt;items&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"items"&lt;/span&gt;
-    &lt;span class="n"&gt;item_categories&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"item_categories"&lt;/span&gt;
-    &lt;span class="n"&gt;shops&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"shops"&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id="outline-container-org393abec" class="outline-3"&gt;
-&lt;h3 id="org393abec"&gt;Data Source&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org393abec"&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;DataSource&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-    &lt;span class="sd"&gt;"""Strings for the files&lt;/span&gt;
-
-&lt;span class="sd"&gt;    Args:&lt;/span&gt;
-&lt;span class="sd"&gt;     directory: path to the data-folder&lt;/span&gt;
-&lt;span class="sd"&gt;    """&lt;/span&gt;
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="fm"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;directory&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"~/projects/kaggle-competitions/data/"&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
-	&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_directory&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;None&lt;/span&gt;
-	&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;directory&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;directory&lt;/span&gt;
-	&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_file_names&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;None&lt;/span&gt;
-	&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_paths&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;None&lt;/span&gt;
-	&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_file_name_paths&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;None&lt;/span&gt;
-	&lt;span class="k"&gt;return&lt;/span&gt;
-
-    &lt;span class="nd"&gt;@property&lt;/span&gt;
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;directory&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
-	&lt;span class="sd"&gt;"""The path to the data"""&lt;/span&gt;
-	&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_directory&lt;/span&gt;
-
-    &lt;span class="nd"&gt;@directory.setter&lt;/span&gt;
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;directory&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
-	&lt;span class="sd"&gt;"""expands the user and saves the path&lt;/span&gt;
-
-&lt;span class="sd"&gt;	Args:&lt;/span&gt;
-&lt;span class="sd"&gt;	 path (str): path to the data folder&lt;/span&gt;
-&lt;span class="sd"&gt;	"""&lt;/span&gt;
-	&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_directory&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;os&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;expanduser&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-	&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="ow"&gt;not&lt;/span&gt; &lt;span class="n"&gt;os&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;exists&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_directory&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
-	    &lt;span class="k"&gt;raise&lt;/span&gt; &lt;span class="ne"&gt;Exception&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
-		&lt;span class="s2"&gt;"This file doesn't exist: {}"&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_directory&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
-	&lt;span class="k"&gt;return&lt;/span&gt;
-
-    &lt;span class="nd"&gt;@property&lt;/span&gt;
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;file_names&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
-	&lt;span class="sd"&gt;"""list of file names in the data directory"""&lt;/span&gt;
-	&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_file_names&lt;/span&gt; &lt;span class="ow"&gt;is&lt;/span&gt; &lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-	    &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_file_names&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;sorted&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;os&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;listdir&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;directory&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
-	&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_file_names&lt;/span&gt;
-
-    &lt;span class="nd"&gt;@property&lt;/span&gt;
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;paths&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
-	&lt;span class="sd"&gt;"""list of paths to the file names"""&lt;/span&gt;
-	&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_paths&lt;/span&gt; &lt;span class="ow"&gt;is&lt;/span&gt; &lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-	    &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_paths&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;os&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;join&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;directory&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-		    &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;file_names&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
-	&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_paths&lt;/span&gt;
-
-    &lt;span class="nd"&gt;@property&lt;/span&gt;
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;file_name_paths&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
-	&lt;span class="sd"&gt;"""dict of name: path"""&lt;/span&gt;
-	&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_file_name_paths&lt;/span&gt; &lt;span class="ow"&gt;is&lt;/span&gt; &lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-	    &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_file_name_paths&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-		&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;split&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'.'&lt;/span&gt;&lt;span class="p"&gt;)[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;paths&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;index&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
-		&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;index&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;enumerate&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;file_names&lt;/span&gt;&lt;span class="p"&gt;)}&lt;/span&gt;
-	&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_file_name_paths&lt;/span&gt;
-
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;set_attributes&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
-	&lt;span class="sd"&gt;"""attaches the file names to this object"""&lt;/span&gt;
-	&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;file_names&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-	    &lt;span class="nb"&gt;setattr&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;split&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'.'&lt;/span&gt;&lt;span class="p"&gt;)[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-	&lt;span class="k"&gt;return&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id="outline-container-org4b211b0" class="outline-3"&gt;
-&lt;h3 id="org4b211b0"&gt;Data Keys&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org4b211b0"&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;DataKeys&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-    &lt;span class="sd"&gt;"""Column names/keys for the data."""&lt;/span&gt;
-    &lt;span class="n"&gt;item_category&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"item_category_id"&lt;/span&gt;
-    &lt;span class="n"&gt;shop&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"shop_id"&lt;/span&gt;
-    &lt;span class="n"&gt;item&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"item_id"&lt;/span&gt;
-    &lt;span class="n"&gt;date&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"date"&lt;/span&gt;
-    &lt;span class="n"&gt;date_block&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"date_block_num"&lt;/span&gt;
-    &lt;span class="n"&gt;price&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"item_price"&lt;/span&gt;
-    &lt;span class="n"&gt;day_count&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"item_cnt_day"&lt;/span&gt;
-    &lt;span class="n"&gt;month_count&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;'item_count_month'&lt;/span&gt;
-    &lt;span class="n"&gt;name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"item_name"&lt;/span&gt;
-    &lt;span class="n"&gt;day&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"day"&lt;/span&gt;
-    &lt;span class="n"&gt;month&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"month"&lt;/span&gt;
-    &lt;span class="n"&gt;year&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"year"&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;data_source&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;DataSource&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-&lt;span class="n"&gt;data_source&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_attributes&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id="outline-container-org749d6e3" class="outline-2"&gt;
-&lt;h2 id="org749d6e3"&gt;The Files&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org749d6e3"&gt;
-&lt;p&gt;
-These are the files we are given.
-&lt;/p&gt;
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;data_source&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;file_names&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-    &lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;" - {}"&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;ul class="org-ul"&gt;
-&lt;li&gt;item_categories.csv&lt;/li&gt;
-&lt;li&gt;items.csv&lt;/li&gt;
-&lt;li&gt;sales_train.csv.gz&lt;/li&gt;
-&lt;li&gt;sample_submission.csv.gz&lt;/li&gt;
-&lt;li&gt;shops.csv&lt;/li&gt;
-&lt;li&gt;test.csv.gz&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;
-I was originally thinking I would need to unzip the gzipped files but apparently the &lt;a href="https://pandas.pydata.org/pandas-docs/stable/io.html#io-read-csv-table"&gt;&lt;code&gt;Pandas.read_csv&lt;/code&gt;&lt;/a&gt; function will decompress them automagically, so I guess I can leave them.
-&lt;/p&gt;
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;frames&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;data_source&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;file_names&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;index&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="n"&gt;pandas&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;read_csv&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-	  &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;index&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;path&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;enumerate&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data_source&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;paths&lt;/span&gt;&lt;span class="p"&gt;)}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;frame&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;frames&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;items&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
-    &lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s2"&gt;** {}"&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
-    &lt;span class="n"&gt;Helpers&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;print_head&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;frame&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-    &lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;frame&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;info&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id="outline-container-org446d5f8" class="outline-3"&gt;
-&lt;h3 id="org446d5f8"&gt;item_categories.csv&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org446d5f8"&gt;
-&lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
-
-
-&lt;colgroup&gt;
-&lt;col class="org-left"&gt;
-
-&lt;col class="org-right"&gt;
-&lt;/colgroup&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th scope="col" class="org-left"&gt;item_category_name&lt;/th&gt;
-&lt;th scope="col" class="org-right"&gt;item_category_id&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td class="org-left"&gt;PC - Гарнитуры/Наушники&lt;/td&gt;
-&lt;td class="org-right"&gt;0&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-left"&gt;Аксессуары - PS2&lt;/td&gt;
-&lt;td class="org-right"&gt;1&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-left"&gt;Аксессуары - PS3&lt;/td&gt;
-&lt;td class="org-right"&gt;2&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-left"&gt;Аксессуары - PS4&lt;/td&gt;
-&lt;td class="org-right"&gt;3&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-left"&gt;Аксессуары - PSP&lt;/td&gt;
-&lt;td class="org-right"&gt;4&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;
-&amp;lt;class 'pandas.core.frame.DataFrame'&amp;gt;
-RangeIndex: 84 entries, 0 to 83
-Data columns (total 2 columns):
-item_category_name    84 non-null object
-item_category_id      84 non-null int64
-dtypes: int64(1), object(1)
-memory usage: 1.4+ KB
-None
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id="outline-container-org82beb4a" class="outline-3"&gt;
-&lt;h3 id="org82beb4a"&gt;items.csv&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org82beb4a"&gt;
-&lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
-
-
-&lt;colgroup&gt;
-&lt;col class="org-left"&gt;
-
-&lt;col class="org-right"&gt;
-
-&lt;col class="org-right"&gt;
-&lt;/colgroup&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th scope="col" class="org-left"&gt;item_name&lt;/th&gt;
-&lt;th scope="col" class="org-right"&gt;item_id&lt;/th&gt;
-&lt;th scope="col" class="org-right"&gt;item_category_id&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td class="org-left"&gt;! ВО ВЛАСТИ НАВАЖДЕНИЯ (ПЛАСТ.)         D&lt;/td&gt;
-&lt;td class="org-right"&gt;0&lt;/td&gt;
-&lt;td class="org-right"&gt;40&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-left"&gt;!ABBYY FineReader 12 Professional Edition Full [PC, Цифровая версия]&lt;/td&gt;
-&lt;td class="org-right"&gt;1&lt;/td&gt;
-&lt;td class="org-right"&gt;76&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-left"&gt;***В ЛУЧАХ СЛАВЫ   (UNV)                    D&lt;/td&gt;
-&lt;td class="org-right"&gt;2&lt;/td&gt;
-&lt;td class="org-right"&gt;40&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-left"&gt;***ГОЛУБАЯ ВОЛНА  (Univ)                      D&lt;/td&gt;
-&lt;td class="org-right"&gt;3&lt;/td&gt;
-&lt;td class="org-right"&gt;40&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-left"&gt;***КОРОБКА (СТЕКЛО)                       D&lt;/td&gt;
-&lt;td class="org-right"&gt;4&lt;/td&gt;
-&lt;td class="org-right"&gt;40&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;
-&amp;lt;class 'pandas.core.frame.DataFrame'&amp;gt;
-RangeIndex: 22170 entries, 0 to 22169
-Data columns (total 3 columns):
-item_name           22170 non-null object
-item_id             22170 non-null int64
-item_category_id    22170 non-null int64
-dtypes: int64(2), object(1)
-memory usage: 519.7+ KB
-None
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id="outline-container-org14aa6d5" class="outline-3"&gt;
-&lt;h3 id="org14aa6d5"&gt;sales_train.csv.gz&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org14aa6d5"&gt;
-&lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
-
-
-&lt;colgroup&gt;
-&lt;col class="org-right"&gt;
-
-&lt;col class="org-right"&gt;
-
-&lt;col class="org-right"&gt;
-
-&lt;col class="org-right"&gt;
-
-&lt;col class="org-right"&gt;
-
-&lt;col class="org-right"&gt;
-&lt;/colgroup&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th scope="col" class="org-right"&gt;date&lt;/th&gt;
-&lt;th scope="col" class="org-right"&gt;date_block_num&lt;/th&gt;
-&lt;th scope="col" class="org-right"&gt;shop_id&lt;/th&gt;
-&lt;th scope="col" class="org-right"&gt;item_id&lt;/th&gt;
-&lt;th scope="col" class="org-right"&gt;item_price&lt;/th&gt;
-&lt;th scope="col" class="org-right"&gt;item_cnt_day&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td class="org-right"&gt;02.01.2013&lt;/td&gt;
-&lt;td class="org-right"&gt;0&lt;/td&gt;
-&lt;td class="org-right"&gt;59&lt;/td&gt;
-&lt;td class="org-right"&gt;22154&lt;/td&gt;
-&lt;td class="org-right"&gt;999&lt;/td&gt;
-&lt;td class="org-right"&gt;1&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-right"&gt;03.01.2013&lt;/td&gt;
-&lt;td class="org-right"&gt;0&lt;/td&gt;
-&lt;td class="org-right"&gt;25&lt;/td&gt;
-&lt;td class="org-right"&gt;2552&lt;/td&gt;
-&lt;td class="org-right"&gt;899&lt;/td&gt;
-&lt;td class="org-right"&gt;1&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-right"&gt;05.01.2013&lt;/td&gt;
-&lt;td class="org-right"&gt;0&lt;/td&gt;
-&lt;td class="org-right"&gt;25&lt;/td&gt;
-&lt;td class="org-right"&gt;2552&lt;/td&gt;
-&lt;td class="org-right"&gt;899&lt;/td&gt;
-&lt;td class="org-right"&gt;-1&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-right"&gt;06.01.2013&lt;/td&gt;
-&lt;td class="org-right"&gt;0&lt;/td&gt;
-&lt;td class="org-right"&gt;25&lt;/td&gt;
-&lt;td class="org-right"&gt;2554&lt;/td&gt;
-&lt;td class="org-right"&gt;1709.05&lt;/td&gt;
-&lt;td class="org-right"&gt;1&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-right"&gt;15.01.2013&lt;/td&gt;
-&lt;td class="org-right"&gt;0&lt;/td&gt;
-&lt;td class="org-right"&gt;25&lt;/td&gt;
-&lt;td class="org-right"&gt;2555&lt;/td&gt;
-&lt;td class="org-right"&gt;1099&lt;/td&gt;
-&lt;td class="org-right"&gt;1&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;
-&amp;lt;class 'pandas.core.frame.DataFrame'&amp;gt;
-RangeIndex: 2935849 entries, 0 to 2935848
-Data columns (total 6 columns):
-date              object
-date_block_num    int64
-shop_id           int64
-item_id           int64
-item_price        float64
-item_cnt_day      float64
-dtypes: float64(2), int64(3), object(1)
-memory usage: 134.4+ MB
-None
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id="outline-container-orgd967f54" class="outline-3"&gt;
-&lt;h3 id="orgd967f54"&gt;sample_submission.csv.gz&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgd967f54"&gt;
-&lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
-
-
-&lt;colgroup&gt;
-&lt;col class="org-right"&gt;
-
-&lt;col class="org-right"&gt;
-&lt;/colgroup&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th scope="col" class="org-right"&gt;ID&lt;/th&gt;
-&lt;th scope="col" class="org-right"&gt;item_cnt_month&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td class="org-right"&gt;0&lt;/td&gt;
-&lt;td class="org-right"&gt;0.5&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-right"&gt;1&lt;/td&gt;
-&lt;td class="org-right"&gt;0.5&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-right"&gt;2&lt;/td&gt;
-&lt;td class="org-right"&gt;0.5&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-right"&gt;3&lt;/td&gt;
-&lt;td class="org-right"&gt;0.5&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-right"&gt;4&lt;/td&gt;
-&lt;td class="org-right"&gt;0.5&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;
-&amp;lt;class 'pandas.core.frame.DataFrame'&amp;gt;
-RangeIndex: 214200 entries, 0 to 214199
-Data columns (total 2 columns):
-ID                214200 non-null int64
-item_cnt_month    214200 non-null float64
-dtypes: float64(1), int64(1)
-memory usage: 3.3 MB
-None
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id="outline-container-org609b7ac" class="outline-3"&gt;
-&lt;h3 id="org609b7ac"&gt;shops.csv&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org609b7ac"&gt;
-&lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
-
-
-&lt;colgroup&gt;
-&lt;col class="org-left"&gt;
-
-&lt;col class="org-right"&gt;
-&lt;/colgroup&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th scope="col" class="org-left"&gt;shop_name&lt;/th&gt;
-&lt;th scope="col" class="org-right"&gt;shop_id&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td class="org-left"&gt;!Якутск Орджоникидзе, 56 фран&lt;/td&gt;
-&lt;td class="org-right"&gt;0&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-left"&gt;!Якутск ТЦ "Центральный" фран&lt;/td&gt;
-&lt;td class="org-right"&gt;1&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-left"&gt;Адыгея ТЦ "Мега"&lt;/td&gt;
-&lt;td class="org-right"&gt;2&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-left"&gt;Балашиха ТРК "Октябрь-Киномир"&lt;/td&gt;
-&lt;td class="org-right"&gt;3&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-left"&gt;Волжский ТЦ "Волга Молл"&lt;/td&gt;
-&lt;td class="org-right"&gt;4&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;
-&amp;lt;class 'pandas.core.frame.DataFrame'&amp;gt;
-RangeIndex: 60 entries, 0 to 59
-Data columns (total 2 columns):
-shop_name    60 non-null object
-shop_id      60 non-null int64
-dtypes: int64(1), object(1)
-memory usage: 1.0+ KB
-None
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id="outline-container-org8a88d1c" class="outline-3"&gt;
-&lt;h3 id="org8a88d1c"&gt;test.csv.gz&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org8a88d1c"&gt;
-&lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
-
-
-&lt;colgroup&gt;
-&lt;col class="org-right"&gt;
-
-&lt;col class="org-right"&gt;
-
-&lt;col class="org-right"&gt;
-&lt;/colgroup&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th scope="col" class="org-right"&gt;ID&lt;/th&gt;
-&lt;th scope="col" class="org-right"&gt;shop_id&lt;/th&gt;
-&lt;th scope="col" class="org-right"&gt;item_id&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td class="org-right"&gt;0&lt;/td&gt;
-&lt;td class="org-right"&gt;5&lt;/td&gt;
-&lt;td class="org-right"&gt;5037&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-right"&gt;1&lt;/td&gt;
-&lt;td class="org-right"&gt;5&lt;/td&gt;
-&lt;td class="org-right"&gt;5320&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-right"&gt;2&lt;/td&gt;
-&lt;td class="org-right"&gt;5&lt;/td&gt;
-&lt;td class="org-right"&gt;5233&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-right"&gt;3&lt;/td&gt;
-&lt;td class="org-right"&gt;5&lt;/td&gt;
-&lt;td class="org-right"&gt;5232&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-right"&gt;4&lt;/td&gt;
-&lt;td class="org-right"&gt;5&lt;/td&gt;
-&lt;td class="org-right"&gt;5268&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;
-&amp;lt;class 'pandas.core.frame.DataFrame'&amp;gt;
-RangeIndex: 214200 entries, 0 to 214199
-Data columns (total 3 columns):
-ID         214200 non-null int64
-shop_id    214200 non-null int64
-item_id    214200 non-null int64
-dtypes: int64(3)
-memory usage: 4.9 MB
-None
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id="outline-container-org39c0786" class="outline-2"&gt;
-&lt;h2 id="org39c0786"&gt;Some Counts&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org39c0786"&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-org8dfba4f" class="outline-3"&gt;
-&lt;h3 id="org8dfba4f"&gt;How much data is there in the training set?&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org8dfba4f"&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"There are {:,} rows in the training set."&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;frames&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;data_source&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sales_train&lt;/span&gt;&lt;span class="p"&gt;])))&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;
-There are 2,935,849 rows in the training set.
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id="outline-container-orgf502243" class="outline-3"&gt;
-&lt;h3 id="orgf502243"&gt;How many shops are there?&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgf502243"&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"There are {} shops."&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;frames&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;data_source&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shops&lt;/span&gt;&lt;span class="p"&gt;])))&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;
-There are 60 shops.
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id="outline-container-org8a69099" class="outline-3"&gt;
-&lt;h3 id="org8a69099"&gt;How Many Items Are There?&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org8a69099"&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"There are {:,} items."&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;frames&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;data_source&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;items&lt;/span&gt;&lt;span class="p"&gt;])))&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;
-There are 22,170 items.
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id="outline-container-org0d8b21c" class="outline-3"&gt;
-&lt;h3 id="org0d8b21c"&gt;How Many Item Categories are there?&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org0d8b21c"&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"There are {:,} categories."&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;frames&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;data_source&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;item_categories&lt;/span&gt;&lt;span class="p"&gt;])))&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;
-There are 84 categories.
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id="outline-container-org1d47463" class="outline-3"&gt;
-&lt;h3 id="org1d47463"&gt;How many date-blocks are there?&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org1d47463"&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"There are {} date-blocks."&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
-    &lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;frames&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;data_source&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sales_train&lt;/span&gt;&lt;span class="p"&gt;][&lt;/span&gt;&lt;span class="n"&gt;DataKeys&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;date_block&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;unique&lt;/span&gt;&lt;span class="p"&gt;())))&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;
-There are 34 date-blocks.
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id="outline-container-org8be93ec" class="outline-2"&gt;
-&lt;h2 id="org8be93ec"&gt;The Official Feature Descriptions&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org8be93ec"&gt;
-&lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
-
-
-&lt;colgroup&gt;
-&lt;col class="org-left"&gt;
-
-&lt;col class="org-left"&gt;
-&lt;/colgroup&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th scope="col" class="org-left"&gt;Column Name&lt;/th&gt;
-&lt;th scope="col" class="org-left"&gt;Description&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td class="org-left"&gt;ID&lt;/td&gt;
-&lt;td class="org-left"&gt;an Id that represents a (Shop, Item) tuple within the test set&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-left"&gt;shop_id&lt;/td&gt;
-&lt;td class="org-left"&gt;unique identifier of a shop&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-left"&gt;item_id&lt;/td&gt;
-&lt;td class="org-left"&gt;unique identifier of a product&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-left"&gt;item_category_id&lt;/td&gt;
-&lt;td class="org-left"&gt;unique identifier of item category&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-left"&gt;item_cnt_day&lt;/td&gt;
-&lt;td class="org-left"&gt;number of products sold. You are predicting a monthly amount of this measure&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-left"&gt;item_price&lt;/td&gt;
-&lt;td class="org-left"&gt;current price of an item&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-left"&gt;date&lt;/td&gt;
-&lt;td class="org-left"&gt;date in format dd/mm/yyyy&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-left"&gt;date_block_num&lt;/td&gt;
-&lt;td class="org-left"&gt;a consecutive month number, used for convenience. January 2013 is 0, February 2013 is 1,…, October 2015 is 33&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-left"&gt;item_name&lt;/td&gt;
-&lt;td class="org-left"&gt;name of item&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-left"&gt;shop_name&lt;/td&gt;
-&lt;td class="org-left"&gt;name of shop&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-left"&gt;item_category_name&lt;/td&gt;
-&lt;td class="org-left"&gt;name of item category&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id="outline-container-org019513e" class="outline-2"&gt;
-&lt;h2 id="org019513e"&gt;The Training Set&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org019513e"&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;frames&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;data_source&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sales_train&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;dtypes&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;
-date               object
-date_block_num      int64
-shop_id             int64
-item_id             int64
-item_price        float64
-item_cnt_day      float64
-dtype: object
-&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;div id="outline-container-orge4364c1" class="outline-3"&gt;
-&lt;h3 id="orge4364c1"&gt;Numeric Features&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orge4364c1"&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;Helpers&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;print_table&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;frames&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;data_source&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sales_train&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;describe&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;include&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;numpy&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;number&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;T&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
-
-
-&lt;colgroup&gt;
-&lt;col class="org-left"&gt;
-
-&lt;col class="org-right"&gt;
-
-&lt;col class="org-right"&gt;
-
-&lt;col class="org-right"&gt;
-
-&lt;col class="org-right"&gt;
-
-&lt;col class="org-right"&gt;
-
-&lt;col class="org-right"&gt;
-
-&lt;col class="org-right"&gt;
-
-&lt;col class="org-right"&gt;
-&lt;/colgroup&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th scope="col" class="org-left"&gt; &lt;/th&gt;
-&lt;th scope="col" class="org-right"&gt;count&lt;/th&gt;
-&lt;th scope="col" class="org-right"&gt;mean&lt;/th&gt;
-&lt;th scope="col" class="org-right"&gt;std&lt;/th&gt;
-&lt;th scope="col" class="org-right"&gt;min&lt;/th&gt;
-&lt;th scope="col" class="org-right"&gt;25%&lt;/th&gt;
-&lt;th scope="col" class="org-right"&gt;50%&lt;/th&gt;
-&lt;th scope="col" class="org-right"&gt;75%&lt;/th&gt;
-&lt;th scope="col" class="org-right"&gt;max&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td class="org-left"&gt;date_block_num&lt;/td&gt;
-&lt;td class="org-right"&gt;2.93585e+06&lt;/td&gt;
-&lt;td class="org-right"&gt;14.5699&lt;/td&gt;
-&lt;td class="org-right"&gt;9.42299&lt;/td&gt;
-&lt;td class="org-right"&gt;0&lt;/td&gt;
-&lt;td class="org-right"&gt;7&lt;/td&gt;
-&lt;td class="org-right"&gt;14&lt;/td&gt;
-&lt;td class="org-right"&gt;23&lt;/td&gt;
-&lt;td class="org-right"&gt;33&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-left"&gt;shop_id&lt;/td&gt;
-&lt;td class="org-right"&gt;2.93585e+06&lt;/td&gt;
-&lt;td class="org-right"&gt;33.0017&lt;/td&gt;
-&lt;td class="org-right"&gt;16.227&lt;/td&gt;
-&lt;td class="org-right"&gt;0&lt;/td&gt;
-&lt;td class="org-right"&gt;22&lt;/td&gt;
-&lt;td class="org-right"&gt;31&lt;/td&gt;
-&lt;td class="org-right"&gt;47&lt;/td&gt;
-&lt;td class="org-right"&gt;59&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-left"&gt;item_id&lt;/td&gt;
-&lt;td class="org-right"&gt;2.93585e+06&lt;/td&gt;
-&lt;td class="org-right"&gt;10197.2&lt;/td&gt;
-&lt;td class="org-right"&gt;6324.3&lt;/td&gt;
-&lt;td class="org-right"&gt;0&lt;/td&gt;
-&lt;td class="org-right"&gt;4476&lt;/td&gt;
-&lt;td class="org-right"&gt;9343&lt;/td&gt;
-&lt;td class="org-right"&gt;15684&lt;/td&gt;
-&lt;td class="org-right"&gt;22169&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-left"&gt;item_price&lt;/td&gt;
-&lt;td class="org-right"&gt;2.93585e+06&lt;/td&gt;
-&lt;td class="org-right"&gt;890.853&lt;/td&gt;
-&lt;td class="org-right"&gt;1729.8&lt;/td&gt;
-&lt;td class="org-right"&gt;-1&lt;/td&gt;
-&lt;td class="org-right"&gt;249&lt;/td&gt;
-&lt;td class="org-right"&gt;399&lt;/td&gt;
-&lt;td class="org-right"&gt;999&lt;/td&gt;
-&lt;td class="org-right"&gt;307980&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-left"&gt;item_cnt_day&lt;/td&gt;
-&lt;td class="org-right"&gt;2.93585e+06&lt;/td&gt;
-&lt;td class="org-right"&gt;1.24264&lt;/td&gt;
-&lt;td class="org-right"&gt;2.61883&lt;/td&gt;
-&lt;td class="org-right"&gt;-22&lt;/td&gt;
-&lt;td class="org-right"&gt;1&lt;/td&gt;
-&lt;td class="org-right"&gt;1&lt;/td&gt;
-&lt;td class="org-right"&gt;1&lt;/td&gt;
-&lt;td class="org-right"&gt;2169&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id="outline-container-orgb869d73" class="outline-3"&gt;
-&lt;h3 id="orgb869d73"&gt;Categorical Features&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgb869d73"&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;Helpers&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;print_table&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;frames&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;data_source&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sales_train&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;describe&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;include&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;numpy&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;object&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;pandas&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Categorical&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;T&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
-
-
-&lt;colgroup&gt;
-&lt;col class="org-left"&gt;
-
-&lt;col class="org-right"&gt;
-
-&lt;col class="org-right"&gt;
-
-&lt;col class="org-right"&gt;
-
-&lt;col class="org-right"&gt;
-&lt;/colgroup&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th scope="col" class="org-left"&gt; &lt;/th&gt;
-&lt;th scope="col" class="org-right"&gt;count&lt;/th&gt;
-&lt;th scope="col" class="org-right"&gt;unique&lt;/th&gt;
-&lt;th scope="col" class="org-right"&gt;top&lt;/th&gt;
-&lt;th scope="col" class="org-right"&gt;freq&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td class="org-left"&gt;date&lt;/td&gt;
-&lt;td class="org-right"&gt;2.93585e+06&lt;/td&gt;
-&lt;td class="org-right"&gt;1034&lt;/td&gt;
-&lt;td class="org-right"&gt;28.12.2013&lt;/td&gt;
-&lt;td class="org-right"&gt;9434&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;</description><category>kaggle data exploration competition</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/exploring-the-data/</guid><pubDate>Sat, 11 Aug 2018 22:26:40 GMT</pubDate></item><item><title>Set Up the Kaggle Command-Line Command</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/set-up-the-kaggle-command-line-command/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
-&lt;h2&gt;Table of Contents&lt;/h2&gt;
-&lt;div id="text-table-of-contents"&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/set-up-the-kaggle-command-line-command/#org615e90f"&gt;Install the Command&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/set-up-the-kaggle-command-line-command/#org91e3109"&gt;Get Your Credentials&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/set-up-the-kaggle-command-line-command/#org2df4a2d"&gt;Test it out&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/set-up-the-kaggle-command-line-command/#org27c7035"&gt;The Actual API&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;p&gt;
-These are my notes as I set up the command-line interface. The official instructions are in the &lt;a href="https://github.com/Kaggle/kaggle-api"&gt;README on github&lt;/a&gt;.
-&lt;/p&gt;
-
-&lt;div id="outline-container-org615e90f" class="outline-2"&gt;
-&lt;h2 id="org615e90f"&gt;Install the Command&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org615e90f"&gt;
-&lt;p&gt;
-The code is available through &lt;a href="https://pypi.org/project/kaggle/"&gt;pypi&lt;/a&gt; so you can install it through pip. Their instructions say to install it at the user-level but I'm doing it in a &lt;code&gt;virtualenv&lt;/code&gt; so that actually doesn't work for me, instead I did a regular &lt;code&gt;pip&lt;/code&gt; install (after installing &lt;code&gt;wheel&lt;/code&gt;).
-&lt;/p&gt;
-
-&lt;pre class="example"&gt;
-pip install kaggle
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id="outline-container-org91e3109" class="outline-2"&gt;
-&lt;h2 id="org91e3109"&gt;Get Your Credentials&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org91e3109"&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-org003b2cb" class="outline-3"&gt;
-&lt;h3 id="org003b2cb"&gt;Download the JSON File From Kaggle&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org003b2cb"&gt;
-&lt;p&gt;
-Log in to your kaggle account and click on the &lt;i&gt;Account&lt;/i&gt; menu (it's hidden until you hover over the drop-down widget).
-&lt;/p&gt;
-
-
-&lt;div class="figure"&gt;
-&lt;p&gt;&lt;img src="https://necromuralist.github.io/Kaggle-Competitions/posts/set-up-the-kaggle-command-line-command/kaggle_account_menu.png" alt="kaggle_account_menu.png"&gt;
-&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;p&gt;
-Scroll down to the &lt;i&gt;API&lt;/i&gt; box and click on &lt;b&gt;Create New API Token&lt;/b&gt;.
-&lt;/p&gt;
-
-
-&lt;div class="figure"&gt;
-&lt;p&gt;&lt;img src="https://necromuralist.github.io/Kaggle-Competitions/posts/set-up-the-kaggle-command-line-command/api_box.png" alt="api_box.png"&gt;
-&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;p&gt;
-This will start a file download, if it prompts you save it to your computer.
-&lt;/p&gt;
-
-
-&lt;div class="figure"&gt;
-&lt;p&gt;&lt;img src="https://necromuralist.github.io/Kaggle-Competitions/posts/set-up-the-kaggle-command-line-command/download_json.png" alt="download_json.png"&gt;
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id="outline-container-orga2349fb" class="outline-3"&gt;
-&lt;h3 id="orga2349fb"&gt;Set Up the File&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orga2349fb"&gt;
-&lt;p&gt;
-Store this file in a folder named &lt;code&gt;.kaggle&lt;/code&gt;.
-&lt;/p&gt;
-
-&lt;pre class="example"&gt;
-mkdir ~/.kaggle
-mv ~/Downloads/kaggle.json ~/.kaggle/
-&lt;/pre&gt;
-
-&lt;p&gt;
-To be on the safe side, change the permissions on the file so that other users can't read it.
-&lt;/p&gt;
-
-&lt;pre class="example"&gt;
-chmod 600 ~/.kaggle/kaggle.json
-&lt;/pre&gt;
-
-&lt;p&gt;
-If you look in the file you'll see that it just has a JSON object with your username and API key.
-&lt;/p&gt;
-
-&lt;pre class="example"&gt;
-{"username":"bumblebee","key":"8b970a13a2cfcfb7a77bdb8b4effaebc"}
-&lt;/pre&gt;
-
-&lt;p&gt;
-The instructions say you could also export the values as environment variables, but I'll leave it like this for now.
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id="outline-container-org2df4a2d" class="outline-2"&gt;
-&lt;h2 id="org2df4a2d"&gt;Test it out&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org2df4a2d"&gt;
-&lt;p&gt;
-It's a python command that uses the basic help system you would expect if you've used python command-line programs before.
-&lt;/p&gt;
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kaggle --help
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;pre class="example"&gt;
-usage: kaggle [-h] [-v] {competitions,c,datasets,d,kernels,k,config} ...
-
-optional arguments:
-  -h, --help            show this help message and exit
-  -v, --version         show program's version number and exit
-
-commands:
-  {competitions,c,datasets,d,kernels,k,config}
-                        Use one of:
-                        competitions {list, files, download, submit, submissions, leaderboard}
-                        datasets {list, files, download, create, version, init, metadata, status}
-                        config {view, set, unset}
-    competitions (c)    Commands related to Kaggle competitions
-    datasets (d)        Commands related to Kaggle datasets
-    kernels (k)         Commands related to Kaggle kernels
-    config              Configuration settings
-&lt;/pre&gt;
-
-&lt;p&gt;
-For this project you would download the data like this (downloading to a folder named &lt;code&gt;data&lt;/code&gt;).
-&lt;/p&gt;
-
-&lt;pre class="example"&gt;
-kaggle competitions download -c competitive-data-science-final-project data
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-org27c7035" class="outline-2"&gt;
-&lt;h2 id="org27c7035"&gt;The Actual API&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org27c7035"&gt;
-&lt;p&gt;
-If you look under the hood the command is just doing REST calls. To make it programattic you could probably use &lt;a href="http://docs.python-requests.org/en/master/"&gt;requests&lt;/a&gt; or something similar to interact with it directly. You can see the calls you need to make by looking at the &lt;a href="https://github.com/Kaggle/kaggle-api/blob/master/KaggleSwagger.yaml"&gt;swagger file&lt;/a&gt;.
-&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;div id="outline-container-orgdbc496b" class="outline-3"&gt;
-&lt;h3 id="orgdbc496b"&gt;How the CLI does it&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgdbc496b"&gt;
-&lt;p&gt;
-If you look in the &lt;code&gt;kaggle.__init__.py&lt;/code&gt; file in the repository you'll see these imports.
-&lt;/p&gt;
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;from kaggle.api.kaggle_api_extended import KaggleApi
-from kaggle.api_client import ApiClient
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;
-Then when the command-line is called to download the data set it does this.
-&lt;/p&gt;
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;api = KaggleApi(ApiClient())
-api.competition_download_cli(competition=None, competition_opt="competitive-data-science-final-project", path="data")
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;</description><category>kaggle howto</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/set-up-the-kaggle-command-line-command/</guid><pubDate>Sat, 11 Aug 2018 20:37:44 GMT</pubDate></item><item><title>The Competition</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/the-competition/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
-&lt;h2&gt;Table of Contents&lt;/h2&gt;
-&lt;div id="text-table-of-contents"&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/the-competition/#orgcf9f54b"&gt;What is this about?&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/the-competition/#org33bed42"&gt;What is the data made up of?&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/the-competition/#org4a427b6"&gt;How will you be evaluated?&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id="outline-container-orgcf9f54b" class="outline-2"&gt;
-&lt;h2 id="orgcf9f54b"&gt;What is this about?&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgcf9f54b"&gt;
-&lt;p&gt;
-This is about the &lt;a href="https://www.kaggle.com/c/competitive-data-science-final-project"&gt;kaggle competition&lt;/a&gt; to predict future sales based on prior sale data. You are given a data set made up of prior sales and asked to predict how much each product will sell over the next month.
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id="outline-container-org33bed42" class="outline-2"&gt;
-&lt;h2 id="org33bed42"&gt;What is the data made up of?&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org33bed42"&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-org405beab" class="outline-3"&gt;
-&lt;h3 id="org405beab"&gt;The Source&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org405beab"&gt;
-&lt;p&gt;
-The data comes from the &lt;a href="http://1c.ru/eng/title.htm"&gt;1C Company&lt;/a&gt;, a Russian company that describes themselves on their website like this.
-&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;
-Founded in 1991 1C Company specializes in development, distribution, publishing and support of mass-market software.
-&lt;/p&gt;
-
-&lt;p&gt;
-At present 8000 dealers from 600 cities cooperate with 1C. About 7500 teams constitute the 1C:Franchising partner network,which is a main channel of value-adding for 1C products. Service-partners provide regular information and technological support for 1C software customers. The network of authorized training centers is also operating.
-&lt;/p&gt;
-
-&lt;p&gt;
-1C is the official distributor of such world-famous vendors as Microsoft, Novell, Borland, Symantec, ABBYY, Kaspersky Lab, ProMT, Eset Software and over 100 other software vendors. 1C offers more than 10 000 titles of software for office and home use. 
-&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id="outline-container-org49a65fd" class="outline-3"&gt;
-&lt;h3 id="org49a65fd"&gt;Getting it&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org49a65fd"&gt;
-&lt;p&gt;
-It looks like the data-set is the same one that I used for the Pandas example, but I'll download it anyway to be safe.
-&lt;/p&gt;
-
-&lt;pre class="example"&gt;
-mkdir data
-kaggle competitions download competitive-data-science-final-project --path data
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id="outline-container-org3580325" class="outline-3"&gt;
-&lt;h3 id="org3580325"&gt;The Description&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org3580325"&gt;
-&lt;blockquote&gt;
-&lt;p&gt;
-You are provided with daily historical sales data. The task is to forecast the total amount of products sold in every shop for the test set. Note that the list of shops and products slightly changes every month. Creating a robust model that can handle such situations is part of the challenge.
-&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;/div&gt;
-
-
-&lt;div id="outline-container-orgc417592" class="outline-4"&gt;
-&lt;h4 id="orgc417592"&gt;Files&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-orgc417592"&gt;
-&lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
-
-
-&lt;colgroup&gt;
-&lt;col class="org-left"&gt;
-
-&lt;col class="org-left"&gt;
-&lt;/colgroup&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th scope="col" class="org-left"&gt;File Name&lt;/th&gt;
-&lt;th scope="col" class="org-left"&gt;Description&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td class="org-left"&gt;sales_train.csv&lt;/td&gt;
-&lt;td class="org-left"&gt;the training set. Daily historical data from January 2013 to October 2015.&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-left"&gt;test.csv&lt;/td&gt;
-&lt;td class="org-left"&gt;the test set. You need to forecast the sales for these shops and products for November 2015.&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-left"&gt;sample_submission.csv&lt;/td&gt;
-&lt;td class="org-left"&gt;a sample submission file in the correct format.&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-left"&gt;items.csv&lt;/td&gt;
-&lt;td class="org-left"&gt;supplemental information about the items/products.&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-left"&gt;item_categories.csv&lt;/td&gt;
-&lt;td class="org-left"&gt;supplemental information about the items categories.&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-left"&gt;shops.csv&lt;/td&gt;
-&lt;td class="org-left"&gt;supplemental information about the shops.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-
-&lt;div id="outline-container-org21c0d90" class="outline-4"&gt;
-&lt;h4 id="org21c0d90"&gt;Features&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org21c0d90"&gt;
-&lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
-
-
-&lt;colgroup&gt;
-&lt;col class="org-left"&gt;
-
-&lt;col class="org-left"&gt;
-&lt;/colgroup&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th scope="col" class="org-left"&gt;Column Name&lt;/th&gt;
-&lt;th scope="col" class="org-left"&gt;Description&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td class="org-left"&gt;ID&lt;/td&gt;
-&lt;td class="org-left"&gt;an Id that represents a (Shop, Item) tuple within the test set&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-left"&gt;shop_id&lt;/td&gt;
-&lt;td class="org-left"&gt;unique identifier of a shop&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-left"&gt;item_id&lt;/td&gt;
-&lt;td class="org-left"&gt;unique identifier of a product&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-left"&gt;item_category_id&lt;/td&gt;
-&lt;td class="org-left"&gt;unique identifier of item category&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-left"&gt;item_cnt_day&lt;/td&gt;
-&lt;td class="org-left"&gt;number of products sold. You are predicting a monthly amount of this measure&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-left"&gt;item_price&lt;/td&gt;
-&lt;td class="org-left"&gt;current price of an item&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-left"&gt;date&lt;/td&gt;
-&lt;td class="org-left"&gt;date in format dd/mm/yyyy&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-left"&gt;date_block_num&lt;/td&gt;
-&lt;td class="org-left"&gt;a consecutive month number, used for convenience. January 2013 is 0, February 2013 is 1,…, October 2015 is 33&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-left"&gt;item_name&lt;/td&gt;
-&lt;td class="org-left"&gt;name of item&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-left"&gt;shop_name&lt;/td&gt;
-&lt;td class="org-left"&gt;name of shop&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-left"&gt;item_category_name&lt;/td&gt;
-&lt;td class="org-left"&gt;name of item category&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id="outline-container-org4a427b6" class="outline-2"&gt;
-&lt;h2 id="org4a427b6"&gt;How will you be evaluated?&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org4a427b6"&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-org347dc2e" class="outline-3"&gt;
-&lt;h3 id="org347dc2e"&gt;Submission Format&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org347dc2e"&gt;
-&lt;p&gt;
-You will submit a comma-separated file with two columns, the product ID and the total number of sales. It should look like this.
-&lt;/p&gt;
-
-&lt;pre class="example"&gt;
-ID,item_cnt_month
-0,5
-1,3
-2,6
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id="outline-container-org7d3bf4f" class="outline-3"&gt;
-&lt;h3 id="org7d3bf4f"&gt;Scoring&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org7d3bf4f"&gt;
-&lt;p&gt;
-You will be scored base on the &lt;a href="https://en.wikipedia.org/wiki/Root-mean-square_deviation"&gt;Root Mean Square Error (RMSE)&lt;/a&gt;. The page says that the true target values are clipped to the &lt;code&gt;[0,20]&lt;/code&gt; range and the example given shows &lt;code&gt;0.5&lt;/code&gt; as the &lt;code&gt;item_cnt_month&lt;/code&gt; values, neither of which makes any sense to me at the moment.
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-org1a56c84" class="outline-3"&gt;
-&lt;h3 id="org1a56c84"&gt;The meaning of the target&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org1a56c84"&gt;
-&lt;p&gt;
-According to &lt;a href="https://www.kaggle.com/c/competitive-data-science-final-project/discussion/48251"&gt;this thread&lt;/a&gt; you need to &lt;a href="https://docs.scipy.org/doc/numpy-1.13.0/reference/generated/numpy.clip.html"&gt;clip&lt;/a&gt; the predictions back to that range (make anything less than zero a zero and anything more than twenty a twenty).
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;</description><category>kaggle competition about</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/the-competition/</guid><pubDate>Sat, 11 Aug 2018 20:14:17 GMT</pubDate></item></channel></rss>
+&lt;/div&gt;</description><category>naive model competition</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/first-naive-try/</guid><pubDate>Sun, 12 Aug 2018 02:37:37 GMT</pubDate></item></channel></rss>

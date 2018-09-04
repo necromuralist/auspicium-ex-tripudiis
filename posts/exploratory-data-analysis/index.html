@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="Notes on exploratorry data analysis.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Exploratory Data Analysis | Notes on Kaggle</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="../../rss.xml">
+<link rel="canonical" href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script><meta name="author" content="Cloistered Monkey">
+<link rel="prev" href="../references/" title="References" type="text/html">
+<link rel="next" href="../springleaf-competition/" title="Springleaf Competition" type="text/html">
+<meta property="og:site_name" content="Notes on Kaggle">
+<meta property="og:title" content="Exploratory Data Analysis">
+<meta property="og:url" content="https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/">
+<meta property="og:description" content="Notes on exploratorry data analysis.">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2018-09-03T21:24:53-07:00">
+<meta property="article:tag" content="notes data">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-default navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://necromuralist.github.io/Kaggle-Competitions/">
+
+                <span id="blog-title">Notes on Kaggle</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="https://necromuralist.github.io/">The Cloistered Monkey</a>
+                </li>
+<li>
+<a href="../../archive.html">Archive</a>
+                </li>
+<li>
+<a href="../../categories/">Tags</a>
+                </li>
+<li>
+<a href="../../rss.xml">RSS feed</a>
+
+                
+            </li>
+</ul>
+<!-- Google custom search --><form method="get" action="https://www.google.com/search" class="navbar-form navbar-right" role="search">
+<div class="form-group">
+<input type="text" name="q" class="form-control" placeholder="Search">
+</div>
+<button type="submit" class="btn btn-primary">
+	<span class="glyphicon glyphicon-search"></span>
+</button>
+<input type="hidden" name="sitesearch" value="https://necromuralist.github.io/Kaggle-Competitions/">
+</form>
+<!-- End of custom search -->
+
+
+            <ul class="nav navbar-nav navbar-right">
+<li>
+    <a href="index.org" id="sourcelink">Source</a>
+    </li>
+
+                
+            </ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+            
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Exploratory Data Analysis</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                    Cloistered Monkey
+            </span></p>
+            <p class="dateline"><a href="." rel="bookmark"><time class="published dt-published" datetime="2018-09-03T21:24:53-07:00" itemprop="datePublished" title="2018-09-03 21:24">2018-09-03 21:24</time></a></p>
+            
+        <p class="sourceline"><a href="index.org" class="sourcelink">Source</a></p>
+
+        </div>
+        
+
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div id="outline-container-orgfd31e4e" class="outline-2">
+<h2 id="orgfd31e4e">Building Your Intuition About the Data</h2>
+<div class="outline-text-2" id="text-orgfd31e4e">
+<p>
+The first thing to do is to see if you can build up a mental model of what the data is about.
+</p>
+</div>
+<div id="outline-container-orgb70a1bc" class="outline-3">
+<h3 id="orgb70a1bc">Get Domain Knowledge</h3>
+<div class="outline-text-3" id="text-orgb70a1bc">
+<p>
+Find out something about the topic that the data describes.
+</p>
+</div>
+</div>
+<div id="outline-container-org2b3ad6a" class="outline-3">
+<h3 id="org2b3ad6a">Check if the Data is intuitive</h3>
+<div class="outline-text-3" id="text-org2b3ad6a">
+<p>
+See if there are any strange values and see if it makes sense given the data description.
+</p>
+</div>
+</div>
+<div id="outline-container-orgee6065f" class="outline-3">
+<h3 id="orgee6065f">Understand how the data was generated</h3>
+<div class="outline-text-3" id="text-orgee6065f">
+<p>
+Is any of it synthetic? Was the training data generated the same way as the testing data?
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org52989b0" class="outline-2">
+<h2 id="org52989b0">Exploring Anonymized Data</h2>
+<div class="outline-text-2" id="text-org52989b0">
+<p>
+Organizers sometimes encode data so you can't tell what it is.
+</p>
+</div>
+<div id="outline-container-org4e95d36" class="outline-3">
+<h3 id="org4e95d36">Try To Decode the Data</h3>
+<div class="outline-text-3" id="text-org4e95d36">
+<p>
+You generally won't be able to figure out what the data is if it's encoded, but sometimes they were created using simple shifting schemes that will let you figure out their original values.
+</p>
+</div>
+</div>
+<div id="outline-container-org10716fa" class="outline-3">
+<h3 id="org10716fa">Explore Individual Features</h3>
+<div class="outline-text-3" id="text-org10716fa">
+<p>
+Even if you don't know what the data is, it's important to know what type of data it is so that you can use the right data preprocessing for your model.
+</p>
+<ul class="org-ul">
+<li><code>df.dtypes</code></li>
+<li><code>df.info()</code></li>
+<li><code>x.value_counts()</code></li>
+<li><code>x.isnull()</code></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org1890ea3" class="outline-2">
+<h2 id="org1890ea3">Visualizations</h2>
+<div class="outline-text-2" id="text-org1890ea3">
+</div>
+<div id="outline-container-orgb8c9af1" class="outline-3">
+<h3 id="orgb8c9af1">Features</h3>
+<div class="outline-text-3" id="text-orgb8c9af1">
+</div>
+<div id="outline-container-org83717d2" class="outline-4">
+<h4 id="org83717d2">Histograms</h4>
+<div class="outline-text-4" id="text-org83717d2">
+<p>
+This is useful for seeing the shape of the data.
+</p>
+<ul class="org-ul">
+<li><code>pyplot.hist(x)</code></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org1a83eba" class="outline-4">
+<h4 id="org1a83eba">Index vs Value</h4>
+<div class="outline-text-4" id="text-org1a83eba">
+<p>
+This will show you how well distributed the data is within the data frame. Horizontal lines indicate repeated values and empty bands show areas where none of the data had this value. If you don't have vertical lines then the data was probably shuffled.
+</p>
+<ul class="org-ul">
+<li><code>pyplot.plot(x, '.')</code></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org1b77b3f" class="outline-4">
+<h4 id="org1b77b3f">Index vs Valuue Colorede By Class Label</h4>
+<div class="outline-text-4" id="text-org1b77b3f">
+<p>
+If you plot the classes with different colors you can see if there are clusters and clear separations between them. (<code>y</code> in the function call has the target values).
+</p>
+<ul class="org-ul">
+<li><code>pyplot.scatter(range(len(x)), x, c=y)</code></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orge74baaa" class="outline-4">
+<h4 id="orge74baaa">Plot Other Things</h4>
+<div class="outline-text-4" id="text-orge74baaa">
+<ul class="org-ul">
+<li>Row vs Feature</li>
+<li>Nan-values</li>
+<li>Value Counts</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org86a14dd" class="outline-3">
+<h3 id="org86a14dd">Relationships</h3>
+<div class="outline-text-3" id="text-org86a14dd">
+</div>
+<div id="outline-container-orga4bcc14" class="outline-4">
+<h4 id="orga4bcc14">Scatter Plots</h4>
+<div class="outline-text-4" id="text-orga4bcc14">
+</div>
+<ul class="org-ul">
+<li>
+<a id="org6287d76"></a>Pairwise Relationships<br><div class="outline-text-5" id="text-org6287d76">
+<p>
+To make it eaiser to see relationships, you can plot them in pairs.
+</p>
+<ul class="org-ul">
+<li><code>pyplot.scatter(x1, x2)</code></li>
+</ul>
+</div>
+</li>
+<li>
+<a id="org74dff39"></a>Compare the Test Set<br><div class="outline-text-5" id="text-org74dff39">
+<p>
+Plot the features and the test-set (using different colors) to see how well your training data matches your test data.
+</p>
+</div>
+</li>
+<li>
+<a id="org9cdc141"></a>Scatter Matrix<br><div class="outline-text-5" id="text-org9cdc141">
+<p>
+Pandas has a convenience function that will plot all the pairwise scatter-plots for you.
+</p>
+<ul class="org-ul">
+<li><code>pandas.scatter_matrix(X)</code></li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div id="outline-container-orgc5368c4" class="outline-4">
+<h4 id="orgc5368c4">Corellation</h4>
+<div class="outline-text-4" id="text-orgc5368c4">
+<p>
+Plot the corellation matrix to see if there are feature-pairs that are related so you can make a new feature out of them and see if they help.
+</p>
+<ul class="org-ul">
+<li><code>X.corr(), pyplot.matshow()</code></li>
+</ul>
+<p>
+A straight correllation matrix might give you a sense of how correllated the features are, but it's more useful to use a clustering algorithm to see if there are groups within the correlation matrix.
+</p>
+</div>
+</div>
+<div id="outline-container-org86aa3b0" class="outline-4">
+<h4 id="org86aa3b0">Plot Statistics</h4>
+<div class="outline-text-4" id="text-org86aa3b0">
+<p>
+Try plotting mean, differences, combination counts, etc. and see if you can create groups out of them.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orgc480036" class="outline-2">
+<h2 id="orgc480036">Data Set Cleaning</h2>
+<div class="outline-text-2" id="text-orgc480036">
+</div>
+<div id="outline-container-org2c12ae8" class="outline-3">
+<h3 id="org2c12ae8">Duplicated and Constant Features</h3>
+<div class="outline-text-3" id="text-org2c12ae8">
+<p>
+Sometimes a feature will have the same value in all the rows. If it's this way in both the training and test sets you can just remove it, but if there are different values in the test set you have to figure out how to handle them.
+</p>
+<ul class="org-ul">
+<li>
+<code>x_train.nunique(axis</code>"columns") <code>= 1</code>
+</li>
+</ul>
+<p>
+Sometimes columns will get duplicated in which case you should drop one of them.
+</p>
+
+<ul class="org-ul">
+<li><code>x_train.T.drop_duplicates()</code></li>
+</ul>
+<p>
+This can happen with rows as well, but it can be harder to decide whether this is a mistake or not.
+</p>
+</div>
+</div>
+<div id="outline-container-org146bdce" class="outline-3">
+<h3 id="org146bdce">Non-shuffled Data</h3>
+<div class="outline-text-3" id="text-org146bdce">
+<p>
+If you plot the mean as a horizontal line the data should be evenly distributed around it, if not it might not have been shuffled and there could be an inadvertent pattern in the data. You might not be able to use it, but you should understand all the things about the data that you can find out.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orga8dad9f" class="outline-2">
+<h2 id="orga8dad9f">Quiz</h2>
+<div class="outline-text-2" id="text-orga8dad9f">
+</div>
+<div id="outline-container-orgb924588" class="outline-3">
+<h3 id="orgb924588">One</h3>
+<div class="outline-text-3" id="text-orgb924588">
+<p>
+Suppose we are given a data set with features <i>X</i>, <i>Y</i>, and <i>Z</i>. Can you recover <i>z</i> as a function of <i>x</i> and <i>y</i>?
+</p>
+<ul class="org-ul">
+<li class="on">
+<code>[X]</code> Z = X/Y</li>
+<li class="off">
+<code>[ ]</code> Z = X - Y</li>
+<li class="off">
+<code>[ ]</code> Z = X + Y</li>
+<li class="off">
+<code>[ ]</code> Z = XY</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org2f3e94e" class="outline-3">
+<h3 id="org2f3e94e">Two</h3>
+<div class="outline-text-3" id="text-org2f3e94e">
+<p>
+What value do the red dots have?
+0.5 (wrong)
+2 (next try)
+</p>
+</div>
+</div>
+<div id="outline-container-org21dc155" class="outline-3">
+<h3 id="org21dc155">Three</h3>
+<div class="outline-text-3" id="text-org21dc155">
+<p>
+What hypothesis about X can we not reject based on the plots?
+</p>
+<ul class="org-ul">
+<li class="on">
+<code>[X]</code> X is a counter or label encoded categorical feature</li>
+<li class="off">
+<code>[ ]</code> X can be the temperature (in Celsius) in different cities at different times. (the values are probably out of range)</li>
+<li class="off">
+<code>[ ]</code> X can take a value of zero (The log plot would have values at 0 but it doesn't)</li>
+<li class="on">
+<code>[X]</code> X takes only discrete values (the horizontal lines indicate that there are repeated values with discrete values)</li>
+<li class="on">
+<code>[X]</code> 2 &lt;= X &lt; 3 happens more frequently than 3 &lt;= X &lt; 4</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org0e93faf" class="outline-3">
+<h3 id="org0e93faf">Four</h3>
+<div class="outline-text-3" id="text-org0e93faf">
+<ul class="org-ul">
+<li class="off">
+<code>[ ]</code> Target is completely determined by coordinates (x,y)(x,y)(x,y), i.e. the label of the point is completely determined by point's position (x,y)(x,y)(x,y). Saying the same in other words: if we only had two features (x,y)(x,y)(x,y), we could build a classifier, that is accurate 100% of time.</li>
+<li class="on">
+<code>[X]</code> The top right plot is better than the top left in that everything you get from the top left can also be gotten from the top right, but not the other way around.</li>
+<li class="on">
+<code>[X]</code> standard deviation for jittering is the largest on the bottom right.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org7baac80" class="outline-2">
+<h2 id="org7baac80">Links</h2>
+<div class="outline-text-2" id="text-org7baac80">
+<ul class="org-ul">
+<li><a href="http://scikit-learn.org/stable/auto_examples/bicluster/plot_spectral_biclustering.html">Sorting Correlation Plots</a></li>
+</ul>
+</div>
+</div>
+    </div>
+    <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
+<li><a class="tag p-category" href="../../categories/notes-data/" rel="tag">notes data</a></li>
+        </ul>
+<ul class="pager hidden-print">
+<li class="previous">
+                <a href="../references/" rel="prev" title="References">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../springleaf-competition/" rel="next" title="Springleaf Competition">Next post</a>
+            </li>
+        </ul></nav></aside></article>
+</div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            Contents © 2018         <a href="mailto:necromuralist@protonmail.com">Cloistered Monkey</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png"></a><br>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+            
+        </footer>
+</div>
+</div>
+
+
+            <script src="../../assets/js/all-nocdn.js"></script><script>$('a.image-reference:not(.islink) img:not(.islink)').parent().colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates -->
+</body>
+</html>
