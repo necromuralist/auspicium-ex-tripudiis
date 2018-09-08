@@ -7,3 +7,4 @@ output/
 data/
 pickles/
 *.egg-info/
+.venv
