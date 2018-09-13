@@ -8,6 +8,8 @@
 .. description: Notes on exploratorry data analysis.
 .. type: text
 #+END_COMMENT
+#+OPTIONS: ^:{}
+#+TOC: headlines 1
 
 * Building Your Intuition About the Data
   The first thing to do is to see if you can build up a mental model of what the data is about.
@@ -23,10 +25,10 @@
    You generally won't be able to figure out what the data is if it's encoded, but sometimes they were created using simple shifting schemes that will let you figure out their original values.
 ** Explore Individual Features
    Even if you don't know what the data is, it's important to know what type of data it is so that you can use the right data preprocessing for your model.
-   - =df.dtypes=
-   - =df.info()=
-   - =x.value_counts()=
-   - =x.isnull()=
+   - [[https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.dtypes.html][df.dtypes]]
+   - [[https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.info.html][df.info()]]
+   - [[https://pandas.pydata.org/pandas-docs/stable/generated/pandas.Series.value_counts.html][x.value_counts()]]
+   - [[https://pandas.pydata.org/pandas-docs/stable/generated/pandas.isnull.html][x.isnull()]]
 * Visualizations
 ** Features
 *** Histograms
@@ -35,9 +37,9 @@
 *** Index vs Value
     This will show you how well distributed the data is within the data frame. Horizontal lines indicate repeated values and empty bands show areas where none of the data had this value. If you don't have vertical lines then the data was probably shuffled.
     - =pyplot.plot(x, '.')=
-*** Index vs Valuue Colorede By Class Label
+*** Index vs Value Colored By Class Label
     If you plot the classes with different colors you can see if there are clusters and clear separations between them. (=y= in the function call has the target values).
-    - =pyplot.scatter(range(len(x)), x, c=y)=
+    - ~pyplot.scatter(range(len(x)), x, c=y)~
 *** Plot Other Things
     - Row vs Feature
     - Nan-values
