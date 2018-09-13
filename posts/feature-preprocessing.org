@@ -26,7 +26,7 @@
      Scale the data to have a mean of 0 and a standard deviation of 1
 ** Outliers
    - Clip ([[https://docs.scipy.org/doc/numpy/reference/generated/numpy.clip.html][numpy.clip]])values to get rid of unusual values that mess with the model. (Winsorization)
-   - Rank Transform them ([[https://docs.scipy.org/doc/scipy-0.16.0/reference/generated/scipy.stats.rankdata.html][scipy.stats.rankdata]]) so that they
+   - Rank Transform them ([[https://docs.scipy.org/doc/scipy-0.16.0/reference/generated/scipy.stats.rankdata.html][scipy.stats.rankdata]]) so that they are ordered and have the same distance between them (they are uniformly distributed)
 ** Transformation
    For linear models and neural networks, transforming the data can sometimes help.
    - Log Transform: [[https://duckduckgo.com/?q=numpy+log&t=canonical&ia=web][numpy.log(1 + x)]]
@@ -37,7 +37,7 @@
   - You can derive new values mathematically (e.g. distance using height and width)
 
 * Categorical And Ordinal Features
-  - Ordinal Features have an ordering but even if they are labeled numerically (e.g. 1, 2, 3) they aren't numeric because there is no implication about the distance between each
+  - Ordinal Features have an ordering but even if they are labeled numerically (e.g. 1, 2, 3) they aren't numeric because there is no implication about the distance between them
   - label and frequency encoding are commonly used for tree-based models
   - one-hot encoding is more common for non-tree-based models
 ** Label Encoding
@@ -50,7 +50,7 @@
 ** Frequency Encoding
    Encode the values to a fraction of all the labels. Can work with linear models if the frequency is correlated with the target value.
    - =titanic.groupby("Embarked").size()/len(titanic)=
-   - =from scipy.stats import rankedata=
+   - =from scipy.stats import rankedata= ([[https://docs.scipy.org/doc/scipy-0.16.0/reference/generated/scipy.stats.rankdata.html][rankedata]])
    - More common with tree-based methods
 ** One Hot Encoding
    Creates one column for each label and puts a 1 in the column that matches. Works with both linear and tree-based models, but can be inefficient with tree-based models.
@@ -77,7 +77,7 @@
     - mean, median, some central tendency
       + This can throw the model off
       + it is sometimes better to ignore missing data
-    - recronstructed valud
+    - recronstructed value
 * Links
 ** Feature Pre-processing
   - [[http://scikit-learn.org/stable/modules/preprocessing.html][SKlearn's Preprocessing Documentation]]
