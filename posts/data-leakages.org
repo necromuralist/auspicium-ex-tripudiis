@@ -109,7 +109,7 @@ print(len(test) - len(smashed.unique()))
 
 #+RESULTS:
 : 368550
-: 41
+: 12
 
 
 Now print, how many distinct pairs it would be possible to create out of all "images" in the dataset?   
@@ -174,39 +174,62 @@ For example, you can use this constructor: `scipy.sparse.coo_matrix((data, (i, j
 
 **Note**, that the matrix should be symmetric and consist only of zeros and ones. It is a way to check yourself.
 
+*** De-duplicating the Data
+    The test data turns out to have duplicate ID pairs, which will cause our incidence matrix to produce numbers greater than 1 if we leave them in, so we need to remove them.
+
 #+BEGIN_SRC ipython :session leakage :results none
-data = numpy.ones(len(test))
-inc_mat = scipy.sparse.coo_matrix((data, (test.FirstId, test.SecondId)))
+pairs_1 = pandas.Series(list(zip(test.FirstId, test.SecondId)), index=test.index)
+pairs_2 = pandas.Series(list(zip(test.SecondId, test.FirstId)), index=test.index)
+pairs = pandas.concat([pairs_1, pairs_2])
+pairs = pairs[~pairs.duplicated()]
+assert not any(pairs.duplicated())
+#+END_SRC
+
+#+BEGIN_SRC ipython :session leakage :results output :exports both
+pair_count = len(pairs)
+print(pair_count)
+#+END_SRC
+
+#+RESULTS:
+: 736872
+
+Which is the value provided to test the length of the matrix. Now we need to get the indices.
+
+#+BEGIN_SRC ipython :session leakage :results none
+i_indices = pairs.apply(lambda row: row[0])
+j_indices = pairs.apply(lambda row: row[1])
+assert i_indices.shape == (pair_count,)
+assert j_indices.shape == (pair_count,)
+#+END_SRC
+
+#+BEGIN_SRC ipython :session leakage :results none
+data = numpy.ones(pair_count)
+inc_mat = scipy.sparse.coo_matrix((data, (i_indices, j_indices)))
 
 # Sanity checks
 assert inc_mat.max() == 1
 assert inc_mat.sum() == 736872
 #+END_SRC
 
-# It is convenient to have matrix in `csr` format eventually.
+It is more convenient to have the incidence matrix in [[https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_matrix.html][Compressed Sparse Row (CSR)]] format, so convert it here.
 
-# In[ ]:
-
-
+#+BEGIN_SRC ipython :session leakage :results none
 inc_mat = inc_mat.tocsr()
+#+END_SRC
 
+** Now To Build the Magic Feature
 
-# ## Now build the magic feature
+Why did we build the incidence matrix? We can think of the rows in this matrix as a representation for the objects. The `i-th` row is a representation for an object with `Id = i`. Then, to measure the similarity between two objects we can measure similarity between their representations. And we will see that these representations are very good.
 
-# Why did we build the incidence matrix? We can think of the rows in this matix as of representations for the objects. `i-th` row is a representation for an object with `Id = i`. Then, to measure similarity between two objects we can measure similarity between their representations. And we will see, that such representations are very good.
+Now select the rows from the incidence matrix, that correspond to `test.FirstId`'s, and `test.SecondId`'s.
 
-# Now select the rows from the incidence matrix, that correspond to `test.FirstId`'s, and `test.SecondId`'s.
+Note, scipy goes crazy if a matrix is indexed with pandas' series. So do not forget to convert `pd.series` to `np.array`.
+These lines should normally run very quickly 
 
-# In[ ]:
-
-
-# Note, scipy goes crazy if a matrix is indexed with pandas' series. 
-# So do not forget to convert `pd.series` to `np.array`
-# These lines should normally run very quickly 
-
-rows_FirstId   = # YOUR CODE GOES HERE
-rows_SecondId  = # YOUR CODE GOES HERE
-
+#+BEGIN_SRC ipython :session leakage :results none
+rows_FirstId   = inc_mat[test.FirstId.values:,]
+rows_SecondId  = inc_mat[test.SecondId.values:,]
+#+END_SRC
 
 # Our magic feature will be the *dot product* between representations of a pair of objects. Dot product can be regarded as similarity measure -- for our non-negative representations the dot product is close to 0 when the representations are different, and is huge, when representations are similar. 
 # 
