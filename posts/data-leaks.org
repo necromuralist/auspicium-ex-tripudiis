@@ -1,0 +1,52 @@
+#+BEGIN_COMMENT
+.. title: Data Leaks
+.. slug: data-leaks
+.. date: 2018-09-08 16:11:07 UTC-07:00
+.. tags: dataleaks notes
+.. category: notes
+.. link: 
+.. description: Notes about data leaks in competitions.
+.. type: text
+#+END_COMMENT
+
+* What are data leaks?
+  /Data Leaks/ are unexpected errors that expose extra information that wouldn't be available in production.
+* Time Series
+  Check if there are points in the training set that are in the future with regard to the test set.
+* Unexpected Information
+  Sometimes what looks like a non-predictive feature might prove to be useful because of the way the data-set was created.
+
+  - ID
+  - Row Order
+* Leaderboard Probing
+  This is a method to look for dataleaks based on the leader board.
+* Quiz
+** One
+   Suppose that you have a credit scoring task where you have to create a machine learning model that approximates expert evaluation of an individual's creditworthiness. Which of the following can potentially be a data leakage?
+
+   - [X] An ID of a data point (row) in the train set corellates with the target variable (the data wasn't shuffled, this information won't work in a real-world scenario)
+   - [X] The first half of the data points in the train set have a score of 0 while the second half has scores > 0. (same as above)
+   - [ ] Among he features you have a =company_id=, an identifier of a company where this person works. It turns out that this feature is important and adding it to your model improves your score. (this is a normal feature, the fact that it improves your score just means it's an important feature)
+** Two
+   What is the most foolproof way to set up a time-series competition?
+   - [X] Split, train, public and private parts of the data by time. Remove all features except IDs from the test set so that participants will generate all the features based on the past and join them themselves. (you need to remove all features tfrom the test set to guarantee there isn't a data-leakage)
+
+   - [ ] Make a time based split for train/test and a random split for publit/private. (this is vulnerable to leaderboard probing)
+   - [ ] split public and private by time, remove time from the test set. (it is possible to reverse engineer the time-ordering and exploit future-peeking)
+** Three
+Suppose you have a binary feature classification task and it is evaluated by the logloss metric. You know that there are 10,000 entries in the public chunk of the test set and that a constant prediction of 0.3 gets a score of 1.01. The mean of the target variable in the training set is 0.44. What is the mean of the target variable in the public part  of the test data (up to 4 decimal places.)
+
+ - 0.44 (wrong)
+ - 0.132 (wrong)
+ - 1.33 (wrong)
+ - 0.7712
+
+\[
+\frac{N_1}{N} = \frac{-L - \ln (1-C)}{\ln C - \ln (1 - C)}\\
+= 0.7712\\
+\]
+** Four
+   Suppose you are solving an image classification task, what is the classification of the logo for this course?
+   - Angry robot (wrong - should be a number)
+   - 1 (wrong - check image name)
+   - 3 (the URL for the image had the answer in it)
