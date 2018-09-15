@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about naive model competition)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/naive-model-competition.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Tue, 04 Sep 2018 01:24:15 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>First Naive Try</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/first-naive-try/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about naive model competition)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/naive-model-competition.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Sat, 15 Sep 2018 00:10:11 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>First Naive Try</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/first-naive-try/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
 &lt;h2&gt;Table of Contents&lt;/h2&gt;
 &lt;div id="text-table-of-contents"&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/first-naive-try/#org6a9b6df"&gt;Introduction&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/first-naive-try/#orgdf4f390"&gt;Imports&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/first-naive-try/#orgaff2504"&gt;Loading the Data&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/first-naive-try/#orgad199c8"&gt;November Only&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/first-naive-try/#orgf6caac3"&gt;The Linear Model&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/first-naive-try/#orge49dd6f"&gt;Introduction&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/first-naive-try/#org8432a62"&gt;Imports&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/first-naive-try/#orgea2131d"&gt;Loading the Data&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/first-naive-try/#orgaeb618d"&gt;November Only&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/first-naive-try/#org7bd8d62"&gt;The Linear Model&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org6a9b6df" class="outline-2"&gt;
-&lt;h2 id="org6a9b6df"&gt;Introduction&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org6a9b6df"&gt;
+&lt;div id="outline-container-orge49dd6f" class="outline-2"&gt;
+&lt;h2 id="orge49dd6f"&gt;Introduction&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orge49dd6f"&gt;
 &lt;p&gt;
 Our goal is to predict the number of sales for each shop for November 2015 (based on the prior months). I'm going to make some very naive guesses here with some models that only use the prior dates and the target counts.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgdf4f390" class="outline-2"&gt;
-&lt;h2 id="orgdf4f390"&gt;Imports&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgdf4f390"&gt;
+&lt;div id="outline-container-org8432a62" class="outline-2"&gt;
+&lt;h2 id="org8432a62"&gt;Imports&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org8432a62"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org5297699" class="outline-3"&gt;
-&lt;h3 id="org5297699"&gt;Python Standard Library&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org5297699"&gt;
+&lt;div id="outline-container-orgd603886" class="outline-3"&gt;
+&lt;h3 id="orgd603886"&gt;Python Standard Library&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgd603886"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# python standard library
 import warnings
 import os
@@ -34,18 +34,18 @@ import pickle
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org1e06f9e" class="outline-3"&gt;
-&lt;h3 id="org1e06f9e"&gt;Supress the Warnings&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org1e06f9e"&gt;
+&lt;div id="outline-container-org198a91a" class="outline-3"&gt;
+&lt;h3 id="org198a91a"&gt;Supress the Warnings&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org198a91a"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;warnings.filterwarnings("ignore", message="numpy.dtype size changed")
 warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org1f76a2f" class="outline-3"&gt;
-&lt;h3 id="org1f76a2f"&gt;From pypi&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org1f76a2f"&gt;
+&lt;div id="outline-container-orgbfe12c0" class="outline-3"&gt;
+&lt;h3 id="orgbfe12c0"&gt;From pypi&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgbfe12c0"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;import numpy
 import pandas
 from sklearn.metrics import mean_squared_error
@@ -56,9 +56,9 @@ from tabulate import tabulate
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org6cdd4e0" class="outline-3"&gt;
-&lt;h3 id="org6cdd4e0"&gt;This Project&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org6cdd4e0"&gt;
+&lt;div id="outline-container-org589fa67" class="outline-3"&gt;
+&lt;h3 id="org589fa67"&gt;This Project&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org589fa67"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# this project
 from helpers.helpers import (
     Helpers,
@@ -70,9 +70,9 @@ from helpers.helpers import (
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgaff2504" class="outline-2"&gt;
-&lt;h2 id="orgaff2504"&gt;Loading the Data&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgaff2504"&gt;
+&lt;div id="outline-container-orgea2131d" class="outline-2"&gt;
+&lt;h2 id="orgea2131d"&gt;Loading the Data&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgea2131d"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;x_train = Helpers.unpickle(Pickles.x_train)
 x_test = Helpers.unpickle(Pickles.x_test)
 y_train = Helpers.unpickle(Pickles.y_train)
@@ -182,9 +182,9 @@ x_test[DataKeys.target] = y_test.values
 &lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgad199c8" class="outline-2"&gt;
-&lt;h2 id="orgad199c8"&gt;November Only&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgad199c8"&gt;
+&lt;div id="outline-container-orgaeb618d" class="outline-2"&gt;
+&lt;h2 id="orgaeb618d"&gt;November Only&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgaeb618d"&gt;
 &lt;p&gt;
 What happens if we only use the month of November in the data?
 &lt;/p&gt;
@@ -196,9 +196,9 @@ What happens if we only use the month of November in the data?
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgf6caac3" class="outline-2"&gt;
-&lt;h2 id="orgf6caac3"&gt;The Linear Model&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgf6caac3"&gt;
+&lt;div id="outline-container-org7bd8d62" class="outline-2"&gt;
+&lt;h2 id="org7bd8d62"&gt;The Linear Model&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org7bd8d62"&gt;
 &lt;p&gt;
 What happens if we just use the default linear regression model? The first problem we have is that we have both non-numeric data and categorical data. I think removing the &lt;code&gt;item_name&lt;/code&gt; variable seems reasonable at this point, since we have unique &lt;code&gt;item_id&lt;/code&gt; values for each item, although it's possible that some text-mining might reveal something in the names, because this is just a naive approach that will use linear regression.
 &lt;/p&gt;

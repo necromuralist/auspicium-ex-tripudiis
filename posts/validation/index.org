@@ -8,9 +8,102 @@
 .. description: Validating your model.
 .. type: text
 #+END_COMMENT
+#+OPTIONS: ^:{}
+#+TOC: headlines 1
 
 * Validation and Overfitting
   To prevent your model from overfitting to the training set, you can hold out some of the training set and use it to validate the model after it has been fit to the rest of the training set.
   - Underfitting: your model isn't complex enough to capture the data
   - Overfitting: your model is too complex and it is modelling noise in the data
   - In a competition, if your model does well on the validation set but not on the test set, then it probably overfit the data you had
+* Three Main Methods of Splitting
+  These are methods for splitting your training set into training and validation sets. Once you have a model, re-train it over the entire training set before applying it to the test set.
+** Holdout
+  This method just splits the data into one training and one validation set.
+
+  - [[http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.ShuffleSplit.html][sklearn.model_selection.ShuffleSplit]]
+  - ~ngroups=1~
+** K-Fold
+  Make /k/ splits of the training set, then use each of the validation sets while training on all the data not in the validation set. This differs from doing holdout k-times since we guarantee that the validation sets don't overlap. Uses the average score for the k-folds.
+
+  - [[http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.KFold.html][sklearn.model_selection.KFold]]
+** Leave One Out
+  This is like k-folds except we always use a validation set of size 1 - so we are iterating over each point in the data set and using it as the training set. This can be useful if the data set is small.
+  - [[http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.LeaveOneOut.html][sklearn.model_selection.LeaveOneOut]]
+* Stratification
+  Sometimes you need to make sure your validation sets have the same distribution as your set as a whole.
+  - small datasets
+  - unbalanced datasects
+  - multiclass classification
+  - [[http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.StratifiedShuffleSplit.html][StratifieShuffleSplit]]
+* Data Splitting
+  If you have time-based data, there's two ways to split the training data - randomly within the entire timespan, or put the first part of the data in the training set and put the second part of the data in the validation set. If the test-set is a time that is beyond the training data, then using the time-based split will produce a model that is better for the testing data.
+  1. Row-wise split
+     This is the most common case, where rows are randomly chosen from the training data. This assumes the rows are independent.
+  2. Time-wise split
+     This is the case where you are predicting future values of a time-series. In this case, the further back in time a row is, the less like the future value it is.
+  3. By-ID
+     In this case several rows map to one ID, and the ID maps to a target. For example, you might have several x-rays for one patient that map to one diagnosis.
+
+The main point of this is that you want to set up your validation set to match the way the train-test sets were split.
+* Problems
+  The point of doing the training-validation split is that you think the validation set(s) will approximate the test set. But what if that's not true?
+** Causes of score differences
+   - Too little data
+   - The data is too diverse and inconsistent
+** Submission Differs from Validation
+   0. Even K-fold validation has variation (check that the standard deviation across folds encompasses the leaderboard values)
+   1. Too little data on leaderboard (nothing you can do)
+   2. Train and test are from different distributions
+* Practice Quiz
+** One
+   We did a K-Fold cross validation on a huge dataset and noticed that scores on each fold are roughly the same. Which validation type is of most practical use?
+   - [ ] K-Fold
+   - [X] Holdout
+   - [ ] Leave one out
+** Two
+   We did a K-fold cross validation on a medium sized dataset and noticed that the validation scores varied widely. Which validation type is the most practical to use?
+   - [ ] Leave One Out
+   - [X] K Fold
+   - [ ] Houldout
+** Three
+   The features we generate depend on the train-test split. True or False?
+   - [X] True
+   - [ ] False
+** Which of these can indicate an expected leaderboard shuffle in a competition?
+   - [X] Little training and/or testing data
+   - [X] Most of the competitors have similar scores
+   - [X] Different public/private data or target distributions
+* Quiz
+** One
+   Select the true statements.
+   - [ ] A performance increase on a fixed cross-validation split guarantees a performance increase on any cross-validation split. (You might be overfitting. You should change the splits to check for overfitting.)
+   - [X] The logic behind the validation split should mimic the logic behind the train-test split (this is the main rule for making a reliable validation)
+   - [X] Underfitting refers to not capturing enough patterns in the data
+   - [X] We use validation to estimate the quality of our model (this is the main purpose of validation)
+   - [ ] The model that does on the validation set is guaranteed to do the best on the test set. (The test and validation sets might have different distributions, in which case the validation won't predict the test set score)
+** Two
+   Kaggle usually allows you to submit two final submissions that will be checked against the private leader board. One common practice is to use a model that did the best on the validation scores and another that did best on the public leader board. What is the logic behind using these two models?
+   - [ ] People rarely overfit the public leaderboard. You almost always have a lot of test data and it is hard to overfit.
+   - [ ] Validation is rarely valid in competitions. You must account for the case where validation worked and where it didn't.
+   - [X] The test set may have a different distribution than the target data. If this is true, then the model that did better on the public leaderboard will do better. If not, then the model that did better in validation will do better.
+** Three
+   Suppose we have a dataset of marketing campaigns. Each campain runs for a few weeks and for each campaign our target is the number of new customers. A row in the dataset looks like this:
+
+   /Campaign ID, Date, {some features},Number of New Customers/
+
+   The dataset contains multiple campaigns where the training set has the dates at the start of each campaign and the test set has the dates at the end of each campaign. Which train/test split should you use?
+
+   - [ ] Random Split
+   - [X] Combined Split (Each train and test set are divided by a date and the date might be for different campaigns, so it is a combination of campaign ID and date)
+   - [ ] ID-based split (wrong)
+   - [ ] Time-based split (wrong)
+** Four
+   Which of the following can you usually identify without the leaderboard?
+   - [X] Different scores/optimal parameters between different folds (this is determined during validation)
+   - [ ] Train and test target data are from different distributions (You would need the test target values to figure this out, which you won't have)
+   - [X] The public leaderboard score will be unreliable because there is too little data (you can check this by making the size of the folds match the size of the public test set and see the variability)
+   - [X] The train and test data are from different distributions (you can often figure this out during Exploratory Data Analysis)
+* Links
+  - [[http://scikit-learn.org/stable/modules/cross_validation.html][Cross-validation in sklearn]]
+  - [[http://www.chioka.in/how-to-select-your-final-models-in-a-kaggle-competitio/][Model Selection for Kaggle]]

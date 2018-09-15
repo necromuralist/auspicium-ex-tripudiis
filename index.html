@@ -12,9 +12,9 @@
 <meta name="generator" content="Nikola (getnikola.com)">
 <link rel="alternate" type="application/rss+xml" title="RSS" href="rss.xml">
 <link rel="canonical" href="https://necromuralist.github.io/Kaggle-Competitions/">
-<link rel="next" href="index-1.html" type="text/html">
+<link rel="next" href="index-2.html" type="text/html">
 <!--[if lt IE 9]><script src="assets/js/html5.js"></script><![endif]--><script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
-</script><link rel="prefetch" href="posts/validation/" type="text/html">
+</script><link rel="prefetch" href="posts/data-leakages/" type="text/html">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -82,7 +82,589 @@
 
     
 <div class="postindex">
-    <article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/validation/" class="u-url">Validation</a></h1>
+    <article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/data-leakages/" class="u-url">Data Leakages</a></h1>
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                Cloistered Monkey
+            </span></p>
+            <p class="dateline"><a href="posts/data-leakages/" rel="bookmark"><time class="published dt-published" datetime="2018-09-08T18:31:29-07:00" title="2018-09-08 18:31">2018-09-08 18:31</time></a></p>
+        </div>
+    </header><div class="e-content entry-content">
+    <div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="posts/data-leakages/#orgda2f788">Introduction</a></li>
+<li><a href="posts/data-leakages/#orgffdfd9f">Imports</a></li>
+<li><a href="posts/data-leakages/#org407f57c">Load the data</a></li>
+<li><a href="posts/data-leakages/#orgea49ee8">EDA and leakage intuition</a></li>
+<li><a href="posts/data-leakages/#org9a32a71">Building a magic feature</a></li>
+<li><a href="posts/data-leakages/#org85b0dba">Bonus</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgda2f788" class="outline-2">
+<h2 id="orgda2f788">Introduction</h2>
+<div class="outline-text-2" id="text-orgda2f788">
+<p>
+In this programming assignment we will illustrate a very severe data leakage, that can often be found in competitions, where the pairs of object should be scored, e.g. predict <i>1</i> if two objects belong to the same class and <i>0</i> otherwise. 
+</p>
+
+<p>
+The data in this assignment is taken from a real competition, and the funny thing is that <b>we will not use the training set at all</b> and still achieve an accuracy score of almost 100% - we will just exploit the leakage.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgffdfd9f" class="outline-2">
+<h2 id="orgffdfd9f">Imports</h2>
+<div class="outline-text-2" id="text-orgffdfd9f">
+<div class="highlight"><pre><span></span>import warnings
+warnings.filterwarnings("ignore", message="numpy.dtype size changed")
+warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
+</pre></div>
+
+<div class="highlight"><pre><span></span># from pypi
+from tabulate import tabulate
+import matplotlib.pyplot as pyplot
+import numpy
+import pandas
+import scipy.sparse
+import seaborn
+</pre></div>
+
+<div class="highlight"><pre><span></span>% matplotlib inline
+seaborn.set_style("whitegrid")
+FIGURE_SIZE = (12, 10)
+</pre></div>
+</div>
+</div>
+
+
+<div id="outline-container-org407f57c" class="outline-2">
+<h2 id="org407f57c">Load the data</h2>
+<div class="outline-text-2" id="text-org407f57c">
+<p>
+Let's load the test data. Note, that we don't have any training data here, just test data. Moreover, <b>we will not even use any features</b> of test objects. All we need to solve this task is the file with the indices for the pairs, that we need to compare.
+</p>
+
+<p>
+Let's load the data with test indices.
+</p>
+
+<div class="highlight"><pre><span></span>test = pandas.read_csv('../data/test_pairs.csv')
+print(test.head(10))
+</pre></div>
+
+
+<p>
+We don't know what the data represents in this case, but you can give them an arbitrary meaning. You could, for example, can think that there is a test dataset of images, and each image is assigned a unique `Id` from \(0\) to \(N-1\) (N – is the number of images). In the dataframe from above `FirstId` and `SecondId` point to these `Id`'s and define pairs, that we should compare: e.g. do both images in the pair belong to the same class or not. So, for example for the first row: if images with `Id=1427` and `Id=8053` belong to the same class, we should predict \(1\), and \(0\) otherwise. 
+</p>
+
+<p>
+But in our case we don't really care about the images, and how exactly we compare the images (as long as the output is binary).  
+</p>
+
+<p>
+<b><b>We suggest you to try to solve the puzzle yourself first.</b></b> You need to submit a `.csv` file with columns `pairId` and `Prediction` to the grader. The number of submissions allowed is made pretty huge to let you explore the data without worries. The returned score should be very close to \(1\).
+</p>
+
+<p>
+<b><b>If you do not want to think much</b></b> – scroll down and follow the instructions below.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgea49ee8" class="outline-2">
+<h2 id="orgea49ee8">EDA and leakage intuition</h2>
+<div class="outline-text-2" id="text-orgea49ee8">
+<p>
+As we already know, the key to discover data leakages is careful EDA. So let's start our work with some basic data exploration and build an intuition about the leakage.
+</p>
+
+<p>
+First, check, how many different `id`s are there: concatenate `FirstId` and `SecondId` and print the number of unique elements. Also print minimum and maximum value for that vector.
+</p>
+
+<div class="highlight"><pre><span></span>smashed = test.FirstId.apply(lambda row: str(row)) + ',' + test.SecondId.apply(lambda row: str(row))
+print(smashed.head())
+</pre></div>
+
+<pre class="example">
+0      1427,8053
+1     17044,7681
+2    19237,20966
+3     8005,20765
+4      16837,599
+dtype: object
+
+</pre>
+
+<div class="highlight"><pre><span></span>print("Unique Pairs: {}".format(len(smashed.unique())))
+print("Total Pairs: {}".format(len(test)))
+print(smashed.min())
+print(smashed.max())
+</pre></div>
+
+<pre class="example">
+Unique Pairs: 368538
+Total Pairs: 368550
+0,10552
+9999,8996
+
+</pre>
+
+
+<p>
+and then print how many pairs we need to classify (it is basically the number of rows in the test set)
+</p>
+
+<div class="highlight"><pre><span></span>print(len(test))
+print(len(test) - len(smashed.unique()))
+</pre></div>
+
+<pre class="example">
+368550
+12
+
+</pre>
+
+
+<p>
+Now print, how many distinct pairs it would be possible to create out of all "images" in the dataset?   
+</p>
+
+<div class="highlight"><pre><span></span>catted = pandas.concat([test.FirstId, test.SecondId])
+image_count = len(catted.unique())
+print("Unique image IDs: {:,}".format(image_count))
+print("Handshakes: {:,}".format(int((image_count * (image_count - 1))/2)))
+</pre></div>
+
+<pre class="example">
+Unique image IDs: 26,325
+Handshakes: 346,489,650
+
+</pre>
+
+<p>
+So the number of pairs we are given to classify is very very small compared to the total number of pairs. 
+</p>
+
+<p>
+To exploit the leak we need to <b><b>assume (or prove)</b></b>, that the total number of positive pairs is small, compared to the total number of pairs. For example: think about an image dataset with \(1000\) classes, \(N\) images per class. Then if the task was to tell whether a pair of images belongs to the same class or not, we would have \(1000\frac{N(N-1)}{2}\) positive pairs, while total number of pairs was \(\frac{1000N(1000N - 1)}{2}\).
+</p>
+
+<p>
+Another example: in <a href="https://www.kaggle.com/c/quora-question-pairs">Quora competitition</a> the task was to classify whether a pair of questions are duplicates of each other or not. Of course, total number of question pairs is very huge, while number of duplicates (positive pairs) is much much smaller.
+</p>
+
+<p>
+Finally, let's get a fraction of pairs of class `1`. We just need to submit a constant prediction "all ones" and check the returned accuracy. Create a dataframe with columns `pairId` and `Prediction`, fill it and export it to `.csv` file. Then submit to grader and examine grader's output. 
+</p>
+
+<div class="highlight"><pre><span></span>all_ones = test[["pairId"]].copy()
+all_ones["Prediction"] = [1] * len(all_ones)
+print(all_ones.head())
+all_ones.to_csv("../data/leakages/submission.csv", index=False)
+</pre></div>
+
+<pre class="example">
+   pairId  Prediction
+0       0           1
+1       1           1
+2       2           1
+3       3           1
+4       4           1
+
+</pre>
+
+<p>
+The submission output was:
+</p>
+
+<pre class="example">
+Your accuracy score is 0.500000. It seems too low, try one more time.
+</pre>
+
+<p>
+So, we assumed the total number of pairs is much higher than the number of positive pairs, but it is not the case for the test set. It means that the test set is constructed not by sampling random pairs, but with a specific sampling algorithm. Pairs of class `1` are oversampled.
+</p>
+
+<p>
+Now think, how we can exploit this fact? What is the leak here? If you get it now, you may try to get to the final answer yourself, othewise you can follow the instructions below.   
+</p>
+</div>
+</div>
+
+<div id="outline-container-org9a32a71" class="outline-2">
+<h2 id="org9a32a71">Building a magic feature</h2>
+<div class="outline-text-2" id="text-org9a32a71">
+<p>
+In this section we will build a magic feature, that will solve the problem almost perfectly. The instructions will lead you to the correct solution, but please, try to explain the purpose of the steps we do to yourself – it is very important.
+</p>
+</div>
+
+<div id="outline-container-org280bec4" class="outline-3">
+<h3 id="org280bec4">Incidence matrix</h3>
+<div class="outline-text-3" id="text-org280bec4">
+<p>
+First, we need to build an <a href="https://en.wikipedia.org/wiki/Incidence_matrix">incidence matrix</a>. You can think of pairs `(FirstId, SecondId)` as of edges in an undirected graph. 
+</p>
+
+<p>
+The incidence matrix is a matrix of size `(maxId + 1, maxId + 1)`, where each row (column) `i` corresponds `i-th` `Id`. In this matrix we put the value `1` to the position `[i, j]`, if and only if a pair `(i, j)` or `(j, i)` is present in  a given set of pairs `(FirstId, SecondId)`. All the other elements in the incidence matrix are zeros.   
+</p>
+
+<p>
+<b><b>Important!</b></b> The incidence matrices are typically very very sparse (small number of non-zero values). At the same time incidence matrices are usually huge in terms of total number of elements, and it is <b><b>impossible to store them in memory in dense format</b></b>. But due to their sparsity incidence matrices <b><b>can be easily represented as sparse matrices</b></b>. If you are not familiar with sparse matrices, please see <a href="https://en.wikipedia.org/wiki/Sparse_matrix">wikipedia</a> and <a href="https://docs.scipy.org/doc/scipy/reference/sparse.html">scipy.sparse reference</a>. Please, use any of `scipy.sparse` constructors to build incidence matrix. 
+</p>
+
+<p>
+For example, you can use this constructor: `scipy.sparse.coo_matrix((data, (i, j)))`. We highly recommend to learn to use different `scipy.sparse` constuctors, and matrices types, but if you feel you don't want to use them, you can always build this matrix with a simple `for` loop. You will need first to create a matrix using `scipy.sparse.coo_matrix((M, N), [dtype])` with an appropriate shape `(M, N)` and then iterate through `(FirstId, SecondId)` pairs and fill corresponding elements in matrix with ones. 
+</p>
+
+<p>
+<b><b>Note</b></b>, that the matrix should be symmetric and consist only of zeros and ones. It is a way to check yourself.
+</p>
+</div>
+
+<div id="outline-container-org5e8b27c" class="outline-4">
+<h4 id="org5e8b27c">De-duplicating the Data</h4>
+<div class="outline-text-4" id="text-org5e8b27c">
+<p>
+The test data turns out to have duplicate ID pairs, which will cause our incidence matrix to produce numbers greater than 1 if we leave them in, so we need to remove them.
+</p>
+
+<div class="highlight"><pre><span></span>pairs_1 = pandas.Series(list(zip(test.FirstId, test.SecondId)), index=test.index)
+pairs_2 = pandas.Series(list(zip(test.SecondId, test.FirstId)), index=test.index)
+pairs = pandas.concat([pairs_1, pairs_2])
+pairs = pairs[~pairs.duplicated()]
+assert not any(pairs.duplicated())
+</pre></div>
+
+<div class="highlight"><pre><span></span>pair_count = len(pairs)
+print(pair_count)
+</pre></div>
+
+<pre class="example">
+736872
+
+</pre>
+
+<p>
+Which is the value provided to test the length of the matrix. Now we need to get the indices.
+</p>
+
+<div class="highlight"><pre><span></span>i_indices = pairs.apply(lambda row: row[0])
+j_indices = pairs.apply(lambda row: row[1])
+assert i_indices.shape == (pair_count,)
+assert j_indices.shape == (pair_count,)
+</pre></div>
+
+<div class="highlight"><pre><span></span>data = numpy.ones(pair_count)
+inc_mat = scipy.sparse.coo_matrix((data, (i_indices, j_indices)))
+
+# Sanity checks
+assert inc_mat.max() == 1
+assert inc_mat.sum() == 736872
+</pre></div>
+
+<p>
+It is more convenient to have the incidence matrix in <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_matrix.html">Compressed Sparse Row (CSR)</a> format, so convert it here.
+</p>
+
+<div class="highlight"><pre><span></span>inc_mat = inc_mat.tocsr()
+</pre></div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orge28366d" class="outline-3">
+<h3 id="orge28366d">Now To Build the Magic Feature</h3>
+<div class="outline-text-3" id="text-orge28366d">
+<p>
+Why did we build the incidence matrix? We can think of the rows in this matrix as a representation for the objects. The `i-th` row is a representation for an object with `Id = i`. Then, to measure the similarity between two objects we can measure similarity between their representations. And we will see that these representations are very good.
+</p>
+
+<p>
+Now select the rows from the incidence matrix, that correspond to `test.FirstId`'s, and `test.SecondId`'s.
+</p>
+
+<p>
+Note, scipy goes crazy if a matrix is indexed with pandas' series. So do not forget to convert `pd.series` to `np.array`.
+These lines should normally run very quickly 
+</p>
+
+<div class="highlight"><pre><span></span>rows_FirstId   = inc_mat[test.FirstId.values]
+rows_SecondId  = inc_mat[test.SecondId.values]
+</pre></div>
+
+<p>
+Our magic feature will be the <b>dot product</b> between representations of a pair of objects. Dot product can be regarded as similarity measure – for our non-negative representations the dot product is close to 0 when the representations are different, and is huge, when representations are similar. 
+</p>
+
+<p>
+Now compute dot product between corresponding rows in `rows_FirstId` and `rows_SecondId` matrices.
+</p>
+
+<p>
+Note, that in order to do pointwise multiplication in scipy.sparse you need to use function <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_matrix.multiply.html#scipy.sparse.csr_matrix.multiply">multiply</a>, regular `*` corresponds to matrix-matrix multiplication
+</p>
+
+<div class="highlight"><pre><span></span>f = numpy.squeeze(numpy.asarray(rows_FirstId.multiply(rows_SecondId).sum(axis=1)))
+
+# Sanity check
+assert f.shape == (368550, )
+</pre></div>
+
+<p>
+That is it! <b><b>We've built our magic feature.</b></b> 
+</p>
+
+<div class="highlight"><pre><span></span>figure, axe = pyplot.subplots(figsize=FIGURE_SIZE)
+axe.set_title("Distribution of Similarity Matrix (f)")
+plot = seaborn.distplot(f)
+</pre></div>
+</div>
+
+<div id="outline-container-org54b45a3" class="outline-4">
+<h4 id="org54b45a3">From magic feature to binary predictions</h4>
+<div class="outline-text-4" id="text-org54b45a3">
+<p>
+But how do we convert this feature into binary predictions? We do not have a train set to learn a model, but we have a piece of information about test set: the baseline accuracy score that you got, when submitting constant. And we also have a very strong considerations about the data generative process, so probably we will be fine even without a training set. 
+</p>
+
+<p>
+We may try to choose a thresold, and set the predictions to 1, if the feature value `f` is higer than the threshold, and 0 otherwise. What threshold would you choose? 
+</p>
+
+<p>
+How do we find a right threshold? Let's first examine this feature: print frequencies (or counts) of each value in the feature `f`.
+</p>
+
+
+<p>
+For example use `np.unique` function, check for flags
+</p>
+
+<div class="highlight"><pre><span></span>f_frame = pandas.DataFrame(dict(f=f))
+counts = f_frame.f.value_counts().reset_index()
+counts.columns = ["Value" , "Count"]
+print(tabulate(counts, headers="keys", tablefmt="orgtbl",
+	       showindex=False))
+</pre></div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-right">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-right">Value</th>
+<th scope="col" class="org-right">Count</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-right">20</td>
+<td class="org-right">183799</td>
+</tr>
+<tr>
+<td class="org-right">14</td>
+<td class="org-right">183279</td>
+</tr>
+<tr>
+<td class="org-right">15</td>
+<td class="org-right">852</td>
+</tr>
+<tr>
+<td class="org-right">19</td>
+<td class="org-right">546</td>
+</tr>
+<tr>
+<td class="org-right">28</td>
+<td class="org-right">54</td>
+</tr>
+<tr>
+<td class="org-right">35</td>
+<td class="org-right">14</td>
+</tr>
+<tr>
+<td class="org-right">21</td>
+<td class="org-right">6</td>
+</tr>
+</tbody>
+</table>
+<p>
+Do you see how this feature clusters the pairs? Maybe you can guess a good threshold by looking at the values? 
+</p>
+
+<p>
+In fact, in other situations it can be not that obvious, but in general to pick a threshold you only need to remember the score of your baseline submission and use this information. Do you understand why and how?  
+</p>
+
+<p>
+Choose a threshold below: 
+</p>
+
+<div class="highlight"><pre><span></span>pred = f &gt; 14
+</pre></div>
+
+<div class="highlight"><pre><span></span>submission = test.loc[:,['pairId']]
+submission['Prediction'] = pred.astype(int)
+
+submission.to_csv('../data/leakages/submission.csv', index=False)
+</pre></div>
+
+<p>
+Now submit it to the grader! It is not possible to submit directly from this notebook, as we need to submit a `csv` file, not a single number (limitation of Coursera platform). 
+</p>
+
+<p>
+To download `submission.csv` file that you've just produced &lt;a href='./submission.csv'&gt;click here&lt;/a&gt; (if the link opens in browser, right-click on it and shoose "Save link as"). Then go to <a href="https://www.coursera.org/learn/competitive-data-science/programming/KsASv/data-leakages/submission">assignment page</a> and submit your `.csv` file in 'My submission' tab.
+</p>
+
+<p>
+If you did everything right, the score should be very high.
+</p>
+
+<p>
+<b><b>Finally:</b></b> try to explain to yourself, why the whole thing worked out. In fact, there is no magic in this feature, and the idea to use rows in the incidence matrix can be intuitively justified.
+</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org85b0dba" class="outline-2">
+<h2 id="org85b0dba">Bonus</h2>
+<div class="outline-text-2" id="text-org85b0dba">
+<p>
+Interestingly, it is not the only leak in this dataset. There is another totally different way to get almost 100% accuracy. Try to find it!
+</p>
+</div>
+</div>
+    </div>
+    </article><article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/data-leaks/" class="u-url">Data Leaks</a></h1>
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                Cloistered Monkey
+            </span></p>
+            <p class="dateline"><a href="posts/data-leaks/" rel="bookmark"><time class="published dt-published" datetime="2018-09-08T16:11:07-07:00" title="2018-09-08 16:11">2018-09-08 16:11</time></a></p>
+        </div>
+    </header><div class="e-content entry-content">
+    <div id="outline-container-orgf47ccd1" class="outline-2">
+<h2 id="orgf47ccd1">What are data leaks?</h2>
+<div class="outline-text-2" id="text-orgf47ccd1">
+<p>
+<i>Data Leaks</i> are unexpected errors that expose extra information that wouldn't be available in production.
+</p>
+</div>
+</div>
+<div id="outline-container-org235e77b" class="outline-2">
+<h2 id="org235e77b">Time Series</h2>
+<div class="outline-text-2" id="text-org235e77b">
+<p>
+Check if there are points in the training set that are in the future with regard to the test set.
+</p>
+</div>
+</div>
+<div id="outline-container-org095beaa" class="outline-2">
+<h2 id="org095beaa">Unexpected Information</h2>
+<div class="outline-text-2" id="text-org095beaa">
+<p>
+Sometimes what looks like a non-predictive feature might prove to be useful because of the way the data-set was created.
+</p>
+
+<ul class="org-ul">
+<li>ID</li>
+<li>Row Order</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgfd58a2d" class="outline-2">
+<h2 id="orgfd58a2d">Leaderboard Probing</h2>
+<div class="outline-text-2" id="text-orgfd58a2d">
+<p>
+This is a method to look for dataleaks based on the leader board.
+</p>
+</div>
+</div>
+<div id="outline-container-org7235bd8" class="outline-2">
+<h2 id="org7235bd8">Quiz</h2>
+<div class="outline-text-2" id="text-org7235bd8">
+</div>
+<div id="outline-container-orgcb0b935" class="outline-3">
+<h3 id="orgcb0b935">One</h3>
+<div class="outline-text-3" id="text-orgcb0b935">
+<p>
+Suppose that you have a credit scoring task where you have to create a machine learning model that approximates expert evaluation of an individual's creditworthiness. Which of the following can potentially be a data leakage?
+</p>
+
+<ul class="org-ul">
+<li class="on">
+<code>[X]</code> An ID of a data point (row) in the train set corellates with the target variable (the data wasn't shuffled, this information won't work in a real-world scenario)</li>
+<li class="on">
+<code>[X]</code> The first half of the data points in the train set have a score of 0 while the second half has scores &gt; 0. (same as above)</li>
+<li class="off">
+<code>[ ]</code> Among he features you have a <code>company_id</code>, an identifier of a company where this person works. It turns out that this feature is important and adding it to your model improves your score. (this is a normal feature, the fact that it improves your score just means it's an important feature)</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org6d1e538" class="outline-3">
+<h3 id="org6d1e538">Two</h3>
+<div class="outline-text-3" id="text-org6d1e538">
+<p>
+What is the most foolproof way to set up a time-series competition?
+</p>
+<ul class="org-ul">
+<li class="on">
+<code>[X]</code> Split, train, public and private parts of the data by time. Remove all features except IDs from the test set so that participants will generate all the features based on the past and join them themselves. (you need to remove all features tfrom the test set to guarantee there isn't a data-leakage)</li>
+
+<li class="off">
+<code>[ ]</code> Make a time based split for train/test and a random split for publit/private. (this is vulnerable to leaderboard probing)</li>
+<li class="off">
+<code>[ ]</code> split public and private by time, remove time from the test set. (it is possible to reverse engineer the time-ordering and exploit future-peeking)</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org5440e65" class="outline-3">
+<h3 id="org5440e65">Three</h3>
+<div class="outline-text-3" id="text-org5440e65">
+<p>
+Suppose you have a binary feature classification task and it is evaluated by the logloss metric. You know that there are 10,000 entries in the public chunk of the test set and that a constant prediction of 0.3 gets a score of 1.01. The mean of the target variable in the training set is 0.44. What is the mean of the target variable in the public part  of the test data (up to 4 decimal places.)
+</p>
+
+<ul class="org-ul">
+<li>0.44 (wrong)</li>
+<li>0.132 (wrong)</li>
+<li>1.33 (wrong)</li>
+<li>0.7712</li>
+</ul>
+<p>
+\[
+\frac{N_1}{N} = \frac{-L - \ln (1-C)}{\ln C - \ln (1 - C)}\\
+= 0.7712\\
+\]
+</p>
+</div>
+</div>
+<div id="outline-container-org7a1136d" class="outline-3">
+<h3 id="org7a1136d">Four</h3>
+<div class="outline-text-3" id="text-org7a1136d">
+<p>
+Suppose you are solving an image classification task, what is the classification of the logo for this course?
+</p>
+<ul class="org-ul">
+<li>Angry robot (wrong - should be a number)</li>
+<li>1 (wrong - check image name)</li>
+<li>3 (the URL for the image had the answer in it)</li>
+</ul>
+</div>
+</div>
+</div>
+    </div>
+    </article><article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/validation/" class="u-url">Validation</a></h1>
         <div class="metadata">
             <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
                 Cloistered Monkey
@@ -90,9 +672,25 @@
             <p class="dateline"><a href="posts/validation/" rel="bookmark"><time class="published dt-published" datetime="2018-09-04T08:01:59-07:00" title="2018-09-04 08:01">2018-09-04 08:01</time></a></p>
         </div>
     </header><div class="e-content entry-content">
-    <div id="outline-container-org1dae6f9" class="outline-2">
-<h2 id="org1dae6f9">Validation and Overfitting</h2>
-<div class="outline-text-2" id="text-org1dae6f9">
+    <div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="posts/validation/#org5d1619b">Validation and Overfitting</a></li>
+<li><a href="posts/validation/#org61ce815">Three Main Methods of Splitting</a></li>
+<li><a href="posts/validation/#org7d5f2a4">Stratification</a></li>
+<li><a href="posts/validation/#org5e1cb52">Data Splitting</a></li>
+<li><a href="posts/validation/#org7deb52b">Problems</a></li>
+<li><a href="posts/validation/#orgd4c219d">Practice Quiz</a></li>
+<li><a href="posts/validation/#org390c014">Quiz</a></li>
+<li><a href="posts/validation/#org1c800a9">Links</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org5d1619b" class="outline-2">
+<h2 id="org5d1619b">Validation and Overfitting</h2>
+<div class="outline-text-2" id="text-org5d1619b">
 <p>
 To prevent your model from overfitting to the training set, you can hold out some of the training set and use it to validate the model after it has been fit to the rest of the training set.
 </p>
@@ -100,6 +698,269 @@ To prevent your model from overfitting to the training set, you can hold out som
 <li>Underfitting: your model isn't complex enough to capture the data</li>
 <li>Overfitting: your model is too complex and it is modelling noise in the data</li>
 <li>In a competition, if your model does well on the validation set but not on the test set, then it probably overfit the data you had</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org61ce815" class="outline-2">
+<h2 id="org61ce815">Three Main Methods of Splitting</h2>
+<div class="outline-text-2" id="text-org61ce815">
+<p>
+These are methods for splitting your training set into training and validation sets. Once you have a model, re-train it over the entire training set before applying it to the test set.
+</p>
+</div>
+<div id="outline-container-org4e15e80" class="outline-3">
+<h3 id="org4e15e80">Holdout</h3>
+<div class="outline-text-3" id="text-org4e15e80">
+<p>
+This method just splits the data into one training and one validation set.
+</p>
+
+<ul class="org-ul">
+<li><a href="http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.ShuffleSplit.html">sklearn.model_selection.ShuffleSplit</a></li>
+<li><code>ngroups=1</code></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orge1d1b4f" class="outline-3">
+<h3 id="orge1d1b4f">K-Fold</h3>
+<div class="outline-text-3" id="text-orge1d1b4f">
+<p>
+Make <i>k</i> splits of the training set, then use each of the validation sets while training on all the data not in the validation set. This differs from doing holdout k-times since we guarantee that the validation sets don't overlap. Uses the average score for the k-folds.
+</p>
+
+<ul class="org-ul">
+<li><a href="http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.KFold.html">sklearn.model_selection.KFold</a></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org0b8340b" class="outline-3">
+<h3 id="org0b8340b">Leave One Out</h3>
+<div class="outline-text-3" id="text-org0b8340b">
+<p>
+This is like k-folds except we always use a validation set of size 1 - so we are iterating over each point in the data set and using it as the training set. This can be useful if the data set is small.
+</p>
+<ul class="org-ul">
+<li><a href="http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.LeaveOneOut.html">sklearn.model_selection.LeaveOneOut</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org7d5f2a4" class="outline-2">
+<h2 id="org7d5f2a4">Stratification</h2>
+<div class="outline-text-2" id="text-org7d5f2a4">
+<p>
+Sometimes you need to make sure your validation sets have the same distribution as your set as a whole.
+</p>
+<ul class="org-ul">
+<li>small datasets</li>
+<li>unbalanced datasects</li>
+<li>multiclass classification</li>
+<li><a href="http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.StratifiedShuffleSplit.html">StratifieShuffleSplit</a></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org5e1cb52" class="outline-2">
+<h2 id="org5e1cb52">Data Splitting</h2>
+<div class="outline-text-2" id="text-org5e1cb52">
+<p>
+If you have time-based data, there's two ways to split the training data - randomly within the entire timespan, or put the first part of the data in the training set and put the second part of the data in the validation set. If the test-set is a time that is beyond the training data, then using the time-based split will produce a model that is better for the testing data.
+</p>
+<ol class="org-ol">
+<li>Row-wise split
+This is the most common case, where rows are randomly chosen from the training data. This assumes the rows are independent.</li>
+<li>Time-wise split
+This is the case where you are predicting future values of a time-series. In this case, the further back in time a row is, the less like the future value it is.</li>
+<li>By-ID
+In this case several rows map to one ID, and the ID maps to a target. For example, you might have several x-rays for one patient that map to one diagnosis.</li>
+</ol>
+<p>
+The main point of this is that you want to set up your validation set to match the way the train-test sets were split.
+</p>
+</div>
+</div>
+<div id="outline-container-org7deb52b" class="outline-2">
+<h2 id="org7deb52b">Problems</h2>
+<div class="outline-text-2" id="text-org7deb52b">
+<p>
+The point of doing the training-validation split is that you think the validation set(s) will approximate the test set. But what if that's not true?
+</p>
+</div>
+<div id="outline-container-orgf30b6ce" class="outline-3">
+<h3 id="orgf30b6ce">Causes of score differences</h3>
+<div class="outline-text-3" id="text-orgf30b6ce">
+<ul class="org-ul">
+<li>Too little data</li>
+<li>The data is too diverse and inconsistent</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgd8025cd" class="outline-3">
+<h3 id="orgd8025cd">Submission Differs from Validation</h3>
+<div class="outline-text-3" id="text-orgd8025cd">
+<ol class="org-ol">
+<li>Even K-fold validation has variation (check that the standard deviation across folds encompasses the leaderboard values)</li>
+<li>Too little data on leaderboard (nothing you can do)</li>
+<li>Train and test are from different distributions</li>
+</ol>
+</div>
+</div>
+</div>
+<div id="outline-container-orgd4c219d" class="outline-2">
+<h2 id="orgd4c219d">Practice Quiz</h2>
+<div class="outline-text-2" id="text-orgd4c219d">
+</div>
+<div id="outline-container-orgbc574d5" class="outline-3">
+<h3 id="orgbc574d5">One</h3>
+<div class="outline-text-3" id="text-orgbc574d5">
+<p>
+We did a K-Fold cross validation on a huge dataset and noticed that scores on each fold are roughly the same. Which validation type is of most practical use?
+</p>
+<ul class="org-ul">
+<li class="off">
+<code>[ ]</code> K-Fold</li>
+<li class="on">
+<code>[X]</code> Holdout</li>
+<li class="off">
+<code>[ ]</code> Leave one out</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org2fe2ec7" class="outline-3">
+<h3 id="org2fe2ec7">Two</h3>
+<div class="outline-text-3" id="text-org2fe2ec7">
+<p>
+We did a K-fold cross validation on a medium sized dataset and noticed that the validation scores varied widely. Which validation type is the most practical to use?
+</p>
+<ul class="org-ul">
+<li class="off">
+<code>[ ]</code> Leave One Out</li>
+<li class="on">
+<code>[X]</code> K Fold</li>
+<li class="off">
+<code>[ ]</code> Houldout</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org5b2c705" class="outline-3">
+<h3 id="org5b2c705">Three</h3>
+<div class="outline-text-3" id="text-org5b2c705">
+<p>
+The features we generate depend on the train-test split. True or False?
+</p>
+<ul class="org-ul">
+<li class="on">
+<code>[X]</code> True</li>
+<li class="off">
+<code>[ ]</code> False</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgdb5fbbf" class="outline-3">
+<h3 id="orgdb5fbbf">Which of these can indicate an expected leaderboard shuffle in a competition?</h3>
+<div class="outline-text-3" id="text-orgdb5fbbf">
+<ul class="org-ul">
+<li class="on">
+<code>[X]</code> Little training and/or testing data</li>
+<li class="on">
+<code>[X]</code> Most of the competitors have similar scores</li>
+<li class="on">
+<code>[X]</code> Different public/private data or target distributions</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org390c014" class="outline-2">
+<h2 id="org390c014">Quiz</h2>
+<div class="outline-text-2" id="text-org390c014">
+</div>
+<div id="outline-container-org869ffd4" class="outline-3">
+<h3 id="org869ffd4">One</h3>
+<div class="outline-text-3" id="text-org869ffd4">
+<p>
+Select the true statements.
+</p>
+<ul class="org-ul">
+<li class="off">
+<code>[ ]</code> A performance increase on a fixed cross-validation split guarantees a performance increase on any cross-validation split. (You might be overfitting. You should change the splits to check for overfitting.)</li>
+<li class="on">
+<code>[X]</code> The logic behind the validation split should mimic the logic behind the train-test split (this is the main rule for making a reliable validation)</li>
+<li class="on">
+<code>[X]</code> Underfitting refers to not capturing enough patterns in the data</li>
+<li class="on">
+<code>[X]</code> We use validation to estimate the quality of our model (this is the main purpose of validation)</li>
+<li class="off">
+<code>[ ]</code> The model that does on the validation set is guaranteed to do the best on the test set. (The test and validation sets might have different distributions, in which case the validation won't predict the test set score)</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgf2d2424" class="outline-3">
+<h3 id="orgf2d2424">Two</h3>
+<div class="outline-text-3" id="text-orgf2d2424">
+<p>
+Kaggle usually allows you to submit two final submissions that will be checked against the private leader board. One common practice is to use a model that did the best on the validation scores and another that did best on the public leader board. What is the logic behind using these two models?
+</p>
+<ul class="org-ul">
+<li class="off">
+<code>[ ]</code> People rarely overfit the public leaderboard. You almost always have a lot of test data and it is hard to overfit.</li>
+<li class="off">
+<code>[ ]</code> Validation is rarely valid in competitions. You must account for the case where validation worked and where it didn't.</li>
+<li class="on">
+<code>[X]</code> The test set may have a different distribution than the target data. If this is true, then the model that did better on the public leaderboard will do better. If not, then the model that did better in validation will do better.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org8f893ae" class="outline-3">
+<h3 id="org8f893ae">Three</h3>
+<div class="outline-text-3" id="text-org8f893ae">
+<p>
+Suppose we have a dataset of marketing campaigns. Each campain runs for a few weeks and for each campaign our target is the number of new customers. A row in the dataset looks like this:
+</p>
+
+<p>
+<i>Campaign ID, Date, {some features},Number of New Customers</i>
+</p>
+
+<p>
+The dataset contains multiple campaigns where the training set has the dates at the start of each campaign and the test set has the dates at the end of each campaign. Which train/test split should you use?
+</p>
+
+<ul class="org-ul">
+<li class="off">
+<code>[ ]</code> Random Split</li>
+<li class="on">
+<code>[X]</code> Combined Split (Each train and test set are divided by a date and the date might be for different campaigns, so it is a combination of campaign ID and date)</li>
+<li class="off">
+<code>[ ]</code> ID-based split (wrong)</li>
+<li class="off">
+<code>[ ]</code> Time-based split (wrong)</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org8f8be71" class="outline-3">
+<h3 id="org8f8be71">Four</h3>
+<div class="outline-text-3" id="text-org8f8be71">
+<p>
+Which of the following can you usually identify without the leaderboard?
+</p>
+<ul class="org-ul">
+<li class="on">
+<code>[X]</code> Different scores/optimal parameters between different folds (this is determined during validation)</li>
+<li class="off">
+<code>[ ]</code> Train and test target data are from different distributions (You would need the test target values to figure this out, which you won't have)</li>
+<li class="on">
+<code>[X]</code> The public leaderboard score will be unreliable because there is too little data (you can check this by making the size of the folds match the size of the public test set and see the variability)</li>
+<li class="on">
+<code>[X]</code> The train and test data are from different distributions (you can often figure this out during Exploratory Data Analysis)</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org1c800a9" class="outline-2">
+<h2 id="org1c800a9">Links</h2>
+<div class="outline-text-2" id="text-org1c800a9">
+<ul class="org-ul">
+<li><a href="http://scikit-learn.org/stable/modules/cross_validation.html">Cross-validation in sklearn</a></li>
+<li><a href="http://www.chioka.in/how-to-select-your-final-models-in-a-kaggle-competitio/">Model Selection for Kaggle</a></li>
 </ul>
 </div>
 </div>
@@ -112,9 +973,9 @@ To prevent your model from overfitting to the training set, you can hold out som
             <p class="dateline"><a href="posts/springleaf-competition/" rel="bookmark"><time class="published dt-published" datetime="2018-09-04T06:35:25-07:00" title="2018-09-04 06:35">2018-09-04 06:35</time></a></p>
         </div>
     </header><div class="e-content entry-content">
-    <div id="outline-container-orge357c55" class="outline-2">
-<h2 id="orge357c55">Introduction</h2>
-<div class="outline-text-2" id="text-orge357c55">
+    <div id="outline-container-org20ff5e4" class="outline-2">
+<h2 id="org20ff5e4">Introduction</h2>
+<div class="outline-text-2" id="text-org20ff5e4">
 <p>
 The data comes from the <a href="https://www.kaggle.com/c/springleaf-marketing-response">Springleaf Marketing Response</a> competition. Springleaf makes personal loans and wanted to be able to predict who would respond to their direct mail offers. Submissions are evaluated on the area under the ROC curve between the predicted probability and the target. The submission file should have an ID and the probability that the person would respond.
 </p>
@@ -136,79 +997,93 @@ ID,target
             <p class="dateline"><a href="posts/exploratory-data-analysis/" rel="bookmark"><time class="published dt-published" datetime="2018-09-03T21:24:53-07:00" title="2018-09-03 21:24">2018-09-03 21:24</time></a></p>
         </div>
     </header><div class="e-content entry-content">
-    <div id="outline-container-orgfd31e4e" class="outline-2">
-<h2 id="orgfd31e4e">Building Your Intuition About the Data</h2>
-<div class="outline-text-2" id="text-orgfd31e4e">
+    <div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="posts/exploratory-data-analysis/#org12dd304">Building Your Intuition About the Data</a></li>
+<li><a href="posts/exploratory-data-analysis/#org4fa52b8">Exploring Anonymized Data</a></li>
+<li><a href="posts/exploratory-data-analysis/#org770eca2">Visualizations</a></li>
+<li><a href="posts/exploratory-data-analysis/#orgbae5e91">Data Set Cleaning</a></li>
+<li><a href="posts/exploratory-data-analysis/#org14389ec">Quiz</a></li>
+<li><a href="posts/exploratory-data-analysis/#org85eee71">Links</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org12dd304" class="outline-2">
+<h2 id="org12dd304">Building Your Intuition About the Data</h2>
+<div class="outline-text-2" id="text-org12dd304">
 <p>
 The first thing to do is to see if you can build up a mental model of what the data is about.
 </p>
 </div>
-<div id="outline-container-orgb70a1bc" class="outline-3">
-<h3 id="orgb70a1bc">Get Domain Knowledge</h3>
-<div class="outline-text-3" id="text-orgb70a1bc">
+<div id="outline-container-orgfb94d79" class="outline-3">
+<h3 id="orgfb94d79">Get Domain Knowledge</h3>
+<div class="outline-text-3" id="text-orgfb94d79">
 <p>
 Find out something about the topic that the data describes.
 </p>
 </div>
 </div>
-<div id="outline-container-org2b3ad6a" class="outline-3">
-<h3 id="org2b3ad6a">Check if the Data is intuitive</h3>
-<div class="outline-text-3" id="text-org2b3ad6a">
+<div id="outline-container-org4bdf112" class="outline-3">
+<h3 id="org4bdf112">Check if the Data is intuitive</h3>
+<div class="outline-text-3" id="text-org4bdf112">
 <p>
 See if there are any strange values and see if it makes sense given the data description.
 </p>
 </div>
 </div>
-<div id="outline-container-orgee6065f" class="outline-3">
-<h3 id="orgee6065f">Understand how the data was generated</h3>
-<div class="outline-text-3" id="text-orgee6065f">
+<div id="outline-container-orgbccbc42" class="outline-3">
+<h3 id="orgbccbc42">Understand how the data was generated</h3>
+<div class="outline-text-3" id="text-orgbccbc42">
 <p>
 Is any of it synthetic? Was the training data generated the same way as the testing data?
 </p>
 </div>
 </div>
 </div>
-<div id="outline-container-org52989b0" class="outline-2">
-<h2 id="org52989b0">Exploring Anonymized Data</h2>
-<div class="outline-text-2" id="text-org52989b0">
+<div id="outline-container-org4fa52b8" class="outline-2">
+<h2 id="org4fa52b8">Exploring Anonymized Data</h2>
+<div class="outline-text-2" id="text-org4fa52b8">
 <p>
 Organizers sometimes encode data so you can't tell what it is.
 </p>
 </div>
-<div id="outline-container-org4e95d36" class="outline-3">
-<h3 id="org4e95d36">Try To Decode the Data</h3>
-<div class="outline-text-3" id="text-org4e95d36">
+<div id="outline-container-org589a093" class="outline-3">
+<h3 id="org589a093">Try To Decode the Data</h3>
+<div class="outline-text-3" id="text-org589a093">
 <p>
 You generally won't be able to figure out what the data is if it's encoded, but sometimes they were created using simple shifting schemes that will let you figure out their original values.
 </p>
 </div>
 </div>
-<div id="outline-container-org10716fa" class="outline-3">
-<h3 id="org10716fa">Explore Individual Features</h3>
-<div class="outline-text-3" id="text-org10716fa">
+<div id="outline-container-org3c6ff0c" class="outline-3">
+<h3 id="org3c6ff0c">Explore Individual Features</h3>
+<div class="outline-text-3" id="text-org3c6ff0c">
 <p>
 Even if you don't know what the data is, it's important to know what type of data it is so that you can use the right data preprocessing for your model.
 </p>
 <ul class="org-ul">
-<li><code>df.dtypes</code></li>
-<li><code>df.info()</code></li>
-<li><code>x.value_counts()</code></li>
-<li><code>x.isnull()</code></li>
+<li><a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.dtypes.html">df.dtypes</a></li>
+<li><a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.info.html">df.info()</a></li>
+<li><a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.Series.value_counts.html">x.value_counts()</a></li>
+<li><a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.isnull.html">x.isnull()</a></li>
 </ul>
 </div>
 </div>
 </div>
-<div id="outline-container-org1890ea3" class="outline-2">
-<h2 id="org1890ea3">Visualizations</h2>
-<div class="outline-text-2" id="text-org1890ea3">
+<div id="outline-container-org770eca2" class="outline-2">
+<h2 id="org770eca2">Visualizations</h2>
+<div class="outline-text-2" id="text-org770eca2">
 </div>
-<div id="outline-container-orgb8c9af1" class="outline-3">
-<h3 id="orgb8c9af1">Features</h3>
-<div class="outline-text-3" id="text-orgb8c9af1">
+<div id="outline-container-org0de1b4d" class="outline-3">
+<h3 id="org0de1b4d">Features</h3>
+<div class="outline-text-3" id="text-org0de1b4d">
 </div>
-<div id="outline-container-org83717d2" class="outline-4">
-<h4 id="org83717d2">Histograms</h4>
-<div class="outline-text-4" id="text-org83717d2">
+<div id="outline-container-orgfd629df" class="outline-4">
+<h4 id="orgfd629df">Histograms</h4>
+<div class="outline-text-4" id="text-orgfd629df">
 <p>
 This is useful for seeing the shape of the data.
 </p>
@@ -217,9 +1092,9 @@ This is useful for seeing the shape of the data.
 </ul>
 </div>
 </div>
-<div id="outline-container-org1a83eba" class="outline-4">
-<h4 id="org1a83eba">Index vs Value</h4>
-<div class="outline-text-4" id="text-org1a83eba">
+<div id="outline-container-orge250957" class="outline-4">
+<h4 id="orge250957">Index vs Value</h4>
+<div class="outline-text-4" id="text-orge250957">
 <p>
 This will show you how well distributed the data is within the data frame. Horizontal lines indicate repeated values and empty bands show areas where none of the data had this value. If you don't have vertical lines then the data was probably shuffled.
 </p>
@@ -228,9 +1103,9 @@ This will show you how well distributed the data is within the data frame. Horiz
 </ul>
 </div>
 </div>
-<div id="outline-container-org1b77b3f" class="outline-4">
-<h4 id="org1b77b3f">Index vs Valuue Colorede By Class Label</h4>
-<div class="outline-text-4" id="text-org1b77b3f">
+<div id="outline-container-org9ffe49a" class="outline-4">
+<h4 id="org9ffe49a">Index vs Value Colored By Class Label</h4>
+<div class="outline-text-4" id="text-org9ffe49a">
 <p>
 If you plot the classes with different colors you can see if there are clusters and clear separations between them. (<code>y</code> in the function call has the target values).
 </p>
@@ -239,9 +1114,9 @@ If you plot the classes with different colors you can see if there are clusters 
 </ul>
 </div>
 </div>
-<div id="outline-container-orge74baaa" class="outline-4">
-<h4 id="orge74baaa">Plot Other Things</h4>
-<div class="outline-text-4" id="text-orge74baaa">
+<div id="outline-container-orge5900c3" class="outline-4">
+<h4 id="orge5900c3">Plot Other Things</h4>
+<div class="outline-text-4" id="text-orge5900c3">
 <ul class="org-ul">
 <li>Row vs Feature</li>
 <li>Nan-values</li>
@@ -250,17 +1125,17 @@ If you plot the classes with different colors you can see if there are clusters 
 </div>
 </div>
 </div>
-<div id="outline-container-org86a14dd" class="outline-3">
-<h3 id="org86a14dd">Relationships</h3>
-<div class="outline-text-3" id="text-org86a14dd">
+<div id="outline-container-org6018a12" class="outline-3">
+<h3 id="org6018a12">Relationships</h3>
+<div class="outline-text-3" id="text-org6018a12">
 </div>
-<div id="outline-container-orga4bcc14" class="outline-4">
-<h4 id="orga4bcc14">Scatter Plots</h4>
-<div class="outline-text-4" id="text-orga4bcc14">
+<div id="outline-container-org811d4e0" class="outline-4">
+<h4 id="org811d4e0">Scatter Plots</h4>
+<div class="outline-text-4" id="text-org811d4e0">
 </div>
 <ul class="org-ul">
 <li>
-<a id="org6287d76"></a>Pairwise Relationships<br><div class="outline-text-5" id="text-org6287d76">
+<a id="org3ac84f5"></a>Pairwise Relationships<br><div class="outline-text-5" id="text-org3ac84f5">
 <p>
 To make it eaiser to see relationships, you can plot them in pairs.
 </p>
@@ -270,14 +1145,14 @@ To make it eaiser to see relationships, you can plot them in pairs.
 </div>
 </li>
 <li>
-<a id="org74dff39"></a>Compare the Test Set<br><div class="outline-text-5" id="text-org74dff39">
+<a id="org44acdb0"></a>Compare the Test Set<br><div class="outline-text-5" id="text-org44acdb0">
 <p>
 Plot the features and the test-set (using different colors) to see how well your training data matches your test data.
 </p>
 </div>
 </li>
 <li>
-<a id="org9cdc141"></a>Scatter Matrix<br><div class="outline-text-5" id="text-org9cdc141">
+<a id="org6d46ea9"></a>Scatter Matrix<br><div class="outline-text-5" id="text-org6d46ea9">
 <p>
 Pandas has a convenience function that will plot all the pairwise scatter-plots for you.
 </p>
@@ -288,9 +1163,9 @@ Pandas has a convenience function that will plot all the pairwise scatter-plots 
 </li>
 </ul>
 </div>
-<div id="outline-container-orgc5368c4" class="outline-4">
-<h4 id="orgc5368c4">Corellation</h4>
-<div class="outline-text-4" id="text-orgc5368c4">
+<div id="outline-container-org9654561" class="outline-4">
+<h4 id="org9654561">Corellation</h4>
+<div class="outline-text-4" id="text-org9654561">
 <p>
 Plot the corellation matrix to see if there are feature-pairs that are related so you can make a new feature out of them and see if they help.
 </p>
@@ -302,9 +1177,9 @@ A straight correllation matrix might give you a sense of how correllated the fea
 </p>
 </div>
 </div>
-<div id="outline-container-org86aa3b0" class="outline-4">
-<h4 id="org86aa3b0">Plot Statistics</h4>
-<div class="outline-text-4" id="text-org86aa3b0">
+<div id="outline-container-org66b9214" class="outline-4">
+<h4 id="org66b9214">Plot Statistics</h4>
+<div class="outline-text-4" id="text-org66b9214">
 <p>
 Try plotting mean, differences, combination counts, etc. and see if you can create groups out of them.
 </p>
@@ -312,13 +1187,13 @@ Try plotting mean, differences, combination counts, etc. and see if you can crea
 </div>
 </div>
 </div>
-<div id="outline-container-orgc480036" class="outline-2">
-<h2 id="orgc480036">Data Set Cleaning</h2>
-<div class="outline-text-2" id="text-orgc480036">
+<div id="outline-container-orgbae5e91" class="outline-2">
+<h2 id="orgbae5e91">Data Set Cleaning</h2>
+<div class="outline-text-2" id="text-orgbae5e91">
 </div>
-<div id="outline-container-org2c12ae8" class="outline-3">
-<h3 id="org2c12ae8">Duplicated and Constant Features</h3>
-<div class="outline-text-3" id="text-org2c12ae8">
+<div id="outline-container-orgaf5b21b" class="outline-3">
+<h3 id="orgaf5b21b">Duplicated and Constant Features</h3>
+<div class="outline-text-3" id="text-orgaf5b21b">
 <p>
 Sometimes a feature will have the same value in all the rows. If it's this way in both the training and test sets you can just remove it, but if there are different values in the test set you have to figure out how to handle them.
 </p>
@@ -339,22 +1214,22 @@ This can happen with rows as well, but it can be harder to decide whether this i
 </p>
 </div>
 </div>
-<div id="outline-container-org146bdce" class="outline-3">
-<h3 id="org146bdce">Non-shuffled Data</h3>
-<div class="outline-text-3" id="text-org146bdce">
+<div id="outline-container-orged34d07" class="outline-3">
+<h3 id="orged34d07">Non-shuffled Data</h3>
+<div class="outline-text-3" id="text-orged34d07">
 <p>
 If you plot the mean as a horizontal line the data should be evenly distributed around it, if not it might not have been shuffled and there could be an inadvertent pattern in the data. You might not be able to use it, but you should understand all the things about the data that you can find out.
 </p>
 </div>
 </div>
 </div>
-<div id="outline-container-orga8dad9f" class="outline-2">
-<h2 id="orga8dad9f">Quiz</h2>
-<div class="outline-text-2" id="text-orga8dad9f">
+<div id="outline-container-org14389ec" class="outline-2">
+<h2 id="org14389ec">Quiz</h2>
+<div class="outline-text-2" id="text-org14389ec">
 </div>
-<div id="outline-container-orgb924588" class="outline-3">
-<h3 id="orgb924588">One</h3>
-<div class="outline-text-3" id="text-orgb924588">
+<div id="outline-container-org619e5d1" class="outline-3">
+<h3 id="org619e5d1">One</h3>
+<div class="outline-text-3" id="text-org619e5d1">
 <p>
 Suppose we are given a data set with features <i>X</i>, <i>Y</i>, and <i>Z</i>. Can you recover <i>z</i> as a function of <i>x</i> and <i>y</i>?
 </p>
@@ -370,9 +1245,9 @@ Suppose we are given a data set with features <i>X</i>, <i>Y</i>, and <i>Z</i>. 
 </ul>
 </div>
 </div>
-<div id="outline-container-org2f3e94e" class="outline-3">
-<h3 id="org2f3e94e">Two</h3>
-<div class="outline-text-3" id="text-org2f3e94e">
+<div id="outline-container-org2378fd0" class="outline-3">
+<h3 id="org2378fd0">Two</h3>
+<div class="outline-text-3" id="text-org2378fd0">
 <p>
 What value do the red dots have?
 0.5 (wrong)
@@ -380,9 +1255,9 @@ What value do the red dots have?
 </p>
 </div>
 </div>
-<div id="outline-container-org21dc155" class="outline-3">
-<h3 id="org21dc155">Three</h3>
-<div class="outline-text-3" id="text-org21dc155">
+<div id="outline-container-org23bcb3d" class="outline-3">
+<h3 id="org23bcb3d">Three</h3>
+<div class="outline-text-3" id="text-org23bcb3d">
 <p>
 What hypothesis about X can we not reject based on the plots?
 </p>
@@ -400,9 +1275,9 @@ What hypothesis about X can we not reject based on the plots?
 </ul>
 </div>
 </div>
-<div id="outline-container-org0e93faf" class="outline-3">
-<h3 id="org0e93faf">Four</h3>
-<div class="outline-text-3" id="text-org0e93faf">
+<div id="outline-container-org72bedcb" class="outline-3">
+<h3 id="org72bedcb">Four</h3>
+<div class="outline-text-3" id="text-org72bedcb">
 <ul class="org-ul">
 <li class="off">
 <code>[ ]</code> Target is completely determined by coordinates (x,y)(x,y)(x,y), i.e. the label of the point is completely determined by point's position (x,y)(x,y)(x,y). Saying the same in other words: if we only had two features (x,y)(x,y)(x,y), we could build a classifier, that is accurate 100% of time.</li>
@@ -414,9 +1289,9 @@ What hypothesis about X can we not reject based on the plots?
 </div>
 </div>
 </div>
-<div id="outline-container-org7baac80" class="outline-2">
-<h2 id="org7baac80">Links</h2>
-<div class="outline-text-2" id="text-org7baac80">
+<div id="outline-container-org85eee71" class="outline-2">
+<h2 id="org85eee71">Links</h2>
+<div class="outline-text-2" id="text-org85eee71">
 <ul class="org-ul">
 <li><a href="http://scikit-learn.org/stable/auto_examples/bicluster/plot_spectral_biclustering.html">Sorting Correlation Plots</a></li>
 </ul>
@@ -431,9 +1306,9 @@ What hypothesis about X can we not reject based on the plots?
             <p class="dateline"><a href="posts/references/" rel="bookmark"><time class="published dt-published" datetime="2018-09-01T12:16:46-07:00" title="2018-09-01 12:16">2018-09-01 12:16</time></a></p>
         </div>
     </header><div class="e-content entry-content">
-    <div id="outline-container-orge20137e" class="outline-2">
-<h2 id="orge20137e">Bibliography</h2>
-<div class="outline-text-2" id="text-orge20137e">
+    <div id="outline-container-org279b173" class="outline-2">
+<h2 id="org279b173">Bibliography</h2>
+<div class="outline-text-2" id="text-org279b173">
 <ul class="org-ul">
 <li>[B1] 1. Albon C. Machine learning with Python cookbook: practical solutions from preprocessing to deep learning. First edition. Beijing Boston Farnham: O’Reilly; 2018. 349 p.</li>
 </ul>
@@ -452,34 +1327,34 @@ What hypothesis about X can we not reject based on the plots?
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="posts/the-target/#org0f6a87e">Introduction</a></li>
-<li><a href="posts/the-target/#orgc89b38d">Imports</a></li>
-<li><a href="posts/the-target/#orgfa55ea5">The Data</a></li>
-<li><a href="posts/the-target/#orgd91ba5e">Dates</a></li>
+<li><a href="posts/the-target/#orgeb13e5c">Introduction</a></li>
+<li><a href="posts/the-target/#org156f566">Imports</a></li>
+<li><a href="posts/the-target/#org8fa4e98">The Data</a></li>
+<li><a href="posts/the-target/#org9fd6fc5">Dates</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org0f6a87e" class="outline-2">
-<h2 id="org0f6a87e">Introduction</h2>
-<div class="outline-text-2" id="text-org0f6a87e">
+<div id="outline-container-orgeb13e5c" class="outline-2">
+<h2 id="orgeb13e5c">Introduction</h2>
+<div class="outline-text-2" id="text-orgeb13e5c">
 <p>
 This is some stuff about what we are trying to predict. I realized that the description of the competition says that we are trying to predict the number of items sold per shop for the next month after the data, but I never said what that month is, so I'm making this just to put it somewhere.
 </p>
 </div>
 </div>
-<div id="outline-container-orgc89b38d" class="outline-2">
-<h2 id="orgc89b38d">Imports</h2>
-<div class="outline-text-2" id="text-orgc89b38d">
+<div id="outline-container-org156f566" class="outline-2">
+<h2 id="org156f566">Imports</h2>
+<div class="outline-text-2" id="text-org156f566">
 <div class="highlight"><pre><span></span>import warnings
 warnings.filterwarnings("ignore", message="numpy.dtype size changed")
 warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
 </pre></div>
 </div>
 
-<div id="outline-container-org20ac23e" class="outline-3">
-<h3 id="org20ac23e">From pypi</h3>
-<div class="outline-text-3" id="text-org20ac23e">
+<div id="outline-container-org736ad44" class="outline-3">
+<h3 id="org736ad44">From pypi</h3>
+<div class="outline-text-3" id="text-org736ad44">
 <div class="highlight"><pre><span></span>import pandas
 import matplotlib.pyplot as pyplot
 import seaborn
@@ -487,9 +1362,9 @@ import seaborn
 </div>
 </div>
 
-<div id="outline-container-org6614d60" class="outline-3">
-<h3 id="org6614d60">This project</h3>
-<div class="outline-text-3" id="text-org6614d60">
+<div id="outline-container-org76244a7" class="outline-3">
+<h3 id="org76244a7">This project</h3>
+<div class="outline-text-3" id="text-org76244a7">
 <div class="highlight"><pre><span></span>from kaggler.helpers.build_training_data import Pickles
 from kaggler.helpers.helpers import (
     DataKeys,
@@ -499,9 +1374,9 @@ from kaggler.helpers.helpers import (
 </div>
 </div>
 
-<div id="outline-container-orgcab3349" class="outline-3">
-<h3 id="orgcab3349">Setting up the plotting</h3>
-<div class="outline-text-3" id="text-orgcab3349">
+<div id="outline-container-org5195026" class="outline-3">
+<h3 id="org5195026">Setting up the plotting</h3>
+<div class="outline-text-3" id="text-org5195026">
 <div class="highlight"><pre><span></span>% matplotlib inline
 seaborn.set_style("whitegrid")
 </pre></div>
@@ -509,9 +1384,9 @@ seaborn.set_style("whitegrid")
 </div>
 </div>
 
-<div id="outline-container-orgfa55ea5" class="outline-2">
-<h2 id="orgfa55ea5">The Data</h2>
-<div class="outline-text-2" id="text-orgfa55ea5">
+<div id="outline-container-org8fa4e98" class="outline-2">
+<h2 id="org8fa4e98">The Data</h2>
+<div class="outline-text-2" id="text-org8fa4e98">
 <div class="highlight"><pre><span></span>x_train = Helpers.unpickle(Pickles.x_train)
 y_train = Helpers.unpickle(Pickles.y_train)
 x_test = Helpers.unpickle(Pickles.x_test)
@@ -527,9 +1402,9 @@ assert concatenated.shape == (len(x_train) + len(x_test), len(x_train.columns))
 </div>
 </div>
 
-<div id="outline-container-orgd91ba5e" class="outline-2">
-<h2 id="orgd91ba5e">Dates</h2>
-<div class="outline-text-2" id="text-orgd91ba5e">
+<div id="outline-container-org9fd6fc5" class="outline-2">
+<h2 id="org9fd6fc5">Dates</h2>
+<div class="outline-text-2" id="text-org9fd6fc5">
 <p>
 Unfortunately I got rid of the days, which are required by the <a href="https://pandas.pydata.org/pandas-docs/stable/timeseries.html">to_datetime</a> function provided by pandas, so I'm going to construct a new date column with a day of 1 for each date.
 </p>
@@ -644,26 +1519,26 @@ So the last month in the data-set is October 2015, and we want to predict what t
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="posts/some-plots-of-the-data/#org43496dc">Imports</a></li>
-<li><a href="posts/some-plots-of-the-data/#org681b960">Build the data</a></li>
-<li><a href="posts/some-plots-of-the-data/#org60f4748">More Helpers</a></li>
-<li><a href="posts/some-plots-of-the-data/#orgb501729">Features vs Target</a></li>
+<li><a href="posts/some-plots-of-the-data/#orgf2f3024">Imports</a></li>
+<li><a href="posts/some-plots-of-the-data/#org21c5eb2">Build the data</a></li>
+<li><a href="posts/some-plots-of-the-data/#org64bbfba">More Helpers</a></li>
+<li><a href="posts/some-plots-of-the-data/#orgd0caac3">Features vs Target</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org43496dc" class="outline-2">
-<h2 id="org43496dc">Imports</h2>
-<div class="outline-text-2" id="text-org43496dc">
+<div id="outline-container-orgf2f3024" class="outline-2">
+<h2 id="orgf2f3024">Imports</h2>
+<div class="outline-text-2" id="text-orgf2f3024">
 <div class="highlight"><pre><span></span>import warnings
 warnings.filterwarnings("ignore", message="numpy.dtype size changed")
 warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
 </pre></div>
 </div>
 
-<div id="outline-container-org39cccf3" class="outline-3">
-<h3 id="org39cccf3">From pypi</h3>
-<div class="outline-text-3" id="text-org39cccf3">
+<div id="outline-container-org8910fac" class="outline-3">
+<h3 id="org8910fac">From pypi</h3>
+<div class="outline-text-3" id="text-org8910fac">
 <div class="highlight"><pre><span></span>import matplotlib.pyplot as pyplot
 import numpy
 import seaborn
@@ -675,9 +1550,9 @@ seaborn.set_style("whitegrid")
 </div>
 </div>
 
-<div id="outline-container-org03cdeac" class="outline-3">
-<h3 id="org03cdeac">This project</h3>
-<div class="outline-text-3" id="text-org03cdeac">
+<div id="outline-container-org4513e84" class="outline-3">
+<h3 id="org4513e84">This project</h3>
+<div class="outline-text-3" id="text-org4513e84">
 <div class="highlight"><pre><span></span>from kaggler.helpers.build_training_data import Pickles
 from kaggler.helpers.helpers import (
     DataKeys,
@@ -688,9 +1563,9 @@ from kaggler.helpers.helpers import (
 </div>
 </div>
 
-<div id="outline-container-org681b960" class="outline-2">
-<h2 id="org681b960">Build the data</h2>
-<div class="outline-text-2" id="text-org681b960">
+<div id="outline-container-org21c5eb2" class="outline-2">
+<h2 id="org21c5eb2">Build the data</h2>
+<div class="outline-text-2" id="text-org21c5eb2">
 <div class="highlight"><pre><span></span>x_train = Helpers.unpickle(Pickles.x_train)
 y_train = Helpers.unpickle(Pickles.y_train)
 DataKeys.target = "Month Count"
@@ -774,9 +1649,9 @@ Helpers.print_head(x_train)
 </table>
 </div>
 </div>
-<div id="outline-container-org60f4748" class="outline-2">
-<h2 id="org60f4748">More Helpers</h2>
-<div class="outline-text-2" id="text-org60f4748">
+<div id="outline-container-org64bbfba" class="outline-2">
+<h2 id="org64bbfba">More Helpers</h2>
+<div class="outline-text-2" id="text-org64bbfba">
 <div class="highlight"><pre><span></span>def make_figure_and_axis(x_label, y_label, title, figsize=(10, 8)):
     """make a matplotlib figure
 
@@ -797,13 +1672,13 @@ Helpers.print_head(x_train)
 </pre></div>
 </div>
 </div>
-<div id="outline-container-orgb501729" class="outline-2">
-<h2 id="orgb501729">Features vs Target</h2>
-<div class="outline-text-2" id="text-orgb501729">
+<div id="outline-container-orgd0caac3" class="outline-2">
+<h2 id="orgd0caac3">Features vs Target</h2>
+<div class="outline-text-2" id="text-orgd0caac3">
 </div>
-<div id="outline-container-org5282eb5" class="outline-3">
-<h3 id="org5282eb5">Date Block</h3>
-<div class="outline-text-3" id="text-org5282eb5">
+<div id="outline-container-org6130d71" class="outline-3">
+<h3 id="org6130d71">Date Block</h3>
+<div class="outline-text-3" id="text-org6130d71">
 <div class="highlight"><pre><span></span>figure, axis = make_figure_and_axis("Date Block", "Count", "Date-Block Counts")
 grid = seaborn.catplot(ax=axis, x=DataKeys.date_block, kind="count", data=x_train)
 </pre></div>
@@ -874,9 +1749,9 @@ Perhaps not surprisingly, the month of December, when holiday sales spike, is th
 </p>
 </div>
 </div>
-<div id="outline-container-orge521700" class="outline-3">
-<h3 id="orge521700">Shop</h3>
-<div class="outline-text-3" id="text-orge521700">
+<div id="outline-container-org49b6d01" class="outline-3">
+<h3 id="org49b6d01">Shop</h3>
+<div class="outline-text-3" id="text-org49b6d01">
 <div class="highlight"><pre><span></span>group = x_train.groupby(DataKeys.shop).sum().reset_index().sort_values(DataKeys.target)
 </pre></div>
 
@@ -892,9 +1767,9 @@ There appears to be seven or eight shops that dominate the sales.
 </div>
 </div>
 
-<div id="outline-container-orgfbe0bc4" class="outline-3">
-<h3 id="orgfbe0bc4">Item Category</h3>
-<div class="outline-text-3" id="text-orgfbe0bc4">
+<div id="outline-container-orgd35ca2d" class="outline-3">
+<h3 id="orgd35ca2d">Item Category</h3>
+<div class="outline-text-3" id="text-orgd35ca2d">
 <div class="highlight"><pre><span></span>group = x_train.groupby(DataKeys.item_category).sum().reset_index()
 </pre></div>
 
@@ -909,13 +1784,13 @@ Some kind of weirdly coincidental linear relationship between the category ID an
 </div>
 </div>
 
-<div id="outline-container-org4018aae" class="outline-3">
-<h3 id="org4018aae">Biggest Over Time</h3>
-<div class="outline-text-3" id="text-org4018aae">
+<div id="outline-container-orgbee71ba" class="outline-3">
+<h3 id="orgbee71ba">Biggest Over Time</h3>
+<div class="outline-text-3" id="text-orgbee71ba">
 </div>
-<div id="outline-container-orgf1535ce" class="outline-4">
-<h4 id="orgf1535ce">Category</h4>
-<div class="outline-text-4" id="text-orgf1535ce">
+<div id="outline-container-org9eea911" class="outline-4">
+<h4 id="org9eea911">Category</h4>
+<div class="outline-text-4" id="text-org9eea911">
 <div class="highlight"><pre><span></span>category_group = x_train.groupby([DataKeys.date, DataKeys.item_category]).sum().reset_index()
 biggest = category_group.iloc[category_group[DataKeys.target].idxmax()]
 biggest_category = category_group[category_group.item_category_id == biggest.item_category_id]
@@ -962,26 +1837,26 @@ Percent Decline: 81.3 %
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="posts/preprocessing-the-kaggle-data/#orged6c8f9">Introduction</a></li>
-<li><a href="posts/preprocessing-the-kaggle-data/#orga0a03fe">Tangle</a></li>
-<li><a href="posts/preprocessing-the-kaggle-data/#org669470e">Imports</a></li>
-<li><a href="posts/preprocessing-the-kaggle-data/#org1372e04">Loading the Data</a></li>
-<li><a href="posts/preprocessing-the-kaggle-data/#org05825a1">Limit the Target Range</a></li>
+<li><a href="posts/preprocessing-the-kaggle-data/#orgcbe7366">Introduction</a></li>
+<li><a href="posts/preprocessing-the-kaggle-data/#org0518627">Tangle</a></li>
+<li><a href="posts/preprocessing-the-kaggle-data/#org8224355">Imports</a></li>
+<li><a href="posts/preprocessing-the-kaggle-data/#orgd4d2fcc">Loading the Data</a></li>
+<li><a href="posts/preprocessing-the-kaggle-data/#orgee24ed6">Limit the Target Range</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orged6c8f9" class="outline-2">
-<h2 id="orged6c8f9">Introduction</h2>
-<div class="outline-text-2" id="text-orged6c8f9">
+<div id="outline-container-orgcbe7366" class="outline-2">
+<h2 id="orgcbe7366">Introduction</h2>
+<div class="outline-text-2" id="text-orgcbe7366">
 <p>
 This is a post to do some basic pre-processing on the data. It won't do anything fancy (i.e. no Feature Engineering), but will just get the data ready to be used by the models. In particular, the rules say that the test data target will be limited to a range and the features are categorical so we need to transform them for non-tree models.
 </p>
 </div>
 </div>
-<div id="outline-container-orga0a03fe" class="outline-2">
-<h2 id="orga0a03fe">Tangle</h2>
-<div class="outline-text-2" id="text-orga0a03fe">
+<div id="outline-container-org0518627" class="outline-2">
+<h2 id="org0518627">Tangle</h2>
+<div class="outline-text-2" id="text-org0518627">
 <div class="highlight"><pre><span></span><span class="o">&lt;&lt;</span><span class="n">pypi</span><span class="o">-</span><span class="n">imports</span><span class="o">&gt;&gt;</span>
 
 <span class="o">&lt;&lt;</span><span class="n">local</span><span class="o">-</span><span class="n">imports</span><span class="o">&gt;&gt;</span>
@@ -990,18 +1865,18 @@ This is a post to do some basic pre-processing on the data. It won't do anything
 </pre></div>
 </div>
 </div>
-<div id="outline-container-org669470e" class="outline-2">
-<h2 id="org669470e">Imports</h2>
-<div class="outline-text-2" id="text-org669470e">
+<div id="outline-container-org8224355" class="outline-2">
+<h2 id="org8224355">Imports</h2>
+<div class="outline-text-2" id="text-org8224355">
 <div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">warnings</span>
 <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">"ignore"</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">"numpy.dtype size changed"</span><span class="p">)</span>
 <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">"ignore"</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">"numpy.ufunc size changed"</span><span class="p">)</span>
 </pre></div>
 </div>
 
-<div id="outline-container-org0eb96df" class="outline-3">
-<h3 id="org0eb96df">From pypi</h3>
-<div class="outline-text-3" id="text-org0eb96df">
+<div id="outline-container-org24c2f93" class="outline-3">
+<h3 id="org24c2f93">From pypi</h3>
+<div class="outline-text-3" id="text-org24c2f93">
 <div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">pyplot</span>
 <span class="kn">import</span> <span class="nn">numpy</span>
 <span class="kn">import</span> <span class="nn">seaborn</span>
@@ -1013,18 +1888,18 @@ This is a post to do some basic pre-processing on the data. It won't do anything
 </div>
 </div>
 
-<div id="outline-container-orgef2cfb6" class="outline-3">
-<h3 id="orgef2cfb6">This project</h3>
-<div class="outline-text-3" id="text-orgef2cfb6">
+<div id="outline-container-org7fc023b" class="outline-3">
+<h3 id="org7fc023b">This project</h3>
+<div class="outline-text-3" id="text-org7fc023b">
 <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">kaggler.helpers.build_training_data</span> <span class="kn">import</span> <span class="n">Pickles</span>
 <span class="kn">from</span> <span class="nn">kaggler.helpers.helpers</span> <span class="kn">import</span> <span class="n">Helpers</span>
 </pre></div>
 </div>
 </div>
 </div>
-<div id="outline-container-org1372e04" class="outline-2">
-<h2 id="org1372e04">Loading the Data</h2>
-<div class="outline-text-2" id="text-org1372e04">
+<div id="outline-container-orgd4d2fcc" class="outline-2">
+<h2 id="orgd4d2fcc">Loading the Data</h2>
+<div class="outline-text-2" id="text-orgd4d2fcc">
 <p>
 This assumes you've run the <code>build_training_data.py</code> code to get the testing and training data sets. The <code>Helpers</code> class also expects a specific path, so you have to have the repository set up in <code>~/projects/kaggle-competitions/</code>.
 </p>
@@ -1043,9 +1918,9 @@ This assumes you've run the <code>build_training_data.py</code> code to get the 
 </div>
 </div>
 
-<div id="outline-container-org05825a1" class="outline-2">
-<h2 id="org05825a1">Limit the Target Range</h2>
-<div class="outline-text-2" id="text-org05825a1">
+<div id="outline-container-orgee24ed6" class="outline-2">
+<h2 id="orgee24ed6">Limit the Target Range</h2>
+<div class="outline-text-2" id="text-orgee24ed6">
 <p>
 According to the contest description the true target values are clipped to the <code>[0,20]</code> range, so it might make sense to clip the target data in our training and testing data to the given range.
 </p>
@@ -1193,19 +2068,19 @@ That actually didn't really fix the distribution, strangely.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="posts/building-the-training-set/#org82438b9">The Tangle</a></li>
-<li><a href="posts/building-the-training-set/#orga319808">Imports</a></li>
-<li><a href="posts/building-the-training-set/#org113b4ba">Helpers</a></li>
-<li><a href="posts/building-the-training-set/#orga915c5b">Building Up the Super Set</a></li>
-<li><a href="posts/building-the-training-set/#org346293b">Setting up the Training and Validation Data</a></li>
-<li><a href="posts/building-the-training-set/#org75c74a7">Creating the Validation Set</a></li>
+<li><a href="posts/building-the-training-set/#org7281655">The Tangle</a></li>
+<li><a href="posts/building-the-training-set/#org0253335">Imports</a></li>
+<li><a href="posts/building-the-training-set/#org2abb75c">Helpers</a></li>
+<li><a href="posts/building-the-training-set/#orgc557814">Building Up the Super Set</a></li>
+<li><a href="posts/building-the-training-set/#org711edb8">Setting up the Training and Validation Data</a></li>
+<li><a href="posts/building-the-training-set/#org83bd192">Creating the Validation Set</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org82438b9" class="outline-2">
-<h2 id="org82438b9">The Tangle</h2>
-<div class="outline-text-2" id="text-org82438b9">
+<div id="outline-container-org7281655" class="outline-2">
+<h2 id="org7281655">The Tangle</h2>
+<div class="outline-text-2" id="text-org7281655">
 <p>
 This is the exporter for stuff to be re-used outside of this post.
 </p>
@@ -1255,21 +2130,21 @@ This is the exporter for stuff to be re-used outside of this post.
 </div>
 </div>
 
-<div id="outline-container-orga319808" class="outline-2">
-<h2 id="orga319808">Imports</h2>
-<div class="outline-text-2" id="text-orga319808">
+<div id="outline-container-org0253335" class="outline-2">
+<h2 id="org0253335">Imports</h2>
+<div class="outline-text-2" id="text-org0253335">
 </div>
-<div id="outline-container-org8268ff2" class="outline-3">
-<h3 id="org8268ff2">Python Standard Library</h3>
-<div class="outline-text-3" id="text-org8268ff2">
+<div id="outline-container-org84684c1" class="outline-3">
+<h3 id="org84684c1">Python Standard Library</h3>
+<div class="outline-text-3" id="text-org84684c1">
 <div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
 </pre></div>
 </div>
 </div>
 
-<div id="outline-container-orge6397f2" class="outline-3">
-<h3 id="orge6397f2">Suppressing the Numpy Warnings</h3>
-<div class="outline-text-3" id="text-orge6397f2">
+<div id="outline-container-org6cae0d3" class="outline-3">
+<h3 id="org6cae0d3">Suppressing the Numpy Warnings</h3>
+<div class="outline-text-3" id="text-org6cae0d3">
 <p>
 This is to suppress the warnings when we import pandas.
 </p>
@@ -1280,18 +2155,18 @@ This is to suppress the warnings when we import pandas.
 </div>
 </div>
 
-<div id="outline-container-orgd7ba4a4" class="outline-3">
-<h3 id="orgd7ba4a4">From pypi</h3>
-<div class="outline-text-3" id="text-orgd7ba4a4">
+<div id="outline-container-orgfbbdae6" class="outline-3">
+<h3 id="orgfbbdae6">From pypi</h3>
+<div class="outline-text-3" id="text-orgfbbdae6">
 <div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span>
 <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
 </pre></div>
 </div>
 </div>
 
-<div id="outline-container-orgee232e4" class="outline-3">
-<h3 id="orgee232e4">This Project</h3>
-<div class="outline-text-3" id="text-orgee232e4">
+<div id="outline-container-org61887f9" class="outline-3">
+<h3 id="org61887f9">This Project</h3>
+<div class="outline-text-3" id="text-org61887f9">
 <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">kaggler.helpers.helpers</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">DataKeys</span><span class="p">,</span>
     <span class="n">DataNames</span><span class="p">,</span>
@@ -1303,13 +2178,13 @@ This is to suppress the warnings when we import pandas.
 </div>
 </div>
 
-<div id="outline-container-org113b4ba" class="outline-2">
-<h2 id="org113b4ba">Helpers</h2>
-<div class="outline-text-2" id="text-org113b4ba">
+<div id="outline-container-org2abb75c" class="outline-2">
+<h2 id="org2abb75c">Helpers</h2>
+<div class="outline-text-2" id="text-org2abb75c">
 </div>
-<div id="outline-container-orge7249cc" class="outline-3">
-<h3 id="orge7249cc">Pickles</h3>
-<div class="outline-text-3" id="text-orge7249cc">
+<div id="outline-container-orgb6259b9" class="outline-3">
+<h3 id="orgb6259b9">Pickles</h3>
+<div class="outline-text-3" id="text-orgb6259b9">
 <p>
 I'm going to pickle the data to re-load them later so this will hold the names.
 </p>
@@ -1328,9 +2203,9 @@ I'm going to pickle the data to re-load them later so this will hold the names.
 </div>
 
 
-<div id="outline-container-orga915c5b" class="outline-2">
-<h2 id="orga915c5b">Building Up the Super Set</h2>
-<div class="outline-text-2" id="text-orga915c5b">
+<div id="outline-container-orgc557814" class="outline-2">
+<h2 id="orgc557814">Building Up the Super Set</h2>
+<div class="outline-text-2" id="text-orgc557814">
 <p>
 Since we have some variables in separate sets I thought it would be useful to combine them into a single training set.
 </p>
@@ -1344,9 +2219,9 @@ Since we have some variables in separate sets I thought it would be useful to co
 </pre></div>
 </div>
 
-<div id="outline-container-orgdf67298" class="outline-3">
-<h3 id="orgdf67298">The Data Source</h3>
-<div class="outline-text-3" id="text-orgdf67298">
+<div id="outline-container-org5e59041" class="outline-3">
+<h3 id="org5e59041">The Data Source</h3>
+<div class="outline-text-3" id="text-org5e59041">
 <p>
 I put the paths into a class called DataSource, this is just to instantiate it.
 </p>
@@ -1362,9 +2237,9 @@ I put the paths into a class called DataSource, this is just to instantiate it.
 </div>
 </div>
 
-<div id="outline-container-orga3d07a2" class="outline-3">
-<h3 id="orga3d07a2">Building the Super Set</h3>
-<div class="outline-text-3" id="text-orga3d07a2">
+<div id="outline-container-org04a0ab5" class="outline-3">
+<h3 id="org04a0ab5">Building the Super Set</h3>
+<div class="outline-text-3" id="text-org04a0ab5">
 <p>
 The <code>super_set</code> will be a combination of the different data-sources.
 </p>
@@ -1383,9 +2258,9 @@ The <code>super_set</code> will be a combination of the different data-sources.
 </div>
 </div>
 
-<div id="outline-container-org2e4c1c6" class="outline-3">
-<h3 id="org2e4c1c6">Adding the Category IDs</h3>
-<div class="outline-text-3" id="text-org2e4c1c6">
+<div id="outline-container-orgf7c2f04" class="outline-3">
+<h3 id="orgf7c2f04">Adding the Category IDs</h3>
+<div class="outline-text-3" id="text-orgf7c2f04">
 <p>
 The <code>items.csv</code> file holds a map of the item-ids to category-ids so we can <a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.merge.html">merge</a> it in to get the category ids for our data-set.
 </p>
@@ -1573,9 +2448,9 @@ This is also going to add the name of the item, which I'm thinking won't be as u
 </div>
 </div>
 
-<div id="outline-container-org469c5e2" class="outline-3">
-<h3 id="org469c5e2">Splitting the Dates</h3>
-<div class="outline-text-3" id="text-org469c5e2">
+<div id="outline-container-org99339d5" class="outline-3">
+<h3 id="org99339d5">Splitting the Dates</h3>
+<div class="outline-text-3" id="text-org99339d5">
 <p>
 The <code>date</code> column has a string formatted <code>dd.mm.yy</code>. Since we want sales per month and it might change over time, I'll split the date-stamp up into day, month, and year (although I don't think I'll be keeping day).
 </p>
@@ -1791,9 +2666,9 @@ Nowe we can see what our <code>super_set</code> looks like.
 </div>
 </div>
 
-<div id="outline-container-org5c55d54" class="outline-3">
-<h3 id="org5c55d54">Cleaning Up</h3>
-<div class="outline-text-3" id="text-org5c55d54">
+<div id="outline-container-org8ac1117" class="outline-3">
+<h3 id="org8ac1117">Cleaning Up</h3>
+<div class="outline-text-3" id="text-org8ac1117">
 <p>
 The <code>date</code> column is now superfluous, and I don't think we need the day, since we are predicting by month. I'm also going to assume that names aren't as useful as the numeric ids. This might not be true, but I think using the text would require pre-processing which is beyond what I'm doing here, so I'm going to leave them out (there is another file with shop names that needs to be loaded if the text turns out to be significant). I'm going to <a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.drop.html">drop</a> the columns that I don't think I'll need.
 </p>
@@ -1906,9 +2781,9 @@ The <code>date</code> column is now superfluous, and I don't think we need the d
 </div>
 </div>
 
-<div id="outline-container-orgaeeef54" class="outline-3">
-<h3 id="orgaeeef54">Saving the Super Set</h3>
-<div class="outline-text-3" id="text-orgaeeef54">
+<div id="outline-container-orgaaa1f00" class="outline-3">
+<h3 id="orgaaa1f00">Saving the Super Set</h3>
+<div class="outline-text-3" id="text-orgaaa1f00">
 <p>
 Now I'll pickle it up so it can be loaded later.
 </p>
@@ -1920,17 +2795,17 @@ Now I'll pickle it up so it can be loaded later.
 </div>
 </div>
 
-<div id="outline-container-org346293b" class="outline-2">
-<h2 id="org346293b">Setting up the Training and Validation Data</h2>
-<div class="outline-text-2" id="text-org346293b">
+<div id="outline-container-org711edb8" class="outline-2">
+<h2 id="org711edb8">Setting up the Training and Validation Data</h2>
+<div class="outline-text-2" id="text-org711edb8">
 <p>
 Although I went through the trouble of smashing all the values into one Data Frame, it turns out that I need things grouped by month, and doing the grouping after adding the columns just make it messy, so I'm going to back-track a little here to set up the data we need for training and testing.
 </p>
 </div>
 
-<div id="outline-container-orgb087d57" class="outline-3">
-<h3 id="orgb087d57">The Grouper</h3>
-<div class="outline-text-3" id="text-orgb087d57">
+<div id="outline-container-org9cc9dfa" class="outline-3">
+<h3 id="org9cc9dfa">The Grouper</h3>
+<div class="outline-text-3" id="text-org9cc9dfa">
 <p>
 Since I'm going to aggregate by the month (really the <code>date_block_num</code>), leaving in things like the price doesn't really make sense so I'll make a sub-frame that I can <a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.groupby.html">group</a>.
 </p>
@@ -2093,13 +2968,13 @@ So we're going to <a href="https://pandas.pydata.org/pandas-docs/stable/generate
 </div>
 </div>
 
-<div id="outline-container-org2195a9a" class="outline-3">
-<h3 id="org2195a9a">Adding the Columns Back</h3>
-<div class="outline-text-3" id="text-org2195a9a">
+<div id="outline-container-org1cbea08" class="outline-3">
+<h3 id="org1cbea08">Adding the Columns Back</h3>
+<div class="outline-text-3" id="text-org1cbea08">
 </div>
-<div id="outline-container-org3d17bb1" class="outline-4">
-<h4 id="org3d17bb1">Group the Super Set</h4>
-<div class="outline-text-4" id="text-org3d17bb1">
+<div id="outline-container-orgbbf6f5f" class="outline-4">
+<h4 id="orgbbf6f5f">Group the Super Set</h4>
+<div class="outline-text-4" id="text-orgbbf6f5f">
 <p>
 Back to the super-set. Since there are multiple entries for items in a given month, I'm going to group the items by shop and date-block (month) and then grab the last entry for each group. 
 </p>
@@ -2215,9 +3090,9 @@ Back to the super-set. Since there are multiple entries for items in a given mon
 </div>
 
 
-<div id="outline-container-orgf738f9b" class="outline-4">
-<h4 id="orgf738f9b">Re-add the missing columns</h4>
-<div class="outline-text-4" id="text-orgf738f9b">
+<div id="outline-container-org8640120" class="outline-4">
+<h4 id="org8640120">Re-add the missing columns</h4>
+<div class="outline-text-4" id="text-org8640120">
 <p>
 Now we need to get the category id, price, etc, back into the grouped data by merging it with the de-duplicated one we just created.
 </p>
@@ -2346,9 +3221,9 @@ Now we need to get the category id, price, etc, back into the grouped data by me
 </div>
 </div>
 
-<div id="outline-container-org0ce6468" class="outline-4">
-<h4 id="org0ce6468">Save the grouped-up data</h4>
-<div class="outline-text-4" id="text-org0ce6468">
+<div id="outline-container-org003d5c4" class="outline-4">
+<h4 id="org003d5c4">Save the grouped-up data</h4>
+<div class="outline-text-4" id="text-org003d5c4">
 <p>
 I'm calling it <code>grouped_months_data.pkl</code>, but since the name is in the <code>Pickles</code> class, I'll just have to remember to use <code>grouped</code>.
 </p>
@@ -2357,16 +3232,16 @@ I'm calling it <code>grouped_months_data.pkl</code>, but since the name is in th
 </div>
 </div>
 
-<div id="outline-container-org75c74a7" class="outline-2">
-<h2 id="org75c74a7">Creating the Validation Set</h2>
-<div class="outline-text-2" id="text-org75c74a7">
+<div id="outline-container-org83bd192" class="outline-2">
+<h2 id="org83bd192">Creating the Validation Set</h2>
+<div class="outline-text-2" id="text-org83bd192">
 <p>
 To make my validation and training set I'm going to use sklearn's <a href="http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html">train_test_split</a>. 
 </p>
 </div>
-<div id="outline-container-org6542f5b" class="outline-3">
-<h3 id="org6542f5b">Targets and Features</h3>
-<div class="outline-text-3" id="text-org6542f5b">
+<div id="outline-container-org4000203" class="outline-3">
+<h3 id="org4000203">Targets and Features</h3>
+<div class="outline-text-3" id="text-org4000203">
 <p>
 First we need to split the data up into inputs and targets
 </p>
@@ -2480,9 +3355,9 @@ First we need to split the data up into inputs and targets
 </div>
 </div>
 
-<div id="outline-container-org3c6f7d6" class="outline-3">
-<h3 id="org3c6f7d6">Make Like a Banana</h3>
-<div class="outline-text-3" id="text-org3c6f7d6">
+<div id="outline-container-orga43c637" class="outline-3">
+<h3 id="orga43c637">Make Like a Banana</h3>
+<div class="outline-text-3" id="text-orga43c637">
 <p>
 I'm going to create a training set with 80% of the data and leave the other 20% as the validation data.
 </p>
@@ -2513,562 +3388,12 @@ So now we're set to get started.
 </div>
 </div>
     </div>
-    </article><article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/feature-extraction-from-text-and-images/" class="u-url">Feature Extraction From Text and Images</a></h1>
-        <div class="metadata">
-            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
-                Cloistered Monkey
-            </span></p>
-            <p class="dateline"><a href="posts/feature-extraction-from-text-and-images/" rel="bookmark"><time class="published dt-published" datetime="2018-08-13T07:17:52-07:00" title="2018-08-13 07:17">2018-08-13 07:17</time></a></p>
-        </div>
-    </header><div class="e-content entry-content">
-    <div id="table-of-contents">
-<h2>Table of Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="posts/feature-extraction-from-text-and-images/#org74c7872">How do you convert text to data?</a></li>
-<li><a href="posts/feature-extraction-from-text-and-images/#orga937f80">Practice Quiz</a></li>
-<li><a href="posts/feature-extraction-from-text-and-images/#orga832511">Quiz</a></li>
-<li><a href="posts/feature-extraction-from-text-and-images/#org6ebf169">Links</a></li>
-</ul>
-</div>
-</div>
-
-<div id="outline-container-org74c7872" class="outline-2">
-<h2 id="org74c7872">How do you convert text to data?</h2>
-<div class="outline-text-2" id="text-org74c7872">
-</div>
-<div id="outline-container-org274b922" class="outline-3">
-<h3 id="org274b922">Two Main Methods</h3>
-<div class="outline-text-3" id="text-org274b922">
-</div>
-<div id="outline-container-org47dbf05" class="outline-4">
-<h4 id="org47dbf05">Bag Of Words</h4>
-<div class="outline-text-4" id="text-org47dbf05">
-</div>
-<ul class="org-ul">
-<li>
-<a id="orgb8c8631"></a>Vectorization<br><div class="outline-text-5" id="text-orgb8c8631">
-<p>
-This method counts the number of occurrences of each word in the source. For each word it creates a column and then in the row puts the counts for that instance of data.
-</p>
-<ul class="org-ul">
-<li>Sklearn implements this with <a href="http://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.CountVectorizer.html">CountVectorizer</a>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<a id="orga56eb05"></a>Term Frequency/Inverse Document Frequency (TF/IDF)<br><div class="outline-text-5" id="text-orga56eb05">
-<p>
-This method tries to make word counts comparable even if the texts are of different sizes and also to emphasize more important words.
-</p>
-<ul class="org-ul">
-<li>Term Frequency: Normalize rows so all values are from 0 to 1 to make texts of different sizes comparable</li>
-<li>Inverse Document Frequency: Normalize columns to make emphasize more important features</li>
-<li>Sklearn implements this with <a href="http://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html">TfidVectorizer</a>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<a id="org04f849d"></a>N-Grams<br><div class="outline-text-5" id="text-org04f849d">
-<p>
-This method that creates a bag of words by grouping them into sub-sequences of words. A 3-gram, for instance, sweeps the text to create sequences of words made up of 3 adjacent words.
-</p>
-<ul class="org-ul">
-<li>
-<a href="http://sklearn.feature_extraction.text.countvectorizer">Count Vectorizer</a> is sklearn's implementation</li>
-</ul>
-</div>
-</li>
-<li>
-<a id="orgef78e4c"></a>Text Preprocessing<br><div class="outline-text-5" id="text-orgef78e4c">
-<ul class="org-ul">
-<li>lowercase
-Change all the words to lower-case</li>
-<li>lemmatization
-Try to reduce word to a common case (e.g. democratization, democracy, democratic all become democracy)</li>
-<li>stemming
-Try to reduce word to a root (e.g. democratization, democracy, democratic all become democ)</li>
-<li>stopwords
-Remove common words (e.g. a, and, or, etc.)</li>
-</ul>
-</div>
-</li>
-<li>
-<a id="orge8c4797"></a>The Bag Of Words Pipeline<br><div class="outline-text-5" id="text-orge8c4797">
-<ol class="org-ol">
-<li>Preprocessing (lowercase, lemmatization, stemming, stopwords)</li>
-<li>Create n-grams</li>
-<li>Postprocessing: TF/IDF</li>
-</ol>
-</div>
-</li>
-</ul>
-</div>
-<div id="outline-container-org83df017" class="outline-4">
-<h4 id="org83df017">Embeddings (e.g. Word2Vec)</h4>
-<div class="outline-text-4" id="text-org83df017">
-<ul class="org-ul">
-<li>Uses neural-nets</li>
-<li>much smaller vectors than bag of words</li>
-<li>But each word gets a vector so many more vectors</li>
-<li>similar words have similar word-vectors</li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-<div id="outline-container-orga937f80" class="outline-2">
-<h2 id="orga937f80">Practice Quiz</h2>
-<div class="outline-text-2" id="text-orga937f80">
-</div>
-<div id="outline-container-org1b7954e" class="outline-3">
-<h3 id="org1b7954e">One</h3>
-<div class="outline-text-3" id="text-org1b7954e">
-<p>
-TF-IDF is applied to a matrix where each column represents a word, each row represents a document, and each value shows the number of times a particular word occurred in a particular document. Choose the correct statements.
-</p>
-<ul class="org-ul">
-<li class="on">
-<code>[X]</code> IDF scales features inversely proprotionally to a number of word occurrences over documents</li>
-<li class="off">
-<code>[ ]</code> IDF scales features proportionally to the frequency of the a word's occurrences</li>
-<li class="on">
-<code>[X]</code> TF normalizes sums of the row values to 1</li>
-<li class="off">
-<code>[ ]</code> TF normalizes sums of the column values to 1</li>
-</ul>
-</div>
-</div>
-<div id="outline-container-org9830be7" class="outline-3">
-<h3 id="org9830be7">Two</h3>
-<div class="outline-text-3" id="text-org9830be7">
-<p>
-Which of these methods can be used to preprocess text?
-</p>
-<ul class="org-ul">
-<li class="on">
-<code>[X]</code> stemming</li>
-<li class="on">
-<code>[X]</code> Lower-case transformation</li>
-<li class="on">
-<code>[X]</code> Lemmatization</li>
-<li class="on">
-<code>[X]</code> Stopword removal</li>
-<li class="off">
-<code>[ ]</code> Levenshteining</li>
-<li class="off">
-<code>[ ]</code> plumping</li>
-<li class="off">
-<code>[ ]</code> plumbing</li>
-</ul>
-</div>
-</div>
-<div id="outline-container-org7757a35" class="outline-3">
-<h3 id="org7757a35">Three</h3>
-<div class="outline-text-3" id="text-org7757a35">
-<p>
-What is the main purpose of lemmatization and stemming?
-</p>
-<ul class="org-ul">
-<li class="off">
-<code>[ ]</code> to remove words which are not useful</li>
-<li class="on">
-<code>[X]</code> to remove inflectional forms and sometimes derivationally related forms of a word to a common base form</li>
-<li class="off">
-<code>[ ]</code> To reduce the significance of common words</li>
-<li class="off">
-<code>[ ]</code> to induce common word amplification standards to the most useful for machine learning algorithms form</li>
-</ul>
-</div>
-</div>
-<div id="outline-container-org916272d" class="outline-3">
-<h3 id="org916272d">Four</h3>
-<div class="outline-text-3" id="text-org916272d">
-<p>
-To learn Word2Vec embeddings we need:
-</p>
-<ul class="org-ul">
-<li class="off">
-<code>[ ]</code> GloVe embeddings</li>
-<li class="off">
-<code>[ ]</code> Labels for the documents in the corpora</li>
-<li class="on">
-<code>[X]</code> Labels for each word in the documents in the corpora</li>
-<li class="on">
-<code>[X]</code> Text corpora</li>
-</ul>
-</div>
-</div>
-</div>
-<div id="outline-container-orga832511" class="outline-2">
-<h2 id="orga832511">Quiz</h2>
-<div class="outline-text-2" id="text-orga832511">
-</div>
-<div id="outline-container-org288ffdf" class="outline-3">
-<h3 id="org288ffdf">One</h3>
-<div class="outline-text-3" id="text-org288ffdf">
-<p>
-Select true statements about n-grams.
-</p>
-<ul class="org-ul">
-<li class="off">
-<code>[ ]</code> Levenshteining should always be applied before computing n-grams (there is no such thing as Levenshteining)</li>
-<li class="off">
-<code>[ ]</code> n-grams always help increase significance of important words (n-grams are about counts, not importance)</li>
-<li class="on">
-<code>[X]</code> n-grams features are typically sparse (n-grams count occurrences of words and not every word will be found in every document)</li>
-<li class="on">
-<code>[X]</code> n-grams can help utilize local context around each word (n-grams encode sequences of words)</li>
-</ul>
-</div>
-</div>
-<div id="outline-container-org34de6b2" class="outline-3">
-<h3 id="org34de6b2">Two</h3>
-<div class="outline-text-3" id="text-org34de6b2">
-<p>
-Select the true statements.
-</p>
-<ul class="org-ul">
-<li class="on">
-<code>[X]</code> Bag of words usually produces longer vectors than Word2Vec (The number of features with BOW is equal to the number of unique words, Word2Vec limit is set beforehand)</li>
-<li class="on">
-<code>[X]</code> Semantically similar words usually have similar word2vec embeddings</li>
-<li class="off">
-<code>[ ]</code> You do not need bag of words features in a competition if you have word2vec features (both approaches are useful and can work together)
-<ul class="org-ul">
-<li class="off">
-<code>[ ]</code> The meaning of each value in the Bag of Words matrix is unknown (The meaning of each value is how many times it occurred)</li>
-</ul>
-</li>
-</ul>
-</div>
-</div>
-<div id="outline-container-org4c77f05" class="outline-3">
-<h3 id="org4c77f05">Three</h3>
-<div class="outline-text-3" id="text-org4c77f05">
-<p>
-Suppose in a new competition we are given a dataset of 2D medical images. We want to extract image descriptors from a hidden layer of a neural network pretrained on the ImageNet dataset. We will then use extracted descriptors to train a simple logistic regression model to classify images from our dataset.
-</p>
-
-<p>
-We are considering using two networks: ResNet-50 with an ImageNet accuracy of X and VGG-16 with an ImageNet accuracy of Y (X &lt; Y). Select the true statements.
-</p>
-
-<ul class="org-ul">
-<li class="off">
-<code>[ ]</code> With one pretrained CNN model you can get only one vector of descriptors for an image</li>
-<li class="off">
-<code>[ ]</code> Descriptors from ResNet 50 will always be better than the ones from VG-16 in our pipeline</li>
-<li class="on">
-<code>[X]</code> It is not clear what descriptors are better on our dataset. We should evaluate both.
-<ul class="org-ul">
-<li class="off">
-<code>[ ]</code> Descriptors from ResNet-50 and VGG-16 are always very similar in cosine distance</li>
-<li class="off">
-<code>[ ]</code> For any image, descriptors from the last hidden layer of ResNet-50 are the same as the descriptors from the last hidden layer of VGG-16</li>
-</ul>
-</li>
-</ul>
-</div>
-</div>
-<div id="outline-container-org8c22edd" class="outline-3">
-<h3 id="org8c22edd">Four</h3>
-<div class="outline-text-3" id="text-org8c22edd">
-<p>
-Data augmentation can be used at (1) train time and (2) test time
-</p>
-<ul class="org-ul">
-<li class="off">
-<code>[ ]</code> True, False</li>
-<li class="off">
-<code>[ ]</code> False, True</li>
-<li class="on">
-<code>[X]</code> True, True</li>
-<li class="off">
-<code>[ ]</code> False, False</li>
-</ul>
-</div>
-</div>
-</div>
-<div id="outline-container-org6ebf169" class="outline-2">
-<h2 id="org6ebf169">Links</h2>
-<div class="outline-text-2" id="text-org6ebf169">
-</div>
-<div id="outline-container-org8c5af0f" class="outline-3">
-<h3 id="org8c5af0f">Text</h3>
-<div class="outline-text-3" id="text-org8c5af0f">
-</div>
-<div id="outline-container-orgd94221f" class="outline-4">
-<h4 id="orgd94221f">Bag Of Words</h4>
-<div class="outline-text-4" id="text-orgd94221f">
-<ul class="org-ul">
-<li><a href="http://scikit-learn.org/stable/modules/feature_extraction.html">SKlearn on feature extraction</a></li>
-<li>
-<a href="https://andhint.github.io/machine-learning/nlp/Feature-Extraction-From-Text/">blog post</a> on extracting features from text</li>
-</ul>
-</div>
-</div>
-<div id="outline-container-org5740868" class="outline-4">
-<h4 id="org5740868">Word2Vec</h4>
-<div class="outline-text-4" id="text-org5740868">
-<ul class="org-ul">
-<li><a href="https://www.tensorflow.org/tutorials/representation/word2vec">TensorFlow tutorial</a></li>
-<li>
-<a href="https://rare-technologies.com/word2vec-tutorial/">Blog post tutorial</a> by the author of gensim</li>
-<li><a href="https://nadbordrozd.github.io/blog/2016/05/20/text-classification-with-word2vec/">Text Classification post</a></li>
-<li><a href="https://taylorwhitten.github.io/blog/word2vec">Another introduction</a></li>
-</ul>
-</div>
-</div>
-<div id="outline-container-orgb566b02" class="outline-4">
-<h4 id="orgb566b02">Natural Language Processing with Python</h4>
-<div class="outline-text-4" id="text-orgb566b02">
-<ul class="org-ul">
-<li><a href="http://www.nltk.org/">nltk</a></li>
-<li><a href="https://textblob.readthedocs.io/en/dev/">TextBlob</a></li>
-</ul>
-</div>
-</div>
-</div>
-<div id="outline-container-orga03e1f7" class="outline-3">
-<h3 id="orga03e1f7">Images</h3>
-<div class="outline-text-3" id="text-orga03e1f7">
-</div>
-<div id="outline-container-org301a6c6" class="outline-4">
-<h4 id="org301a6c6">Pre-trained Models</h4>
-<div class="outline-text-4" id="text-org301a6c6">
-<ul class="org-ul">
-<li><a href="https://keras.io/applications/">Keras</a></li>
-<li><a href="https://www.kernix.com/blog/image-classification-with-a-pre-trained-deep-neural-network_p11">How To use a pre-trained model</a></li>
-</ul>
-</div>
-</div>
-<div id="outline-container-orge2b3820" class="outline-4">
-<h4 id="orge2b3820">Fine-Tuning</h4>
-<div class="outline-text-4" id="text-orge2b3820">
-<ul class="org-ul">
-<li><a href="https://www.tensorflow.org/hub/tutorials/image_retraining">Re-train a tensorflow image classifier</a></li>
-<li><a href="https://flyyufelix.github.io/2016/10/08/fine-tuning-in-keras-part2.html">Fine-tuning deep learning models in keras</a></li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-    </div>
-    </article><article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/first-naive-try/" class="u-url">First Naive Try</a></h1>
-        <div class="metadata">
-            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
-                Cloistered Monkey
-            </span></p>
-            <p class="dateline"><a href="posts/first-naive-try/" rel="bookmark"><time class="published dt-published" datetime="2018-08-11T19:37:37-07:00" title="2018-08-11 19:37">2018-08-11 19:37</time></a></p>
-        </div>
-    </header><div class="e-content entry-content">
-    <div id="table-of-contents">
-<h2>Table of Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="posts/first-naive-try/#org6a9b6df">Introduction</a></li>
-<li><a href="posts/first-naive-try/#orgdf4f390">Imports</a></li>
-<li><a href="posts/first-naive-try/#orgaff2504">Loading the Data</a></li>
-<li><a href="posts/first-naive-try/#orgad199c8">November Only</a></li>
-<li><a href="posts/first-naive-try/#orgf6caac3">The Linear Model</a></li>
-</ul>
-</div>
-</div>
-<div id="outline-container-org6a9b6df" class="outline-2">
-<h2 id="org6a9b6df">Introduction</h2>
-<div class="outline-text-2" id="text-org6a9b6df">
-<p>
-Our goal is to predict the number of sales for each shop for November 2015 (based on the prior months). I'm going to make some very naive guesses here with some models that only use the prior dates and the target counts.
-</p>
-</div>
-</div>
-<div id="outline-container-orgdf4f390" class="outline-2">
-<h2 id="orgdf4f390">Imports</h2>
-<div class="outline-text-2" id="text-orgdf4f390">
-</div>
-<div id="outline-container-org5297699" class="outline-3">
-<h3 id="org5297699">Python Standard Library</h3>
-<div class="outline-text-3" id="text-org5297699">
-<div class="highlight"><pre><span></span># python standard library
-import warnings
-import os
-import pickle
-</pre></div>
-</div>
-</div>
-
-<div id="outline-container-org1e06f9e" class="outline-3">
-<h3 id="org1e06f9e">Supress the Warnings</h3>
-<div class="outline-text-3" id="text-org1e06f9e">
-<div class="highlight"><pre><span></span>warnings.filterwarnings("ignore", message="numpy.dtype size changed")
-warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
-</pre></div>
-</div>
-</div>
-
-<div id="outline-container-org1f76a2f" class="outline-3">
-<h3 id="org1f76a2f">From pypi</h3>
-<div class="outline-text-3" id="text-org1f76a2f">
-<div class="highlight"><pre><span></span>import numpy
-import pandas
-from sklearn.metrics import mean_squared_error
-from sklearn.model_selection import cross_val_score
-from sklearn.ensemble import RandomTreesRegressor
-from tabulate import tabulate
-</pre></div>
-</div>
-</div>
-
-<div id="outline-container-org6cdd4e0" class="outline-3">
-<h3 id="org6cdd4e0">This Project</h3>
-<div class="outline-text-3" id="text-org6cdd4e0">
-<div class="highlight"><pre><span></span># this project
-from helpers.helpers import (
-    Helpers,
-    DataSource,
-    DataKeys,
-    Pickles,
-    )
-</pre></div>
-</div>
-</div>
-</div>
-<div id="outline-container-orgaff2504" class="outline-2">
-<h2 id="orgaff2504">Loading the Data</h2>
-<div class="outline-text-2" id="text-orgaff2504">
-<div class="highlight"><pre><span></span>x_train = Helpers.unpickle(Pickles.x_train)
-x_test = Helpers.unpickle(Pickles.x_test)
-y_train = Helpers.unpickle(Pickles.y_train)
-y_test = Helpers.unpickle(Pickles.y_test)
-</pre></div>
-
-<p>
-To make it easier to filter I'm going to combine the x and y data.
-</p>
-
-<div class="highlight"><pre><span></span>DataKeys.target = "Month Count"
-x_train[DataKeys.target] = y_train.values
-x_test[DataKeys.target] = y_test.values
-</pre></div>
-
-<div class="highlight"><pre><span></span>Helpers.print_head(x_train)
-</pre></div>
-
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-<colgroup>
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-</colgroup>
-<thead><tr>
-<th scope="col" class="org-right">date_block_num</th>
-<th scope="col" class="org-right">shop_id</th>
-<th scope="col" class="org-right">item_id</th>
-<th scope="col" class="org-right">item_price</th>
-<th scope="col" class="org-right">item_category_id</th>
-<th scope="col" class="org-right">month</th>
-<th scope="col" class="org-right">year</th>
-<th scope="col" class="org-right">Month Count</th>
-</tr></thead>
-<tbody>
-<tr>
-<td class="org-right">11</td>
-<td class="org-right">15</td>
-<td class="org-right">1324</td>
-<td class="org-right">499</td>
-<td class="org-right">55</td>
-<td class="org-right">12</td>
-<td class="org-right">2013</td>
-<td class="org-right">1</td>
-</tr>
-<tr>
-<td class="org-right">18</td>
-<td class="org-right">31</td>
-<td class="org-right">19981</td>
-<td class="org-right">499</td>
-<td class="org-right">43</td>
-<td class="org-right">07</td>
-<td class="org-right">2014</td>
-<td class="org-right">2</td>
-</tr>
-<tr>
-<td class="org-right">32</td>
-<td class="org-right">28</td>
-<td class="org-right">7934</td>
-<td class="org-right">398</td>
-<td class="org-right">7</td>
-<td class="org-right">09</td>
-<td class="org-right">2015</td>
-<td class="org-right">1</td>
-</tr>
-<tr>
-<td class="org-right">12</td>
-<td class="org-right">43</td>
-<td class="org-right">13518</td>
-<td class="org-right">1499</td>
-<td class="org-right">19</td>
-<td class="org-right">01</td>
-<td class="org-right">2014</td>
-<td class="org-right">1</td>
-</tr>
-<tr>
-<td class="org-right">28</td>
-<td class="org-right">25</td>
-<td class="org-right">19927</td>
-<td class="org-right">329</td>
-<td class="org-right">57</td>
-<td class="org-right">05</td>
-<td class="org-right">2015</td>
-<td class="org-right">2</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div id="outline-container-orgad199c8" class="outline-2">
-<h2 id="orgad199c8">November Only</h2>
-<div class="outline-text-2" id="text-orgad199c8">
-<p>
-What happens if we only use the month of November in the data?
-</p>
-
-<div class="highlight"><pre><span></span>training = x_train[x_train.month == "11"]
-</pre></div>
-
-<div class="highlight"><pre><span></span>
-</pre></div>
-</div>
-</div>
-<div id="outline-container-orgf6caac3" class="outline-2">
-<h2 id="orgf6caac3">The Linear Model</h2>
-<div class="outline-text-2" id="text-orgf6caac3">
-<p>
-What happens if we just use the default linear regression model? The first problem we have is that we have both non-numeric data and categorical data. I think removing the <code>item_name</code> variable seems reasonable at this point, since we have unique <code>item_id</code> values for each item, although it's possible that some text-mining might reveal something in the names, because this is just a naive approach that will use linear regression.
-</p>
-
-<div class="highlight"><pre><span></span>del(x_train[DataKeys.name])
-</pre></div>
-
-<div class="highlight"><pre><span></span>regression = linear_model.LinearRegression()
-regression.fit(x_train, y_train)
-</pre></div>
-</div>
-</div>
-    </div>
     </article>
 </div>
 
         <nav class="postindexpager"><ul class="pager">
 <li class="next">
-                <a href="index-1.html" rel="next">Older posts</a>
+                <a href="index-2.html" rel="next">Older posts</a>
             </li>
         </ul></nav>
 </div>

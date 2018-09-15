@@ -26,13 +26,13 @@
      This method that creates a bag of words by grouping them into sub-sequences of words. A 3-gram, for instance, sweeps the text to create sequences of words made up of 3 adjacent words.
      - [[http://sklearn.feature_extraction.text.CountVectorizer][Count Vectorizer]] is sklearn's implementation
 **** Text Preprocessing
-   - lowercase
+   - lowercase:
      Change all the words to lower-case
-   - lemmatization
+   - lemmatization:
      Try to reduce word to a common case (e.g. democratization, democracy, democratic all become democracy)
-   - stemming
+   - stemming:
      Try to reduce word to a root (e.g. democratization, democracy, democratic all become democ)
-   - stopwords
+   - stopwords:
      Remove common words (e.g. a, and, or, etc.)       
 **** The Bag Of Words Pipeline
      1. Preprocessing (lowercase, lemmatization, stemming, stopwords)

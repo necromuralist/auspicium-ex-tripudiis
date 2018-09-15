@@ -1,7 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about notes validation)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/notes-validation.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Tue, 04 Sep 2018 17:07:00 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Validation</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/validation/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-org1dae6f9" class="outline-2"&gt;
-&lt;h2 id="org1dae6f9"&gt;Validation and Overfitting&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org1dae6f9"&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about notes validation)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/notes-validation.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Sat, 15 Sep 2018 00:10:11 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Validation</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/validation/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
+&lt;h2&gt;Table of Contents&lt;/h2&gt;
+&lt;div id="text-table-of-contents"&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org5d1619b"&gt;Validation and Overfitting&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org61ce815"&gt;Three Main Methods of Splitting&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org7d5f2a4"&gt;Stratification&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org5e1cb52"&gt;Data Splitting&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org7deb52b"&gt;Problems&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#orgd4c219d"&gt;Practice Quiz&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org390c014"&gt;Quiz&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org1c800a9"&gt;Links&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-org5d1619b" class="outline-2"&gt;
+&lt;h2 id="org5d1619b"&gt;Validation and Overfitting&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org5d1619b"&gt;
 &lt;p&gt;
 To prevent your model from overfitting to the training set, you can hold out some of the training set and use it to validate the model after it has been fit to the rest of the training set.
 &lt;/p&gt;
@@ -9,6 +25,243 @@ To prevent your model from overfitting to the training set, you can hold out som
 &lt;li&gt;Underfitting: your model isn't complex enough to capture the data&lt;/li&gt;
 &lt;li&gt;Overfitting: your model is too complex and it is modelling noise in the data&lt;/li&gt;
 &lt;li&gt;In a competition, if your model does well on the validation set but not on the test set, then it probably overfit the data you had&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org61ce815" class="outline-2"&gt;
+&lt;h2 id="org61ce815"&gt;Three Main Methods of Splitting&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org61ce815"&gt;
+&lt;p&gt;
+These are methods for splitting your training set into training and validation sets. Once you have a model, re-train it over the entire training set before applying it to the test set.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org4e15e80" class="outline-3"&gt;
+&lt;h3 id="org4e15e80"&gt;Holdout&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org4e15e80"&gt;
+&lt;p&gt;
+This method just splits the data into one training and one validation set.
+&lt;/p&gt;
+
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;&lt;a href="http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.ShuffleSplit.html"&gt;sklearn.model_selection.ShuffleSplit&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;ngroups=1&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orge1d1b4f" class="outline-3"&gt;
+&lt;h3 id="orge1d1b4f"&gt;K-Fold&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orge1d1b4f"&gt;
+&lt;p&gt;
+Make &lt;i&gt;k&lt;/i&gt; splits of the training set, then use each of the validation sets while training on all the data not in the validation set. This differs from doing holdout k-times since we guarantee that the validation sets don't overlap. Uses the average score for the k-folds.
+&lt;/p&gt;
+
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;&lt;a href="http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.KFold.html"&gt;sklearn.model_selection.KFold&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org0b8340b" class="outline-3"&gt;
+&lt;h3 id="org0b8340b"&gt;Leave One Out&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org0b8340b"&gt;
+&lt;p&gt;
+This is like k-folds except we always use a validation set of size 1 - so we are iterating over each point in the data set and using it as the training set. This can be useful if the data set is small.
+&lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;&lt;a href="http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.LeaveOneOut.html"&gt;sklearn.model_selection.LeaveOneOut&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org7d5f2a4" class="outline-2"&gt;
+&lt;h2 id="org7d5f2a4"&gt;Stratification&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org7d5f2a4"&gt;
+&lt;p&gt;
+Sometimes you need to make sure your validation sets have the same distribution as your set as a whole.
+&lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;small datasets&lt;/li&gt;
+&lt;li&gt;unbalanced datasects&lt;/li&gt;
+&lt;li&gt;multiclass classification&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.StratifiedShuffleSplit.html"&gt;StratifieShuffleSplit&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org5e1cb52" class="outline-2"&gt;
+&lt;h2 id="org5e1cb52"&gt;Data Splitting&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org5e1cb52"&gt;
+&lt;p&gt;
+If you have time-based data, there's two ways to split the training data - randomly within the entire timespan, or put the first part of the data in the training set and put the second part of the data in the validation set. If the test-set is a time that is beyond the training data, then using the time-based split will produce a model that is better for the testing data.
+&lt;/p&gt;
+&lt;ol class="org-ol"&gt;
+&lt;li&gt;Row-wise split
+This is the most common case, where rows are randomly chosen from the training data. This assumes the rows are independent.&lt;/li&gt;
+&lt;li&gt;Time-wise split
+This is the case where you are predicting future values of a time-series. In this case, the further back in time a row is, the less like the future value it is.&lt;/li&gt;
+&lt;li&gt;By-ID
+In this case several rows map to one ID, and the ID maps to a target. For example, you might have several x-rays for one patient that map to one diagnosis.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;
+The main point of this is that you want to set up your validation set to match the way the train-test sets were split.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org7deb52b" class="outline-2"&gt;
+&lt;h2 id="org7deb52b"&gt;Problems&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org7deb52b"&gt;
+&lt;p&gt;
+The point of doing the training-validation split is that you think the validation set(s) will approximate the test set. But what if that's not true?
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgf30b6ce" class="outline-3"&gt;
+&lt;h3 id="orgf30b6ce"&gt;Causes of score differences&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgf30b6ce"&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;Too little data&lt;/li&gt;
+&lt;li&gt;The data is too diverse and inconsistent&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgd8025cd" class="outline-3"&gt;
+&lt;h3 id="orgd8025cd"&gt;Submission Differs from Validation&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgd8025cd"&gt;
+&lt;ol class="org-ol"&gt;
+&lt;li&gt;Even K-fold validation has variation (check that the standard deviation across folds encompasses the leaderboard values)&lt;/li&gt;
+&lt;li&gt;Too little data on leaderboard (nothing you can do)&lt;/li&gt;
+&lt;li&gt;Train and test are from different distributions&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgd4c219d" class="outline-2"&gt;
+&lt;h2 id="orgd4c219d"&gt;Practice Quiz&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgd4c219d"&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgbc574d5" class="outline-3"&gt;
+&lt;h3 id="orgbc574d5"&gt;One&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgbc574d5"&gt;
+&lt;p&gt;
+We did a K-Fold cross validation on a huge dataset and noticed that scores on each fold are roughly the same. Which validation type is of most practical use?
+&lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; K-Fold&lt;/li&gt;
+&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; Holdout&lt;/li&gt;
+&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; Leave one out&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org2fe2ec7" class="outline-3"&gt;
+&lt;h3 id="org2fe2ec7"&gt;Two&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org2fe2ec7"&gt;
+&lt;p&gt;
+We did a K-fold cross validation on a medium sized dataset and noticed that the validation scores varied widely. Which validation type is the most practical to use?
+&lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; Leave One Out&lt;/li&gt;
+&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; K Fold&lt;/li&gt;
+&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; Houldout&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org5b2c705" class="outline-3"&gt;
+&lt;h3 id="org5b2c705"&gt;Three&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org5b2c705"&gt;
+&lt;p&gt;
+The features we generate depend on the train-test split. True or False?
+&lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; True&lt;/li&gt;
+&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; False&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgdb5fbbf" class="outline-3"&gt;
+&lt;h3 id="orgdb5fbbf"&gt;Which of these can indicate an expected leaderboard shuffle in a competition?&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgdb5fbbf"&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; Little training and/or testing data&lt;/li&gt;
+&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; Most of the competitors have similar scores&lt;/li&gt;
+&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; Different public/private data or target distributions&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org390c014" class="outline-2"&gt;
+&lt;h2 id="org390c014"&gt;Quiz&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org390c014"&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org869ffd4" class="outline-3"&gt;
+&lt;h3 id="org869ffd4"&gt;One&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org869ffd4"&gt;
+&lt;p&gt;
+Select the true statements.
+&lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; A performance increase on a fixed cross-validation split guarantees a performance increase on any cross-validation split. (You might be overfitting. You should change the splits to check for overfitting.)&lt;/li&gt;
+&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; The logic behind the validation split should mimic the logic behind the train-test split (this is the main rule for making a reliable validation)&lt;/li&gt;
+&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; Underfitting refers to not capturing enough patterns in the data&lt;/li&gt;
+&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; We use validation to estimate the quality of our model (this is the main purpose of validation)&lt;/li&gt;
+&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; The model that does on the validation set is guaranteed to do the best on the test set. (The test and validation sets might have different distributions, in which case the validation won't predict the test set score)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgf2d2424" class="outline-3"&gt;
+&lt;h3 id="orgf2d2424"&gt;Two&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgf2d2424"&gt;
+&lt;p&gt;
+Kaggle usually allows you to submit two final submissions that will be checked against the private leader board. One common practice is to use a model that did the best on the validation scores and another that did best on the public leader board. What is the logic behind using these two models?
+&lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; People rarely overfit the public leaderboard. You almost always have a lot of test data and it is hard to overfit.&lt;/li&gt;
+&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; Validation is rarely valid in competitions. You must account for the case where validation worked and where it didn't.&lt;/li&gt;
+&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; The test set may have a different distribution than the target data. If this is true, then the model that did better on the public leaderboard will do better. If not, then the model that did better in validation will do better.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org8f893ae" class="outline-3"&gt;
+&lt;h3 id="org8f893ae"&gt;Three&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org8f893ae"&gt;
+&lt;p&gt;
+Suppose we have a dataset of marketing campaigns. Each campain runs for a few weeks and for each campaign our target is the number of new customers. A row in the dataset looks like this:
+&lt;/p&gt;
+
+&lt;p&gt;
+&lt;i&gt;Campaign ID, Date, {some features},Number of New Customers&lt;/i&gt;
+&lt;/p&gt;
+
+&lt;p&gt;
+The dataset contains multiple campaigns where the training set has the dates at the start of each campaign and the test set has the dates at the end of each campaign. Which train/test split should you use?
+&lt;/p&gt;
+
+&lt;ul class="org-ul"&gt;
+&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; Random Split&lt;/li&gt;
+&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; Combined Split (Each train and test set are divided by a date and the date might be for different campaigns, so it is a combination of campaign ID and date)&lt;/li&gt;
+&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; ID-based split (wrong)&lt;/li&gt;
+&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; Time-based split (wrong)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org8f8be71" class="outline-3"&gt;
+&lt;h3 id="org8f8be71"&gt;Four&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org8f8be71"&gt;
+&lt;p&gt;
+Which of the following can you usually identify without the leaderboard?
+&lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; Different scores/optimal parameters between different folds (this is determined during validation)&lt;/li&gt;
+&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; Train and test target data are from different distributions (You would need the test target values to figure this out, which you won't have)&lt;/li&gt;
+&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; The public leaderboard score will be unreliable because there is too little data (you can check this by making the size of the folds match the size of the public test set and see the variability)&lt;/li&gt;
+&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; The train and test data are from different distributions (you can often figure this out during Exploratory Data Analysis)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org1c800a9" class="outline-2"&gt;
+&lt;h2 id="org1c800a9"&gt;Links&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org1c800a9"&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;&lt;a href="http://scikit-learn.org/stable/modules/cross_validation.html"&gt;Cross-validation in sklearn&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.chioka.in/how-to-select-your-final-models-in-a-kaggle-competitio/"&gt;Model Selection for Kaggle&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;</description><category>notes validation</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/validation/</guid><pubDate>Tue, 04 Sep 2018 15:01:59 GMT</pubDate></item></channel></rss>

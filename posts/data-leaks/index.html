@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="Notes about data leaks in competitions.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Data Leaks | Notes on Kaggle</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="../../rss.xml">
+<link rel="canonical" href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leaks/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script><meta name="author" content="Cloistered Monkey">
+<link rel="prev" href="../validation/" title="Validation" type="text/html">
+<link rel="next" href="../data-leakages/" title="Data Leakages" type="text/html">
+<meta property="og:site_name" content="Notes on Kaggle">
+<meta property="og:title" content="Data Leaks">
+<meta property="og:url" content="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leaks/">
+<meta property="og:description" content="Notes about data leaks in competitions.">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2018-09-08T16:11:07-07:00">
+<meta property="article:tag" content="dataleaks notes">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-default navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://necromuralist.github.io/Kaggle-Competitions/">
+
+                <span id="blog-title">Notes on Kaggle</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="https://necromuralist.github.io/">The Cloistered Monkey</a>
+                </li>
+<li>
+<a href="../../archive.html">Archive</a>
+                </li>
+<li>
+<a href="../../categories/">Tags</a>
+                </li>
+<li>
+<a href="../../rss.xml">RSS feed</a>
+
+                
+            </li>
+</ul>
+<!-- Google custom search --><form method="get" action="https://www.google.com/search" class="navbar-form navbar-right" role="search">
+<div class="form-group">
+<input type="text" name="q" class="form-control" placeholder="Search">
+</div>
+<button type="submit" class="btn btn-primary">
+	<span class="glyphicon glyphicon-search"></span>
+</button>
+<input type="hidden" name="sitesearch" value="https://necromuralist.github.io/Kaggle-Competitions/">
+</form>
+<!-- End of custom search -->
+
+
+            <ul class="nav navbar-nav navbar-right">
+<li>
+    <a href="index.org" id="sourcelink">Source</a>
+    </li>
+
+                
+            </ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+            
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Data Leaks</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                    Cloistered Monkey
+            </span></p>
+            <p class="dateline"><a href="." rel="bookmark"><time class="published dt-published" datetime="2018-09-08T16:11:07-07:00" itemprop="datePublished" title="2018-09-08 16:11">2018-09-08 16:11</time></a></p>
+            
+        <p class="sourceline"><a href="index.org" class="sourcelink">Source</a></p>
+
+        </div>
+        
+
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div id="outline-container-orgf47ccd1" class="outline-2">
+<h2 id="orgf47ccd1">What are data leaks?</h2>
+<div class="outline-text-2" id="text-orgf47ccd1">
+<p>
+<i>Data Leaks</i> are unexpected errors that expose extra information that wouldn't be available in production.
+</p>
+</div>
+</div>
+<div id="outline-container-org235e77b" class="outline-2">
+<h2 id="org235e77b">Time Series</h2>
+<div class="outline-text-2" id="text-org235e77b">
+<p>
+Check if there are points in the training set that are in the future with regard to the test set.
+</p>
+</div>
+</div>
+<div id="outline-container-org095beaa" class="outline-2">
+<h2 id="org095beaa">Unexpected Information</h2>
+<div class="outline-text-2" id="text-org095beaa">
+<p>
+Sometimes what looks like a non-predictive feature might prove to be useful because of the way the data-set was created.
+</p>
+
+<ul class="org-ul">
+<li>ID</li>
+<li>Row Order</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgfd58a2d" class="outline-2">
+<h2 id="orgfd58a2d">Leaderboard Probing</h2>
+<div class="outline-text-2" id="text-orgfd58a2d">
+<p>
+This is a method to look for dataleaks based on the leader board.
+</p>
+</div>
+</div>
+<div id="outline-container-org7235bd8" class="outline-2">
+<h2 id="org7235bd8">Quiz</h2>
+<div class="outline-text-2" id="text-org7235bd8">
+</div>
+<div id="outline-container-orgcb0b935" class="outline-3">
+<h3 id="orgcb0b935">One</h3>
+<div class="outline-text-3" id="text-orgcb0b935">
+<p>
+Suppose that you have a credit scoring task where you have to create a machine learning model that approximates expert evaluation of an individual's creditworthiness. Which of the following can potentially be a data leakage?
+</p>
+
+<ul class="org-ul">
+<li class="on">
+<code>[X]</code> An ID of a data point (row) in the train set corellates with the target variable (the data wasn't shuffled, this information won't work in a real-world scenario)</li>
+<li class="on">
+<code>[X]</code> The first half of the data points in the train set have a score of 0 while the second half has scores &gt; 0. (same as above)</li>
+<li class="off">
+<code>[ ]</code> Among he features you have a <code>company_id</code>, an identifier of a company where this person works. It turns out that this feature is important and adding it to your model improves your score. (this is a normal feature, the fact that it improves your score just means it's an important feature)</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org6d1e538" class="outline-3">
+<h3 id="org6d1e538">Two</h3>
+<div class="outline-text-3" id="text-org6d1e538">
+<p>
+What is the most foolproof way to set up a time-series competition?
+</p>
+<ul class="org-ul">
+<li class="on">
+<code>[X]</code> Split, train, public and private parts of the data by time. Remove all features except IDs from the test set so that participants will generate all the features based on the past and join them themselves. (you need to remove all features tfrom the test set to guarantee there isn't a data-leakage)</li>
+
+<li class="off">
+<code>[ ]</code> Make a time based split for train/test and a random split for publit/private. (this is vulnerable to leaderboard probing)</li>
+<li class="off">
+<code>[ ]</code> split public and private by time, remove time from the test set. (it is possible to reverse engineer the time-ordering and exploit future-peeking)</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org5440e65" class="outline-3">
+<h3 id="org5440e65">Three</h3>
+<div class="outline-text-3" id="text-org5440e65">
+<p>
+Suppose you have a binary feature classification task and it is evaluated by the logloss metric. You know that there are 10,000 entries in the public chunk of the test set and that a constant prediction of 0.3 gets a score of 1.01. The mean of the target variable in the training set is 0.44. What is the mean of the target variable in the public part  of the test data (up to 4 decimal places.)
+</p>
+
+<ul class="org-ul">
+<li>0.44 (wrong)</li>
+<li>0.132 (wrong)</li>
+<li>1.33 (wrong)</li>
+<li>0.7712</li>
+</ul>
+<p>
+\[
+\frac{N_1}{N} = \frac{-L - \ln (1-C)}{\ln C - \ln (1 - C)}\\
+= 0.7712\\
+\]
+</p>
+</div>
+</div>
+<div id="outline-container-org7a1136d" class="outline-3">
+<h3 id="org7a1136d">Four</h3>
+<div class="outline-text-3" id="text-org7a1136d">
+<p>
+Suppose you are solving an image classification task, what is the classification of the logo for this course?
+</p>
+<ul class="org-ul">
+<li>Angry robot (wrong - should be a number)</li>
+<li>1 (wrong - check image name)</li>
+<li>3 (the URL for the image had the answer in it)</li>
+</ul>
+</div>
+</div>
+</div>
+    </div>
+    <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
+<li><a class="tag p-category" href="../../categories/dataleaks-notes/" rel="tag">dataleaks notes</a></li>
+        </ul>
+<ul class="pager hidden-print">
+<li class="previous">
+                <a href="../validation/" rel="prev" title="Validation">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../data-leakages/" rel="next" title="Data Leakages">Next post</a>
+            </li>
+        </ul></nav></aside></article>
+</div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            Contents © 2018         <a href="mailto:necromuralist@protonmail.com">Cloistered Monkey</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png"></a><br>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+            
+        </footer>
+</div>
+</div>
+
+
+            <script src="../../assets/js/all-nocdn.js"></script><script>$('a.image-reference:not(.islink) img:not(.islink)').parent().colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates -->
+</body>
+</html>

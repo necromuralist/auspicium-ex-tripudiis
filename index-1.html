@@ -12,7 +12,7 @@
 <meta name="generator" content="Nikola (getnikola.com)">
 <link rel="alternate" type="application/rss+xml" title="RSS" href="rss.xml">
 <link rel="canonical" href="https://necromuralist.github.io/Kaggle-Competitions/index-1.html">
-<link rel="prev" href="." type="text/html">
+<link rel="prev" href="index-2.html" type="text/html">
 <!--[if lt IE 9]><script src="assets/js/html5.js"></script><![endif]--><script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
 </script>
 </head>
@@ -82,7 +82,213 @@
 
     
 <div class="postindex">
-    <article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/exploring-the-data/" class="u-url">Exploring The Data</a></h1>
+    <article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/first-naive-try/" class="u-url">First Naive Try</a></h1>
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                Cloistered Monkey
+            </span></p>
+            <p class="dateline"><a href="posts/first-naive-try/" rel="bookmark"><time class="published dt-published" datetime="2018-08-11T19:37:37-07:00" title="2018-08-11 19:37">2018-08-11 19:37</time></a></p>
+        </div>
+    </header><div class="e-content entry-content">
+    <div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="posts/first-naive-try/#orge49dd6f">Introduction</a></li>
+<li><a href="posts/first-naive-try/#org8432a62">Imports</a></li>
+<li><a href="posts/first-naive-try/#orgea2131d">Loading the Data</a></li>
+<li><a href="posts/first-naive-try/#orgaeb618d">November Only</a></li>
+<li><a href="posts/first-naive-try/#org7bd8d62">The Linear Model</a></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orge49dd6f" class="outline-2">
+<h2 id="orge49dd6f">Introduction</h2>
+<div class="outline-text-2" id="text-orge49dd6f">
+<p>
+Our goal is to predict the number of sales for each shop for November 2015 (based on the prior months). I'm going to make some very naive guesses here with some models that only use the prior dates and the target counts.
+</p>
+</div>
+</div>
+<div id="outline-container-org8432a62" class="outline-2">
+<h2 id="org8432a62">Imports</h2>
+<div class="outline-text-2" id="text-org8432a62">
+</div>
+<div id="outline-container-orgd603886" class="outline-3">
+<h3 id="orgd603886">Python Standard Library</h3>
+<div class="outline-text-3" id="text-orgd603886">
+<div class="highlight"><pre><span></span># python standard library
+import warnings
+import os
+import pickle
+</pre></div>
+</div>
+</div>
+
+<div id="outline-container-org198a91a" class="outline-3">
+<h3 id="org198a91a">Supress the Warnings</h3>
+<div class="outline-text-3" id="text-org198a91a">
+<div class="highlight"><pre><span></span>warnings.filterwarnings("ignore", message="numpy.dtype size changed")
+warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
+</pre></div>
+</div>
+</div>
+
+<div id="outline-container-orgbfe12c0" class="outline-3">
+<h3 id="orgbfe12c0">From pypi</h3>
+<div class="outline-text-3" id="text-orgbfe12c0">
+<div class="highlight"><pre><span></span>import numpy
+import pandas
+from sklearn.metrics import mean_squared_error
+from sklearn.model_selection import cross_val_score
+from sklearn.ensemble import RandomTreesRegressor
+from tabulate import tabulate
+</pre></div>
+</div>
+</div>
+
+<div id="outline-container-org589fa67" class="outline-3">
+<h3 id="org589fa67">This Project</h3>
+<div class="outline-text-3" id="text-org589fa67">
+<div class="highlight"><pre><span></span># this project
+from helpers.helpers import (
+    Helpers,
+    DataSource,
+    DataKeys,
+    Pickles,
+    )
+</pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-orgea2131d" class="outline-2">
+<h2 id="orgea2131d">Loading the Data</h2>
+<div class="outline-text-2" id="text-orgea2131d">
+<div class="highlight"><pre><span></span>x_train = Helpers.unpickle(Pickles.x_train)
+x_test = Helpers.unpickle(Pickles.x_test)
+y_train = Helpers.unpickle(Pickles.y_train)
+y_test = Helpers.unpickle(Pickles.y_test)
+</pre></div>
+
+<p>
+To make it easier to filter I'm going to combine the x and y data.
+</p>
+
+<div class="highlight"><pre><span></span>DataKeys.target = "Month Count"
+x_train[DataKeys.target] = y_train.values
+x_test[DataKeys.target] = y_test.values
+</pre></div>
+
+<div class="highlight"><pre><span></span>Helpers.print_head(x_train)
+</pre></div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-right">date_block_num</th>
+<th scope="col" class="org-right">shop_id</th>
+<th scope="col" class="org-right">item_id</th>
+<th scope="col" class="org-right">item_price</th>
+<th scope="col" class="org-right">item_category_id</th>
+<th scope="col" class="org-right">month</th>
+<th scope="col" class="org-right">year</th>
+<th scope="col" class="org-right">Month Count</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-right">11</td>
+<td class="org-right">15</td>
+<td class="org-right">1324</td>
+<td class="org-right">499</td>
+<td class="org-right">55</td>
+<td class="org-right">12</td>
+<td class="org-right">2013</td>
+<td class="org-right">1</td>
+</tr>
+<tr>
+<td class="org-right">18</td>
+<td class="org-right">31</td>
+<td class="org-right">19981</td>
+<td class="org-right">499</td>
+<td class="org-right">43</td>
+<td class="org-right">07</td>
+<td class="org-right">2014</td>
+<td class="org-right">2</td>
+</tr>
+<tr>
+<td class="org-right">32</td>
+<td class="org-right">28</td>
+<td class="org-right">7934</td>
+<td class="org-right">398</td>
+<td class="org-right">7</td>
+<td class="org-right">09</td>
+<td class="org-right">2015</td>
+<td class="org-right">1</td>
+</tr>
+<tr>
+<td class="org-right">12</td>
+<td class="org-right">43</td>
+<td class="org-right">13518</td>
+<td class="org-right">1499</td>
+<td class="org-right">19</td>
+<td class="org-right">01</td>
+<td class="org-right">2014</td>
+<td class="org-right">1</td>
+</tr>
+<tr>
+<td class="org-right">28</td>
+<td class="org-right">25</td>
+<td class="org-right">19927</td>
+<td class="org-right">329</td>
+<td class="org-right">57</td>
+<td class="org-right">05</td>
+<td class="org-right">2015</td>
+<td class="org-right">2</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="outline-container-orgaeb618d" class="outline-2">
+<h2 id="orgaeb618d">November Only</h2>
+<div class="outline-text-2" id="text-orgaeb618d">
+<p>
+What happens if we only use the month of November in the data?
+</p>
+
+<div class="highlight"><pre><span></span>training = x_train[x_train.month == "11"]
+</pre></div>
+
+<div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+<div id="outline-container-org7bd8d62" class="outline-2">
+<h2 id="org7bd8d62">The Linear Model</h2>
+<div class="outline-text-2" id="text-org7bd8d62">
+<p>
+What happens if we just use the default linear regression model? The first problem we have is that we have both non-numeric data and categorical data. I think removing the <code>item_name</code> variable seems reasonable at this point, since we have unique <code>item_id</code> values for each item, although it's possible that some text-mining might reveal something in the names, because this is just a naive approach that will use linear regression.
+</p>
+
+<div class="highlight"><pre><span></span>del(x_train[DataKeys.name])
+</pre></div>
+
+<div class="highlight"><pre><span></span>regression = linear_model.LinearRegression()
+regression.fit(x_train, y_train)
+</pre></div>
+</div>
+</div>
+    </div>
+    </article><article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/exploring-the-data/" class="u-url">Exploring The Data</a></h1>
         <div class="metadata">
             <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
                 Cloistered Monkey
@@ -94,24 +300,24 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="posts/exploring-the-data/#org0ee684d">Imports</a></li>
-<li><a href="posts/exploring-the-data/#org8af51fe">The Tangle</a></li>
-<li><a href="posts/exploring-the-data/#org6b4e49d">Helpers</a></li>
-<li><a href="posts/exploring-the-data/#org7cf0494">Constants</a></li>
-<li><a href="posts/exploring-the-data/#org749d6e3">The Files</a></li>
-<li><a href="posts/exploring-the-data/#org39c0786">Some Counts</a></li>
-<li><a href="posts/exploring-the-data/#org8be93ec">The Official Feature Descriptions</a></li>
-<li><a href="posts/exploring-the-data/#org019513e">The Training Set</a></li>
+<li><a href="posts/exploring-the-data/#orgb07d3b9">Imports</a></li>
+<li><a href="posts/exploring-the-data/#org31bfcb8">The Tangle</a></li>
+<li><a href="posts/exploring-the-data/#org064048c">Helpers</a></li>
+<li><a href="posts/exploring-the-data/#org2004370">Constants</a></li>
+<li><a href="posts/exploring-the-data/#orgd235e10">The Files</a></li>
+<li><a href="posts/exploring-the-data/#org833738b">Some Counts</a></li>
+<li><a href="posts/exploring-the-data/#org800b196">The Official Feature Descriptions</a></li>
+<li><a href="posts/exploring-the-data/#orga38eae2">The Training Set</a></li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org0ee684d" class="outline-2">
-<h2 id="org0ee684d">Imports</h2>
-<div class="outline-text-2" id="text-org0ee684d">
+<div id="outline-container-orgb07d3b9" class="outline-2">
+<h2 id="orgb07d3b9">Imports</h2>
+<div class="outline-text-2" id="text-orgb07d3b9">
 </div>
-<div id="outline-container-org445967f" class="outline-3">
-<h3 id="org445967f">Suppressing the Numpy Warnings</h3>
-<div class="outline-text-3" id="text-org445967f">
+<div id="outline-container-orge5b7c54" class="outline-3">
+<h3 id="orge5b7c54">Suppressing the Numpy Warnings</h3>
+<div class="outline-text-3" id="text-orge5b7c54">
 <p>
 When you import pandas you get some warnings:
 </p>
@@ -134,9 +340,9 @@ According to <a href="https://stackoverflow.com/questions/40845304/runtimewarnin
 </div>
 </div>
 
-<div id="outline-container-org2832107" class="outline-3">
-<h3 id="org2832107">The rest of the imports</h3>
-<div class="outline-text-3" id="text-org2832107">
+<div id="outline-container-orgab12393" class="outline-3">
+<h3 id="orgab12393">The rest of the imports</h3>
+<div class="outline-text-3" id="text-orgab12393">
 <div class="highlight"><pre><span></span><span class="c1"># python standard library</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">pickle</span>
@@ -155,17 +361,17 @@ According to <a href="https://stackoverflow.com/questions/40845304/runtimewarnin
 </p>
 </div>
 </div>
-<div id="outline-container-orgd50493f" class="outline-3">
-<h3 id="orgd50493f">This is used for the tangle</h3>
-<div class="outline-text-3" id="text-orgd50493f">
+<div id="outline-container-org4efb297" class="outline-3">
+<h3 id="org4efb297">This is used for the tangle</h3>
+<div class="outline-text-3" id="text-org4efb297">
 <div class="highlight"><pre><span></span><span class="c1"># from pypi</span>
 <span class="kn">from</span> <span class="nn">tabulate</span> <span class="kn">import</span> <span class="n">tabulate</span>
 </pre></div>
 </div>
 </div>
-<div id="outline-container-org1bcd3df" class="outline-3">
-<h3 id="org1bcd3df">Set up the plotting</h3>
-<div class="outline-text-3" id="text-org1bcd3df">
+<div id="outline-container-orgc204fe5" class="outline-3">
+<h3 id="orgc204fe5">Set up the plotting</h3>
+<div class="outline-text-3" id="text-orgc204fe5">
 <div class="highlight"><pre><span></span>% matplotlib inline
 seaborn.set_style("whitegrid")
 </pre></div>
@@ -173,18 +379,18 @@ seaborn.set_style("whitegrid")
 </div>
 </div>
 
-<div id="outline-container-org8af51fe" class="outline-2">
-<h2 id="org8af51fe">The Tangle</h2>
-<div class="outline-text-2" id="text-org8af51fe">
+<div id="outline-container-org31bfcb8" class="outline-2">
+<h2 id="org31bfcb8">The Tangle</h2>
+<div class="outline-text-2" id="text-org31bfcb8">
 <p>
 Exports so some of this can be re-used.
 </p>
 </div>
 </div>
 
-<div id="outline-container-org6b4e49d" class="outline-2">
-<h2 id="org6b4e49d">Helpers</h2>
-<div class="outline-text-2" id="text-org6b4e49d">
+<div id="outline-container-org064048c" class="outline-2">
+<h2 id="org064048c">Helpers</h2>
+<div class="outline-text-2" id="text-org064048c">
 <p>
 Just some functions that keep coming up.
 </p>
@@ -263,16 +469,16 @@ Just some functions that keep coming up.
 </div>
 </div>
 
-<div id="outline-container-org7cf0494" class="outline-2">
-<h2 id="org7cf0494">Constants</h2>
-<div class="outline-text-2" id="text-org7cf0494">
+<div id="outline-container-org2004370" class="outline-2">
+<h2 id="org2004370">Constants</h2>
+<div class="outline-text-2" id="text-org2004370">
 <p>
 As always, I'll try to put constants in the same place.
 </p>
 </div>
-<div id="outline-container-org64be644" class="outline-3">
-<h3 id="org64be644">Data Names</h3>
-<div class="outline-text-3" id="text-org64be644">
+<div id="outline-container-org89888c4" class="outline-3">
+<h3 id="org89888c4">Data Names</h3>
+<div class="outline-text-3" id="text-org89888c4">
 <p>
 This is just a re-mapping of the file-names since I keep forgetting them.
 </p>
@@ -287,9 +493,9 @@ This is just a re-mapping of the file-names since I keep forgetting them.
 </div>
 </div>
 
-<div id="outline-container-org393abec" class="outline-3">
-<h3 id="org393abec">Data Source</h3>
-<div class="outline-text-3" id="text-org393abec">
+<div id="outline-container-orge0db2d3" class="outline-3">
+<h3 id="orge0db2d3">Data Source</h3>
+<div class="outline-text-3" id="text-orge0db2d3">
 <div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">DataSource</span><span class="p">:</span>
     <span class="sd">"""Strings for the files</span>
 
@@ -355,9 +561,9 @@ This is just a re-mapping of the file-names since I keep forgetting them.
 </div>
 </div>
 
-<div id="outline-container-org4b211b0" class="outline-3">
-<h3 id="org4b211b0">Data Keys</h3>
-<div class="outline-text-3" id="text-org4b211b0">
+<div id="outline-container-orgea1cad0" class="outline-3">
+<h3 id="orgea1cad0">Data Keys</h3>
+<div class="outline-text-3" id="text-orgea1cad0">
 <div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">DataKeys</span><span class="p">:</span>
     <span class="sd">"""Column names/keys for the data."""</span>
     <span class="n">item_category</span> <span class="o">=</span> <span class="s2">"item_category_id"</span>
@@ -381,9 +587,9 @@ This is just a re-mapping of the file-names since I keep forgetting them.
 </div>
 </div>
 
-<div id="outline-container-org749d6e3" class="outline-2">
-<h2 id="org749d6e3">The Files</h2>
-<div class="outline-text-2" id="text-org749d6e3">
+<div id="outline-container-orgd235e10" class="outline-2">
+<h2 id="orgd235e10">The Files</h2>
+<div class="outline-text-2" id="text-orgd235e10">
 <p>
 These are the files we are given.
 </p>
@@ -416,9 +622,9 @@ I was originally thinking I would need to unzip the gzipped files but apparently
 </pre></div>
 </div>
 
-<div id="outline-container-org446d5f8" class="outline-3">
-<h3 id="org446d5f8">item_categories.csv</h3>
-<div class="outline-text-3" id="text-org446d5f8">
+<div id="outline-container-org4d7b284" class="outline-3">
+<h3 id="org4d7b284">item_categories.csv</h3>
+<div class="outline-text-3" id="text-org4d7b284">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-left">
@@ -464,9 +670,9 @@ None
 </div>
 </div>
 
-<div id="outline-container-org82beb4a" class="outline-3">
-<h3 id="org82beb4a">items.csv</h3>
-<div class="outline-text-3" id="text-org82beb4a">
+<div id="outline-container-org9260186" class="outline-3">
+<h3 id="org9260186">items.csv</h3>
+<div class="outline-text-3" id="text-org9260186">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-left">
@@ -520,9 +726,9 @@ None
 </div>
 </div>
 
-<div id="outline-container-org14aa6d5" class="outline-3">
-<h3 id="org14aa6d5">sales_train.csv.gz</h3>
-<div class="outline-text-3" id="text-org14aa6d5">
+<div id="outline-container-org7e87e9d" class="outline-3">
+<h3 id="org7e87e9d">sales_train.csv.gz</h3>
+<div class="outline-text-3" id="text-org7e87e9d">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-right">
@@ -600,9 +806,9 @@ None
 </div>
 </div>
 
-<div id="outline-container-orgd967f54" class="outline-3">
-<h3 id="orgd967f54">sample_submission.csv.gz</h3>
-<div class="outline-text-3" id="text-orgd967f54">
+<div id="outline-container-org4485070" class="outline-3">
+<h3 id="org4485070">sample_submission.csv.gz</h3>
+<div class="outline-text-3" id="text-org4485070">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-right">
@@ -648,9 +854,9 @@ None
 </div>
 </div>
 
-<div id="outline-container-org609b7ac" class="outline-3">
-<h3 id="org609b7ac">shops.csv</h3>
-<div class="outline-text-3" id="text-org609b7ac">
+<div id="outline-container-org1359463" class="outline-3">
+<h3 id="org1359463">shops.csv</h3>
+<div class="outline-text-3" id="text-org1359463">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-left">
@@ -696,9 +902,9 @@ None
 </div>
 </div>
 
-<div id="outline-container-org8a88d1c" class="outline-3">
-<h3 id="org8a88d1c">test.csv.gz</h3>
-<div class="outline-text-3" id="text-org8a88d1c">
+<div id="outline-container-orgfa1027f" class="outline-3">
+<h3 id="orgfa1027f">test.csv.gz</h3>
+<div class="outline-text-3" id="text-orgfa1027f">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-right">
@@ -753,13 +959,13 @@ None
 </div>
 </div>
 
-<div id="outline-container-org39c0786" class="outline-2">
-<h2 id="org39c0786">Some Counts</h2>
-<div class="outline-text-2" id="text-org39c0786">
+<div id="outline-container-org833738b" class="outline-2">
+<h2 id="org833738b">Some Counts</h2>
+<div class="outline-text-2" id="text-org833738b">
 </div>
-<div id="outline-container-org8dfba4f" class="outline-3">
-<h3 id="org8dfba4f">How much data is there in the training set?</h3>
-<div class="outline-text-3" id="text-org8dfba4f">
+<div id="outline-container-org9575a88" class="outline-3">
+<h3 id="org9575a88">How much data is there in the training set?</h3>
+<div class="outline-text-3" id="text-org9575a88">
 <div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s2">"There are {:,} rows in the training set."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">frames</span><span class="p">[</span><span class="n">data_source</span><span class="o">.</span><span class="n">sales_train</span><span class="p">])))</span>
 </pre></div>
 
@@ -769,9 +975,9 @@ There are 2,935,849 rows in the training set.
 </div>
 </div>
 
-<div id="outline-container-orgf502243" class="outline-3">
-<h3 id="orgf502243">How many shops are there?</h3>
-<div class="outline-text-3" id="text-orgf502243">
+<div id="outline-container-orgb808f4f" class="outline-3">
+<h3 id="orgb808f4f">How many shops are there?</h3>
+<div class="outline-text-3" id="text-orgb808f4f">
 <div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s2">"There are {} shops."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">frames</span><span class="p">[</span><span class="n">data_source</span><span class="o">.</span><span class="n">shops</span><span class="p">])))</span>
 </pre></div>
 
@@ -781,9 +987,9 @@ There are 60 shops.
 </div>
 </div>
 
-<div id="outline-container-org8a69099" class="outline-3">
-<h3 id="org8a69099">How Many Items Are There?</h3>
-<div class="outline-text-3" id="text-org8a69099">
+<div id="outline-container-org0d83c2f" class="outline-3">
+<h3 id="org0d83c2f">How Many Items Are There?</h3>
+<div class="outline-text-3" id="text-org0d83c2f">
 <div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s2">"There are {:,} items."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">frames</span><span class="p">[</span><span class="n">data_source</span><span class="o">.</span><span class="n">items</span><span class="p">])))</span>
 </pre></div>
 
@@ -793,9 +999,9 @@ There are 22,170 items.
 </div>
 </div>
 
-<div id="outline-container-org0d8b21c" class="outline-3">
-<h3 id="org0d8b21c">How Many Item Categories are there?</h3>
-<div class="outline-text-3" id="text-org0d8b21c">
+<div id="outline-container-org675d7f9" class="outline-3">
+<h3 id="org675d7f9">How Many Item Categories are there?</h3>
+<div class="outline-text-3" id="text-org675d7f9">
 <div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s2">"There are {:,} categories."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">frames</span><span class="p">[</span><span class="n">data_source</span><span class="o">.</span><span class="n">item_categories</span><span class="p">])))</span>
 </pre></div>
 
@@ -805,9 +1011,9 @@ There are 84 categories.
 </div>
 </div>
 
-<div id="outline-container-org1d47463" class="outline-3">
-<h3 id="org1d47463">How many date-blocks are there?</h3>
-<div class="outline-text-3" id="text-org1d47463">
+<div id="outline-container-orgb46d8d2" class="outline-3">
+<h3 id="orgb46d8d2">How many date-blocks are there?</h3>
+<div class="outline-text-3" id="text-orgb46d8d2">
 <div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s2">"There are {} date-blocks."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
     <span class="nb">len</span><span class="p">(</span><span class="n">frames</span><span class="p">[</span><span class="n">data_source</span><span class="o">.</span><span class="n">sales_train</span><span class="p">][</span><span class="n">DataKeys</span><span class="o">.</span><span class="n">date_block</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())))</span>
 </pre></div>
@@ -819,9 +1025,9 @@ There are 34 date-blocks.
 </div>
 </div>
 
-<div id="outline-container-org8be93ec" class="outline-2">
-<h2 id="org8be93ec">The Official Feature Descriptions</h2>
-<div class="outline-text-2" id="text-org8be93ec">
+<div id="outline-container-org800b196" class="outline-2">
+<h2 id="org800b196">The Official Feature Descriptions</h2>
+<div class="outline-text-2" id="text-org800b196">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-left">
@@ -881,9 +1087,9 @@ There are 34 date-blocks.
 </div>
 </div>
 
-<div id="outline-container-org019513e" class="outline-2">
-<h2 id="org019513e">The Training Set</h2>
-<div class="outline-text-2" id="text-org019513e">
+<div id="outline-container-orga38eae2" class="outline-2">
+<h2 id="orga38eae2">The Training Set</h2>
+<div class="outline-text-2" id="text-orga38eae2">
 <div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="n">frames</span><span class="p">[</span><span class="n">data_source</span><span class="o">.</span><span class="n">sales_train</span><span class="p">]</span><span class="o">.</span><span class="n">dtypes</span><span class="p">)</span>
 </pre></div>
 
@@ -898,9 +1104,9 @@ dtype: object
 </p>
 </div>
 
-<div id="outline-container-orge4364c1" class="outline-3">
-<h3 id="orge4364c1">Numeric Features</h3>
-<div class="outline-text-3" id="text-orge4364c1">
+<div id="outline-container-org1e9fe21" class="outline-3">
+<h3 id="org1e9fe21">Numeric Features</h3>
+<div class="outline-text-3" id="text-org1e9fe21">
 <div class="highlight"><pre><span></span><span class="n">Helpers</span><span class="o">.</span><span class="n">print_table</span><span class="p">(</span><span class="n">frames</span><span class="p">[</span><span class="n">data_source</span><span class="o">.</span><span class="n">sales_train</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">number</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
 </pre></div>
 
@@ -988,9 +1194,9 @@ dtype: object
 </div>
 </div>
 
-<div id="outline-container-orgb869d73" class="outline-3">
-<h3 id="orgb869d73">Categorical Features</h3>
-<div class="outline-text-3" id="text-orgb869d73">
+<div id="outline-container-orgadb1021" class="outline-3">
+<h3 id="orgadb1021">Categorical Features</h3>
+<div class="outline-text-3" id="text-orgadb1021">
 <div class="highlight"><pre><span></span><span class="n">Helpers</span><span class="o">.</span><span class="n">print_table</span><span class="p">(</span><span class="n">frames</span><span class="p">[</span><span class="n">data_source</span><span class="o">.</span><span class="n">sales_train</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">object</span><span class="p">,</span> <span class="n">pandas</span><span class="o">.</span><span class="n">Categorical</span><span class="p">])</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
 </pre></div>
 
@@ -1033,10 +1239,10 @@ dtype: object
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="posts/set-up-the-kaggle-command-line-command/#org615e90f">Install the Command</a></li>
-<li><a href="posts/set-up-the-kaggle-command-line-command/#org91e3109">Get Your Credentials</a></li>
-<li><a href="posts/set-up-the-kaggle-command-line-command/#org2df4a2d">Test it out</a></li>
-<li><a href="posts/set-up-the-kaggle-command-line-command/#org27c7035">The Actual API</a></li>
+<li><a href="posts/set-up-the-kaggle-command-line-command/#orgf916dcb">Install the Command</a></li>
+<li><a href="posts/set-up-the-kaggle-command-line-command/#orgf809151">Get Your Credentials</a></li>
+<li><a href="posts/set-up-the-kaggle-command-line-command/#orged9d3dc">Test it out</a></li>
+<li><a href="posts/set-up-the-kaggle-command-line-command/#org04f634a">The Actual API</a></li>
 </ul>
 </div>
 </div>
@@ -1045,9 +1251,9 @@ dtype: object
 These are my notes as I set up the command-line interface. The official instructions are in the <a href="https://github.com/Kaggle/kaggle-api">README on github</a>.
 </p>
 
-<div id="outline-container-org615e90f" class="outline-2">
-<h2 id="org615e90f">Install the Command</h2>
-<div class="outline-text-2" id="text-org615e90f">
+<div id="outline-container-orgf916dcb" class="outline-2">
+<h2 id="orgf916dcb">Install the Command</h2>
+<div class="outline-text-2" id="text-orgf916dcb">
 <p>
 The code is available through <a href="https://pypi.org/project/kaggle/">pypi</a> so you can install it through pip. Their instructions say to install it at the user-level but I'm doing it in a <code>virtualenv</code> so that actually doesn't work for me, instead I did a regular <code>pip</code> install (after installing <code>wheel</code>).
 </p>
@@ -1058,13 +1264,13 @@ pip install kaggle
 </div>
 </div>
 
-<div id="outline-container-org91e3109" class="outline-2">
-<h2 id="org91e3109">Get Your Credentials</h2>
-<div class="outline-text-2" id="text-org91e3109">
+<div id="outline-container-orgf809151" class="outline-2">
+<h2 id="orgf809151">Get Your Credentials</h2>
+<div class="outline-text-2" id="text-orgf809151">
 </div>
-<div id="outline-container-org003b2cb" class="outline-3">
-<h3 id="org003b2cb">Download the JSON File From Kaggle</h3>
-<div class="outline-text-3" id="text-org003b2cb">
+<div id="outline-container-org5e1aad4" class="outline-3">
+<h3 id="org5e1aad4">Download the JSON File From Kaggle</h3>
+<div class="outline-text-3" id="text-org5e1aad4">
 <p>
 Log in to your kaggle account and click on the <i>Account</i> menu (it's hidden until you hover over the drop-down widget).
 </p>
@@ -1094,9 +1300,9 @@ This will start a file download, if it prompts you save it to your computer.
 </div>
 </div>
 
-<div id="outline-container-orga2349fb" class="outline-3">
-<h3 id="orga2349fb">Set Up the File</h3>
-<div class="outline-text-3" id="text-orga2349fb">
+<div id="outline-container-org5075256" class="outline-3">
+<h3 id="org5075256">Set Up the File</h3>
+<div class="outline-text-3" id="text-org5075256">
 <p>
 Store this file in a folder named <code>.kaggle</code>.
 </p>
@@ -1129,9 +1335,9 @@ The instructions say you could also export the values as environment variables, 
 </div>
 </div>
 
-<div id="outline-container-org2df4a2d" class="outline-2">
-<h2 id="org2df4a2d">Test it out</h2>
-<div class="outline-text-2" id="text-org2df4a2d">
+<div id="outline-container-orged9d3dc" class="outline-2">
+<h2 id="orged9d3dc">Test it out</h2>
+<div class="outline-text-2" id="text-orged9d3dc">
 <p>
 It's a python command that uses the basic help system you would expect if you've used python command-line programs before.
 </p>
@@ -1167,17 +1373,17 @@ kaggle competitions download -c competitive-data-science-final-project data
 </pre>
 </div>
 </div>
-<div id="outline-container-org27c7035" class="outline-2">
-<h2 id="org27c7035">The Actual API</h2>
-<div class="outline-text-2" id="text-org27c7035">
+<div id="outline-container-org04f634a" class="outline-2">
+<h2 id="org04f634a">The Actual API</h2>
+<div class="outline-text-2" id="text-org04f634a">
 <p>
 If you look under the hood the command is just doing REST calls. To make it programattic you could probably use <a href="http://docs.python-requests.org/en/master/">requests</a> or something similar to interact with it directly. You can see the calls you need to make by looking at the <a href="https://github.com/Kaggle/kaggle-api/blob/master/KaggleSwagger.yaml">swagger file</a>.
 </p>
 </div>
 
-<div id="outline-container-orgdbc496b" class="outline-3">
-<h3 id="orgdbc496b">How the CLI does it</h3>
-<div class="outline-text-3" id="text-orgdbc496b">
+<div id="outline-container-org935e91c" class="outline-3">
+<h3 id="org935e91c">How the CLI does it</h3>
+<div class="outline-text-3" id="text-org935e91c">
 <p>
 If you look in the <code>kaggle.__init__.py</code> file in the repository you'll see these imports.
 </p>
@@ -1209,29 +1415,29 @@ api.competition_download_cli(competition=None, competition_opt="competitive-data
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="posts/the-competition/#orgcf9f54b">What is this about?</a></li>
-<li><a href="posts/the-competition/#org33bed42">What is the data made up of?</a></li>
-<li><a href="posts/the-competition/#org4a427b6">How will you be evaluated?</a></li>
+<li><a href="posts/the-competition/#org24965bb">What is this about?</a></li>
+<li><a href="posts/the-competition/#orgb65d602">What is the data made up of?</a></li>
+<li><a href="posts/the-competition/#org97dfa17">How will you be evaluated?</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orgcf9f54b" class="outline-2">
-<h2 id="orgcf9f54b">What is this about?</h2>
-<div class="outline-text-2" id="text-orgcf9f54b">
+<div id="outline-container-org24965bb" class="outline-2">
+<h2 id="org24965bb">What is this about?</h2>
+<div class="outline-text-2" id="text-org24965bb">
 <p>
 This is about the <a href="https://www.kaggle.com/c/competitive-data-science-final-project">kaggle competition</a> to predict future sales based on prior sale data. You are given a data set made up of prior sales and asked to predict how much each product will sell over the next month.
 </p>
 </div>
 </div>
 
-<div id="outline-container-org33bed42" class="outline-2">
-<h2 id="org33bed42">What is the data made up of?</h2>
-<div class="outline-text-2" id="text-org33bed42">
+<div id="outline-container-orgb65d602" class="outline-2">
+<h2 id="orgb65d602">What is the data made up of?</h2>
+<div class="outline-text-2" id="text-orgb65d602">
 </div>
-<div id="outline-container-org405beab" class="outline-3">
-<h3 id="org405beab">The Source</h3>
-<div class="outline-text-3" id="text-org405beab">
+<div id="outline-container-orgd2f2771" class="outline-3">
+<h3 id="orgd2f2771">The Source</h3>
+<div class="outline-text-3" id="text-orgd2f2771">
 <p>
 The data comes from the <a href="http://1c.ru/eng/title.htm">1C Company</a>, a Russian company that describes themselves on their website like this.
 </p>
@@ -1252,9 +1458,9 @@ At present 8000 dealers from 600 cities cooperate with 1C. About 7500 teams cons
 </div>
 </div>
 
-<div id="outline-container-org49a65fd" class="outline-3">
-<h3 id="org49a65fd">Getting it</h3>
-<div class="outline-text-3" id="text-org49a65fd">
+<div id="outline-container-org1912df5" class="outline-3">
+<h3 id="org1912df5">Getting it</h3>
+<div class="outline-text-3" id="text-org1912df5">
 <p>
 It looks like the data-set is the same one that I used for the Pandas example, but I'll download it anyway to be safe.
 </p>
@@ -1266,9 +1472,9 @@ kaggle competitions download competitive-data-science-final-project --path data
 </div>
 </div>
 
-<div id="outline-container-org3580325" class="outline-3">
-<h3 id="org3580325">The Description</h3>
-<div class="outline-text-3" id="text-org3580325">
+<div id="outline-container-org26c7487" class="outline-3">
+<h3 id="org26c7487">The Description</h3>
+<div class="outline-text-3" id="text-org26c7487">
 <blockquote>
 <p>
 You are provided with daily historical sales data. The task is to forecast the total amount of products sold in every shop for the test set. Note that the list of shops and products slightly changes every month. Creating a robust model that can handle such situations is part of the challenge.
@@ -1277,9 +1483,9 @@ You are provided with daily historical sales data. The task is to forecast the t
 </div>
 
 
-<div id="outline-container-orgc417592" class="outline-4">
-<h4 id="orgc417592">Files</h4>
-<div class="outline-text-4" id="text-orgc417592">
+<div id="outline-container-org537f85e" class="outline-4">
+<h4 id="org537f85e">Files</h4>
+<div class="outline-text-4" id="text-org537f85e">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-left">
@@ -1320,9 +1526,9 @@ You are provided with daily historical sales data. The task is to forecast the t
 </div>
 
 
-<div id="outline-container-org21c0d90" class="outline-4">
-<h4 id="org21c0d90">Features</h4>
-<div class="outline-text-4" id="text-org21c0d90">
+<div id="outline-container-org3ca0c2e" class="outline-4">
+<h4 id="org3ca0c2e">Features</h4>
+<div class="outline-text-4" id="text-org3ca0c2e">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-left">
@@ -1384,13 +1590,13 @@ You are provided with daily historical sales data. The task is to forecast the t
 </div>
 </div>
 
-<div id="outline-container-org4a427b6" class="outline-2">
-<h2 id="org4a427b6">How will you be evaluated?</h2>
-<div class="outline-text-2" id="text-org4a427b6">
+<div id="outline-container-org97dfa17" class="outline-2">
+<h2 id="org97dfa17">How will you be evaluated?</h2>
+<div class="outline-text-2" id="text-org97dfa17">
 </div>
-<div id="outline-container-org347dc2e" class="outline-3">
-<h3 id="org347dc2e">Submission Format</h3>
-<div class="outline-text-3" id="text-org347dc2e">
+<div id="outline-container-org1180993" class="outline-3">
+<h3 id="org1180993">Submission Format</h3>
+<div class="outline-text-3" id="text-org1180993">
 <p>
 You will submit a comma-separated file with two columns, the product ID and the total number of sales. It should look like this.
 </p>
@@ -1404,17 +1610,17 @@ ID,item_cnt_month
 </div>
 </div>
 
-<div id="outline-container-org7d3bf4f" class="outline-3">
-<h3 id="org7d3bf4f">Scoring</h3>
-<div class="outline-text-3" id="text-org7d3bf4f">
+<div id="outline-container-org913128b" class="outline-3">
+<h3 id="org913128b">Scoring</h3>
+<div class="outline-text-3" id="text-org913128b">
 <p>
 You will be scored base on the <a href="https://en.wikipedia.org/wiki/Root-mean-square_deviation">Root Mean Square Error (RMSE)</a>. The page says that the true target values are clipped to the <code>[0,20]</code> range and the example given shows <code>0.5</code> as the <code>item_cnt_month</code> values, neither of which makes any sense to me at the moment.
 </p>
 </div>
 </div>
-<div id="outline-container-org1a56c84" class="outline-3">
-<h3 id="org1a56c84">The meaning of the target</h3>
-<div class="outline-text-3" id="text-org1a56c84">
+<div id="outline-container-orgf42bf0b" class="outline-3">
+<h3 id="orgf42bf0b">The meaning of the target</h3>
+<div class="outline-text-3" id="text-orgf42bf0b">
 <p>
 According to <a href="https://www.kaggle.com/c/competitive-data-science-final-project/discussion/48251">this thread</a> you need to <a href="https://docs.scipy.org/doc/numpy-1.13.0/reference/generated/numpy.clip.html">clip</a> the predictions back to that range (make anything less than zero a zero and anything more than twenty a twenty).
 </p>
@@ -1434,19 +1640,19 @@ According to <a href="https://www.kaggle.com/c/competitive-data-science-final-pr
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="posts/feature-preprocessing/#org02e9aab">Preprocessing</a></li>
-<li><a href="posts/feature-preprocessing/#orgd328052">Numeric Feature Preprocessing</a></li>
-<li><a href="posts/feature-preprocessing/#orgb26fe51">Categorical And Ordinal Features</a></li>
-<li><a href="posts/feature-preprocessing/#org9e98319">Dates and Times</a></li>
-<li><a href="posts/feature-preprocessing/#org6778d35">Coordinates</a></li>
-<li><a href="posts/feature-preprocessing/#orgc44ddc3">Missing Data</a></li>
-<li><a href="posts/feature-preprocessing/#orgd645cf5">Links</a></li>
+<li><a href="posts/feature-preprocessing/#orge84bc68">Preprocessing</a></li>
+<li><a href="posts/feature-preprocessing/#org9c3de85">Numeric Feature Preprocessing</a></li>
+<li><a href="posts/feature-preprocessing/#orga4c23fc">Categorical And Ordinal Features</a></li>
+<li><a href="posts/feature-preprocessing/#org056dcc2">Dates and Times</a></li>
+<li><a href="posts/feature-preprocessing/#org1db1b77">Coordinates</a></li>
+<li><a href="posts/feature-preprocessing/#orge87c8a8">Missing Data</a></li>
+<li><a href="posts/feature-preprocessing/#org4f27cf7">Links</a></li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org02e9aab" class="outline-2">
-<h2 id="org02e9aab">Preprocessing</h2>
-<div class="outline-text-2" id="text-org02e9aab">
+<div id="outline-container-orge84bc68" class="outline-2">
+<h2 id="orge84bc68">Preprocessing</h2>
+<div class="outline-text-2" id="text-orge84bc68">
 <p>
 In every competition you need to:
 </p>
@@ -1457,17 +1663,17 @@ In every competition you need to:
 </ul>
 </div>
 </div>
-<div id="outline-container-orgd328052" class="outline-2">
-<h2 id="orgd328052">Numeric Feature Preprocessing</h2>
-<div class="outline-text-2" id="text-orgd328052">
+<div id="outline-container-org9c3de85" class="outline-2">
+<h2 id="org9c3de85">Numeric Feature Preprocessing</h2>
+<div class="outline-text-2" id="text-org9c3de85">
 <p>
 Some models (e.g. Linear Classification) need you to convert numeric-looking data to categorical data. Tree-based models don't need pre-processing as much as non tree-based models do.
 </p>
 </div>
 
-<div id="outline-container-org53b35fd" class="outline-3">
-<h3 id="org53b35fd">Scaling</h3>
-<div class="outline-text-3" id="text-org53b35fd">
+<div id="outline-container-orgadbf40c" class="outline-3">
+<h3 id="orgadbf40c">Scaling</h3>
+<div class="outline-text-3" id="text-orgadbf40c">
 <p>
 If features have different value ranges then the model will  treat them differently.
 </p>
@@ -1481,18 +1687,18 @@ Scale the data to have a mean of 0 and a standard deviation of 1</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org5a81a46" class="outline-3">
-<h3 id="org5a81a46">Outliers</h3>
-<div class="outline-text-3" id="text-org5a81a46">
+<div id="outline-container-org8b5df0a" class="outline-3">
+<h3 id="org8b5df0a">Outliers</h3>
+<div class="outline-text-3" id="text-org8b5df0a">
 <ul class="org-ul">
 <li>Clip (<a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.clip.html">numpy.clip</a>)values to get rid of unusual values that mess with the model. (Winsorization)</li>
-<li>Rank Transform them (<a href="https://docs.scipy.org/doc/scipy-0.16.0/reference/generated/scipy.stats.rankdata.html">scipy.stats.rankdata</a>) so that they</li>
+<li>Rank Transform them (<a href="https://docs.scipy.org/doc/scipy-0.16.0/reference/generated/scipy.stats.rankdata.html">scipy.stats.rankdata</a>) so that they are ordered and have the same distance between them (they are uniformly distributed)</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org9a96563" class="outline-3">
-<h3 id="org9a96563">Transformation</h3>
-<div class="outline-text-3" id="text-org9a96563">
+<div id="outline-container-org8fb0405" class="outline-3">
+<h3 id="org8fb0405">Transformation</h3>
+<div class="outline-text-3" id="text-org8fb0405">
 <p>
 For linear models and neural networks, transforming the data can sometimes help.
 </p>
@@ -1504,9 +1710,9 @@ For linear models and neural networks, transforming the data can sometimes help.
 </ul>
 </div>
 </div>
-<div id="outline-container-org52607ae" class="outline-3">
-<h3 id="org52607ae">Feature Generation</h3>
-<div class="outline-text-3" id="text-org52607ae">
+<div id="outline-container-org1fc0f4e" class="outline-3">
+<h3 id="org1fc0f4e">Feature Generation</h3>
+<div class="outline-text-3" id="text-org1fc0f4e">
 <p>
 Sometimes you can convert separate columns to get new ones. This requires exploratory data analysis.
 </p>
@@ -1518,18 +1724,18 @@ Sometimes you can convert separate columns to get new ones. This requires explor
 </div>
 </div>
 
-<div id="outline-container-orgb26fe51" class="outline-2">
-<h2 id="orgb26fe51">Categorical And Ordinal Features</h2>
-<div class="outline-text-2" id="text-orgb26fe51">
+<div id="outline-container-orga4c23fc" class="outline-2">
+<h2 id="orga4c23fc">Categorical And Ordinal Features</h2>
+<div class="outline-text-2" id="text-orga4c23fc">
 <ul class="org-ul">
-<li>Ordinal Features have an ordering but even if they are labeled numerically (e.g. 1, 2, 3) they aren't numeric because there is no implication about the distance between each</li>
+<li>Ordinal Features have an ordering but even if they are labeled numerically (e.g. 1, 2, 3) they aren't numeric because there is no implication about the distance between them</li>
 <li>label and frequency encoding are commonly used for tree-based models</li>
 <li>one-hot encoding is more common for non-tree-based models</li>
 </ul>
 </div>
-<div id="outline-container-orgc322d7b" class="outline-3">
-<h3 id="orgc322d7b">Label Encoding</h3>
-<div class="outline-text-3" id="text-orgc322d7b">
+<div id="outline-container-org9d87ed2" class="outline-3">
+<h3 id="org9d87ed2">Label Encoding</h3>
+<div class="outline-text-3" id="text-org9d87ed2">
 <p>
 Some models need numeric values or numeric values that don't have implied ordering so you want to encode them.
 </p>
@@ -1544,22 +1750,23 @@ Encodes the labels in the order they appear. This makes more sense if there is a
 </ul>
 </div>
 </div>
-<div id="outline-container-org53bb997" class="outline-3">
-<h3 id="org53bb997">Frequency Encoding</h3>
-<div class="outline-text-3" id="text-org53bb997">
+<div id="outline-container-orgb92baa9" class="outline-3">
+<h3 id="orgb92baa9">Frequency Encoding</h3>
+<div class="outline-text-3" id="text-orgb92baa9">
 <p>
 Encode the values to a fraction of all the labels. Can work with linear models if the frequency is correlated with the target value.
 </p>
 <ul class="org-ul">
 <li><code>titanic.groupby("Embarked").size()/len(titanic)</code></li>
-<li><code>from scipy.stats import rankedata</code></li>
+<li>
+<code>from scipy.stats import rankedata</code> (<a href="https://docs.scipy.org/doc/scipy-0.16.0/reference/generated/scipy.stats.rankdata.html">rankedata</a>)</li>
 <li>More common with tree-based methods</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org8aed5ab" class="outline-3">
-<h3 id="org8aed5ab">One Hot Encoding</h3>
-<div class="outline-text-3" id="text-org8aed5ab">
+<div id="outline-container-orgf010430" class="outline-3">
+<h3 id="orgf010430">One Hot Encoding</h3>
+<div class="outline-text-3" id="text-orgf010430">
 <p>
 Creates one column for each label and puts a 1 in the column that matches. Works with both linear and tree-based models, but can be inefficient with tree-based models.
 </p>
@@ -1578,39 +1785,39 @@ Creates one column for each label and puts a 1 in the column that matches. Works
 </div>
 </div>
 </div>
-<div id="outline-container-org9e98319" class="outline-2">
-<h2 id="org9e98319">Dates and Times</h2>
-<div class="outline-text-2" id="text-org9e98319">
+<div id="outline-container-org056dcc2" class="outline-2">
+<h2 id="org056dcc2">Dates and Times</h2>
+<div class="outline-text-2" id="text-org056dcc2">
 <p>
 When working with seasonal data, sometimes the relative date-stamps are more important than the actual dates (how close to Christmas?).
 Sometimes you want the time between events.
 </p>
 </div>
 </div>
-<div id="outline-container-org6778d35" class="outline-2">
-<h2 id="org6778d35">Coordinates</h2>
-<div class="outline-text-2" id="text-org6778d35">
+<div id="outline-container-org1db1b77" class="outline-2">
+<h2 id="org1db1b77">Coordinates</h2>
+<div class="outline-text-2" id="text-org1db1b77">
 <p>
 Sometimes you want exact coordinates, but most times you want distances to some center.
 </p>
 </div>
 </div>
-<div id="outline-container-orgc44ddc3" class="outline-2">
-<h2 id="orgc44ddc3">Missing Data</h2>
-<div class="outline-text-2" id="text-orgc44ddc3">
+<div id="outline-container-orge87c8a8" class="outline-2">
+<h2 id="orge87c8a8">Missing Data</h2>
+<div class="outline-text-2" id="text-orge87c8a8">
 <ul class="org-ul">
 <li>"missing" data might mean outliers - values that are probably wrong</li>
 <li>avoid replacing missing values before feature engineering - it can throw off what you do</li>
 <li>Gradient Boost Trees can handle isNaN, so you don't have to do anything</li>
 </ul>
 </div>
-<div id="outline-container-org064dc8f" class="outline-3">
-<h3 id="org064dc8f">Numeric</h3>
-<div class="outline-text-3" id="text-org064dc8f">
+<div id="outline-container-org7bbbbae" class="outline-3">
+<h3 id="org7bbbbae">Numeric</h3>
+<div class="outline-text-3" id="text-org7bbbbae">
 </div>
-<div id="outline-container-org1473416" class="outline-4">
-<h4 id="org1473416">Fill NA Approaches</h4>
-<div class="outline-text-4" id="text-org1473416">
+<div id="outline-container-orga0c3fa7" class="outline-4">
+<h4 id="orga0c3fa7">Fill NA Approaches</h4>
+<div class="outline-text-4" id="text-orga0c3fa7">
 <ul class="org-ul">
 <li>-999, -1, other numbers
 <ul class="org-ul">
@@ -1625,19 +1832,19 @@ Sometimes you want exact coordinates, but most times you want distances to some 
 <li>it is sometimes better to ignore missing data</li>
 </ul>
 </li>
-<li>recronstructed valud</li>
+<li>recronstructed value</li>
 </ul>
 </div>
 </div>
 </div>
 </div>
-<div id="outline-container-orgd645cf5" class="outline-2">
-<h2 id="orgd645cf5">Links</h2>
-<div class="outline-text-2" id="text-orgd645cf5">
+<div id="outline-container-org4f27cf7" class="outline-2">
+<h2 id="org4f27cf7">Links</h2>
+<div class="outline-text-2" id="text-org4f27cf7">
 </div>
-<div id="outline-container-org0e28f21" class="outline-3">
-<h3 id="org0e28f21">Feature Pre-processing</h3>
-<div class="outline-text-3" id="text-org0e28f21">
+<div id="outline-container-orgb167197" class="outline-3">
+<h3 id="orgb167197">Feature Pre-processing</h3>
+<div class="outline-text-3" id="text-orgb167197">
 <ul class="org-ul">
 <li><a href="http://scikit-learn.org/stable/modules/preprocessing.html">SKlearn's Preprocessing Documentation</a></li>
 <li><a href="https://www.coursera.org/learn/machine-learning/lecture/xx3Da/gradient-descent-in-practice-i-feature-scaling">Andrew Ng on Feature Scaling and its effect on Gradient Descent</a></li>
@@ -1645,9 +1852,9 @@ Sometimes you want exact coordinates, but most times you want distances to some 
 </ul>
 </div>
 </div>
-<div id="outline-container-org3b24ea9" class="outline-3">
-<h3 id="org3b24ea9">Feature Engineering</h3>
-<div class="outline-text-3" id="text-org3b24ea9">
+<div id="outline-container-orge3f8582" class="outline-3">
+<h3 id="orge3f8582">Feature Engineering</h3>
+<div class="outline-text-3" id="text-orge3f8582">
 <ul class="org-ul">
 <li><a href="https://machinelearningmastery.com/discover-feature-engineering-how-to-engineer-features-and-how-to-get-good-at-it/">Machine Learning Mastery on Feature Engineering</a></li>
 <li><a href="https://www.quora.com/What-are-some-best-practices-in-Feature-Engineering">Quora: What are some best practices in Feature Engineering?</a></li>
@@ -1668,52 +1875,52 @@ Sometimes you want exact coordinates, but most times you want distances to some 
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="posts/pandas-basics/#orgd99f624">Description</a></li>
-<li><a href="posts/pandas-basics/#org571f3bb">Pandas Functions and Methods Used</a></li>
-<li><a href="posts/pandas-basics/#orgee5c745">Imports</a></li>
-<li><a href="posts/pandas-basics/#org5867c2f">Confirmed</a></li>
-<li><a href="posts/pandas-basics/#orge840081">The Data</a></li>
+<li><a href="posts/pandas-basics/#orgb9fd8ad">Description</a></li>
+<li><a href="posts/pandas-basics/#org0950bd5">Pandas Functions and Methods Used</a></li>
+<li><a href="posts/pandas-basics/#org0def777">Imports</a></li>
+<li><a href="posts/pandas-basics/#org7dd298f">Confirmed</a></li>
+<li><a href="posts/pandas-basics/#orga6dcf12">The Data</a></li>
 <li>
-<a href="posts/pandas-basics/#org5ade478">Data Description</a>
+<a href="posts/pandas-basics/#org2987555">Data Description</a>
 <ul>
-<li><a href="posts/pandas-basics/#orgd8f2c37">File descriptions</a></li>
-<li><a href="posts/pandas-basics/#orgd123c34">Data Fields</a></li>
+<li><a href="posts/pandas-basics/#orgc12af71">File descriptions</a></li>
+<li><a href="posts/pandas-basics/#orgd5cea1a">Data Fields</a></li>
 </ul>
 </li>
 <li>
-<a href="posts/pandas-basics/#orgf474240">A Warm Up</a>
+<a href="posts/pandas-basics/#orge2ab55a">A Warm Up</a>
 <ul>
-<li><a href="posts/pandas-basics/#orgdba352f">transactions</a></li>
-<li><a href="posts/pandas-basics/#orge102f77">items</a></li>
-<li><a href="posts/pandas-basics/#org1775ea5">item_categories</a></li>
-<li><a href="posts/pandas-basics/#orgd395f4c">shops</a></li>
+<li><a href="posts/pandas-basics/#orgdde0059">transactions</a></li>
+<li><a href="posts/pandas-basics/#orgef2b492">items</a></li>
+<li><a href="posts/pandas-basics/#orgad3f50b">item_categories</a></li>
+<li><a href="posts/pandas-basics/#orgf83d365">shops</a></li>
 </ul>
 </li>
 <li>
-<a href="posts/pandas-basics/#org8a18f8b">Questions</a>
+<a href="posts/pandas-basics/#orgc3b67b3">Questions</a>
 <ul>
-<li><a href="posts/pandas-basics/#org91d7be2">Question 1: <b>What was the maximum total revenue among all the shops in September, 2014?</b></a></li>
-<li><a href="posts/pandas-basics/#org79e58e8">Question 2: <b>What item category generated the highest revenue in the Summer of 2014?</b></a></li>
-<li><a href="posts/pandas-basics/#orgf281da6">Question 3: <b>How many items have the same price throughout the data set?</b></a></li>
-<li><a href="posts/pandas-basics/#org61e053f">Question 4: <b>What was the variance of the number of items sold per day for shop 25 in December, 2014?</b></a></li>
+<li><a href="posts/pandas-basics/#orgcd130b1">Question 1: <b>What was the maximum total revenue among all the shops in September, 2014?</b></a></li>
+<li><a href="posts/pandas-basics/#orgd8bc788">Question 2: <b>What item category generated the highest revenue in the Summer of 2014?</b></a></li>
+<li><a href="posts/pandas-basics/#orged6f550">Question 3: <b>How many items have the same price throughout the data set?</b></a></li>
+<li><a href="posts/pandas-basics/#org43acb1d">Question 4: <b>What was the variance of the number of items sold per day for shop 25 in December, 2014?</b></a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orgd99f624" class="outline-2">
-<h2 id="orgd99f624">Description</h2>
-<div class="outline-text-2" id="text-orgd99f624">
+<div id="outline-container-orgb9fd8ad" class="outline-2">
+<h2 id="orgb9fd8ad">Description</h2>
+<div class="outline-text-2" id="text-orgb9fd8ad">
 <p>
 This is a review of Pandas' Basics with an emphasis on using <a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.groupby.html">groupby</a>.
 </p>
 </div>
 </div>
 
-<div id="outline-container-org571f3bb" class="outline-2">
-<h2 id="org571f3bb">Pandas Functions and Methods Used</h2>
-<div class="outline-text-2" id="text-org571f3bb">
+<div id="outline-container-org0950bd5" class="outline-2">
+<h2 id="org0950bd5">Pandas Functions and Methods Used</h2>
+<div class="outline-text-2" id="text-org0950bd5">
 <ul class="org-ul">
 <li><a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.describe.html"><code>describe</code></a></li>
 <li><a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.groupby.html"><code>groupby</code></a></li>
@@ -1731,9 +1938,9 @@ This is a review of Pandas' Basics with an emphasis on using <a href="https://pa
 </ul>
 </div>
 </div>
-<div id="outline-container-orgee5c745" class="outline-2">
-<h2 id="orgee5c745">Imports</h2>
-<div class="outline-text-2" id="text-orgee5c745">
+<div id="outline-container-org0def777" class="outline-2">
+<h2 id="org0def777">Imports</h2>
+<div class="outline-text-2" id="text-org0def777">
 <p>
 Here's our dependencies.
 </p>
@@ -1754,9 +1961,9 @@ Here's our dependencies.
 </pre></div>
 </div>
 </div>
-<div id="outline-container-org5867c2f" class="outline-2">
-<h2 id="org5867c2f">Confirmed</h2>
-<div class="outline-text-2" id="text-org5867c2f">
+<div id="outline-container-org7dd298f" class="outline-2">
+<h2 id="org7dd298f">Confirmed</h2>
+<div class="outline-text-2" id="text-org7dd298f">
 <p>
 These are values that we know to be correct so you can use them to check the outcomes.
 </p>
@@ -1771,9 +1978,9 @@ These are values that we know to be correct so you can use them to check the out
 </div>
 </div>
 
-<div id="outline-container-orge840081" class="outline-2">
-<h2 id="orge840081">The Data</h2>
-<div class="outline-text-2" id="text-orge840081">
+<div id="outline-container-orga6dcf12" class="outline-2">
+<h2 id="orga6dcf12">The Data</h2>
+<div class="outline-text-2" id="text-orga6dcf12">
 <p>
 We have four data-sets to load, all of them in csv format, although the file with all the transactions is compressed.
 </p>
@@ -1803,9 +2010,9 @@ The <code>frames</code> dictionary is just a convenience thing to make printing 
 </div>
 </div>
 
-<div id="outline-container-org5ade478" class="outline-2">
-<h2 id="org5ade478">Data Description</h2>
-<div class="outline-text-2" id="text-org5ade478">
+<div id="outline-container-org2987555" class="outline-2">
+<h2 id="org2987555">Data Description</h2>
+<div class="outline-text-2" id="text-org2987555">
 <p>
 The dataset we loaded is taken from a kaggle competititon. You can find complete data description at the <a href="https://www.kaggle.com/c/competitive-data-science-final-project/data">competition web page</a>. To join the competition use <a href="https://www.kaggle.com/t/1ea93815dca248e99221df42ebde3540">this link</a>. The descriptions below cover all the files, not just the ones we use here.
 </p>
@@ -1817,9 +2024,9 @@ You are provided with daily historical sales data from what appears to be a soft
 </blockquote>
 </div>
 
-<div id="outline-container-orgd8f2c37" class="outline-3">
-<h3 id="orgd8f2c37">File descriptions</h3>
-<div class="outline-text-3" id="text-orgd8f2c37">
+<div id="outline-container-orgc12af71" class="outline-3">
+<h3 id="orgc12af71">File descriptions</h3>
+<div class="outline-text-3" id="text-orgc12af71">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-left">
@@ -1859,9 +2066,9 @@ You are provided with daily historical sales data from what appears to be a soft
 </div>
 </div>
 
-<div id="outline-container-orgd123c34" class="outline-3">
-<h3 id="orgd123c34">Data Fields</h3>
-<div class="outline-text-3" id="text-orgd123c34">
+<div id="outline-container-orgd5cea1a" class="outline-3">
+<h3 id="orgd5cea1a">Data Fields</h3>
+<div class="outline-text-3" id="text-orgd5cea1a">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-left">
@@ -1922,9 +2129,9 @@ You are provided with daily historical sales data from what appears to be a soft
 </div>
 </div>
 
-<div id="outline-container-orgf474240" class="outline-2">
-<h2 id="orgf474240">A Warm Up</h2>
-<div class="outline-text-2" id="text-orgf474240">
+<div id="outline-container-orge2ab55a" class="outline-2">
+<h2 id="orge2ab55a">A Warm Up</h2>
+<div class="outline-text-2" id="text-orge2ab55a">
 <p>
 Let's start with a simple task. 
 </p>
@@ -1980,9 +2187,9 @@ Print the shape of the loaded dataframes and use the <a href="https://pandas.pyd
     <span class="k">print</span><span class="p">(</span><span class="n">tabulate</span><span class="p">(</span><span class="n">head</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="s2">"keys"</span><span class="p">,</span> <span class="n">tablefmt</span><span class="o">=</span><span class="s2">"orgtbl"</span><span class="p">,</span> <span class="n">showindex</span><span class="o">=</span><span class="bp">False</span><span class="p">))</span>
 </pre></div>
 </div>
-<div id="outline-container-orgdba352f" class="outline-3">
-<h3 id="orgdba352f">transactions</h3>
-<div class="outline-text-3" id="text-orgdba352f">
+<div id="outline-container-orgdde0059" class="outline-3">
+<h3 id="orgdde0059">transactions</h3>
+<div class="outline-text-3" id="text-orgdde0059">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-right">
@@ -2045,9 +2252,9 @@ Print the shape of the loaded dataframes and use the <a href="https://pandas.pyd
 </table>
 </div>
 </div>
-<div id="outline-container-orge102f77" class="outline-3">
-<h3 id="orge102f77">items</h3>
-<div class="outline-text-3" id="text-orge102f77">
+<div id="outline-container-orgef2b492" class="outline-3">
+<h3 id="orgef2b492">items</h3>
+<div class="outline-text-3" id="text-orgef2b492">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-left">
@@ -2089,9 +2296,9 @@ Print the shape of the loaded dataframes and use the <a href="https://pandas.pyd
 </table>
 </div>
 </div>
-<div id="outline-container-org1775ea5" class="outline-3">
-<h3 id="org1775ea5">item_categories</h3>
-<div class="outline-text-3" id="text-org1775ea5">
+<div id="outline-container-orgad3f50b" class="outline-3">
+<h3 id="orgad3f50b">item_categories</h3>
+<div class="outline-text-3" id="text-orgad3f50b">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-left">
@@ -2126,9 +2333,9 @@ Print the shape of the loaded dataframes and use the <a href="https://pandas.pyd
 </table>
 </div>
 </div>
-<div id="outline-container-orgd395f4c" class="outline-3">
-<h3 id="orgd395f4c">shops</h3>
-<div class="outline-text-3" id="text-orgd395f4c">
+<div id="outline-container-orgf83d365" class="outline-3">
+<h3 id="orgf83d365">shops</h3>
+<div class="outline-text-3" id="text-orgf83d365">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-left">
@@ -2168,14 +2375,14 @@ Unexpectedly, the names are all in <a href="https://en.wikipedia.org/wiki/Cyrill
 </div>
 </div>
 
-<div id="outline-container-org8a18f8b" class="outline-2">
-<h2 id="org8a18f8b">Questions</h2>
-<div class="outline-text-2" id="text-org8a18f8b">
+<div id="outline-container-orgc3b67b3" class="outline-2">
+<h2 id="orgc3b67b3">Questions</h2>
+<div class="outline-text-2" id="text-orgc3b67b3">
 </div>
-<div id="outline-container-org91d7be2" class="outline-3">
-<h3 id="org91d7be2">Question 1: <b>What was the maximum total revenue among all the shops in September, 2014?</b>
+<div id="outline-container-orgcd130b1" class="outline-3">
+<h3 id="orgcd130b1">Question 1: <b>What was the maximum total revenue among all the shops in September, 2014?</b>
 </h3>
-<div class="outline-text-3" id="text-org91d7be2">
+<div class="outline-text-3" id="text-orgcd130b1">
 <p>
 From here on out <b>revenue</b> refers to total sales minus value of goods returned.
 </p>
@@ -2187,13 +2394,13 @@ From here on out <b>revenue</b> refers to total sales minus value of goods retur
 </ul>
 </div>
 
-<div id="outline-container-orgb783586" class="outline-4">
-<h4 id="orgb783586">Answer</h4>
-<div class="outline-text-4" id="text-orgb783586">
+<div id="outline-container-org43765f1" class="outline-4">
+<h4 id="org43765f1">Answer</h4>
+<div class="outline-text-4" id="text-org43765f1">
 </div>
 <ul class="org-ul">
 <li>
-<a id="orge59bac5"></a>Sales Per Item<br><div class="outline-text-5" id="text-orge59bac5">
+<a id="org6f32140"></a>Sales Per Item<br><div class="outline-text-5" id="text-org6f32140">
 <p>
 First I'll add a column with the total revenue for each item (the \(price \times \textit{number sold}\)).
 </p>
@@ -2300,7 +2507,7 @@ First I'll add a column with the total revenue for each item (the \(price \times
 
 
 <li>
-<a id="org63df0a8"></a>Filter Out the Month<br><div class="outline-text-5" id="text-org63df0a8">
+<a id="org1233335"></a>Filter Out the Month<br><div class="outline-text-5" id="text-org1233335">
 <p>
 I was originally filtering using a regular expression, but the other questions use date-filtering too so I decided to create the extra day, month, and year columns once to avoid the extra regular expression overhead later on. The <a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.Series.str.extract.html"><code>str.extract</code></a> method uses python regular expression groups to pull out values and create columns in a DataFrame. If you use named expressions (as I do here) then it will use the names as the column-names in the dataframe.
 </p>
@@ -2619,10 +2826,10 @@ Highest Revenue Earned by a shop in September of 2014: $ 7,982,852.20
 </div>
 </div>
 
-<div id="outline-container-org79e58e8" class="outline-3">
-<h3 id="org79e58e8">Question 2: <b>What item category generated the highest revenue in the Summer of 2014?</b>
+<div id="outline-container-orgd8bc788" class="outline-3">
+<h3 id="orgd8bc788">Question 2: <b>What item category generated the highest revenue in the Summer of 2014?</b>
 </h3>
-<div class="outline-text-3" id="text-org79e58e8">
+<div class="outline-text-3" id="text-orgd8bc788">
 <ul class="org-ul">
 <li>Submit the <code>id</code> of the category found.</li>
 <li>Here we call "summer" the period from June to August.</li>
@@ -2635,9 +2842,9 @@ Highest Revenue Earned by a shop in September of 2014: $ 7,982,852.20
 Note, that for an object `x` of type `pd.Series`: `x.argmax()` returns <b><b>index</b></b> of the maximum element. `pd.Series` can have non-trivial index (not `[1, 2, 3, … ]`).
 </p>
 </div>
-<div id="outline-container-orgc158e04" class="outline-4">
-<h4 id="orgc158e04">Get the Summer months</h4>
-<div class="outline-text-4" id="text-orgc158e04">
+<div id="outline-container-orgd02af8a" class="outline-4">
+<h4 id="orgd02af8a">Get the Summer months</h4>
+<div class="outline-text-4" id="text-orgd02af8a">
 <p>
 To filter what we want I'll use the <a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.isin.html"><code>isin</code></a> method to remove every row that has a value that isn't in <code>Dates.summer</code>.
 </p>
@@ -2754,9 +2961,9 @@ To filter what we want I'll use the <a href="https://pandas.pydata.org/pandas-do
 </div>
 </div>
 
-<div id="outline-container-org707817f" class="outline-4">
-<h4 id="org707817f">Map in the Category IDs</h4>
-<div class="outline-text-4" id="text-org707817f">
+<div id="outline-container-orga3a013a" class="outline-4">
+<h4 id="orga3a013a">Map in the Category IDs</h4>
+<div class="outline-text-4" id="text-orga3a013a">
 <p>
 If you look at <code>items.item_id</code> you can see that the id's are really just the numerical index to the <code>items.item_category_id</code> series. I was originally add the category ids for all the transactions but it takes a long time so I'm just adding it to this group.
 </p>
@@ -2905,10 +3112,10 @@ Category Id with the Maximum Value: 20
 </div>
 </div>
 
-<div id="outline-container-orgf281da6" class="outline-3">
-<h3 id="orgf281da6">Question 3: <b>How many items have the same price throughout the data set?</b>
+<div id="outline-container-orged6f550" class="outline-3">
+<h3 id="orged6f550">Question 3: <b>How many items have the same price throughout the data set?</b>
 </h3>
-<div class="outline-text-3" id="text-orgf281da6">
+<div class="outline-text-3" id="text-orged6f550">
 <p>
 How many items are there, such that their price stays constant (to the best of our knowledge) during the whole period of time?
 </p>
@@ -2918,9 +3125,9 @@ Let's assume, that the items are returned for the same price as they had been so
 </p>
 </div>
 
-<div id="outline-container-orgbb20b94" class="outline-4">
-<h4 id="orgbb20b94">Isolate the ID and Price</h4>
-<div class="outline-text-4" id="text-orgbb20b94">
+<div id="outline-container-org8e9feea" class="outline-4">
+<h4 id="org8e9feea">Isolate the ID and Price</h4>
+<div class="outline-text-4" id="text-org8e9feea">
 <div class="highlight"><pre><span></span><span class="n">id_price</span> <span class="o">=</span> <span class="n">transactions</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="p">[</span><span class="s2">"item_id"</span><span class="p">,</span> <span class="s2">"item_price"</span><span class="p">]]</span>
 <span class="n">id_price</span><span class="p">[</span><span class="s2">"item_price"</span><span class="p">]</span> <span class="o">=</span> <span class="n">id_price</span><span class="o">.</span><span class="n">item_price</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span>
 <span class="n">group</span> <span class="o">=</span> <span class="n">id_price</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">"item_id"</span><span class="p">)</span>
@@ -2947,10 +3154,10 @@ Number of items whose price didn't change: 5926
 </div>
 </div>
 
-<div id="outline-container-org61e053f" class="outline-3">
-<h3 id="org61e053f">Question 4: <b>What was the variance of the number of items sold per day for shop 25 in December, 2014?</b>
+<div id="outline-container-org43acb1d" class="outline-3">
+<h3 id="org43acb1d">Question 4: <b>What was the variance of the number of items sold per day for shop 25 in December, 2014?</b>
 </h3>
-<div class="outline-text-3" id="text-org61e053f">
+<div class="outline-text-3" id="text-org43acb1d">
 <p>
 Remember, the data can sometimes be noisy.
 Do not count the items, that were sold but returned back later.
@@ -2964,9 +3171,9 @@ Do not count the items, that were sold but returned back later.
 </pre></div>
 </div>
 
-<div id="outline-container-orgfb1544b" class="outline-4">
-<h4 id="orgfb1544b">Filter to the Shop and Dates</h4>
-<div class="outline-text-4" id="text-orgfb1544b">
+<div id="outline-container-orgfe35ffb" class="outline-4">
+<h4 id="orgfe35ffb">Filter to the Shop and Dates</h4>
+<div class="outline-text-4" id="text-orgfe35ffb">
 <div class="highlight"><pre><span></span><span class="n">twenty_fives</span> <span class="o">=</span> <span class="n">twenty_fourteen</span><span class="p">[(</span><span class="n">transactions</span><span class="o">.</span><span class="n">shop_id</span><span class="o">==</span><span class="n">shop_id</span><span class="p">)</span>
 				<span class="o">&amp;</span> <span class="p">(</span><span class="n">transactions</span><span class="o">.</span><span class="n">month</span><span class="o">==</span><span class="n">Dates</span><span class="o">.</span><span class="n">december</span><span class="p">)]</span>
 <span class="k">print</span><span class="p">(</span><span class="n">tabulate</span><span class="p">(</span><span class="n">twenty_fives</span><span class="o">.</span><span class="n">head</span><span class="p">(),</span> <span class="n">headers</span><span class="o">=</span><span class="s1">'keys'</span><span class="p">,</span> <span class="n">tablefmt</span><span class="o">=</span><span class="s1">'orgtbl'</span><span class="p">))</span>
@@ -3071,9 +3278,9 @@ Do not count the items, that were sold but returned back later.
 </div>
 </div>
 
-<div id="outline-container-orga85c1c4" class="outline-4">
-<h4 id="orga85c1c4">Group by date</h4>
-<div class="outline-text-4" id="text-orga85c1c4">
+<div id="outline-container-orgc355b6c" class="outline-4">
+<h4 id="orgc355b6c">Group by date</h4>
+<div class="outline-text-4" id="text-orgc355b6c">
 <div class="highlight"><pre><span></span><span class="n">shop_grouped</span> <span class="o">=</span> <span class="n">twenty_fives</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">"date"</span><span class="p">)</span>
 <span class="n">count_per_day</span> <span class="o">=</span> <span class="n">shop_grouped</span><span class="o">.</span><span class="n">item_cnt_day</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 <span class="k">print</span><span class="p">(</span><span class="n">count_per_day</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
@@ -3092,9 +3299,9 @@ Name: item_cnt_day, dtype: float64
 </div>
 </div>
 
-<div id="outline-container-org9413ad7" class="outline-4">
-<h4 id="org9413ad7">Add a date-time to make it sortable for print</h4>
-<div class="outline-text-4" id="text-org9413ad7">
+<div id="outline-container-orgbb86b9f" class="outline-4">
+<h4 id="orgbb86b9f">Add a date-time to make it sortable for print</h4>
+<div class="outline-text-4" id="text-orgbb86b9f">
 <div class="highlight"><pre><span></span><span class="n">pandas</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">mode</span><span class="o">.</span><span class="n">chained_assignment</span> <span class="o">=</span> <span class="bp">None</span>
 <span class="n">count_per_day</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">count_per_day</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">format</span><span class="o">=</span><span class="s2">"</span><span class="si">%d</span><span class="s2">.%m.%Y"</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="n">count_per_day</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
@@ -3156,12 +3363,12 @@ Variance for items sold per day: 117167.70229885059
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="posts/will-a-gbdt-performance-drop-if-we-remove-the-first-tree/#orgaa1041c">Define the Sigmoid</a></li>
-<li><a href="posts/will-a-gbdt-performance-drop-if-we-remove-the-first-tree/#orgadc9caa">Make the dataset</a></li>
-<li><a href="posts/will-a-gbdt-performance-drop-if-we-remove-the-first-tree/#org3838d1c">A Decision Tree Classifier</a></li>
-<li><a href="posts/will-a-gbdt-performance-drop-if-we-remove-the-first-tree/#org9230eaf">A Gradient Boosting Classifier</a></li>
-<li><a href="posts/will-a-gbdt-performance-drop-if-we-remove-the-first-tree/#orgb1d899d">A More Realistic Data Set</a></li>
-<li><a href="posts/will-a-gbdt-performance-drop-if-we-remove-the-first-tree/#orgf80a937">Source</a></li>
+<li><a href="posts/will-a-gbdt-performance-drop-if-we-remove-the-first-tree/#orgdd7ea69">Define the Sigmoid</a></li>
+<li><a href="posts/will-a-gbdt-performance-drop-if-we-remove-the-first-tree/#org7e883ad">Make the dataset</a></li>
+<li><a href="posts/will-a-gbdt-performance-drop-if-we-remove-the-first-tree/#org539fa04">A Decision Tree Classifier</a></li>
+<li><a href="posts/will-a-gbdt-performance-drop-if-we-remove-the-first-tree/#orgbb981a8">A Gradient Boosting Classifier</a></li>
+<li><a href="posts/will-a-gbdt-performance-drop-if-we-remove-the-first-tree/#orged3f4e2">A More Realistic Data Set</a></li>
+<li><a href="posts/will-a-gbdt-performance-drop-if-we-remove-the-first-tree/#orgbf7fb1a">Source</a></li>
 </ul>
 </div>
 </div>
@@ -3190,9 +3397,9 @@ Will the performance of a  GBDT model drop dramatically if we remove the first t
 <span class="kn">from</span> <span class="nn">xgboost</span> <span class="kn">import</span> <span class="n">XGBClassifier</span>
 </pre></div>
 
-<div id="outline-container-orgaa1041c" class="outline-2">
-<h2 id="orgaa1041c">Define the Sigmoid</h2>
-<div class="outline-text-2" id="text-orgaa1041c">
+<div id="outline-container-orgdd7ea69" class="outline-2">
+<h2 id="orgdd7ea69">Define the Sigmoid</h2>
+<div class="outline-text-2" id="text-orgdd7ea69">
 <p>
 This is a function to calculate the <a href="https://en.wikipedia.org/wiki/Sigmoid_function">sigmoid</a> which we'll use to convert probabilities to classifications.
 </p>
@@ -3203,17 +3410,17 @@ This is a function to calculate the <a href="https://en.wikipedia.org/wiki/Sigmo
 </div>
 </div>
 
-<div id="outline-container-orgadc9caa" class="outline-2">
-<h2 id="orgadc9caa">Make the dataset</h2>
-<div class="outline-text-2" id="text-orgadc9caa">
+<div id="outline-container-org7e883ad" class="outline-2">
+<h2 id="org7e883ad">Make the dataset</h2>
+<div class="outline-text-2" id="text-org7e883ad">
 <p>
 This will be a very simple synthetic dataset. We'll use numpy's <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.random.randn.html">randn</a> function to generate a dataset of random values that come from a normal distribution and then predict that the class is <i>1</i> if the value is positive and that it is <i>0</i> otherwise.
 </p>
 </div>
 
-<div id="outline-container-orgaa034a9" class="outline-3">
-<h3 id="orgaa034a9">Generating the Random Data</h3>
-<div class="outline-text-3" id="text-orgaa034a9">
+<div id="outline-container-orgc455190" class="outline-3">
+<h3 id="orgc455190">Generating the Random Data</h3>
+<div class="outline-text-3" id="text-orgc455190">
 <p>
 First we'll generate an array of 5000 random numbers taken from a normal distribution.
 </p>
@@ -3240,17 +3447,17 @@ Now we'll use sklearn's <a href="http://scikit-learn.org/stable/modules/generate
 </div>
 </div>
 
-<div id="outline-container-org3838d1c" class="outline-2">
-<h2 id="org3838d1c">A Decision Tree Classifier</h2>
-<div class="outline-text-2" id="text-org3838d1c">
+<div id="outline-container-org539fa04" class="outline-2">
+<h2 id="org539fa04">A Decision Tree Classifier</h2>
+<div class="outline-text-2" id="text-org539fa04">
 <p>
 We'll build a <a href="https://en.wikipedia.org/wiki/Decision_tree">Decision Tree</a> using sklearn's <a href="http://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html">Decision Tree Classifier</a> for this model.
 </p>
 </div>
 
-<div id="outline-container-orge40b432" class="outline-3">
-<h3 id="orge40b432">Building and Training the Model</h3>
-<div class="outline-text-3" id="text-orge40b432">
+<div id="outline-container-org98801c6" class="outline-3">
+<h3 id="org98801c6">Building and Training the Model</h3>
+<div class="outline-text-3" id="text-org98801c6">
 <p>
 This will be a very simple tree with a depth of 1 (a <a href="https://en.wikipedia.org/wiki/Decision_stump">decision stump</a>).
 </p>
@@ -3261,9 +3468,9 @@ This will be a very simple tree with a depth of 1 (a <a href="https://en.wikiped
 </div>
 </div>
 
-<div id="outline-container-org3159d01" class="outline-3">
-<h3 id="org3159d01">Measuring the Accuracy</h3>
-<div class="outline-text-3" id="text-org3159d01">
+<div id="outline-container-org5e84a5a" class="outline-3">
+<h3 id="org5e84a5a">Measuring the Accuracy</h3>
+<div class="outline-text-3" id="text-org5e84a5a">
 <div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s1">'Accuracy for a single decision stump: {}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)))</span>
 </pre></div>
 
@@ -3279,9 +3486,9 @@ The 'tree' was able to classify all the testing data correctly.
 </div>
 </div>
 
-<div id="outline-container-org9230eaf" class="outline-2">
-<h2 id="org9230eaf">A Gradient Boosting Classifier</h2>
-<div class="outline-text-2" id="text-org9230eaf">
+<div id="outline-container-orgbb981a8" class="outline-2">
+<h2 id="orgbb981a8">A Gradient Boosting Classifier</h2>
+<div class="outline-text-2" id="text-orgbb981a8">
 <p>
 While the Decision Tree Classifier only needed 1 layer, We will need 800 trees in the Gradient Boosting Classifier for it to classify the data correctly.
 </p>
@@ -3291,9 +3498,9 @@ For convenience we will use sklearn's <a href="http://scikit-learn.org/stable/mo
 </p>
 </div>
 
-<div id="outline-container-org52c039c" class="outline-3">
-<h3 id="org52c039c">Training and Fitting the Model</h3>
-<div class="outline-text-3" id="text-org52c039c">
+<div id="outline-container-org73d9f4a" class="outline-3">
+<h3 id="org73d9f4a">Training and Fitting the Model</h3>
+<div class="outline-text-3" id="text-org73d9f4a">
 <div class="highlight"><pre><span></span><span class="n">gbc_model</span> <span class="o">=</span> <span class="n">GradientBoostingClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
 				 <span class="n">max_depth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
 				 <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
@@ -3309,9 +3516,9 @@ Accuracy for Gradient Booing: 1.0
 </div>
 </div>
 
-<div id="outline-container-org68e96a9" class="outline-3">
-<h3 id="org68e96a9">Checking the log Loss Metric</h3>
-<div class="outline-text-3" id="text-org68e96a9">
+<div id="outline-container-org8a68ef7" class="outline-3">
+<h3 id="org8a68ef7">Checking the log Loss Metric</h3>
+<div class="outline-text-3" id="text-org8a68ef7">
 <p>
 The <a href="http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingClassifier.html#sklearn.ensemble.GradientBoostingClassifier.predict_proba"><code>predict_proba</code></a> method will give us the probabilities that a data-point belongs to a class.
 </p>
@@ -3332,9 +3539,9 @@ Test logloss: 0.0003138777469167194
 </div>
 </div>
 
-<div id="outline-container-org9d44ec5" class="outline-3">
-<h3 id="org9d44ec5">Some Helper Functions</h3>
-<div class="outline-text-3" id="text-org9d44ec5">
+<div id="outline-container-orge2421d0" class="outline-3">
+<h3 id="orge2421d0">Some Helper Functions</h3>
+<div class="outline-text-3" id="text-orge2421d0">
 <div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_loss</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">predicted_probabilities</span><span class="p">):</span>
     <span class="sd">"""applies sigmoid to predictions before calling log_loss</span>
 
@@ -3362,9 +3569,9 @@ Test logloss: 0.0003138777469167194
 </div>
 </div>
 
-<div id="outline-container-orga09a0e8" class="outline-3">
-<h3 id="orga09a0e8">Checking The loss</h3>
-<div class="outline-text-3" id="text-orga09a0e8">
+<div id="outline-container-org5901f62" class="outline-3">
+<h3 id="org5901f62">Checking The loss</h3>
+<div class="outline-text-3" id="text-org5901f62">
 <p>
 Now we get the cummulative sum of the <b>decision function</b> (<a href="http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingClassifier.html#sklearn.ensemble.GradientBoostingClassifier.staged_decision_function"><code>staged_decision_function</code></a>) for our trees. The <i>i</i>-th element is a sum of trees \[0 \ldots i-1\]. We cannot use <a href="http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingClassifier.html#sklearn.ensemble.GradientBoostingClassifier.staged_predict_proba">staged_predict_proba</a>, since we want to maniputate raw scores
 (not probabilities). And only in the end convert the scores to probabilities using the <code>sigmoid</code>.
@@ -3441,9 +3648,9 @@ Which in turn means that if we drop the last tree we lower \(F(x)\) by <i>0</i> 
 </p>
 </div>
 
-<div id="outline-container-org1b9d6bd" class="outline-4">
-<h4 id="org1b9d6bd">A Bigger \(\eta\)</h4>
-<div class="outline-text-4" id="text-org1b9d6bd">
+<div id="outline-container-org3795dbc" class="outline-4">
+<h4 id="org3795dbc">A Bigger \(\eta\)</h4>
+<div class="outline-text-4" id="text-org3795dbc">
 <p>
 To prove that last point let's try a larger learning rate of <i>8</i>.
 </p>
@@ -3499,16 +3706,16 @@ Even though the dataset is synthetic, a similar intuition will work with real da
 </div>
 </div>
 </div>
-<div id="outline-container-orgb1d899d" class="outline-2">
-<h2 id="orgb1d899d">A More Realistic Data Set</h2>
-<div class="outline-text-2" id="text-orgb1d899d">
+<div id="outline-container-orged3f4e2" class="outline-2">
+<h2 id="orged3f4e2">A More Realistic Data Set</h2>
+<div class="outline-text-2" id="text-orged3f4e2">
 <p>
 Sklearn's <a href="http://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_hastie_10_2.html">make_hastie_10_2</a> function makes a ten-dimensional data set with two classifications as targets.
 </p>
 </div>
-<div id="outline-container-orga5a49ed" class="outline-3">
-<h3 id="orga5a49ed">Building the Data Set</h3>
-<div class="outline-text-3" id="text-orga5a49ed">
+<div id="outline-container-org8aa8be0" class="outline-3">
+<h3 id="org8aa8be0">Building the Data Set</h3>
+<div class="outline-text-3" id="text-org8aa8be0">
 <div class="highlight"><pre><span></span><span class="n">X_hastie</span><span class="p">,</span> <span class="n">y_hastie</span> <span class="o">=</span> <span class="n">make_hastie_10_2</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">X_train_hastie</span><span class="p">,</span> <span class="n">X_test_hastie</span><span class="p">,</span> <span class="n">y_train_hastie</span><span class="p">,</span> <span class="n">y_test_hastie</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
     <span class="n">X_hastie</span><span class="p">,</span>
@@ -3519,9 +3726,9 @@ Sklearn's <a href="http://scikit-learn.org/stable/modules/generated/sklearn.data
 </div>
 </div>
 
-<div id="outline-container-org962c0b2" class="outline-3">
-<h3 id="org962c0b2">Our Decision Stump Again</h3>
-<div class="outline-text-3" id="text-org962c0b2">
+<div id="outline-container-orgddb8c3f" class="outline-3">
+<h3 id="orgddb8c3f">Our Decision Stump Again</h3>
+<div class="outline-text-3" id="text-orgddb8c3f">
 <p>
 Let's try the decision stump on the new dataset.
 </p>
@@ -3557,9 +3764,9 @@ It does a little better, anyway.
 </div>
 </div>
 
-<div id="outline-container-org1130326" class="outline-3">
-<h3 id="org1130326">The Gradient Boosting Classifier</h3>
-<div class="outline-text-3" id="text-org1130326">
+<div id="outline-container-org64ef030" class="outline-3">
+<h3 id="org64ef030">The Gradient Boosting Classifier</h3>
+<div class="outline-text-3" id="text-org64ef030">
 <div class="highlight"><pre><span></span><span class="n">gbc2_model</span> <span class="o">=</span> <span class="n">GradientBoostingClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
 					<span class="n">max_depth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
 					<span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
@@ -3591,9 +3798,9 @@ In this case, although there is a difference, removing the last doesn't seem to 
 </div>
 </div>
 
-<div id="outline-container-org7fb9524" class="outline-3">
-<h3 id="org7fb9524">XGBoost</h3>
-<div class="outline-text-3" id="text-org7fb9524">
+<div id="outline-container-orgf75b1d8" class="outline-3">
+<h3 id="orgf75b1d8">XGBoost</h3>
+<div class="outline-text-3" id="text-orgf75b1d8">
 <p>
 We stated earlier that the result should be the same with other implementations of Gradient Boosting so let's see what happens if we use XGBoost instead.
 </p>
@@ -3633,9 +3840,9 @@ If you read the documentation for the python package for <a href="https://xgboos
 </div>
 </div>
 
-<div id="outline-container-orgf80a937" class="outline-2">
-<h2 id="orgf80a937">Source</h2>
-<div class="outline-text-2" id="text-orgf80a937">
+<div id="outline-container-orgbf7fb1a" class="outline-2">
+<h2 id="orgbf7fb1a">Source</h2>
+<div class="outline-text-2" id="text-orgbf7fb1a">
 <ul class="org-ul">
 <li>“Will Performance of GBDT Model Drop Dramatically If We Remove the First Tree?” Coursera. Accessed August 5, 2018. <a href="https://www.coursera.org/learn/competitive-data-science/home/welcome">https://www.coursera.org/learn/competitive-data-science/home/welcome</a>.</li>
 </ul>
@@ -3650,9 +3857,9 @@ If you read the documentation for the python package for <a href="https://xgboos
             <p class="dateline"><a href="posts/machine-learning-recap/" rel="bookmark"><time class="published dt-published" datetime="2018-08-04T18:13:44-07:00" title="2018-08-04 18:13">2018-08-04 18:13</time></a></p>
         </div>
     </header><div class="e-content entry-content">
-    <div id="outline-container-org0a35d43" class="outline-2">
-<h2 id="org0a35d43">The Main Categories</h2>
-<div class="outline-text-2" id="text-org0a35d43">
+    <div id="outline-container-org0692788" class="outline-2">
+<h2 id="org0692788">The Main Categories</h2>
+<div class="outline-text-2" id="text-org0692788">
 <p>
 These are the four main categories of supervised machine learning algorithms that you'll encounter in kaggle competitions.
 </p>
@@ -3679,9 +3886,9 @@ These are the four main categories of supervised machine learning algorithms tha
 </ul>
 </div>
 </div>
-<div id="outline-container-orge4ba9cf" class="outline-2">
-<h2 id="orge4ba9cf">The No Free Lunch Theorem</h2>
-<div class="outline-text-2" id="text-orge4ba9cf">
+<div id="outline-container-org0c70821" class="outline-2">
+<h2 id="org0c70821">The No Free Lunch Theorem</h2>
+<div class="outline-text-2" id="text-org0c70821">
 <blockquote>
 <p>
 There is no method which outperforms all others for all tasks.
@@ -3693,9 +3900,9 @@ You cannot assume that an algorithm that did well on one set of data will do wel
 </p>
 </div>
 </div>
-<div id="outline-container-orgf9bb943" class="outline-2">
-<h2 id="orgf9bb943">Summary</h2>
-<div class="outline-text-2" id="text-orgf9bb943">
+<div id="outline-container-orgdbe3b31" class="outline-2">
+<h2 id="orgdbe3b31">Summary</h2>
+<div class="outline-text-2" id="text-orgdbe3b31">
 <ul class="org-ul">
 <li>there is no one algorithm to rule them all</li>
 <li>Linear models split spaces into two sub-spaces</li>
@@ -3717,9 +3924,9 @@ In general the two most powerful methods are <b>Gradient Boosted Decision Trees<
             <p class="dateline"><a href="posts/real-world-vs-kaggle/" rel="bookmark"><time class="published dt-published" datetime="2018-08-04T18:02:24-07:00" title="2018-08-04 18:02">2018-08-04 18:02</time></a></p>
         </div>
     </header><div class="e-content entry-content">
-    <div id="outline-container-org4e36b1f" class="outline-2">
-<h2 id="org4e36b1f">A Real World Pipeline</h2>
-<div class="outline-text-2" id="text-org4e36b1f">
+    <div id="outline-container-org85c2bae" class="outline-2">
+<h2 id="org85c2bae">A Real World Pipeline</h2>
+<div class="outline-text-2" id="text-org85c2bae">
 <ul class="org-ul">
 <li>What is the business problem that you are trying to solve?</li>
 <li>What is the formal version of the problem?</li>
@@ -3741,18 +3948,18 @@ In general the two most powerful methods are <b>Gradient Boosted Decision Trees<
 </ul>
 </div>
 </div>
-<div id="outline-container-org400b906" class="outline-2">
-<h2 id="org400b906">A Competition Pipeline</h2>
-<div class="outline-text-2" id="text-org400b906">
+<div id="outline-container-org32ef801" class="outline-2">
+<h2 id="org32ef801">A Competition Pipeline</h2>
+<div class="outline-text-2" id="text-org32ef801">
 <ul class="org-ul">
 <li>How do you pre-process the data?</li>
 <li>How do you create the model?</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org7c650ca" class="outline-2">
-<h2 id="org7c650ca">So, how do you use a competition then?</h2>
-<div class="outline-text-2" id="text-org7c650ca">
+<div id="outline-container-org5ae98da" class="outline-2">
+<h2 id="org5ae98da">So, how do you use a competition then?</h2>
+<div class="outline-text-2" id="text-org5ae98da">
 <ul class="org-ul">
 <li>It's good to learn about machine learning</li>
 <li>It' not just about the algorithms, let the data guide what you do</li>
@@ -3769,21 +3976,21 @@ In general the two most powerful methods are <b>Gradient Boosted Decision Trees<
             <p class="dateline"><a href="posts/kaggle-mechanics/" rel="bookmark"><time class="published dt-published" datetime="2018-08-04T17:18:12-07:00" title="2018-08-04 17:18">2018-08-04 17:18</time></a></p>
         </div>
     </header><div class="e-content entry-content">
-    <div id="outline-container-orga765a0c" class="outline-2">
-<h2 id="orga765a0c">The Basics</h2>
-<div class="outline-text-2" id="text-orga765a0c">
+    <div id="outline-container-orgf34d8c8" class="outline-2">
+<h2 id="orgf34d8c8">The Basics</h2>
+<div class="outline-text-2" id="text-orgf34d8c8">
 </div>
-<div id="outline-container-org4f59197" class="outline-3">
-<h3 id="org4f59197">Data</h3>
-<div class="outline-text-3" id="text-org4f59197">
+<div id="outline-container-org1a3618d" class="outline-3">
+<h3 id="org1a3618d">Data</h3>
+<div class="outline-text-3" id="text-org1a3618d">
 <p>
 Every competition provides data so you can create a model, but there isn't a standardized format. Sometimes it will be CSVz, sometimes excel spreadsheets, sometimes image files, the sources can vary so you should read the data descriptions and adapt what you do to the competition. You aren't always limited to the data that is provided. If you were creating an image recognition model, for instance, it might be okay to include outside images or pre-trained models, it depends on the particulars of the competition.
 </p>
 </div>
 </div>
-<div id="outline-container-org67b1fb6" class="outline-3">
-<h3 id="org67b1fb6">Models</h3>
-<div class="outline-text-3" id="text-org67b1fb6">
+<div id="outline-container-orgd1cf28f" class="outline-3">
+<h3 id="orgd1cf28f">Models</h3>
+<div class="outline-text-3" id="text-orgd1cf28f">
 <p>
 This is what you are trying to create - a representation of the population based on the data you are given that will allow you to predict outcomes based on inputs not given in the data. The model needs two main features:
 </p>
@@ -3796,34 +4003,34 @@ Note that a model is not the same as an algorithm. You might have to combine mul
 </p>
 </div>
 </div>
-<div id="outline-container-orgdb8b9a2" class="outline-3">
-<h3 id="orgdb8b9a2">Submission</h3>
-<div class="outline-text-3" id="text-orgdb8b9a2">
+<div id="outline-container-orgb481425" class="outline-3">
+<h3 id="orgb481425">Submission</h3>
+<div class="outline-text-3" id="text-orgb481425">
 <p>
 Your submission is typically your predictions on a test set. This isn't always the case but it is the most common way that the competitions are run.
 </p>
 </div>
 </div>
-<div id="outline-container-org86a2d7a" class="outline-3">
-<h3 id="org86a2d7a">Evaluation</h3>
-<div class="outline-text-3" id="text-org86a2d7a">
+<div id="outline-container-orgd6219f8" class="outline-3">
+<h3 id="orgd6219f8">Evaluation</h3>
+<div class="outline-text-3" id="text-orgd6219f8">
 <p>
 How can you tell how well your model does? You need a function that maps your model and a data set to a score that evaluates how well the model does. There are many different metrics to use (accuracy, precision, recall, etc.) but the competition will choose one and tell you what it is in the description so make sure you read the description to get it.
 </p>
 </div>
 </div>
-<div id="outline-container-orge011278" class="outline-3">
-<h3 id="orge011278">Leaderboard</h3>
-<div class="outline-text-3" id="text-orge011278">
+<div id="outline-container-orgc848153" class="outline-3">
+<h3 id="orgc848153">Leaderboard</h3>
+<div class="outline-text-3" id="text-orgc848153">
 <p>
 This is the relative ranking of the participants in the competition. This is what makes it a competition. Even if your metric tells you your model is doing well, if you are ranked at the bottom, you still won't win. There are actually two leaderboards - public and private. The evaluation dataset is split by kaggle into two sets, public and private, and during the competition the results of testing on the public data are shown on the leaderborad. Once the competition is over the leaderboard is displayed using the evaluations using the private data.
 </p>
 </div>
 </div>
 </div>
-<div id="outline-container-org05a15ef" class="outline-2">
-<h2 id="org05a15ef">Other Competitions</h2>
-<div class="outline-text-2" id="text-org05a15ef">
+<div id="outline-container-orgc97d7d3" class="outline-2">
+<h2 id="orgc97d7d3">Other Competitions</h2>
+<div class="outline-text-2" id="text-orgc97d7d3">
 <p>
 <a href="https://www.kaggle.com/">Kaggle</a> isn't the only one running data-science competititons. Here are some others.
 </p>
@@ -3846,7 +4053,7 @@ This is the relative ranking of the participants in the competition. This is wha
 
         <nav class="postindexpager"><ul class="pager">
 <li class="previous">
-                <a href="." rel="prev">Newer posts</a>
+                <a href="index-2.html" rel="prev">Newer posts</a>
             </li>
         </ul></nav>
 </div>

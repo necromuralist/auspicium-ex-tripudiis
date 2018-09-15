@@ -15,6 +15,7 @@
 <!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
 </script><meta name="author" content="Cloistered Monkey">
 <link rel="prev" href="../springleaf-competition/" title="Springleaf Competition" type="text/html">
+<link rel="next" href="../data-leaks/" title="Data Leaks" type="text/html">
 <meta property="og:site_name" content="Notes on Kaggle">
 <meta property="og:title" content="Validation">
 <meta property="og:url" content="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/">
@@ -103,9 +104,25 @@
         
 
     </header><div class="e-content entry-content" itemprop="articleBody text">
-    <div id="outline-container-org1dae6f9" class="outline-2">
-<h2 id="org1dae6f9">Validation and Overfitting</h2>
-<div class="outline-text-2" id="text-org1dae6f9">
+    <div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org5d1619b">Validation and Overfitting</a></li>
+<li><a href="#org61ce815">Three Main Methods of Splitting</a></li>
+<li><a href="#org7d5f2a4">Stratification</a></li>
+<li><a href="#org5e1cb52">Data Splitting</a></li>
+<li><a href="#org7deb52b">Problems</a></li>
+<li><a href="#orgd4c219d">Practice Quiz</a></li>
+<li><a href="#org390c014">Quiz</a></li>
+<li><a href="#org1c800a9">Links</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org5d1619b" class="outline-2">
+<h2 id="org5d1619b">Validation and Overfitting</h2>
+<div class="outline-text-2" id="text-org5d1619b">
 <p>
 To prevent your model from overfitting to the training set, you can hold out some of the training set and use it to validate the model after it has been fit to the rest of the training set.
 </p>
@@ -116,6 +133,269 @@ To prevent your model from overfitting to the training set, you can hold out som
 </ul>
 </div>
 </div>
+<div id="outline-container-org61ce815" class="outline-2">
+<h2 id="org61ce815">Three Main Methods of Splitting</h2>
+<div class="outline-text-2" id="text-org61ce815">
+<p>
+These are methods for splitting your training set into training and validation sets. Once you have a model, re-train it over the entire training set before applying it to the test set.
+</p>
+</div>
+<div id="outline-container-org4e15e80" class="outline-3">
+<h3 id="org4e15e80">Holdout</h3>
+<div class="outline-text-3" id="text-org4e15e80">
+<p>
+This method just splits the data into one training and one validation set.
+</p>
+
+<ul class="org-ul">
+<li><a href="http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.ShuffleSplit.html">sklearn.model_selection.ShuffleSplit</a></li>
+<li><code>ngroups=1</code></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orge1d1b4f" class="outline-3">
+<h3 id="orge1d1b4f">K-Fold</h3>
+<div class="outline-text-3" id="text-orge1d1b4f">
+<p>
+Make <i>k</i> splits of the training set, then use each of the validation sets while training on all the data not in the validation set. This differs from doing holdout k-times since we guarantee that the validation sets don't overlap. Uses the average score for the k-folds.
+</p>
+
+<ul class="org-ul">
+<li><a href="http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.KFold.html">sklearn.model_selection.KFold</a></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org0b8340b" class="outline-3">
+<h3 id="org0b8340b">Leave One Out</h3>
+<div class="outline-text-3" id="text-org0b8340b">
+<p>
+This is like k-folds except we always use a validation set of size 1 - so we are iterating over each point in the data set and using it as the training set. This can be useful if the data set is small.
+</p>
+<ul class="org-ul">
+<li><a href="http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.LeaveOneOut.html">sklearn.model_selection.LeaveOneOut</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org7d5f2a4" class="outline-2">
+<h2 id="org7d5f2a4">Stratification</h2>
+<div class="outline-text-2" id="text-org7d5f2a4">
+<p>
+Sometimes you need to make sure your validation sets have the same distribution as your set as a whole.
+</p>
+<ul class="org-ul">
+<li>small datasets</li>
+<li>unbalanced datasects</li>
+<li>multiclass classification</li>
+<li><a href="http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.StratifiedShuffleSplit.html">StratifieShuffleSplit</a></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org5e1cb52" class="outline-2">
+<h2 id="org5e1cb52">Data Splitting</h2>
+<div class="outline-text-2" id="text-org5e1cb52">
+<p>
+If you have time-based data, there's two ways to split the training data - randomly within the entire timespan, or put the first part of the data in the training set and put the second part of the data in the validation set. If the test-set is a time that is beyond the training data, then using the time-based split will produce a model that is better for the testing data.
+</p>
+<ol class="org-ol">
+<li>Row-wise split
+This is the most common case, where rows are randomly chosen from the training data. This assumes the rows are independent.</li>
+<li>Time-wise split
+This is the case where you are predicting future values of a time-series. In this case, the further back in time a row is, the less like the future value it is.</li>
+<li>By-ID
+In this case several rows map to one ID, and the ID maps to a target. For example, you might have several x-rays for one patient that map to one diagnosis.</li>
+</ol>
+<p>
+The main point of this is that you want to set up your validation set to match the way the train-test sets were split.
+</p>
+</div>
+</div>
+<div id="outline-container-org7deb52b" class="outline-2">
+<h2 id="org7deb52b">Problems</h2>
+<div class="outline-text-2" id="text-org7deb52b">
+<p>
+The point of doing the training-validation split is that you think the validation set(s) will approximate the test set. But what if that's not true?
+</p>
+</div>
+<div id="outline-container-orgf30b6ce" class="outline-3">
+<h3 id="orgf30b6ce">Causes of score differences</h3>
+<div class="outline-text-3" id="text-orgf30b6ce">
+<ul class="org-ul">
+<li>Too little data</li>
+<li>The data is too diverse and inconsistent</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgd8025cd" class="outline-3">
+<h3 id="orgd8025cd">Submission Differs from Validation</h3>
+<div class="outline-text-3" id="text-orgd8025cd">
+<ol class="org-ol">
+<li>Even K-fold validation has variation (check that the standard deviation across folds encompasses the leaderboard values)</li>
+<li>Too little data on leaderboard (nothing you can do)</li>
+<li>Train and test are from different distributions</li>
+</ol>
+</div>
+</div>
+</div>
+<div id="outline-container-orgd4c219d" class="outline-2">
+<h2 id="orgd4c219d">Practice Quiz</h2>
+<div class="outline-text-2" id="text-orgd4c219d">
+</div>
+<div id="outline-container-orgbc574d5" class="outline-3">
+<h3 id="orgbc574d5">One</h3>
+<div class="outline-text-3" id="text-orgbc574d5">
+<p>
+We did a K-Fold cross validation on a huge dataset and noticed that scores on each fold are roughly the same. Which validation type is of most practical use?
+</p>
+<ul class="org-ul">
+<li class="off">
+<code>[ ]</code> K-Fold</li>
+<li class="on">
+<code>[X]</code> Holdout</li>
+<li class="off">
+<code>[ ]</code> Leave one out</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org2fe2ec7" class="outline-3">
+<h3 id="org2fe2ec7">Two</h3>
+<div class="outline-text-3" id="text-org2fe2ec7">
+<p>
+We did a K-fold cross validation on a medium sized dataset and noticed that the validation scores varied widely. Which validation type is the most practical to use?
+</p>
+<ul class="org-ul">
+<li class="off">
+<code>[ ]</code> Leave One Out</li>
+<li class="on">
+<code>[X]</code> K Fold</li>
+<li class="off">
+<code>[ ]</code> Houldout</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org5b2c705" class="outline-3">
+<h3 id="org5b2c705">Three</h3>
+<div class="outline-text-3" id="text-org5b2c705">
+<p>
+The features we generate depend on the train-test split. True or False?
+</p>
+<ul class="org-ul">
+<li class="on">
+<code>[X]</code> True</li>
+<li class="off">
+<code>[ ]</code> False</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgdb5fbbf" class="outline-3">
+<h3 id="orgdb5fbbf">Which of these can indicate an expected leaderboard shuffle in a competition?</h3>
+<div class="outline-text-3" id="text-orgdb5fbbf">
+<ul class="org-ul">
+<li class="on">
+<code>[X]</code> Little training and/or testing data</li>
+<li class="on">
+<code>[X]</code> Most of the competitors have similar scores</li>
+<li class="on">
+<code>[X]</code> Different public/private data or target distributions</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org390c014" class="outline-2">
+<h2 id="org390c014">Quiz</h2>
+<div class="outline-text-2" id="text-org390c014">
+</div>
+<div id="outline-container-org869ffd4" class="outline-3">
+<h3 id="org869ffd4">One</h3>
+<div class="outline-text-3" id="text-org869ffd4">
+<p>
+Select the true statements.
+</p>
+<ul class="org-ul">
+<li class="off">
+<code>[ ]</code> A performance increase on a fixed cross-validation split guarantees a performance increase on any cross-validation split. (You might be overfitting. You should change the splits to check for overfitting.)</li>
+<li class="on">
+<code>[X]</code> The logic behind the validation split should mimic the logic behind the train-test split (this is the main rule for making a reliable validation)</li>
+<li class="on">
+<code>[X]</code> Underfitting refers to not capturing enough patterns in the data</li>
+<li class="on">
+<code>[X]</code> We use validation to estimate the quality of our model (this is the main purpose of validation)</li>
+<li class="off">
+<code>[ ]</code> The model that does on the validation set is guaranteed to do the best on the test set. (The test and validation sets might have different distributions, in which case the validation won't predict the test set score)</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgf2d2424" class="outline-3">
+<h3 id="orgf2d2424">Two</h3>
+<div class="outline-text-3" id="text-orgf2d2424">
+<p>
+Kaggle usually allows you to submit two final submissions that will be checked against the private leader board. One common practice is to use a model that did the best on the validation scores and another that did best on the public leader board. What is the logic behind using these two models?
+</p>
+<ul class="org-ul">
+<li class="off">
+<code>[ ]</code> People rarely overfit the public leaderboard. You almost always have a lot of test data and it is hard to overfit.</li>
+<li class="off">
+<code>[ ]</code> Validation is rarely valid in competitions. You must account for the case where validation worked and where it didn't.</li>
+<li class="on">
+<code>[X]</code> The test set may have a different distribution than the target data. If this is true, then the model that did better on the public leaderboard will do better. If not, then the model that did better in validation will do better.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org8f893ae" class="outline-3">
+<h3 id="org8f893ae">Three</h3>
+<div class="outline-text-3" id="text-org8f893ae">
+<p>
+Suppose we have a dataset of marketing campaigns. Each campain runs for a few weeks and for each campaign our target is the number of new customers. A row in the dataset looks like this:
+</p>
+
+<p>
+<i>Campaign ID, Date, {some features},Number of New Customers</i>
+</p>
+
+<p>
+The dataset contains multiple campaigns where the training set has the dates at the start of each campaign and the test set has the dates at the end of each campaign. Which train/test split should you use?
+</p>
+
+<ul class="org-ul">
+<li class="off">
+<code>[ ]</code> Random Split</li>
+<li class="on">
+<code>[X]</code> Combined Split (Each train and test set are divided by a date and the date might be for different campaigns, so it is a combination of campaign ID and date)</li>
+<li class="off">
+<code>[ ]</code> ID-based split (wrong)</li>
+<li class="off">
+<code>[ ]</code> Time-based split (wrong)</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org8f8be71" class="outline-3">
+<h3 id="org8f8be71">Four</h3>
+<div class="outline-text-3" id="text-org8f8be71">
+<p>
+Which of the following can you usually identify without the leaderboard?
+</p>
+<ul class="org-ul">
+<li class="on">
+<code>[X]</code> Different scores/optimal parameters between different folds (this is determined during validation)</li>
+<li class="off">
+<code>[ ]</code> Train and test target data are from different distributions (You would need the test target values to figure this out, which you won't have)</li>
+<li class="on">
+<code>[X]</code> The public leaderboard score will be unreliable because there is too little data (you can check this by making the size of the folds match the size of the public test set and see the variability)</li>
+<li class="on">
+<code>[X]</code> The train and test data are from different distributions (you can often figure this out during Exploratory Data Analysis)</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org1c800a9" class="outline-2">
+<h2 id="org1c800a9">Links</h2>
+<div class="outline-text-2" id="text-org1c800a9">
+<ul class="org-ul">
+<li><a href="http://scikit-learn.org/stable/modules/cross_validation.html">Cross-validation in sklearn</a></li>
+<li><a href="http://www.chioka.in/how-to-select-your-final-models-in-a-kaggle-competitio/">Model Selection for Kaggle</a></li>
+</ul>
+</div>
+</div>
     </div>
     <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
 <li><a class="tag p-category" href="../../categories/notes-validation/" rel="tag">notes validation</a></li>
@@ -123,6 +403,9 @@ To prevent your model from overfitting to the training set, you can hold out som
 <ul class="pager hidden-print">
 <li class="previous">
                 <a href="../springleaf-competition/" rel="prev" title="Springleaf Competition">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../data-leaks/" rel="next" title="Data Leaks">Next post</a>
             </li>
         </ul></nav></aside></article>
 </div>
