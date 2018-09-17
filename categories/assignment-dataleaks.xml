@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about assignment dataleaks)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/assignment-dataleaks.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Sat, 15 Sep 2018 00:10:11 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Data Leakages</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about assignment dataleaks)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/assignment-dataleaks.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Mon, 17 Sep 2018 16:15:37 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Data Leakages</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
 &lt;h2&gt;Table of Contents&lt;/h2&gt;
 &lt;div id="text-table-of-contents"&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#orgda2f788"&gt;Introduction&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#orgffdfd9f"&gt;Imports&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#org407f57c"&gt;Load the data&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#orgea49ee8"&gt;EDA and leakage intuition&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#org9a32a71"&gt;Building a magic feature&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#org85b0dba"&gt;Bonus&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#orga7ca1c1"&gt;Introduction&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#org835ea5e"&gt;Imports&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#org4c7b2df"&gt;Helpers&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#org4a0ccd3"&gt;Load the data&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#org01be94f"&gt;EDA and Leakage Intuition&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#orge42ca1e"&gt;Building a magic feature&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#orgb27ca78"&gt;Bonus&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#org3d00284"&gt;What does it all mean then?&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgda2f788" class="outline-2"&gt;
-&lt;h2 id="orgda2f788"&gt;Introduction&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgda2f788"&gt;
+&lt;div id="outline-container-orga7ca1c1" class="outline-2"&gt;
+&lt;h2 id="orga7ca1c1"&gt;Introduction&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orga7ca1c1"&gt;
 &lt;p&gt;
 In this programming assignment we will illustrate a very severe data leakage, that can often be found in competitions, where the pairs of object should be scored, e.g. predict &lt;i&gt;1&lt;/i&gt; if two objects belong to the same class and &lt;i&gt;0&lt;/i&gt; otherwise. 
 &lt;/p&gt;
@@ -26,15 +28,22 @@ The data in this assignment is taken from a real competition, and the funny thin
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgffdfd9f" class="outline-2"&gt;
-&lt;h2 id="orgffdfd9f"&gt;Imports&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgffdfd9f"&gt;
+&lt;div id="outline-container-org835ea5e" class="outline-2"&gt;
+&lt;h2 id="org835ea5e"&gt;Imports&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org835ea5e"&gt;
+&lt;p&gt;
+During the importing of pandas (or scipy) you get a warning about a potential binary incompatibility. According to &lt;a href="https://stackoverflow.com/questions/40845304/runtimewarning-numpy-dtype-size-changed-may-indicate-binary-incompatibility"&gt;Stack Overflow&lt;/a&gt; you can safely ignore this, so we'll use &lt;a href="https://docs.python.org/3/library/warnings.html"&gt;warnings&lt;/a&gt; to suppress the messages, just so it doesn't keep bringing them up everytime I run this notebook.
+&lt;/p&gt;
+
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;import warnings
 warnings.filterwarnings("ignore", message="numpy.dtype size changed")
 warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
 &lt;/pre&gt;&lt;/div&gt;
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# from pypi
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# python standard library
+import os
+
+# from pypi
 from tabulate import tabulate
 import matplotlib.pyplot as pyplot
 import numpy
@@ -49,26 +58,97 @@ FIGURE_SIZE = (12, 10)
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-
-
-&lt;div id="outline-container-org407f57c" class="outline-2"&gt;
-&lt;h2 id="org407f57c"&gt;Load the data&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org407f57c"&gt;
+&lt;div id="outline-container-org4c7b2df" class="outline-2"&gt;
+&lt;h2 id="org4c7b2df"&gt;Helpers&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org4c7b2df"&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org63b9718" class="outline-3"&gt;
+&lt;h3 id="org63b9718"&gt;Paths&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org63b9718"&gt;
 &lt;p&gt;
-Let's load the test data. Note, that we don't have any training data here, just test data. Moreover, &lt;b&gt;we will not even use any features&lt;/b&gt; of test objects. All we need to solve this task is the file with the indices for the pairs, that we need to compare.
+Since I'm doing this as posts in nikola, but I'm trying to keep all non-post files outside of the &lt;code&gt;posts&lt;/code&gt; folder, I'm going to use a class to keep the paths to the output (submission) files straight.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;class Paths:
+    """Helper to put submission files in the right folder"""
+    data = "../data/"
+    submissions = "../data/submissions/"
+    test_set = data + "test_pairs.csv"
+
+    @classmethod
+    def submit(cls, filename):
+	"""Add the filename to the path
+
+	Args:
+	 filename (str): name to add to the submissions folder
+
+	Returns:
+	 str: path to the file in the submissions folder
+	"""
+	return os.path.join(cls.submissions, filename)
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org961821a" class="outline-3"&gt;
+&lt;h3 id="org961821a"&gt;Data&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org961821a"&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;class TestSet:
+    """Loads the test-set data
+
+    Args:
+     paths: object with the path to the test-set
+    """
+    def __init__(self, paths=Paths):
+	self.paths = paths
+	self._data = None
+	return
+
+    @property
+    def data(self):
+	"""the test-set data
+
+	Returns:
+	 `pandas.DataFrame`: the test-set data
+	"""
+	if self._data is None:
+	    self._data = pandas.read_csv(self.paths.test_set)
+	return self._data
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org4a0ccd3" class="outline-2"&gt;
+&lt;h2 id="org4a0ccd3"&gt;Load the data&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org4a0ccd3"&gt;
+&lt;p&gt;
+Let's load the test data. Note, that we don't have any training data here, just test data. Moreover, &lt;b&gt;we will not use any features&lt;/b&gt; of the test set. All we need to solve this task is the file with the indices for the pairs that we need to compare.
 &lt;/p&gt;
 
 &lt;p&gt;
-Let's load the data with test indices.
+Let's load the data with the test indices.
 &lt;/p&gt;
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;test = pandas.read_csv('../data/test_pairs.csv')
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;test = TestSet().data
 print(test.head(10))
 &lt;/pre&gt;&lt;/div&gt;
 
+&lt;pre class="example"&gt;
+   pairId  FirstId  SecondId
+0       0     1427      8053
+1       1    17044      7681
+2       2    19237     20966
+3       3     8005     20765
+4       4    16837       599
+5       5     3657     12504
+6       6     2836      7582
+7       7     6136      6111
+8       8    23295      9817
+9       9     6621      7672
+&lt;/pre&gt;
+
 
 &lt;p&gt;
-We don't know what the data represents in this case, but you can give them an arbitrary meaning. You could, for example, can think that there is a test dataset of images, and each image is assigned a unique `Id` from \(0\) to \(N-1\) (N – is the number of images). In the dataframe from above `FirstId` and `SecondId` point to these `Id`'s and define pairs, that we should compare: e.g. do both images in the pair belong to the same class or not. So, for example for the first row: if images with `Id=1427` and `Id=8053` belong to the same class, we should predict \(1\), and \(0\) otherwise. 
+We don't know what the data represents in this case, but you can give them an arbitrary meaning. You could, for example, think that there is a test dataset of images, and each image is assigned a unique `Id` from \(0\) to \(N-1\) (N – is the number of images). In the dataframe above `FirstId` and `SecondId` point to these `Id`'s and define pairs that we should compare: e.g. do both images in the pair belong to the same class or not. So, for example for the first row: if images with `Id=1427` and `Id=8053` belong to the same class, we should predict \(1\), and \(0\) otherwise. 
 &lt;/p&gt;
 
 &lt;p&gt;
@@ -79,21 +159,34 @@ But in our case we don't really care about the images, and how exactly we compar
 &lt;b&gt;&lt;b&gt;We suggest you to try to solve the puzzle yourself first.&lt;/b&gt;&lt;/b&gt; You need to submit a `.csv` file with columns `pairId` and `Prediction` to the grader. The number of submissions allowed is made pretty huge to let you explore the data without worries. The returned score should be very close to \(1\).
 &lt;/p&gt;
 
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;figure, axe = pyplot.subplots(figsize=FIGURE_SIZE)
+axe.set_title("First ID vs Second ID", weight="bold")
+axe.set_xlabel("First ID")
+axe.set_ylabel("Second ID")
+plot = pyplot.scatter(test.FirstId, test.SecondId, marker='.')
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="figure"&gt;
+&lt;p&gt;&lt;img src="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/first_vs_second.png" alt="first_vs_second.png"&gt;
+&lt;/p&gt;
+&lt;/div&gt;
+
 &lt;p&gt;
-&lt;b&gt;&lt;b&gt;If you do not want to think much&lt;/b&gt;&lt;/b&gt; – scroll down and follow the instructions below.
+So this doesn't appear to be a randomized data set. The first half of the Second IDs seem to be completely paired with the entire set of first IDs, while the second half of the second IDs creates some kind of strange diagonal pattern, except for the highest Second IDs which are once again completely matched with the First IDs.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgea49ee8" class="outline-2"&gt;
-&lt;h2 id="orgea49ee8"&gt;EDA and leakage intuition&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgea49ee8"&gt;
+&lt;div id="outline-container-org01be94f" class="outline-2"&gt;
+&lt;h2 id="org01be94f"&gt;EDA and Leakage Intuition&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org01be94f"&gt;
 &lt;p&gt;
-As we already know, the key to discover data leakages is careful EDA. So let's start our work with some basic data exploration and build an intuition about the leakage.
+As we already know, the key to discovering data leakages is careful Exploratory Data Analysis (EDA). So let's start our work with some basic data exploration and build an intuition about the leakage.
 &lt;/p&gt;
 
 &lt;p&gt;
-First, check, how many different `id`s are there: concatenate `FirstId` and `SecondId` and print the number of unique elements. Also print minimum and maximum value for that vector.
+First, check, how many different &lt;i&gt;id&lt;/i&gt;'s are there: concatenate &lt;i&gt;FirstId&lt;/i&gt; and `SecondId/ and print the number of unique elements. Also print the minimum and maximum value for that vector.
 &lt;/p&gt;
 
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;smashed = test.FirstId.apply(lambda row: str(row)) + ',' + test.SecondId.apply(lambda row: str(row))
@@ -110,19 +203,42 @@ dtype: object
 
 &lt;/pre&gt;
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;print("Unique Pairs: {}".format(len(smashed.unique())))
-print("Total Pairs: {}".format(len(test)))
-print(smashed.min())
-print(smashed.max())
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;print("|Unique Pairs| {}|".format(len(smashed.unique())))
+print("|Total Pairs| {}|".format(len(test)))
+print("|Lowest Valued Pair (ASCII)| ({})|".format(smashed.min()))
+print("|Highest Valued Pair| ({})|".format(smashed.max()))
 &lt;/pre&gt;&lt;/div&gt;
 
-&lt;pre class="example"&gt;
-Unique Pairs: 368538
-Total Pairs: 368550
-0,10552
-9999,8996
+&lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
 
-&lt;/pre&gt;
+
+&lt;colgroup&gt;
+&lt;col class="org-left"&gt;
+
+&lt;col class="org-right"&gt;
+&lt;/colgroup&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class="org-left"&gt;Unique Pairs&lt;/td&gt;
+&lt;td class="org-right"&gt;368538&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;Total Pairs&lt;/td&gt;
+&lt;td class="org-right"&gt;368550&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;Lowest Valued Pair (ASCII)&lt;/td&gt;
+&lt;td class="org-right"&gt;(0,10552)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-left"&gt;Highest Valued Pair&lt;/td&gt;
+&lt;td class="org-right"&gt;(9999,8996)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 
 
 &lt;p&gt;
@@ -157,15 +273,15 @@ Handshakes: 346,489,650
 &lt;/pre&gt;
 
 &lt;p&gt;
-So the number of pairs we are given to classify is very very small compared to the total number of pairs. 
+So the number of pairs we are given to classify is very, very small compared to the total number of possible pairs. 
 &lt;/p&gt;
 
 &lt;p&gt;
-To exploit the leak we need to &lt;b&gt;&lt;b&gt;assume (or prove)&lt;/b&gt;&lt;/b&gt;, that the total number of positive pairs is small, compared to the total number of pairs. For example: think about an image dataset with \(1000\) classes, \(N\) images per class. Then if the task was to tell whether a pair of images belongs to the same class or not, we would have \(1000\frac{N(N-1)}{2}\) positive pairs, while total number of pairs was \(\frac{1000N(1000N - 1)}{2}\).
+To exploit the leak we need to &lt;b&gt;&lt;b&gt;assume (or prove)&lt;/b&gt;&lt;/b&gt;, that the total number of positive pairs is small, compared to the total number of pairs. For example: think about an image dataset with \(1000\) classes, \(N\) images per class. Then if the task was to tell whether a pair of images belongs to the same class or not, we would have \(1000\frac{N(N-1)}{2}\) positive pairs, while the total number of pairs was \(\frac{1000N(1000N - 1)}{2}\).
 &lt;/p&gt;
 
 &lt;p&gt;
-Another example: in &lt;a href="https://www.kaggle.com/c/quora-question-pairs"&gt;Quora competitition&lt;/a&gt; the task was to classify whether a pair of questions are duplicates of each other or not. Of course, total number of question pairs is very huge, while number of duplicates (positive pairs) is much much smaller.
+Another example: in a &lt;a href="https://www.kaggle.com/c/quora-question-pairs"&gt;Quora competitition&lt;/a&gt; the task was to classify whether a pair of questions are duplicates of each other or not. Of course, total number of question pairs is very huge, while number of duplicates (positive pairs) is much much smaller.
 &lt;/p&gt;
 
 &lt;p&gt;
@@ -175,7 +291,7 @@ Finally, let's get a fraction of pairs of class `1`. We just need to submit a co
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;all_ones = test[["pairId"]].copy()
 all_ones["Prediction"] = [1] * len(all_ones)
 print(all_ones.head())
-all_ones.to_csv("../data/leakages/submission.csv", index=False)
+all_ones.to_csv(Paths.submit("submission_ones.csv"), index=False)
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;pre class="example"&gt;
@@ -203,20 +319,81 @@ So, we assumed the total number of pairs is much higher than the number of posit
 &lt;p&gt;
 Now think, how we can exploit this fact? What is the leak here? If you get it now, you may try to get to the final answer yourself, othewise you can follow the instructions below.   
 &lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;all_zeros = test[["pairId"]].copy()
+all_zeros["Prediction"] = numpy.zeros(len(all_zeros))
+assert all_zeros.Prediction.shape == all_zeros.pairId.shape
+print(all_zeros.head())
+all_zeros.to_csv(Paths.submit("submission_zeros.csv"), index=False)
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;pre class="example"&gt;
+   pairId  Prediction
+0       0         0.0
+1       1         0.0
+2       2         0.0
+3       3         0.0
+4       4         0.0
+
+&lt;/pre&gt;
+
+
+&lt;p&gt;
+This is the grader's output.
+&lt;/p&gt;
+
+&lt;pre class="example"&gt;
+Your accuracy score is 0.500000. It seems too low, try one more time.
+&lt;/pre&gt;
+
+&lt;p&gt;
+So it appears that the dataset is binary, with half the outputs being ones, the other half being zeros.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;random_predictions = test[["pairId"]].copy()
+random_predictions["Prediction"] = numpy.random.randint(0, 2, len(test))
+assert random_predictions.Prediction.shape == random_predictions.pairId.shape
+assert random_predictions.Prediction.max() == 1
+assert random_predictions.Prediction.min() == 0
+print(random_predictions.head())
+random_predictions.to_csv(Paths.submit("submission_random.csv"), index=False)
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;pre class="example"&gt;
+   pairId  Prediction
+0       0           0
+1       1           0
+2       2           0
+3       3           1
+4       4           0
+
+&lt;/pre&gt;
+
+&lt;p&gt;
+The grader output for the random set:
+&lt;/p&gt;
+
+&lt;pre class="example"&gt;
+Your accuracy score is 0.499058. It seems too low, try one more time.
+&lt;/pre&gt;
+
+&lt;p&gt;
+Around the same as the other two, so flipping a coin doesn't improve things any, but it doesn't really make it much worse.
+&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org9a32a71" class="outline-2"&gt;
-&lt;h2 id="org9a32a71"&gt;Building a magic feature&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org9a32a71"&gt;
+&lt;div id="outline-container-orge42ca1e" class="outline-2"&gt;
+&lt;h2 id="orge42ca1e"&gt;Building a magic feature&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orge42ca1e"&gt;
 &lt;p&gt;
-In this section we will build a magic feature, that will solve the problem almost perfectly. The instructions will lead you to the correct solution, but please, try to explain the purpose of the steps we do to yourself – it is very important.
+In this section we will build a magic feature that will solve the problem almost perfectly. The instructions will lead you to the correct solution, but please, try to explain the purpose of the steps we do to yourself – it is very important.
 &lt;/p&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org280bec4" class="outline-3"&gt;
-&lt;h3 id="org280bec4"&gt;Incidence matrix&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org280bec4"&gt;
+&lt;div id="outline-container-orgc4ab433" class="outline-3"&gt;
+&lt;h3 id="orgc4ab433"&gt;Incidence matrix&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgc4ab433"&gt;
 &lt;p&gt;
 First, we need to build an &lt;a href="https://en.wikipedia.org/wiki/Incidence_matrix"&gt;incidence matrix&lt;/a&gt;. You can think of pairs `(FirstId, SecondId)` as of edges in an undirected graph. 
 &lt;/p&gt;
@@ -226,23 +403,23 @@ The incidence matrix is a matrix of size `(maxId + 1, maxId + 1)`, where each ro
 &lt;/p&gt;
 
 &lt;p&gt;
-&lt;b&gt;&lt;b&gt;Important!&lt;/b&gt;&lt;/b&gt; The incidence matrices are typically very very sparse (small number of non-zero values). At the same time incidence matrices are usually huge in terms of total number of elements, and it is &lt;b&gt;&lt;b&gt;impossible to store them in memory in dense format&lt;/b&gt;&lt;/b&gt;. But due to their sparsity incidence matrices &lt;b&gt;&lt;b&gt;can be easily represented as sparse matrices&lt;/b&gt;&lt;/b&gt;. If you are not familiar with sparse matrices, please see &lt;a href="https://en.wikipedia.org/wiki/Sparse_matrix"&gt;wikipedia&lt;/a&gt; and &lt;a href="https://docs.scipy.org/doc/scipy/reference/sparse.html"&gt;scipy.sparse reference&lt;/a&gt;. Please, use any of `scipy.sparse` constructors to build incidence matrix. 
+&lt;b&gt;&lt;b&gt;Important!&lt;/b&gt;&lt;/b&gt; The incidence matrices are typically very, very sparse (there are a small number of non-zero values). At the same time the incidence matrices are usually huge in terms of the total number of elements and it is &lt;b&gt;&lt;b&gt;impossible to store them in memory in the dense format&lt;/b&gt;&lt;/b&gt;. But due to their sparsity, incidence matrices &lt;b&gt;&lt;b&gt;can be easily represented as sparse matrices&lt;/b&gt;&lt;/b&gt;. If you are not familiar with sparse matrices, please see &lt;a href="https://en.wikipedia.org/wiki/Sparse_matrix"&gt;wikipedia&lt;/a&gt; and &lt;a href="https://docs.scipy.org/doc/scipy/reference/sparse.html"&gt;scipy.sparse reference&lt;/a&gt;. Use any of the `scipy.sparse` constructors to build incidence matrix. 
 &lt;/p&gt;
 
 &lt;p&gt;
-For example, you can use this constructor: `scipy.sparse.coo_matrix((data, (i, j)))`. We highly recommend to learn to use different `scipy.sparse` constuctors, and matrices types, but if you feel you don't want to use them, you can always build this matrix with a simple `for` loop. You will need first to create a matrix using `scipy.sparse.coo_matrix((M, N), [dtype])` with an appropriate shape `(M, N)` and then iterate through `(FirstId, SecondId)` pairs and fill corresponding elements in matrix with ones. 
+For example, you can use this constructor: `scipy.sparse.coo_matrix((data, (i, j)))`. We highly recommend you learn to use different `scipy.sparse` constuctors, and matrices types, but if you feel you don't want to use them, you can always build this matrix with a simple `for` loop. You will need to first create a matrix using `scipy.sparse.coo_matrix((M, N), [dtype])` with an appropriate shape `(M, N)` and then iterate through `(FirstId, SecondId)` pairs and fill the corresponding elements in the matrix with ones. 
 &lt;/p&gt;
 
 &lt;p&gt;
-&lt;b&gt;&lt;b&gt;Note&lt;/b&gt;&lt;/b&gt;, that the matrix should be symmetric and consist only of zeros and ones. It is a way to check yourself.
+&lt;b&gt;&lt;b&gt;Note&lt;/b&gt;&lt;/b&gt;, that the matrix should be symmetric and consist only of zeros and ones. This is something you can use to check your matrix.
 &lt;/p&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org5e8b27c" class="outline-4"&gt;
-&lt;h4 id="org5e8b27c"&gt;De-duplicating the Data&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org5e8b27c"&gt;
+&lt;div id="outline-container-org2878250" class="outline-4"&gt;
+&lt;h4 id="org2878250"&gt;De-duplicating the Data&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org2878250"&gt;
 &lt;p&gt;
-The test data turns out to have duplicate ID pairs, which will cause our incidence matrix to produce numbers greater than 1 if we leave them in, so we need to remove them.
+The test data turns out to have duplicate ID pairs, which will cause our incidence matrix to produce numbers greater than 1 if we leave them in, so we need to remove them (using the &lt;a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.duplicated.html"&gt;duplicated&lt;/a&gt; method).
 &lt;/p&gt;
 
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pairs_1 = pandas.Series(list(zip(test.FirstId, test.SecondId)), index=test.index)
@@ -253,6 +430,7 @@ assert not any(pairs.duplicated())
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pair_count = len(pairs)
+assert pair_count == 736872
 print(pair_count)
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -271,6 +449,9 @@ assert i_indices.shape == (pair_count,)
 assert j_indices.shape == (pair_count,)
 &lt;/pre&gt;&lt;/div&gt;
 
+&lt;p&gt;
+Now we create a sparse matrix where the row indices are our FirstIds and the column indices are our Second Ids and each of their pairs &lt;code&gt;(i, j)&lt;/code&gt; is set to 1.
+&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;data = numpy.ones(pair_count)
 inc_mat = scipy.sparse.coo_matrix((data, (i_indices, j_indices)))
 
@@ -289,9 +470,9 @@ It is more convenient to have the incidence matrix in &lt;a href="https://docs.s
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orge28366d" class="outline-3"&gt;
-&lt;h3 id="orge28366d"&gt;Now To Build the Magic Feature&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orge28366d"&gt;
+&lt;div id="outline-container-orgf9f3402" class="outline-3"&gt;
+&lt;h3 id="orgf9f3402"&gt;Now To Build the Magic Feature&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgf9f3402"&gt;
 &lt;p&gt;
 Why did we build the incidence matrix? We can think of the rows in this matrix as a representation for the objects. The `i-th` row is a representation for an object with `Id = i`. Then, to measure the similarity between two objects we can measure similarity between their representations. And we will see that these representations are very good.
 &lt;/p&gt;
@@ -302,7 +483,7 @@ Now select the rows from the incidence matrix, that correspond to `test.FirstId`
 
 &lt;p&gt;
 Note, scipy goes crazy if a matrix is indexed with pandas' series. So do not forget to convert `pd.series` to `np.array`.
-These lines should normally run very quickly 
+These lines should normally run very quickly.
 &lt;/p&gt;
 
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;rows_FirstId   = inc_mat[test.FirstId.values]
@@ -337,24 +518,19 @@ plot = seaborn.distplot(f)
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org54b45a3" class="outline-4"&gt;
-&lt;h4 id="org54b45a3"&gt;From magic feature to binary predictions&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org54b45a3"&gt;
+&lt;div id="outline-container-org98ce124" class="outline-4"&gt;
+&lt;h4 id="org98ce124"&gt;From magic feature to binary predictions&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org98ce124"&gt;
 &lt;p&gt;
 But how do we convert this feature into binary predictions? We do not have a train set to learn a model, but we have a piece of information about test set: the baseline accuracy score that you got, when submitting constant. And we also have a very strong considerations about the data generative process, so probably we will be fine even without a training set. 
 &lt;/p&gt;
 
 &lt;p&gt;
-We may try to choose a thresold, and set the predictions to 1, if the feature value `f` is higer than the threshold, and 0 otherwise. What threshold would you choose? 
+We may try to choose a thresold, and set the predictions to 1, if the feature value `f` is higher than the threshold, and 0 otherwise. What threshold would you choose? 
 &lt;/p&gt;
 
 &lt;p&gt;
 How do we find a right threshold? Let's first examine this feature: print frequencies (or counts) of each value in the feature `f`.
-&lt;/p&gt;
-
-
-&lt;p&gt;
-For example use `np.unique` function, check for flags
 &lt;/p&gt;
 
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;f_frame = pandas.DataFrame(dict(f=f))
@@ -416,38 +592,113 @@ print(tabulate(counts, headers="keys", tablefmt="orgtbl",
 &lt;/tbody&gt;
 &lt;/table&gt;
 
-&lt;p&gt;
-Do you see how this feature clusters the pairs? Maybe you can guess a good threshold by looking at the values? 
-&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;fractions = counts/len(test)
+fractions["Value"] = counts.Value
+print(tabulate(fractions, headers="keys", tablefmt="orgtbl", showindex=False,
+	       floatfmt=".3f"))
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
+
+
+&lt;colgroup&gt;
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope="col" class="org-right"&gt;Value&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;Count&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class="org-right"&gt;20.000&lt;/td&gt;
+&lt;td class="org-right"&gt;0.499&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;14.000&lt;/td&gt;
+&lt;td class="org-right"&gt;0.497&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;15.000&lt;/td&gt;
+&lt;td class="org-right"&gt;0.002&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;19.000&lt;/td&gt;
+&lt;td class="org-right"&gt;0.001&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;28.000&lt;/td&gt;
+&lt;td class="org-right"&gt;0.000&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;35.000&lt;/td&gt;
+&lt;td class="org-right"&gt;0.000&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;21.000&lt;/td&gt;
+&lt;td class="org-right"&gt;0.000&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 
 &lt;p&gt;
-In fact, in other situations it can be not that obvious, but in general to pick a threshold you only need to remember the score of your baseline submission and use this information. Do you understand why and how?  
+So it looks like half the values are below 20 and half are above. We'll make our predictions by first getting a boolean array testing this case and then casting it to integers (0 is False, 1 is True).
 &lt;/p&gt;
 
-&lt;p&gt;
-Choose a threshold below: 
-&lt;/p&gt;
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pred = f &amp;gt; 14
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;predict_twenty = f &amp;gt;= 20
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;submission = test.loc[:,['pairId']]
-submission['Prediction'] = pred.astype(int)
+submission['Prediction'] = predict_twenty.astype(int)
 
-submission.to_csv('../data/leakages/submission.csv', index=False)
+submission.to_csv(Paths.submit('predict_twenty.csv'), index=False)
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;
-Now submit it to the grader! It is not possible to submit directly from this notebook, as we need to submit a `csv` file, not a single number (limitation of Coursera platform). 
+But if you look at the table, it looks like 20 alone accounts for exactly half the values.
 &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;predict_only_twenty = f == 20
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;submission = test.loc[:,['pairId']]
+submission['Prediction'] = predict_only_twenty.astype(int)
+
+submission.to_csv(Paths.submit('predict_only_twenty.csv'), index=False)
+&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;
-To download `submission.csv` file that you've just produced &amp;lt;a href='./submission.csv'&amp;gt;click here&amp;lt;/a&amp;gt; (if the link opens in browser, right-click on it and shoose "Save link as"). Then go to &lt;a href="https://www.coursera.org/learn/competitive-data-science/programming/KsASv/data-leakages/submission"&gt;assignment page&lt;/a&gt; and submit your `.csv` file in 'My submission' tab.
+This is the grader output.
 &lt;/p&gt;
 
+&lt;pre class="example"&gt;
+Well done! Your accuracy score is 0.998128 
+&lt;/pre&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;predict_fourteen = f &amp;gt; 14
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;submission = test.loc[:,['pairId']]
+submission['Prediction'] = predict_fourteen.astype(int)
+
+submission.to_csv(Paths.submit('predict_fourteen.csv'), index=False)
+&lt;/pre&gt;&lt;/div&gt;
+
 &lt;p&gt;
-If you did everything right, the score should be very high.
+This was the grader output.
 &lt;/p&gt;
+&lt;pre class="example"&gt;
+Well done! Your accuracy score is 0.997298
+&lt;/pre&gt;
 
 &lt;p&gt;
 &lt;b&gt;&lt;b&gt;Finally:&lt;/b&gt;&lt;/b&gt; try to explain to yourself, why the whole thing worked out. In fact, there is no magic in this feature, and the idea to use rows in the incidence matrix can be intuitively justified.
@@ -457,11 +708,19 @@ If you did everything right, the score should be very high.
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org85b0dba" class="outline-2"&gt;
-&lt;h2 id="org85b0dba"&gt;Bonus&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org85b0dba"&gt;
+&lt;div id="outline-container-orgb27ca78" class="outline-2"&gt;
+&lt;h2 id="orgb27ca78"&gt;Bonus&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgb27ca78"&gt;
 &lt;p&gt;
 Interestingly, it is not the only leak in this dataset. There is another totally different way to get almost 100% accuracy. Try to find it!
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org3d00284" class="outline-2"&gt;
+&lt;h2 id="org3d00284"&gt;What does it all mean then?&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org3d00284"&gt;
+&lt;p&gt;
+From our initial check uploading all the submissions as one (so all the ID-pairs were classified as having IDs from the same class) we saw that half the entries were 1's and half were 0's. Our incidence matrix showed that half the vectors had a similarity of 20 or more, so by predicting that all the pairs whose incidence matrix dot-products were 20 or greater were of the same class, we could predict with greater than 99% accuracy which IDs were from the same class.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;</description><category>assignment dataleaks</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/</guid><pubDate>Sun, 09 Sep 2018 01:31:29 GMT</pubDate></item></channel></rss>

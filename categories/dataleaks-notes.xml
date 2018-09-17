@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about dataleaks notes)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/dataleaks-notes.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Sat, 15 Sep 2018 00:10:11 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Data Leaks</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/data-leaks/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-orgf47ccd1" class="outline-2"&gt;
-&lt;h2 id="orgf47ccd1"&gt;What are data leaks?&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgf47ccd1"&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about dataleaks notes)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/dataleaks-notes.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Sat, 15 Sep 2018 17:42:27 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Data Leaks</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/data-leaks/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-orgb6c4200" class="outline-2"&gt;
+&lt;h2 id="orgb6c4200"&gt;What are data leaks?&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgb6c4200"&gt;
 &lt;p&gt;
 &lt;i&gt;Data Leaks&lt;/i&gt; are unexpected errors that expose extra information that wouldn't be available in production.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org235e77b" class="outline-2"&gt;
-&lt;h2 id="org235e77b"&gt;Time Series&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org235e77b"&gt;
+&lt;div id="outline-container-orgafbb943" class="outline-2"&gt;
+&lt;h2 id="orgafbb943"&gt;Time Series&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgafbb943"&gt;
 &lt;p&gt;
 Check if there are points in the training set that are in the future with regard to the test set.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org095beaa" class="outline-2"&gt;
-&lt;h2 id="org095beaa"&gt;Unexpected Information&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org095beaa"&gt;
+&lt;div id="outline-container-org538834b" class="outline-2"&gt;
+&lt;h2 id="org538834b"&gt;Unexpected Information&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org538834b"&gt;
 &lt;p&gt;
 Sometimes what looks like a non-predictive feature might prove to be useful because of the way the data-set was created.
 &lt;/p&gt;
@@ -28,21 +28,21 @@ Sometimes what looks like a non-predictive feature might prove to be useful beca
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgfd58a2d" class="outline-2"&gt;
-&lt;h2 id="orgfd58a2d"&gt;Leaderboard Probing&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgfd58a2d"&gt;
+&lt;div id="outline-container-org165f78d" class="outline-2"&gt;
+&lt;h2 id="org165f78d"&gt;Leaderboard Probing&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org165f78d"&gt;
 &lt;p&gt;
 This is a method to look for dataleaks based on the leader board.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org7235bd8" class="outline-2"&gt;
-&lt;h2 id="org7235bd8"&gt;Quiz&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org7235bd8"&gt;
+&lt;div id="outline-container-org33ada27" class="outline-2"&gt;
+&lt;h2 id="org33ada27"&gt;Quiz&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org33ada27"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgcb0b935" class="outline-3"&gt;
-&lt;h3 id="orgcb0b935"&gt;One&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgcb0b935"&gt;
+&lt;div id="outline-container-org3c7ca32" class="outline-3"&gt;
+&lt;h3 id="org3c7ca32"&gt;One&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org3c7ca32"&gt;
 &lt;p&gt;
 Suppose that you have a credit scoring task where you have to create a machine learning model that approximates expert evaluation of an individual's creditworthiness. Which of the following can potentially be a data leakage?
 &lt;/p&gt;
@@ -54,9 +54,9 @@ Suppose that you have a credit scoring task where you have to create a machine l
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org6d1e538" class="outline-3"&gt;
-&lt;h3 id="org6d1e538"&gt;Two&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org6d1e538"&gt;
+&lt;div id="outline-container-org2711f73" class="outline-3"&gt;
+&lt;h3 id="org2711f73"&gt;Two&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org2711f73"&gt;
 &lt;p&gt;
 What is the most foolproof way to set up a time-series competition?
 &lt;/p&gt;
@@ -68,9 +68,9 @@ What is the most foolproof way to set up a time-series competition?
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org5440e65" class="outline-3"&gt;
-&lt;h3 id="org5440e65"&gt;Three&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org5440e65"&gt;
+&lt;div id="outline-container-org37344f4" class="outline-3"&gt;
+&lt;h3 id="org37344f4"&gt;Three&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org37344f4"&gt;
 &lt;p&gt;
 Suppose you have a binary feature classification task and it is evaluated by the logloss metric. You know that there are 10,000 entries in the public chunk of the test set and that a constant prediction of 0.3 gets a score of 1.01. The mean of the target variable in the training set is 0.44. What is the mean of the target variable in the public part  of the test data (up to 4 decimal places.)
 &lt;/p&gt;
@@ -90,9 +90,9 @@ Suppose you have a binary feature classification task and it is evaluated by the
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org7a1136d" class="outline-3"&gt;
-&lt;h3 id="org7a1136d"&gt;Four&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org7a1136d"&gt;
+&lt;div id="outline-container-org7e705bf" class="outline-3"&gt;
+&lt;h3 id="org7e705bf"&gt;Four&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org7e705bf"&gt;
 &lt;p&gt;
 Suppose you are solving an image classification task, what is the classification of the logo for this course?
 &lt;/p&gt;

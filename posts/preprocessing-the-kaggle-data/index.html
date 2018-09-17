@@ -123,26 +123,26 @@ This is a post to do some basic pre-processing on the data. It won't do anything
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgcbe7366">Introduction</a></li>
-<li><a href="#org0518627">Tangle</a></li>
-<li><a href="#org8224355">Imports</a></li>
-<li><a href="#orgd4d2fcc">Loading the Data</a></li>
-<li><a href="#orgee24ed6">Limit the Target Range</a></li>
+<li><a href="#orgb1601cf">Introduction</a></li>
+<li><a href="#org602360c">Tangle</a></li>
+<li><a href="#org35a46bd">Imports</a></li>
+<li><a href="#org7b28e70">Loading the Data</a></li>
+<li><a href="#orgd2ccaa6">Limit the Target Range</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orgcbe7366" class="outline-2">
-<h2 id="orgcbe7366">Introduction</h2>
-<div class="outline-text-2" id="text-orgcbe7366">
+<div id="outline-container-orgb1601cf" class="outline-2">
+<h2 id="orgb1601cf">Introduction</h2>
+<div class="outline-text-2" id="text-orgb1601cf">
 <p>
 This is a post to do some basic pre-processing on the data. It won't do anything fancy (i.e. no Feature Engineering), but will just get the data ready to be used by the models. In particular, the rules say that the test data target will be limited to a range and the features are categorical so we need to transform them for non-tree models.
 </p>
 </div>
 </div>
-<div id="outline-container-org0518627" class="outline-2">
-<h2 id="org0518627">Tangle</h2>
-<div class="outline-text-2" id="text-org0518627">
+<div id="outline-container-org602360c" class="outline-2">
+<h2 id="org602360c">Tangle</h2>
+<div class="outline-text-2" id="text-org602360c">
 <div class="highlight"><pre><span></span><span class="o">&lt;&lt;</span><span class="n">pypi</span><span class="o">-</span><span class="n">imports</span><span class="o">&gt;&gt;</span>
 
 <span class="o">&lt;&lt;</span><span class="n">local</span><span class="o">-</span><span class="n">imports</span><span class="o">&gt;&gt;</span>
@@ -151,18 +151,18 @@ This is a post to do some basic pre-processing on the data. It won't do anything
 </pre></div>
 </div>
 </div>
-<div id="outline-container-org8224355" class="outline-2">
-<h2 id="org8224355">Imports</h2>
-<div class="outline-text-2" id="text-org8224355">
+<div id="outline-container-org35a46bd" class="outline-2">
+<h2 id="org35a46bd">Imports</h2>
+<div class="outline-text-2" id="text-org35a46bd">
 <div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">warnings</span>
 <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">"ignore"</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">"numpy.dtype size changed"</span><span class="p">)</span>
 <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">"ignore"</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">"numpy.ufunc size changed"</span><span class="p">)</span>
 </pre></div>
 </div>
 
-<div id="outline-container-org24c2f93" class="outline-3">
-<h3 id="org24c2f93">From pypi</h3>
-<div class="outline-text-3" id="text-org24c2f93">
+<div id="outline-container-orgee4ea42" class="outline-3">
+<h3 id="orgee4ea42">From pypi</h3>
+<div class="outline-text-3" id="text-orgee4ea42">
 <div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">pyplot</span>
 <span class="kn">import</span> <span class="nn">numpy</span>
 <span class="kn">import</span> <span class="nn">seaborn</span>
@@ -174,18 +174,18 @@ This is a post to do some basic pre-processing on the data. It won't do anything
 </div>
 </div>
 
-<div id="outline-container-org7fc023b" class="outline-3">
-<h3 id="org7fc023b">This project</h3>
-<div class="outline-text-3" id="text-org7fc023b">
+<div id="outline-container-org4316211" class="outline-3">
+<h3 id="org4316211">This project</h3>
+<div class="outline-text-3" id="text-org4316211">
 <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">kaggler.helpers.build_training_data</span> <span class="kn">import</span> <span class="n">Pickles</span>
 <span class="kn">from</span> <span class="nn">kaggler.helpers.helpers</span> <span class="kn">import</span> <span class="n">Helpers</span>
 </pre></div>
 </div>
 </div>
 </div>
-<div id="outline-container-orgd4d2fcc" class="outline-2">
-<h2 id="orgd4d2fcc">Loading the Data</h2>
-<div class="outline-text-2" id="text-orgd4d2fcc">
+<div id="outline-container-org7b28e70" class="outline-2">
+<h2 id="org7b28e70">Loading the Data</h2>
+<div class="outline-text-2" id="text-org7b28e70">
 <p>
 This assumes you've run the <code>build_training_data.py</code> code to get the testing and training data sets. The <code>Helpers</code> class also expects a specific path, so you have to have the repository set up in <code>~/projects/kaggle-competitions/</code>.
 </p>
@@ -204,9 +204,9 @@ This assumes you've run the <code>build_training_data.py</code> code to get the 
 </div>
 </div>
 
-<div id="outline-container-orgee24ed6" class="outline-2">
-<h2 id="orgee24ed6">Limit the Target Range</h2>
-<div class="outline-text-2" id="text-orgee24ed6">
+<div id="outline-container-orgd2ccaa6" class="outline-2">
+<h2 id="orgd2ccaa6">Limit the Target Range</h2>
+<div class="outline-text-2" id="text-orgd2ccaa6">
 <p>
 According to the contest description the true target values are clipped to the <code>[0,20]</code> range, so it might make sense to clip the target data in our training and testing data to the given range.
 </p>

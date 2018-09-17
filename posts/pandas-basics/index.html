@@ -108,52 +108,52 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgb9fd8ad">Description</a></li>
-<li><a href="#org0950bd5">Pandas Functions and Methods Used</a></li>
-<li><a href="#org0def777">Imports</a></li>
-<li><a href="#org7dd298f">Confirmed</a></li>
-<li><a href="#orga6dcf12">The Data</a></li>
+<li><a href="#org7892aaf">Description</a></li>
+<li><a href="#org893478f">Pandas Functions and Methods Used</a></li>
+<li><a href="#orgf687ee3">Imports</a></li>
+<li><a href="#org3014b2c">Confirmed</a></li>
+<li><a href="#org8f776f1">The Data</a></li>
 <li>
-<a href="#org2987555">Data Description</a>
+<a href="#org541405c">Data Description</a>
 <ul>
-<li><a href="#orgc12af71">File descriptions</a></li>
-<li><a href="#orgd5cea1a">Data Fields</a></li>
+<li><a href="#org69971a4">File descriptions</a></li>
+<li><a href="#org4c2f36f">Data Fields</a></li>
 </ul>
 </li>
 <li>
-<a href="#orge2ab55a">A Warm Up</a>
+<a href="#orgd2505bd">A Warm Up</a>
 <ul>
-<li><a href="#orgdde0059">transactions</a></li>
-<li><a href="#orgef2b492">items</a></li>
-<li><a href="#orgad3f50b">item_categories</a></li>
-<li><a href="#orgf83d365">shops</a></li>
+<li><a href="#org7dc579d">transactions</a></li>
+<li><a href="#orgb319ec5">items</a></li>
+<li><a href="#orgf9611a7">item_categories</a></li>
+<li><a href="#org42af7ed">shops</a></li>
 </ul>
 </li>
 <li>
-<a href="#orgc3b67b3">Questions</a>
+<a href="#orgc1651fc">Questions</a>
 <ul>
-<li><a href="#orgcd130b1">Question 1: <b>What was the maximum total revenue among all the shops in September, 2014?</b></a></li>
-<li><a href="#orgd8bc788">Question 2: <b>What item category generated the highest revenue in the Summer of 2014?</b></a></li>
-<li><a href="#orged6f550">Question 3: <b>How many items have the same price throughout the data set?</b></a></li>
-<li><a href="#org43acb1d">Question 4: <b>What was the variance of the number of items sold per day for shop 25 in December, 2014?</b></a></li>
+<li><a href="#org7423519">Question 1: <b>What was the maximum total revenue among all the shops in September, 2014?</b></a></li>
+<li><a href="#org0779096">Question 2: <b>What item category generated the highest revenue in the Summer of 2014?</b></a></li>
+<li><a href="#org029708c">Question 3: <b>How many items have the same price throughout the data set?</b></a></li>
+<li><a href="#orgf719c0a">Question 4: <b>What was the variance of the number of items sold per day for shop 25 in December, 2014?</b></a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orgb9fd8ad" class="outline-2">
-<h2 id="orgb9fd8ad">Description</h2>
-<div class="outline-text-2" id="text-orgb9fd8ad">
+<div id="outline-container-org7892aaf" class="outline-2">
+<h2 id="org7892aaf">Description</h2>
+<div class="outline-text-2" id="text-org7892aaf">
 <p>
 This is a review of Pandas' Basics with an emphasis on using <a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.groupby.html">groupby</a>.
 </p>
 </div>
 </div>
 
-<div id="outline-container-org0950bd5" class="outline-2">
-<h2 id="org0950bd5">Pandas Functions and Methods Used</h2>
-<div class="outline-text-2" id="text-org0950bd5">
+<div id="outline-container-org893478f" class="outline-2">
+<h2 id="org893478f">Pandas Functions and Methods Used</h2>
+<div class="outline-text-2" id="text-org893478f">
 <ul class="org-ul">
 <li><a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.describe.html"><code>describe</code></a></li>
 <li><a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.groupby.html"><code>groupby</code></a></li>
@@ -171,9 +171,9 @@ This is a review of Pandas' Basics with an emphasis on using <a href="https://pa
 </ul>
 </div>
 </div>
-<div id="outline-container-org0def777" class="outline-2">
-<h2 id="org0def777">Imports</h2>
-<div class="outline-text-2" id="text-org0def777">
+<div id="outline-container-orgf687ee3" class="outline-2">
+<h2 id="orgf687ee3">Imports</h2>
+<div class="outline-text-2" id="text-orgf687ee3">
 <p>
 Here's our dependencies.
 </p>
@@ -194,9 +194,9 @@ Here's our dependencies.
 </pre></div>
 </div>
 </div>
-<div id="outline-container-org7dd298f" class="outline-2">
-<h2 id="org7dd298f">Confirmed</h2>
-<div class="outline-text-2" id="text-org7dd298f">
+<div id="outline-container-org3014b2c" class="outline-2">
+<h2 id="org3014b2c">Confirmed</h2>
+<div class="outline-text-2" id="text-org3014b2c">
 <p>
 These are values that we know to be correct so you can use them to check the outcomes.
 </p>
@@ -211,9 +211,9 @@ These are values that we know to be correct so you can use them to check the out
 </div>
 </div>
 
-<div id="outline-container-orga6dcf12" class="outline-2">
-<h2 id="orga6dcf12">The Data</h2>
-<div class="outline-text-2" id="text-orga6dcf12">
+<div id="outline-container-org8f776f1" class="outline-2">
+<h2 id="org8f776f1">The Data</h2>
+<div class="outline-text-2" id="text-org8f776f1">
 <p>
 We have four data-sets to load, all of them in csv format, although the file with all the transactions is compressed.
 </p>
@@ -243,9 +243,9 @@ The <code>frames</code> dictionary is just a convenience thing to make printing 
 </div>
 </div>
 
-<div id="outline-container-org2987555" class="outline-2">
-<h2 id="org2987555">Data Description</h2>
-<div class="outline-text-2" id="text-org2987555">
+<div id="outline-container-org541405c" class="outline-2">
+<h2 id="org541405c">Data Description</h2>
+<div class="outline-text-2" id="text-org541405c">
 <p>
 The dataset we loaded is taken from a kaggle competititon. You can find complete data description at the <a href="https://www.kaggle.com/c/competitive-data-science-final-project/data">competition web page</a>. To join the competition use <a href="https://www.kaggle.com/t/1ea93815dca248e99221df42ebde3540">this link</a>. The descriptions below cover all the files, not just the ones we use here.
 </p>
@@ -257,9 +257,9 @@ You are provided with daily historical sales data from what appears to be a soft
 </blockquote>
 </div>
 
-<div id="outline-container-orgc12af71" class="outline-3">
-<h3 id="orgc12af71">File descriptions</h3>
-<div class="outline-text-3" id="text-orgc12af71">
+<div id="outline-container-org69971a4" class="outline-3">
+<h3 id="org69971a4">File descriptions</h3>
+<div class="outline-text-3" id="text-org69971a4">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-left">
@@ -299,9 +299,9 @@ You are provided with daily historical sales data from what appears to be a soft
 </div>
 </div>
 
-<div id="outline-container-orgd5cea1a" class="outline-3">
-<h3 id="orgd5cea1a">Data Fields</h3>
-<div class="outline-text-3" id="text-orgd5cea1a">
+<div id="outline-container-org4c2f36f" class="outline-3">
+<h3 id="org4c2f36f">Data Fields</h3>
+<div class="outline-text-3" id="text-org4c2f36f">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-left">
@@ -362,9 +362,9 @@ You are provided with daily historical sales data from what appears to be a soft
 </div>
 </div>
 
-<div id="outline-container-orge2ab55a" class="outline-2">
-<h2 id="orge2ab55a">A Warm Up</h2>
-<div class="outline-text-2" id="text-orge2ab55a">
+<div id="outline-container-orgd2505bd" class="outline-2">
+<h2 id="orgd2505bd">A Warm Up</h2>
+<div class="outline-text-2" id="text-orgd2505bd">
 <p>
 Let's start with a simple task. 
 </p>
@@ -420,9 +420,9 @@ Print the shape of the loaded dataframes and use the <a href="https://pandas.pyd
     <span class="k">print</span><span class="p">(</span><span class="n">tabulate</span><span class="p">(</span><span class="n">head</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="s2">"keys"</span><span class="p">,</span> <span class="n">tablefmt</span><span class="o">=</span><span class="s2">"orgtbl"</span><span class="p">,</span> <span class="n">showindex</span><span class="o">=</span><span class="bp">False</span><span class="p">))</span>
 </pre></div>
 </div>
-<div id="outline-container-orgdde0059" class="outline-3">
-<h3 id="orgdde0059">transactions</h3>
-<div class="outline-text-3" id="text-orgdde0059">
+<div id="outline-container-org7dc579d" class="outline-3">
+<h3 id="org7dc579d">transactions</h3>
+<div class="outline-text-3" id="text-org7dc579d">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-right">
@@ -485,9 +485,9 @@ Print the shape of the loaded dataframes and use the <a href="https://pandas.pyd
 </table>
 </div>
 </div>
-<div id="outline-container-orgef2b492" class="outline-3">
-<h3 id="orgef2b492">items</h3>
-<div class="outline-text-3" id="text-orgef2b492">
+<div id="outline-container-orgb319ec5" class="outline-3">
+<h3 id="orgb319ec5">items</h3>
+<div class="outline-text-3" id="text-orgb319ec5">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-left">
@@ -529,9 +529,9 @@ Print the shape of the loaded dataframes and use the <a href="https://pandas.pyd
 </table>
 </div>
 </div>
-<div id="outline-container-orgad3f50b" class="outline-3">
-<h3 id="orgad3f50b">item_categories</h3>
-<div class="outline-text-3" id="text-orgad3f50b">
+<div id="outline-container-orgf9611a7" class="outline-3">
+<h3 id="orgf9611a7">item_categories</h3>
+<div class="outline-text-3" id="text-orgf9611a7">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-left">
@@ -566,9 +566,9 @@ Print the shape of the loaded dataframes and use the <a href="https://pandas.pyd
 </table>
 </div>
 </div>
-<div id="outline-container-orgf83d365" class="outline-3">
-<h3 id="orgf83d365">shops</h3>
-<div class="outline-text-3" id="text-orgf83d365">
+<div id="outline-container-org42af7ed" class="outline-3">
+<h3 id="org42af7ed">shops</h3>
+<div class="outline-text-3" id="text-org42af7ed">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-left">
@@ -608,14 +608,14 @@ Unexpectedly, the names are all in <a href="https://en.wikipedia.org/wiki/Cyrill
 </div>
 </div>
 
-<div id="outline-container-orgc3b67b3" class="outline-2">
-<h2 id="orgc3b67b3">Questions</h2>
-<div class="outline-text-2" id="text-orgc3b67b3">
+<div id="outline-container-orgc1651fc" class="outline-2">
+<h2 id="orgc1651fc">Questions</h2>
+<div class="outline-text-2" id="text-orgc1651fc">
 </div>
-<div id="outline-container-orgcd130b1" class="outline-3">
-<h3 id="orgcd130b1">Question 1: <b>What was the maximum total revenue among all the shops in September, 2014?</b>
+<div id="outline-container-org7423519" class="outline-3">
+<h3 id="org7423519">Question 1: <b>What was the maximum total revenue among all the shops in September, 2014?</b>
 </h3>
-<div class="outline-text-3" id="text-orgcd130b1">
+<div class="outline-text-3" id="text-org7423519">
 <p>
 From here on out <b>revenue</b> refers to total sales minus value of goods returned.
 </p>
@@ -627,13 +627,13 @@ From here on out <b>revenue</b> refers to total sales minus value of goods retur
 </ul>
 </div>
 
-<div id="outline-container-org43765f1" class="outline-4">
-<h4 id="org43765f1">Answer</h4>
-<div class="outline-text-4" id="text-org43765f1">
+<div id="outline-container-org63fbb80" class="outline-4">
+<h4 id="org63fbb80">Answer</h4>
+<div class="outline-text-4" id="text-org63fbb80">
 </div>
 <ul class="org-ul">
 <li>
-<a id="org6f32140"></a>Sales Per Item<br><div class="outline-text-5" id="text-org6f32140">
+<a id="org0c43bfd"></a>Sales Per Item<br><div class="outline-text-5" id="text-org0c43bfd">
 <p>
 First I'll add a column with the total revenue for each item (the \(price \times \textit{number sold}\)).
 </p>
@@ -740,7 +740,7 @@ First I'll add a column with the total revenue for each item (the \(price \times
 
 
 <li>
-<a id="org1233335"></a>Filter Out the Month<br><div class="outline-text-5" id="text-org1233335">
+<a id="orgb156f08"></a>Filter Out the Month<br><div class="outline-text-5" id="text-orgb156f08">
 <p>
 I was originally filtering using a regular expression, but the other questions use date-filtering too so I decided to create the extra day, month, and year columns once to avoid the extra regular expression overhead later on. The <a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.Series.str.extract.html"><code>str.extract</code></a> method uses python regular expression groups to pull out values and create columns in a DataFrame. If you use named expressions (as I do here) then it will use the names as the column-names in the dataframe.
 </p>
@@ -1059,10 +1059,10 @@ Highest Revenue Earned by a shop in September of 2014: $ 7,982,852.20
 </div>
 </div>
 
-<div id="outline-container-orgd8bc788" class="outline-3">
-<h3 id="orgd8bc788">Question 2: <b>What item category generated the highest revenue in the Summer of 2014?</b>
+<div id="outline-container-org0779096" class="outline-3">
+<h3 id="org0779096">Question 2: <b>What item category generated the highest revenue in the Summer of 2014?</b>
 </h3>
-<div class="outline-text-3" id="text-orgd8bc788">
+<div class="outline-text-3" id="text-org0779096">
 <ul class="org-ul">
 <li>Submit the <code>id</code> of the category found.</li>
 <li>Here we call "summer" the period from June to August.</li>
@@ -1075,9 +1075,9 @@ Highest Revenue Earned by a shop in September of 2014: $ 7,982,852.20
 Note, that for an object `x` of type `pd.Series`: `x.argmax()` returns <b><b>index</b></b> of the maximum element. `pd.Series` can have non-trivial index (not `[1, 2, 3, … ]`).
 </p>
 </div>
-<div id="outline-container-orgd02af8a" class="outline-4">
-<h4 id="orgd02af8a">Get the Summer months</h4>
-<div class="outline-text-4" id="text-orgd02af8a">
+<div id="outline-container-org1526193" class="outline-4">
+<h4 id="org1526193">Get the Summer months</h4>
+<div class="outline-text-4" id="text-org1526193">
 <p>
 To filter what we want I'll use the <a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.isin.html"><code>isin</code></a> method to remove every row that has a value that isn't in <code>Dates.summer</code>.
 </p>
@@ -1194,9 +1194,9 @@ To filter what we want I'll use the <a href="https://pandas.pydata.org/pandas-do
 </div>
 </div>
 
-<div id="outline-container-orga3a013a" class="outline-4">
-<h4 id="orga3a013a">Map in the Category IDs</h4>
-<div class="outline-text-4" id="text-orga3a013a">
+<div id="outline-container-orgd117129" class="outline-4">
+<h4 id="orgd117129">Map in the Category IDs</h4>
+<div class="outline-text-4" id="text-orgd117129">
 <p>
 If you look at <code>items.item_id</code> you can see that the id's are really just the numerical index to the <code>items.item_category_id</code> series. I was originally add the category ids for all the transactions but it takes a long time so I'm just adding it to this group.
 </p>
@@ -1345,10 +1345,10 @@ Category Id with the Maximum Value: 20
 </div>
 </div>
 
-<div id="outline-container-orged6f550" class="outline-3">
-<h3 id="orged6f550">Question 3: <b>How many items have the same price throughout the data set?</b>
+<div id="outline-container-org029708c" class="outline-3">
+<h3 id="org029708c">Question 3: <b>How many items have the same price throughout the data set?</b>
 </h3>
-<div class="outline-text-3" id="text-orged6f550">
+<div class="outline-text-3" id="text-org029708c">
 <p>
 How many items are there, such that their price stays constant (to the best of our knowledge) during the whole period of time?
 </p>
@@ -1358,9 +1358,9 @@ Let's assume, that the items are returned for the same price as they had been so
 </p>
 </div>
 
-<div id="outline-container-org8e9feea" class="outline-4">
-<h4 id="org8e9feea">Isolate the ID and Price</h4>
-<div class="outline-text-4" id="text-org8e9feea">
+<div id="outline-container-orge1f4790" class="outline-4">
+<h4 id="orge1f4790">Isolate the ID and Price</h4>
+<div class="outline-text-4" id="text-orge1f4790">
 <div class="highlight"><pre><span></span><span class="n">id_price</span> <span class="o">=</span> <span class="n">transactions</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="p">[</span><span class="s2">"item_id"</span><span class="p">,</span> <span class="s2">"item_price"</span><span class="p">]]</span>
 <span class="n">id_price</span><span class="p">[</span><span class="s2">"item_price"</span><span class="p">]</span> <span class="o">=</span> <span class="n">id_price</span><span class="o">.</span><span class="n">item_price</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span>
 <span class="n">group</span> <span class="o">=</span> <span class="n">id_price</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">"item_id"</span><span class="p">)</span>
@@ -1387,10 +1387,10 @@ Number of items whose price didn't change: 5926
 </div>
 </div>
 
-<div id="outline-container-org43acb1d" class="outline-3">
-<h3 id="org43acb1d">Question 4: <b>What was the variance of the number of items sold per day for shop 25 in December, 2014?</b>
+<div id="outline-container-orgf719c0a" class="outline-3">
+<h3 id="orgf719c0a">Question 4: <b>What was the variance of the number of items sold per day for shop 25 in December, 2014?</b>
 </h3>
-<div class="outline-text-3" id="text-org43acb1d">
+<div class="outline-text-3" id="text-orgf719c0a">
 <p>
 Remember, the data can sometimes be noisy.
 Do not count the items, that were sold but returned back later.
@@ -1404,9 +1404,9 @@ Do not count the items, that were sold but returned back later.
 </pre></div>
 </div>
 
-<div id="outline-container-orgfe35ffb" class="outline-4">
-<h4 id="orgfe35ffb">Filter to the Shop and Dates</h4>
-<div class="outline-text-4" id="text-orgfe35ffb">
+<div id="outline-container-org744c5d5" class="outline-4">
+<h4 id="org744c5d5">Filter to the Shop and Dates</h4>
+<div class="outline-text-4" id="text-org744c5d5">
 <div class="highlight"><pre><span></span><span class="n">twenty_fives</span> <span class="o">=</span> <span class="n">twenty_fourteen</span><span class="p">[(</span><span class="n">transactions</span><span class="o">.</span><span class="n">shop_id</span><span class="o">==</span><span class="n">shop_id</span><span class="p">)</span>
 				<span class="o">&amp;</span> <span class="p">(</span><span class="n">transactions</span><span class="o">.</span><span class="n">month</span><span class="o">==</span><span class="n">Dates</span><span class="o">.</span><span class="n">december</span><span class="p">)]</span>
 <span class="k">print</span><span class="p">(</span><span class="n">tabulate</span><span class="p">(</span><span class="n">twenty_fives</span><span class="o">.</span><span class="n">head</span><span class="p">(),</span> <span class="n">headers</span><span class="o">=</span><span class="s1">'keys'</span><span class="p">,</span> <span class="n">tablefmt</span><span class="o">=</span><span class="s1">'orgtbl'</span><span class="p">))</span>
@@ -1511,9 +1511,9 @@ Do not count the items, that were sold but returned back later.
 </div>
 </div>
 
-<div id="outline-container-orgc355b6c" class="outline-4">
-<h4 id="orgc355b6c">Group by date</h4>
-<div class="outline-text-4" id="text-orgc355b6c">
+<div id="outline-container-org3787a78" class="outline-4">
+<h4 id="org3787a78">Group by date</h4>
+<div class="outline-text-4" id="text-org3787a78">
 <div class="highlight"><pre><span></span><span class="n">shop_grouped</span> <span class="o">=</span> <span class="n">twenty_fives</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">"date"</span><span class="p">)</span>
 <span class="n">count_per_day</span> <span class="o">=</span> <span class="n">shop_grouped</span><span class="o">.</span><span class="n">item_cnt_day</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 <span class="k">print</span><span class="p">(</span><span class="n">count_per_day</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
@@ -1532,9 +1532,9 @@ Name: item_cnt_day, dtype: float64
 </div>
 </div>
 
-<div id="outline-container-orgbb86b9f" class="outline-4">
-<h4 id="orgbb86b9f">Add a date-time to make it sortable for print</h4>
-<div class="outline-text-4" id="text-orgbb86b9f">
+<div id="outline-container-orgf457ceb" class="outline-4">
+<h4 id="orgf457ceb">Add a date-time to make it sortable for print</h4>
+<div class="outline-text-4" id="text-orgf457ceb">
 <div class="highlight"><pre><span></span><span class="n">pandas</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">mode</span><span class="o">.</span><span class="n">chained_assignment</span> <span class="o">=</span> <span class="bp">None</span>
 <span class="n">count_per_day</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">count_per_day</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">format</span><span class="o">=</span><span class="s2">"</span><span class="si">%d</span><span class="s2">.%m.%Y"</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="n">count_per_day</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>

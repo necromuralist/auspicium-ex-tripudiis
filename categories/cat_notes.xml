@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about notes)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/cat_notes.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Sat, 15 Sep 2018 00:10:11 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Data Leaks</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/data-leaks/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-orgf47ccd1" class="outline-2"&gt;
-&lt;h2 id="orgf47ccd1"&gt;What are data leaks?&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgf47ccd1"&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about notes)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/cat_notes.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Sat, 15 Sep 2018 17:42:27 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Data Leaks</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/data-leaks/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-orgb6c4200" class="outline-2"&gt;
+&lt;h2 id="orgb6c4200"&gt;What are data leaks?&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgb6c4200"&gt;
 &lt;p&gt;
 &lt;i&gt;Data Leaks&lt;/i&gt; are unexpected errors that expose extra information that wouldn't be available in production.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org235e77b" class="outline-2"&gt;
-&lt;h2 id="org235e77b"&gt;Time Series&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org235e77b"&gt;
+&lt;div id="outline-container-orgafbb943" class="outline-2"&gt;
+&lt;h2 id="orgafbb943"&gt;Time Series&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgafbb943"&gt;
 &lt;p&gt;
 Check if there are points in the training set that are in the future with regard to the test set.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org095beaa" class="outline-2"&gt;
-&lt;h2 id="org095beaa"&gt;Unexpected Information&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org095beaa"&gt;
+&lt;div id="outline-container-org538834b" class="outline-2"&gt;
+&lt;h2 id="org538834b"&gt;Unexpected Information&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org538834b"&gt;
 &lt;p&gt;
 Sometimes what looks like a non-predictive feature might prove to be useful because of the way the data-set was created.
 &lt;/p&gt;
@@ -28,21 +28,21 @@ Sometimes what looks like a non-predictive feature might prove to be useful beca
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgfd58a2d" class="outline-2"&gt;
-&lt;h2 id="orgfd58a2d"&gt;Leaderboard Probing&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgfd58a2d"&gt;
+&lt;div id="outline-container-org165f78d" class="outline-2"&gt;
+&lt;h2 id="org165f78d"&gt;Leaderboard Probing&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org165f78d"&gt;
 &lt;p&gt;
 This is a method to look for dataleaks based on the leader board.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org7235bd8" class="outline-2"&gt;
-&lt;h2 id="org7235bd8"&gt;Quiz&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org7235bd8"&gt;
+&lt;div id="outline-container-org33ada27" class="outline-2"&gt;
+&lt;h2 id="org33ada27"&gt;Quiz&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org33ada27"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgcb0b935" class="outline-3"&gt;
-&lt;h3 id="orgcb0b935"&gt;One&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgcb0b935"&gt;
+&lt;div id="outline-container-org3c7ca32" class="outline-3"&gt;
+&lt;h3 id="org3c7ca32"&gt;One&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org3c7ca32"&gt;
 &lt;p&gt;
 Suppose that you have a credit scoring task where you have to create a machine learning model that approximates expert evaluation of an individual's creditworthiness. Which of the following can potentially be a data leakage?
 &lt;/p&gt;
@@ -54,9 +54,9 @@ Suppose that you have a credit scoring task where you have to create a machine l
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org6d1e538" class="outline-3"&gt;
-&lt;h3 id="org6d1e538"&gt;Two&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org6d1e538"&gt;
+&lt;div id="outline-container-org2711f73" class="outline-3"&gt;
+&lt;h3 id="org2711f73"&gt;Two&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org2711f73"&gt;
 &lt;p&gt;
 What is the most foolproof way to set up a time-series competition?
 &lt;/p&gt;
@@ -68,9 +68,9 @@ What is the most foolproof way to set up a time-series competition?
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org5440e65" class="outline-3"&gt;
-&lt;h3 id="org5440e65"&gt;Three&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org5440e65"&gt;
+&lt;div id="outline-container-org37344f4" class="outline-3"&gt;
+&lt;h3 id="org37344f4"&gt;Three&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org37344f4"&gt;
 &lt;p&gt;
 Suppose you have a binary feature classification task and it is evaluated by the logloss metric. You know that there are 10,000 entries in the public chunk of the test set and that a constant prediction of 0.3 gets a score of 1.01. The mean of the target variable in the training set is 0.44. What is the mean of the target variable in the public part  of the test data (up to 4 decimal places.)
 &lt;/p&gt;
@@ -90,9 +90,9 @@ Suppose you have a binary feature classification task and it is evaluated by the
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org7a1136d" class="outline-3"&gt;
-&lt;h3 id="org7a1136d"&gt;Four&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org7a1136d"&gt;
+&lt;div id="outline-container-org7e705bf" class="outline-3"&gt;
+&lt;h3 id="org7e705bf"&gt;Four&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org7e705bf"&gt;
 &lt;p&gt;
 Suppose you are solving an image classification task, what is the classification of the logo for this course?
 &lt;/p&gt;
@@ -107,21 +107,21 @@ Suppose you are solving an image classification task, what is the classification
 &lt;h2&gt;Table of Contents&lt;/h2&gt;
 &lt;div id="text-table-of-contents"&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org5d1619b"&gt;Validation and Overfitting&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org61ce815"&gt;Three Main Methods of Splitting&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org7d5f2a4"&gt;Stratification&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org5e1cb52"&gt;Data Splitting&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org7deb52b"&gt;Problems&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#orgd4c219d"&gt;Practice Quiz&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org390c014"&gt;Quiz&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org1c800a9"&gt;Links&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#orgdaf62d0"&gt;Validation and Overfitting&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org674da7d"&gt;Three Main Methods of Splitting&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#orgb5cdb96"&gt;Stratification&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org388f244"&gt;Data Splitting&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org36f5ea8"&gt;Problems&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org8238b42"&gt;Practice Quiz&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org03ebc6f"&gt;Quiz&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org746ed2d"&gt;Links&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org5d1619b" class="outline-2"&gt;
-&lt;h2 id="org5d1619b"&gt;Validation and Overfitting&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org5d1619b"&gt;
+&lt;div id="outline-container-orgdaf62d0" class="outline-2"&gt;
+&lt;h2 id="orgdaf62d0"&gt;Validation and Overfitting&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgdaf62d0"&gt;
 &lt;p&gt;
 To prevent your model from overfitting to the training set, you can hold out some of the training set and use it to validate the model after it has been fit to the rest of the training set.
 &lt;/p&gt;
@@ -132,16 +132,16 @@ To prevent your model from overfitting to the training set, you can hold out som
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org61ce815" class="outline-2"&gt;
-&lt;h2 id="org61ce815"&gt;Three Main Methods of Splitting&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org61ce815"&gt;
+&lt;div id="outline-container-org674da7d" class="outline-2"&gt;
+&lt;h2 id="org674da7d"&gt;Three Main Methods of Splitting&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org674da7d"&gt;
 &lt;p&gt;
 These are methods for splitting your training set into training and validation sets. Once you have a model, re-train it over the entire training set before applying it to the test set.
 &lt;/p&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org4e15e80" class="outline-3"&gt;
-&lt;h3 id="org4e15e80"&gt;Holdout&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org4e15e80"&gt;
+&lt;div id="outline-container-orgdf752cb" class="outline-3"&gt;
+&lt;h3 id="orgdf752cb"&gt;Holdout&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgdf752cb"&gt;
 &lt;p&gt;
 This method just splits the data into one training and one validation set.
 &lt;/p&gt;
@@ -152,9 +152,9 @@ This method just splits the data into one training and one validation set.
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orge1d1b4f" class="outline-3"&gt;
-&lt;h3 id="orge1d1b4f"&gt;K-Fold&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orge1d1b4f"&gt;
+&lt;div id="outline-container-orge7e9228" class="outline-3"&gt;
+&lt;h3 id="orge7e9228"&gt;K-Fold&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orge7e9228"&gt;
 &lt;p&gt;
 Make &lt;i&gt;k&lt;/i&gt; splits of the training set, then use each of the validation sets while training on all the data not in the validation set. This differs from doing holdout k-times since we guarantee that the validation sets don't overlap. Uses the average score for the k-folds.
 &lt;/p&gt;
@@ -164,9 +164,9 @@ Make &lt;i&gt;k&lt;/i&gt; splits of the training set, then use each of the valid
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org0b8340b" class="outline-3"&gt;
-&lt;h3 id="org0b8340b"&gt;Leave One Out&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org0b8340b"&gt;
+&lt;div id="outline-container-org0dbec8d" class="outline-3"&gt;
+&lt;h3 id="org0dbec8d"&gt;Leave One Out&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org0dbec8d"&gt;
 &lt;p&gt;
 This is like k-folds except we always use a validation set of size 1 - so we are iterating over each point in the data set and using it as the training set. This can be useful if the data set is small.
 &lt;/p&gt;
@@ -176,9 +176,9 @@ This is like k-folds except we always use a validation set of size 1 - so we are
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org7d5f2a4" class="outline-2"&gt;
-&lt;h2 id="org7d5f2a4"&gt;Stratification&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org7d5f2a4"&gt;
+&lt;div id="outline-container-orgb5cdb96" class="outline-2"&gt;
+&lt;h2 id="orgb5cdb96"&gt;Stratification&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgb5cdb96"&gt;
 &lt;p&gt;
 Sometimes you need to make sure your validation sets have the same distribution as your set as a whole.
 &lt;/p&gt;
@@ -190,9 +190,9 @@ Sometimes you need to make sure your validation sets have the same distribution 
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org5e1cb52" class="outline-2"&gt;
-&lt;h2 id="org5e1cb52"&gt;Data Splitting&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org5e1cb52"&gt;
+&lt;div id="outline-container-org388f244" class="outline-2"&gt;
+&lt;h2 id="org388f244"&gt;Data Splitting&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org388f244"&gt;
 &lt;p&gt;
 If you have time-based data, there's two ways to split the training data - randomly within the entire timespan, or put the first part of the data in the training set and put the second part of the data in the validation set. If the test-set is a time that is beyond the training data, then using the time-based split will produce a model that is better for the testing data.
 &lt;/p&gt;
@@ -210,25 +210,25 @@ The main point of this is that you want to set up your validation set to match t
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org7deb52b" class="outline-2"&gt;
-&lt;h2 id="org7deb52b"&gt;Problems&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org7deb52b"&gt;
+&lt;div id="outline-container-org36f5ea8" class="outline-2"&gt;
+&lt;h2 id="org36f5ea8"&gt;Problems&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org36f5ea8"&gt;
 &lt;p&gt;
 The point of doing the training-validation split is that you think the validation set(s) will approximate the test set. But what if that's not true?
 &lt;/p&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgf30b6ce" class="outline-3"&gt;
-&lt;h3 id="orgf30b6ce"&gt;Causes of score differences&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgf30b6ce"&gt;
+&lt;div id="outline-container-org6727bfa" class="outline-3"&gt;
+&lt;h3 id="org6727bfa"&gt;Causes of score differences&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org6727bfa"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;Too little data&lt;/li&gt;
 &lt;li&gt;The data is too diverse and inconsistent&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgd8025cd" class="outline-3"&gt;
-&lt;h3 id="orgd8025cd"&gt;Submission Differs from Validation&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgd8025cd"&gt;
+&lt;div id="outline-container-orgf901a8f" class="outline-3"&gt;
+&lt;h3 id="orgf901a8f"&gt;Submission Differs from Validation&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgf901a8f"&gt;
 &lt;ol class="org-ol"&gt;
 &lt;li&gt;Even K-fold validation has variation (check that the standard deviation across folds encompasses the leaderboard values)&lt;/li&gt;
 &lt;li&gt;Too little data on leaderboard (nothing you can do)&lt;/li&gt;
@@ -237,13 +237,13 @@ The point of doing the training-validation split is that you think the validatio
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgd4c219d" class="outline-2"&gt;
-&lt;h2 id="orgd4c219d"&gt;Practice Quiz&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgd4c219d"&gt;
+&lt;div id="outline-container-org8238b42" class="outline-2"&gt;
+&lt;h2 id="org8238b42"&gt;Practice Quiz&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org8238b42"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgbc574d5" class="outline-3"&gt;
-&lt;h3 id="orgbc574d5"&gt;One&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgbc574d5"&gt;
+&lt;div id="outline-container-org352f592" class="outline-3"&gt;
+&lt;h3 id="org352f592"&gt;One&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org352f592"&gt;
 &lt;p&gt;
 We did a K-Fold cross validation on a huge dataset and noticed that scores on each fold are roughly the same. Which validation type is of most practical use?
 &lt;/p&gt;
@@ -254,9 +254,9 @@ We did a K-Fold cross validation on a huge dataset and noticed that scores on ea
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org2fe2ec7" class="outline-3"&gt;
-&lt;h3 id="org2fe2ec7"&gt;Two&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org2fe2ec7"&gt;
+&lt;div id="outline-container-org0326285" class="outline-3"&gt;
+&lt;h3 id="org0326285"&gt;Two&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org0326285"&gt;
 &lt;p&gt;
 We did a K-fold cross validation on a medium sized dataset and noticed that the validation scores varied widely. Which validation type is the most practical to use?
 &lt;/p&gt;
@@ -267,9 +267,9 @@ We did a K-fold cross validation on a medium sized dataset and noticed that the 
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org5b2c705" class="outline-3"&gt;
-&lt;h3 id="org5b2c705"&gt;Three&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org5b2c705"&gt;
+&lt;div id="outline-container-orgc71db56" class="outline-3"&gt;
+&lt;h3 id="orgc71db56"&gt;Three&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgc71db56"&gt;
 &lt;p&gt;
 The features we generate depend on the train-test split. True or False?
 &lt;/p&gt;
@@ -279,9 +279,9 @@ The features we generate depend on the train-test split. True or False?
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgdb5fbbf" class="outline-3"&gt;
-&lt;h3 id="orgdb5fbbf"&gt;Which of these can indicate an expected leaderboard shuffle in a competition?&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgdb5fbbf"&gt;
+&lt;div id="outline-container-orgd543efe" class="outline-3"&gt;
+&lt;h3 id="orgd543efe"&gt;Which of these can indicate an expected leaderboard shuffle in a competition?&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgd543efe"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; Little training and/or testing data&lt;/li&gt;
 &lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; Most of the competitors have similar scores&lt;/li&gt;
@@ -290,13 +290,13 @@ The features we generate depend on the train-test split. True or False?
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org390c014" class="outline-2"&gt;
-&lt;h2 id="org390c014"&gt;Quiz&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org390c014"&gt;
+&lt;div id="outline-container-org03ebc6f" class="outline-2"&gt;
+&lt;h2 id="org03ebc6f"&gt;Quiz&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org03ebc6f"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org869ffd4" class="outline-3"&gt;
-&lt;h3 id="org869ffd4"&gt;One&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org869ffd4"&gt;
+&lt;div id="outline-container-org10427ff" class="outline-3"&gt;
+&lt;h3 id="org10427ff"&gt;One&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org10427ff"&gt;
 &lt;p&gt;
 Select the true statements.
 &lt;/p&gt;
@@ -309,9 +309,9 @@ Select the true statements.
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgf2d2424" class="outline-3"&gt;
-&lt;h3 id="orgf2d2424"&gt;Two&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgf2d2424"&gt;
+&lt;div id="outline-container-orgf19d4e6" class="outline-3"&gt;
+&lt;h3 id="orgf19d4e6"&gt;Two&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgf19d4e6"&gt;
 &lt;p&gt;
 Kaggle usually allows you to submit two final submissions that will be checked against the private leader board. One common practice is to use a model that did the best on the validation scores and another that did best on the public leader board. What is the logic behind using these two models?
 &lt;/p&gt;
@@ -322,9 +322,9 @@ Kaggle usually allows you to submit two final submissions that will be checked a
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org8f893ae" class="outline-3"&gt;
-&lt;h3 id="org8f893ae"&gt;Three&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org8f893ae"&gt;
+&lt;div id="outline-container-org8c9f4e2" class="outline-3"&gt;
+&lt;h3 id="org8c9f4e2"&gt;Three&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org8c9f4e2"&gt;
 &lt;p&gt;
 Suppose we have a dataset of marketing campaigns. Each campain runs for a few weeks and for each campaign our target is the number of new customers. A row in the dataset looks like this:
 &lt;/p&gt;
@@ -345,9 +345,9 @@ The dataset contains multiple campaigns where the training set has the dates at 
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org8f8be71" class="outline-3"&gt;
-&lt;h3 id="org8f8be71"&gt;Four&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org8f8be71"&gt;
+&lt;div id="outline-container-org1d64e74" class="outline-3"&gt;
+&lt;h3 id="org1d64e74"&gt;Four&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org1d64e74"&gt;
 &lt;p&gt;
 Which of the following can you usually identify without the leaderboard?
 &lt;/p&gt;
@@ -360,17 +360,17 @@ Which of the following can you usually identify without the leaderboard?
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org1c800a9" class="outline-2"&gt;
-&lt;h2 id="org1c800a9"&gt;Links&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org1c800a9"&gt;
+&lt;div id="outline-container-org746ed2d" class="outline-2"&gt;
+&lt;h2 id="org746ed2d"&gt;Links&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org746ed2d"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;&lt;a href="http://scikit-learn.org/stable/modules/cross_validation.html"&gt;Cross-validation in sklearn&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="http://www.chioka.in/how-to-select-your-final-models-in-a-kaggle-competitio/"&gt;Model Selection for Kaggle&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description><category>notes validation</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/validation/</guid><pubDate>Tue, 04 Sep 2018 15:01:59 GMT</pubDate></item><item><title>Springleaf Competition</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/springleaf-competition/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-org20ff5e4" class="outline-2"&gt;
-&lt;h2 id="org20ff5e4"&gt;Introduction&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org20ff5e4"&gt;
+&lt;/div&gt;</description><category>notes validation</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/validation/</guid><pubDate>Tue, 04 Sep 2018 15:01:59 GMT</pubDate></item><item><title>Springleaf Competition</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/springleaf-competition/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-orgd3acf9c" class="outline-2"&gt;
+&lt;h2 id="orgd3acf9c"&gt;Introduction&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgd3acf9c"&gt;
 &lt;p&gt;
 The data comes from the &lt;a href="https://www.kaggle.com/c/springleaf-marketing-response"&gt;Springleaf Marketing Response&lt;/a&gt; competition. Springleaf makes personal loans and wanted to be able to predict who would respond to their direct mail offers. Submissions are evaluated on the area under the ROC curve between the predicted probability and the target. The submission file should have an ID and the probability that the person would respond.
 &lt;/p&gt;
@@ -386,66 +386,66 @@ ID,target
 &lt;h2&gt;Table of Contents&lt;/h2&gt;
 &lt;div id="text-table-of-contents"&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/#org12dd304"&gt;Building Your Intuition About the Data&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/#org4fa52b8"&gt;Exploring Anonymized Data&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/#org770eca2"&gt;Visualizations&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/#orgbae5e91"&gt;Data Set Cleaning&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/#org14389ec"&gt;Quiz&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/#org85eee71"&gt;Links&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/#orga7ca7b0"&gt;Building Your Intuition About the Data&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/#org6ae1a4e"&gt;Exploring Anonymized Data&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/#orga42a7b7"&gt;Visualizations&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/#org70345c8"&gt;Data Set Cleaning&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/#orgf6f6742"&gt;Quiz&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/#orgeedcf2a"&gt;Links&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org12dd304" class="outline-2"&gt;
-&lt;h2 id="org12dd304"&gt;Building Your Intuition About the Data&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org12dd304"&gt;
+&lt;div id="outline-container-orga7ca7b0" class="outline-2"&gt;
+&lt;h2 id="orga7ca7b0"&gt;Building Your Intuition About the Data&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orga7ca7b0"&gt;
 &lt;p&gt;
 The first thing to do is to see if you can build up a mental model of what the data is about.
 &lt;/p&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgfb94d79" class="outline-3"&gt;
-&lt;h3 id="orgfb94d79"&gt;Get Domain Knowledge&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgfb94d79"&gt;
+&lt;div id="outline-container-org0a1a14d" class="outline-3"&gt;
+&lt;h3 id="org0a1a14d"&gt;Get Domain Knowledge&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org0a1a14d"&gt;
 &lt;p&gt;
 Find out something about the topic that the data describes.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org4bdf112" class="outline-3"&gt;
-&lt;h3 id="org4bdf112"&gt;Check if the Data is intuitive&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org4bdf112"&gt;
+&lt;div id="outline-container-orge4755c2" class="outline-3"&gt;
+&lt;h3 id="orge4755c2"&gt;Check if the Data is intuitive&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orge4755c2"&gt;
 &lt;p&gt;
 See if there are any strange values and see if it makes sense given the data description.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgbccbc42" class="outline-3"&gt;
-&lt;h3 id="orgbccbc42"&gt;Understand how the data was generated&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgbccbc42"&gt;
+&lt;div id="outline-container-org4a6688e" class="outline-3"&gt;
+&lt;h3 id="org4a6688e"&gt;Understand how the data was generated&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org4a6688e"&gt;
 &lt;p&gt;
 Is any of it synthetic? Was the training data generated the same way as the testing data?
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org4fa52b8" class="outline-2"&gt;
-&lt;h2 id="org4fa52b8"&gt;Exploring Anonymized Data&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org4fa52b8"&gt;
+&lt;div id="outline-container-org6ae1a4e" class="outline-2"&gt;
+&lt;h2 id="org6ae1a4e"&gt;Exploring Anonymized Data&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org6ae1a4e"&gt;
 &lt;p&gt;
 Organizers sometimes encode data so you can't tell what it is.
 &lt;/p&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org589a093" class="outline-3"&gt;
-&lt;h3 id="org589a093"&gt;Try To Decode the Data&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org589a093"&gt;
+&lt;div id="outline-container-org6c5093d" class="outline-3"&gt;
+&lt;h3 id="org6c5093d"&gt;Try To Decode the Data&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org6c5093d"&gt;
 &lt;p&gt;
 You generally won't be able to figure out what the data is if it's encoded, but sometimes they were created using simple shifting schemes that will let you figure out their original values.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org3c6ff0c" class="outline-3"&gt;
-&lt;h3 id="org3c6ff0c"&gt;Explore Individual Features&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org3c6ff0c"&gt;
+&lt;div id="outline-container-org3a18170" class="outline-3"&gt;
+&lt;h3 id="org3a18170"&gt;Explore Individual Features&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org3a18170"&gt;
 &lt;p&gt;
 Even if you don't know what the data is, it's important to know what type of data it is so that you can use the right data preprocessing for your model.
 &lt;/p&gt;
@@ -458,17 +458,17 @@ Even if you don't know what the data is, it's important to know what type of dat
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org770eca2" class="outline-2"&gt;
-&lt;h2 id="org770eca2"&gt;Visualizations&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org770eca2"&gt;
+&lt;div id="outline-container-orga42a7b7" class="outline-2"&gt;
+&lt;h2 id="orga42a7b7"&gt;Visualizations&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orga42a7b7"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org0de1b4d" class="outline-3"&gt;
-&lt;h3 id="org0de1b4d"&gt;Features&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org0de1b4d"&gt;
+&lt;div id="outline-container-org0a8d1b7" class="outline-3"&gt;
+&lt;h3 id="org0a8d1b7"&gt;Features&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org0a8d1b7"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgfd629df" class="outline-4"&gt;
-&lt;h4 id="orgfd629df"&gt;Histograms&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-orgfd629df"&gt;
+&lt;div id="outline-container-org0324b8b" class="outline-4"&gt;
+&lt;h4 id="org0324b8b"&gt;Histograms&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org0324b8b"&gt;
 &lt;p&gt;
 This is useful for seeing the shape of the data.
 &lt;/p&gt;
@@ -477,9 +477,9 @@ This is useful for seeing the shape of the data.
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orge250957" class="outline-4"&gt;
-&lt;h4 id="orge250957"&gt;Index vs Value&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-orge250957"&gt;
+&lt;div id="outline-container-orge6ca6ac" class="outline-4"&gt;
+&lt;h4 id="orge6ca6ac"&gt;Index vs Value&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-orge6ca6ac"&gt;
 &lt;p&gt;
 This will show you how well distributed the data is within the data frame. Horizontal lines indicate repeated values and empty bands show areas where none of the data had this value. If you don't have vertical lines then the data was probably shuffled.
 &lt;/p&gt;
@@ -488,9 +488,9 @@ This will show you how well distributed the data is within the data frame. Horiz
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org9ffe49a" class="outline-4"&gt;
-&lt;h4 id="org9ffe49a"&gt;Index vs Value Colored By Class Label&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org9ffe49a"&gt;
+&lt;div id="outline-container-org9059dc9" class="outline-4"&gt;
+&lt;h4 id="org9059dc9"&gt;Index vs Value Colored By Class Label&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org9059dc9"&gt;
 &lt;p&gt;
 If you plot the classes with different colors you can see if there are clusters and clear separations between them. (&lt;code&gt;y&lt;/code&gt; in the function call has the target values).
 &lt;/p&gt;
@@ -499,9 +499,9 @@ If you plot the classes with different colors you can see if there are clusters 
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orge5900c3" class="outline-4"&gt;
-&lt;h4 id="orge5900c3"&gt;Plot Other Things&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-orge5900c3"&gt;
+&lt;div id="outline-container-orgf7a10aa" class="outline-4"&gt;
+&lt;h4 id="orgf7a10aa"&gt;Plot Other Things&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-orgf7a10aa"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;Row vs Feature&lt;/li&gt;
 &lt;li&gt;Nan-values&lt;/li&gt;
@@ -510,17 +510,17 @@ If you plot the classes with different colors you can see if there are clusters 
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org6018a12" class="outline-3"&gt;
-&lt;h3 id="org6018a12"&gt;Relationships&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org6018a12"&gt;
+&lt;div id="outline-container-org90bcaff" class="outline-3"&gt;
+&lt;h3 id="org90bcaff"&gt;Relationships&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org90bcaff"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org811d4e0" class="outline-4"&gt;
-&lt;h4 id="org811d4e0"&gt;Scatter Plots&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org811d4e0"&gt;
+&lt;div id="outline-container-org5fbfc32" class="outline-4"&gt;
+&lt;h4 id="org5fbfc32"&gt;Scatter Plots&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org5fbfc32"&gt;
 &lt;/div&gt;
 &lt;ul class="org-ul"&gt;
-&lt;li&gt;&lt;a id="org3ac84f5"&gt;&lt;/a&gt;Pairwise Relationships&lt;br&gt;
-&lt;div class="outline-text-5" id="text-org3ac84f5"&gt;
+&lt;li&gt;&lt;a id="org2ba358a"&gt;&lt;/a&gt;Pairwise Relationships&lt;br&gt;
+&lt;div class="outline-text-5" id="text-org2ba358a"&gt;
 &lt;p&gt;
 To make it eaiser to see relationships, you can plot them in pairs.
 &lt;/p&gt;
@@ -529,15 +529,15 @@ To make it eaiser to see relationships, you can plot them in pairs.
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/li&gt;
-&lt;li&gt;&lt;a id="org44acdb0"&gt;&lt;/a&gt;Compare the Test Set&lt;br&gt;
-&lt;div class="outline-text-5" id="text-org44acdb0"&gt;
+&lt;li&gt;&lt;a id="org0c1ba14"&gt;&lt;/a&gt;Compare the Test Set&lt;br&gt;
+&lt;div class="outline-text-5" id="text-org0c1ba14"&gt;
 &lt;p&gt;
 Plot the features and the test-set (using different colors) to see how well your training data matches your test data.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/li&gt;
-&lt;li&gt;&lt;a id="org6d46ea9"&gt;&lt;/a&gt;Scatter Matrix&lt;br&gt;
-&lt;div class="outline-text-5" id="text-org6d46ea9"&gt;
+&lt;li&gt;&lt;a id="orgd7983ec"&gt;&lt;/a&gt;Scatter Matrix&lt;br&gt;
+&lt;div class="outline-text-5" id="text-orgd7983ec"&gt;
 &lt;p&gt;
 Pandas has a convenience function that will plot all the pairwise scatter-plots for you.
 &lt;/p&gt;
@@ -548,9 +548,9 @@ Pandas has a convenience function that will plot all the pairwise scatter-plots 
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org9654561" class="outline-4"&gt;
-&lt;h4 id="org9654561"&gt;Corellation&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org9654561"&gt;
+&lt;div id="outline-container-orge4c5609" class="outline-4"&gt;
+&lt;h4 id="orge4c5609"&gt;Corellation&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-orge4c5609"&gt;
 &lt;p&gt;
 Plot the corellation matrix to see if there are feature-pairs that are related so you can make a new feature out of them and see if they help.
 &lt;/p&gt;
@@ -563,9 +563,9 @@ A straight correllation matrix might give you a sense of how correllated the fea
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org66b9214" class="outline-4"&gt;
-&lt;h4 id="org66b9214"&gt;Plot Statistics&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org66b9214"&gt;
+&lt;div id="outline-container-org0f78f2b" class="outline-4"&gt;
+&lt;h4 id="org0f78f2b"&gt;Plot Statistics&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org0f78f2b"&gt;
 &lt;p&gt;
 Try plotting mean, differences, combination counts, etc. and see if you can create groups out of them.
 &lt;/p&gt;
@@ -573,13 +573,13 @@ Try plotting mean, differences, combination counts, etc. and see if you can crea
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgbae5e91" class="outline-2"&gt;
-&lt;h2 id="orgbae5e91"&gt;Data Set Cleaning&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgbae5e91"&gt;
+&lt;div id="outline-container-org70345c8" class="outline-2"&gt;
+&lt;h2 id="org70345c8"&gt;Data Set Cleaning&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org70345c8"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgaf5b21b" class="outline-3"&gt;
-&lt;h3 id="orgaf5b21b"&gt;Duplicated and Constant Features&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgaf5b21b"&gt;
+&lt;div id="outline-container-orgae0f01b" class="outline-3"&gt;
+&lt;h3 id="orgae0f01b"&gt;Duplicated and Constant Features&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgae0f01b"&gt;
 &lt;p&gt;
 Sometimes a feature will have the same value in all the rows. If it's this way in both the training and test sets you can just remove it, but if there are different values in the test set you have to figure out how to handle them.
 &lt;/p&gt;
@@ -600,22 +600,22 @@ This can happen with rows as well, but it can be harder to decide whether this i
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orged34d07" class="outline-3"&gt;
-&lt;h3 id="orged34d07"&gt;Non-shuffled Data&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orged34d07"&gt;
+&lt;div id="outline-container-org601f9d8" class="outline-3"&gt;
+&lt;h3 id="org601f9d8"&gt;Non-shuffled Data&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org601f9d8"&gt;
 &lt;p&gt;
 If you plot the mean as a horizontal line the data should be evenly distributed around it, if not it might not have been shuffled and there could be an inadvertent pattern in the data. You might not be able to use it, but you should understand all the things about the data that you can find out.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org14389ec" class="outline-2"&gt;
-&lt;h2 id="org14389ec"&gt;Quiz&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org14389ec"&gt;
+&lt;div id="outline-container-orgf6f6742" class="outline-2"&gt;
+&lt;h2 id="orgf6f6742"&gt;Quiz&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgf6f6742"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org619e5d1" class="outline-3"&gt;
-&lt;h3 id="org619e5d1"&gt;One&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org619e5d1"&gt;
+&lt;div id="outline-container-orgfb0f911" class="outline-3"&gt;
+&lt;h3 id="orgfb0f911"&gt;One&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgfb0f911"&gt;
 &lt;p&gt;
 Suppose we are given a data set with features &lt;i&gt;X&lt;/i&gt;, &lt;i&gt;Y&lt;/i&gt;, and &lt;i&gt;Z&lt;/i&gt;. Can you recover &lt;i&gt;z&lt;/i&gt; as a function of &lt;i&gt;x&lt;/i&gt; and &lt;i&gt;y&lt;/i&gt;?
 &lt;/p&gt;
@@ -627,9 +627,9 @@ Suppose we are given a data set with features &lt;i&gt;X&lt;/i&gt;, &lt;i&gt;Y&l
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org2378fd0" class="outline-3"&gt;
-&lt;h3 id="org2378fd0"&gt;Two&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org2378fd0"&gt;
+&lt;div id="outline-container-org2f5a3ba" class="outline-3"&gt;
+&lt;h3 id="org2f5a3ba"&gt;Two&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org2f5a3ba"&gt;
 &lt;p&gt;
 What value do the red dots have?
 0.5 (wrong)
@@ -637,9 +637,9 @@ What value do the red dots have?
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org23bcb3d" class="outline-3"&gt;
-&lt;h3 id="org23bcb3d"&gt;Three&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org23bcb3d"&gt;
+&lt;div id="outline-container-org3c2f040" class="outline-3"&gt;
+&lt;h3 id="org3c2f040"&gt;Three&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org3c2f040"&gt;
 &lt;p&gt;
 What hypothesis about X can we not reject based on the plots?
 &lt;/p&gt;
@@ -652,9 +652,9 @@ What hypothesis about X can we not reject based on the plots?
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org72bedcb" class="outline-3"&gt;
-&lt;h3 id="org72bedcb"&gt;Four&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org72bedcb"&gt;
+&lt;div id="outline-container-org4560230" class="outline-3"&gt;
+&lt;h3 id="org4560230"&gt;Four&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org4560230"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; Target is completely determined by coordinates (x,y)(x,y)(x,y), i.e. the label of the point is completely determined by point's position (x,y)(x,y)(x,y). Saying the same in other words: if we only had two features (x,y)(x,y)(x,y), we could build a classifier, that is accurate 100% of time.&lt;/li&gt;
 &lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; The top right plot is better than the top left in that everything you get from the top left can also be gotten from the top right, but not the other way around.&lt;/li&gt;
@@ -663,9 +663,9 @@ What hypothesis about X can we not reject based on the plots?
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org85eee71" class="outline-2"&gt;
-&lt;h2 id="org85eee71"&gt;Links&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org85eee71"&gt;
+&lt;div id="outline-container-orgeedcf2a" class="outline-2"&gt;
+&lt;h2 id="orgeedcf2a"&gt;Links&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgeedcf2a"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;&lt;a href="http://scikit-learn.org/stable/auto_examples/bicluster/plot_spectral_biclustering.html"&gt;Sorting Correlation Plots&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
@@ -674,29 +674,29 @@ What hypothesis about X can we not reject based on the plots?
 &lt;h2&gt;Table of Contents&lt;/h2&gt;
 &lt;div id="text-table-of-contents"&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/feature-extraction-from-text-and-images/#orgec870c9"&gt;How do you convert text to data?&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/feature-extraction-from-text-and-images/#orgfcdbc57"&gt;Practice Quiz&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/feature-extraction-from-text-and-images/#orgba8249f"&gt;Quiz&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/feature-extraction-from-text-and-images/#orgc61632a"&gt;Links&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/feature-extraction-from-text-and-images/#org9c16155"&gt;How do you convert text to data?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/feature-extraction-from-text-and-images/#org5dffe75"&gt;Practice Quiz&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/feature-extraction-from-text-and-images/#org4442b30"&gt;Quiz&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/feature-extraction-from-text-and-images/#org91a564a"&gt;Links&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgec870c9" class="outline-2"&gt;
-&lt;h2 id="orgec870c9"&gt;How do you convert text to data?&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgec870c9"&gt;
+&lt;div id="outline-container-org9c16155" class="outline-2"&gt;
+&lt;h2 id="org9c16155"&gt;How do you convert text to data?&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org9c16155"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org61b8bdb" class="outline-3"&gt;
-&lt;h3 id="org61b8bdb"&gt;Two Main Methods&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org61b8bdb"&gt;
+&lt;div id="outline-container-org1e94a7a" class="outline-3"&gt;
+&lt;h3 id="org1e94a7a"&gt;Two Main Methods&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org1e94a7a"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org24b7dde" class="outline-4"&gt;
-&lt;h4 id="org24b7dde"&gt;Bag Of Words&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org24b7dde"&gt;
+&lt;div id="outline-container-orgda76e36" class="outline-4"&gt;
+&lt;h4 id="orgda76e36"&gt;Bag Of Words&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-orgda76e36"&gt;
 &lt;/div&gt;
 &lt;ul class="org-ul"&gt;
-&lt;li&gt;&lt;a id="org7ffa06a"&gt;&lt;/a&gt;Vectorization&lt;br&gt;
-&lt;div class="outline-text-5" id="text-org7ffa06a"&gt;
+&lt;li&gt;&lt;a id="org9a9fdf5"&gt;&lt;/a&gt;Vectorization&lt;br&gt;
+&lt;div class="outline-text-5" id="text-org9a9fdf5"&gt;
 &lt;p&gt;
 This method counts the number of occurrences of each word in the source. For each word it creates a column and then in the row puts the counts for that instance of data.
 &lt;/p&gt;
@@ -705,8 +705,8 @@ This method counts the number of occurrences of each word in the source. For eac
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/li&gt;
-&lt;li&gt;&lt;a id="orgca8778d"&gt;&lt;/a&gt;Term Frequency/Inverse Document Frequency (TF/IDF)&lt;br&gt;
-&lt;div class="outline-text-5" id="text-orgca8778d"&gt;
+&lt;li&gt;&lt;a id="org7321050"&gt;&lt;/a&gt;Term Frequency/Inverse Document Frequency (TF/IDF)&lt;br&gt;
+&lt;div class="outline-text-5" id="text-org7321050"&gt;
 &lt;p&gt;
 This method tries to make word counts comparable even if the texts are of different sizes and also to emphasize more important words.
 &lt;/p&gt;
@@ -717,8 +717,8 @@ This method tries to make word counts comparable even if the texts are of differ
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/li&gt;
-&lt;li&gt;&lt;a id="org8949878"&gt;&lt;/a&gt;N-Grams&lt;br&gt;
-&lt;div class="outline-text-5" id="text-org8949878"&gt;
+&lt;li&gt;&lt;a id="orga6e7cf6"&gt;&lt;/a&gt;N-Grams&lt;br&gt;
+&lt;div class="outline-text-5" id="text-orga6e7cf6"&gt;
 &lt;p&gt;
 This method that creates a bag of words by grouping them into sub-sequences of words. A 3-gram, for instance, sweeps the text to create sequences of words made up of 3 adjacent words.
 &lt;/p&gt;
@@ -727,8 +727,8 @@ This method that creates a bag of words by grouping them into sub-sequences of w
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/li&gt;
-&lt;li&gt;&lt;a id="org4b8c6f5"&gt;&lt;/a&gt;Text Preprocessing&lt;br&gt;
-&lt;div class="outline-text-5" id="text-org4b8c6f5"&gt;
+&lt;li&gt;&lt;a id="org8964ede"&gt;&lt;/a&gt;Text Preprocessing&lt;br&gt;
+&lt;div class="outline-text-5" id="text-org8964ede"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;lowercase:
 Change all the words to lower-case&lt;/li&gt;
@@ -741,8 +741,8 @@ Remove common words (e.g. a, and, or, etc.)&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/li&gt;
-&lt;li&gt;&lt;a id="org2c82575"&gt;&lt;/a&gt;The Bag Of Words Pipeline&lt;br&gt;
-&lt;div class="outline-text-5" id="text-org2c82575"&gt;
+&lt;li&gt;&lt;a id="orgf4056ec"&gt;&lt;/a&gt;The Bag Of Words Pipeline&lt;br&gt;
+&lt;div class="outline-text-5" id="text-orgf4056ec"&gt;
 &lt;ol class="org-ol"&gt;
 &lt;li&gt;Preprocessing (lowercase, lemmatization, stemming, stopwords)&lt;/li&gt;
 &lt;li&gt;Create n-grams&lt;/li&gt;
@@ -752,9 +752,9 @@ Remove common words (e.g. a, and, or, etc.)&lt;/li&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgc56f0f5" class="outline-4"&gt;
-&lt;h4 id="orgc56f0f5"&gt;Embeddings (e.g. Word2Vec)&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-orgc56f0f5"&gt;
+&lt;div id="outline-container-org31719ec" class="outline-4"&gt;
+&lt;h4 id="org31719ec"&gt;Embeddings (e.g. Word2Vec)&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org31719ec"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;Uses neural-nets&lt;/li&gt;
 &lt;li&gt;much smaller vectors than bag of words&lt;/li&gt;
@@ -765,13 +765,13 @@ Remove common words (e.g. a, and, or, etc.)&lt;/li&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgfcdbc57" class="outline-2"&gt;
-&lt;h2 id="orgfcdbc57"&gt;Practice Quiz&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgfcdbc57"&gt;
+&lt;div id="outline-container-org5dffe75" class="outline-2"&gt;
+&lt;h2 id="org5dffe75"&gt;Practice Quiz&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org5dffe75"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org88fba06" class="outline-3"&gt;
-&lt;h3 id="org88fba06"&gt;One&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org88fba06"&gt;
+&lt;div id="outline-container-org1df0b48" class="outline-3"&gt;
+&lt;h3 id="org1df0b48"&gt;One&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org1df0b48"&gt;
 &lt;p&gt;
 TF-IDF is applied to a matrix where each column represents a word, each row represents a document, and each value shows the number of times a particular word occurred in a particular document. Choose the correct statements.
 &lt;/p&gt;
@@ -783,9 +783,9 @@ TF-IDF is applied to a matrix where each column represents a word, each row repr
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orge6df840" class="outline-3"&gt;
-&lt;h3 id="orge6df840"&gt;Two&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orge6df840"&gt;
+&lt;div id="outline-container-org08ecc1c" class="outline-3"&gt;
+&lt;h3 id="org08ecc1c"&gt;Two&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org08ecc1c"&gt;
 &lt;p&gt;
 Which of these methods can be used to preprocess text?
 &lt;/p&gt;
@@ -800,9 +800,9 @@ Which of these methods can be used to preprocess text?
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org55d36e7" class="outline-3"&gt;
-&lt;h3 id="org55d36e7"&gt;Three&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org55d36e7"&gt;
+&lt;div id="outline-container-org3c0d557" class="outline-3"&gt;
+&lt;h3 id="org3c0d557"&gt;Three&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org3c0d557"&gt;
 &lt;p&gt;
 What is the main purpose of lemmatization and stemming?
 &lt;/p&gt;
@@ -814,9 +814,9 @@ What is the main purpose of lemmatization and stemming?
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org2518827" class="outline-3"&gt;
-&lt;h3 id="org2518827"&gt;Four&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org2518827"&gt;
+&lt;div id="outline-container-orgbfb5d8c" class="outline-3"&gt;
+&lt;h3 id="orgbfb5d8c"&gt;Four&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgbfb5d8c"&gt;
 &lt;p&gt;
 To learn Word2Vec embeddings we need:
 &lt;/p&gt;
@@ -829,13 +829,13 @@ To learn Word2Vec embeddings we need:
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgba8249f" class="outline-2"&gt;
-&lt;h2 id="orgba8249f"&gt;Quiz&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgba8249f"&gt;
+&lt;div id="outline-container-org4442b30" class="outline-2"&gt;
+&lt;h2 id="org4442b30"&gt;Quiz&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org4442b30"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orga3976f4" class="outline-3"&gt;
-&lt;h3 id="orga3976f4"&gt;One&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orga3976f4"&gt;
+&lt;div id="outline-container-org4aec9c8" class="outline-3"&gt;
+&lt;h3 id="org4aec9c8"&gt;One&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org4aec9c8"&gt;
 &lt;p&gt;
 Select true statements about n-grams.
 &lt;/p&gt;
@@ -847,9 +847,9 @@ Select true statements about n-grams.
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgcf624fa" class="outline-3"&gt;
-&lt;h3 id="orgcf624fa"&gt;Two&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgcf624fa"&gt;
+&lt;div id="outline-container-org54643b5" class="outline-3"&gt;
+&lt;h3 id="org54643b5"&gt;Two&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org54643b5"&gt;
 &lt;p&gt;
 Select the true statements.
 &lt;/p&gt;
@@ -863,9 +863,9 @@ Select the true statements.
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgcdc7202" class="outline-3"&gt;
-&lt;h3 id="orgcdc7202"&gt;Three&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgcdc7202"&gt;
+&lt;div id="outline-container-org81e0f32" class="outline-3"&gt;
+&lt;h3 id="org81e0f32"&gt;Three&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org81e0f32"&gt;
 &lt;p&gt;
 Suppose in a new competition we are given a dataset of 2D medical images. We want to extract image descriptors from a hidden layer of a neural network pretrained on the ImageNet dataset. We will then use extracted descriptors to train a simple logistic regression model to classify images from our dataset.
 &lt;/p&gt;
@@ -885,9 +885,9 @@ We are considering using two networks: ResNet-50 with an ImageNet accuracy of X 
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgab510b8" class="outline-3"&gt;
-&lt;h3 id="orgab510b8"&gt;Four&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgab510b8"&gt;
+&lt;div id="outline-container-orgb5fd47f" class="outline-3"&gt;
+&lt;h3 id="orgb5fd47f"&gt;Four&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgb5fd47f"&gt;
 &lt;p&gt;
 Data augmentation can be used at (1) train time and (2) test time
 &lt;/p&gt;
@@ -900,26 +900,26 @@ Data augmentation can be used at (1) train time and (2) test time
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgc61632a" class="outline-2"&gt;
-&lt;h2 id="orgc61632a"&gt;Links&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgc61632a"&gt;
+&lt;div id="outline-container-org91a564a" class="outline-2"&gt;
+&lt;h2 id="org91a564a"&gt;Links&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org91a564a"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org543e595" class="outline-3"&gt;
-&lt;h3 id="org543e595"&gt;Text&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org543e595"&gt;
+&lt;div id="outline-container-org2dea633" class="outline-3"&gt;
+&lt;h3 id="org2dea633"&gt;Text&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org2dea633"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org06bdd14" class="outline-4"&gt;
-&lt;h4 id="org06bdd14"&gt;Bag Of Words&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org06bdd14"&gt;
+&lt;div id="outline-container-org888604f" class="outline-4"&gt;
+&lt;h4 id="org888604f"&gt;Bag Of Words&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org888604f"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;&lt;a href="http://scikit-learn.org/stable/modules/feature_extraction.html"&gt;SKlearn on feature extraction&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://andhint.github.io/machine-learning/nlp/Feature-Extraction-From-Text/"&gt;blog post&lt;/a&gt; on extracting features from text&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org612c5b8" class="outline-4"&gt;
-&lt;h4 id="org612c5b8"&gt;Word2Vec&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org612c5b8"&gt;
+&lt;div id="outline-container-org47d387e" class="outline-4"&gt;
+&lt;h4 id="org47d387e"&gt;Word2Vec&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org47d387e"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;&lt;a href="https://www.tensorflow.org/tutorials/representation/word2vec"&gt;TensorFlow tutorial&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://rare-technologies.com/word2vec-tutorial/"&gt;Blog post tutorial&lt;/a&gt; by the author of gensim&lt;/li&gt;
@@ -928,9 +928,9 @@ Data augmentation can be used at (1) train time and (2) test time
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org91380e4" class="outline-4"&gt;
-&lt;h4 id="org91380e4"&gt;Natural Language Processing with Python&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org91380e4"&gt;
+&lt;div id="outline-container-orga0fdad3" class="outline-4"&gt;
+&lt;h4 id="orga0fdad3"&gt;Natural Language Processing with Python&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-orga0fdad3"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;&lt;a href="http://www.nltk.org/"&gt;nltk&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://textblob.readthedocs.io/en/dev/"&gt;TextBlob&lt;/a&gt;&lt;/li&gt;
@@ -938,22 +938,22 @@ Data augmentation can be used at (1) train time and (2) test time
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgc3ab4a9" class="outline-3"&gt;
-&lt;h3 id="orgc3ab4a9"&gt;Images&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgc3ab4a9"&gt;
+&lt;div id="outline-container-orgab0ffa7" class="outline-3"&gt;
+&lt;h3 id="orgab0ffa7"&gt;Images&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgab0ffa7"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org7db2bd8" class="outline-4"&gt;
-&lt;h4 id="org7db2bd8"&gt;Pre-trained Models&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org7db2bd8"&gt;
+&lt;div id="outline-container-orgd0cb270" class="outline-4"&gt;
+&lt;h4 id="orgd0cb270"&gt;Pre-trained Models&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-orgd0cb270"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;&lt;a href="https://keras.io/applications/"&gt;Keras&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://www.kernix.com/blog/image-classification-with-a-pre-trained-deep-neural-network_p11"&gt;How To use a pre-trained model&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org8f68f6b" class="outline-4"&gt;
-&lt;h4 id="org8f68f6b"&gt;Fine-Tuning&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org8f68f6b"&gt;
+&lt;div id="outline-container-org7540737" class="outline-4"&gt;
+&lt;h4 id="org7540737"&gt;Fine-Tuning&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org7540737"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;&lt;a href="https://www.tensorflow.org/hub/tutorials/image_retraining"&gt;Re-train a tensorflow image classifier&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://flyyufelix.github.io/2016/10/08/fine-tuning-in-keras-part2.html"&gt;Fine-tuning deep learning models in keras&lt;/a&gt;&lt;/li&gt;
@@ -965,19 +965,19 @@ Data augmentation can be used at (1) train time and (2) test time
 &lt;h2&gt;Table of Contents&lt;/h2&gt;
 &lt;div id="text-table-of-contents"&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/feature-preprocessing/#orge84bc68"&gt;Preprocessing&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/feature-preprocessing/#org9c3de85"&gt;Numeric Feature Preprocessing&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/feature-preprocessing/#orga4c23fc"&gt;Categorical And Ordinal Features&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/feature-preprocessing/#org056dcc2"&gt;Dates and Times&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/feature-preprocessing/#org1db1b77"&gt;Coordinates&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/feature-preprocessing/#orge87c8a8"&gt;Missing Data&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/feature-preprocessing/#org4f27cf7"&gt;Links&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/feature-preprocessing/#org8e3a332"&gt;Preprocessing&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/feature-preprocessing/#orgc6c31cb"&gt;Numeric Feature Preprocessing&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/feature-preprocessing/#org31a0d5a"&gt;Categorical And Ordinal Features&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/feature-preprocessing/#orgd4f08b1"&gt;Dates and Times&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/feature-preprocessing/#org07a3cc1"&gt;Coordinates&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/feature-preprocessing/#org83e3295"&gt;Missing Data&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/feature-preprocessing/#orgd8aeba7"&gt;Links&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orge84bc68" class="outline-2"&gt;
-&lt;h2 id="orge84bc68"&gt;Preprocessing&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orge84bc68"&gt;
+&lt;div id="outline-container-org8e3a332" class="outline-2"&gt;
+&lt;h2 id="org8e3a332"&gt;Preprocessing&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org8e3a332"&gt;
 &lt;p&gt;
 In every competition you need to:
 &lt;/p&gt;
@@ -988,17 +988,17 @@ In every competition you need to:
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org9c3de85" class="outline-2"&gt;
-&lt;h2 id="org9c3de85"&gt;Numeric Feature Preprocessing&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org9c3de85"&gt;
+&lt;div id="outline-container-orgc6c31cb" class="outline-2"&gt;
+&lt;h2 id="orgc6c31cb"&gt;Numeric Feature Preprocessing&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgc6c31cb"&gt;
 &lt;p&gt;
 Some models (e.g. Linear Classification) need you to convert numeric-looking data to categorical data. Tree-based models don't need pre-processing as much as non tree-based models do.
 &lt;/p&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgadbf40c" class="outline-3"&gt;
-&lt;h3 id="orgadbf40c"&gt;Scaling&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgadbf40c"&gt;
+&lt;div id="outline-container-org1b071b2" class="outline-3"&gt;
+&lt;h3 id="org1b071b2"&gt;Scaling&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org1b071b2"&gt;
 &lt;p&gt;
 If features have different value ranges then the model will  treat them differently.
 &lt;/p&gt;
@@ -1010,18 +1010,18 @@ Scale the data to have a mean of 0 and a standard deviation of 1&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org8b5df0a" class="outline-3"&gt;
-&lt;h3 id="org8b5df0a"&gt;Outliers&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org8b5df0a"&gt;
+&lt;div id="outline-container-org1edcf2d" class="outline-3"&gt;
+&lt;h3 id="org1edcf2d"&gt;Outliers&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org1edcf2d"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;Clip (&lt;a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.clip.html"&gt;numpy.clip&lt;/a&gt;)values to get rid of unusual values that mess with the model. (Winsorization)&lt;/li&gt;
 &lt;li&gt;Rank Transform them (&lt;a href="https://docs.scipy.org/doc/scipy-0.16.0/reference/generated/scipy.stats.rankdata.html"&gt;scipy.stats.rankdata&lt;/a&gt;) so that they are ordered and have the same distance between them (they are uniformly distributed)&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org8fb0405" class="outline-3"&gt;
-&lt;h3 id="org8fb0405"&gt;Transformation&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org8fb0405"&gt;
+&lt;div id="outline-container-org9fded10" class="outline-3"&gt;
+&lt;h3 id="org9fded10"&gt;Transformation&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org9fded10"&gt;
 &lt;p&gt;
 For linear models and neural networks, transforming the data can sometimes help.
 &lt;/p&gt;
@@ -1031,9 +1031,9 @@ For linear models and neural networks, transforming the data can sometimes help.
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org1fc0f4e" class="outline-3"&gt;
-&lt;h3 id="org1fc0f4e"&gt;Feature Generation&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org1fc0f4e"&gt;
+&lt;div id="outline-container-orga5948c5" class="outline-3"&gt;
+&lt;h3 id="orga5948c5"&gt;Feature Generation&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orga5948c5"&gt;
 &lt;p&gt;
 Sometimes you can convert separate columns to get new ones. This requires exploratory data analysis.
 &lt;/p&gt;
@@ -1045,18 +1045,18 @@ Sometimes you can convert separate columns to get new ones. This requires explor
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orga4c23fc" class="outline-2"&gt;
-&lt;h2 id="orga4c23fc"&gt;Categorical And Ordinal Features&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orga4c23fc"&gt;
+&lt;div id="outline-container-org31a0d5a" class="outline-2"&gt;
+&lt;h2 id="org31a0d5a"&gt;Categorical And Ordinal Features&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org31a0d5a"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;Ordinal Features have an ordering but even if they are labeled numerically (e.g. 1, 2, 3) they aren't numeric because there is no implication about the distance between them&lt;/li&gt;
 &lt;li&gt;label and frequency encoding are commonly used for tree-based models&lt;/li&gt;
 &lt;li&gt;one-hot encoding is more common for non-tree-based models&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org9d87ed2" class="outline-3"&gt;
-&lt;h3 id="org9d87ed2"&gt;Label Encoding&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org9d87ed2"&gt;
+&lt;div id="outline-container-org24d12b7" class="outline-3"&gt;
+&lt;h3 id="org24d12b7"&gt;Label Encoding&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org24d12b7"&gt;
 &lt;p&gt;
 Some models need numeric values or numeric values that don't have implied ordering so you want to encode them.
 &lt;/p&gt;
@@ -1069,9 +1069,9 @@ Encodes the labels in the order they appear. This makes more sense if there is a
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgb92baa9" class="outline-3"&gt;
-&lt;h3 id="orgb92baa9"&gt;Frequency Encoding&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgb92baa9"&gt;
+&lt;div id="outline-container-org893c37a" class="outline-3"&gt;
+&lt;h3 id="org893c37a"&gt;Frequency Encoding&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org893c37a"&gt;
 &lt;p&gt;
 Encode the values to a fraction of all the labels. Can work with linear models if the frequency is correlated with the target value.
 &lt;/p&gt;
@@ -1082,9 +1082,9 @@ Encode the values to a fraction of all the labels. Can work with linear models i
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgf010430" class="outline-3"&gt;
-&lt;h3 id="orgf010430"&gt;One Hot Encoding&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgf010430"&gt;
+&lt;div id="outline-container-org52efe19" class="outline-3"&gt;
+&lt;h3 id="org52efe19"&gt;One Hot Encoding&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org52efe19"&gt;
 &lt;p&gt;
 Creates one column for each label and puts a 1 in the column that matches. Works with both linear and tree-based models, but can be inefficient with tree-based models.
 &lt;/p&gt;
@@ -1100,39 +1100,39 @@ Creates one column for each label and puts a 1 in the column that matches. Works
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org056dcc2" class="outline-2"&gt;
-&lt;h2 id="org056dcc2"&gt;Dates and Times&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org056dcc2"&gt;
+&lt;div id="outline-container-orgd4f08b1" class="outline-2"&gt;
+&lt;h2 id="orgd4f08b1"&gt;Dates and Times&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgd4f08b1"&gt;
 &lt;p&gt;
 When working with seasonal data, sometimes the relative date-stamps are more important than the actual dates (how close to Christmas?).
 Sometimes you want the time between events.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org1db1b77" class="outline-2"&gt;
-&lt;h2 id="org1db1b77"&gt;Coordinates&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org1db1b77"&gt;
+&lt;div id="outline-container-org07a3cc1" class="outline-2"&gt;
+&lt;h2 id="org07a3cc1"&gt;Coordinates&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org07a3cc1"&gt;
 &lt;p&gt;
 Sometimes you want exact coordinates, but most times you want distances to some center.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orge87c8a8" class="outline-2"&gt;
-&lt;h2 id="orge87c8a8"&gt;Missing Data&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orge87c8a8"&gt;
+&lt;div id="outline-container-org83e3295" class="outline-2"&gt;
+&lt;h2 id="org83e3295"&gt;Missing Data&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org83e3295"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;"missing" data might mean outliers - values that are probably wrong&lt;/li&gt;
 &lt;li&gt;avoid replacing missing values before feature engineering - it can throw off what you do&lt;/li&gt;
 &lt;li&gt;Gradient Boost Trees can handle isNaN, so you don't have to do anything&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org7bbbbae" class="outline-3"&gt;
-&lt;h3 id="org7bbbbae"&gt;Numeric&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org7bbbbae"&gt;
+&lt;div id="outline-container-orgf70f97d" class="outline-3"&gt;
+&lt;h3 id="orgf70f97d"&gt;Numeric&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgf70f97d"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orga0c3fa7" class="outline-4"&gt;
-&lt;h4 id="orga0c3fa7"&gt;Fill NA Approaches&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-orga0c3fa7"&gt;
+&lt;div id="outline-container-org4336bdd" class="outline-4"&gt;
+&lt;h4 id="org4336bdd"&gt;Fill NA Approaches&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org4336bdd"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;-999, -1, other numbers
 &lt;ul class="org-ul"&gt;
@@ -1151,13 +1151,13 @@ Sometimes you want exact coordinates, but most times you want distances to some 
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org4f27cf7" class="outline-2"&gt;
-&lt;h2 id="org4f27cf7"&gt;Links&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org4f27cf7"&gt;
+&lt;div id="outline-container-orgd8aeba7" class="outline-2"&gt;
+&lt;h2 id="orgd8aeba7"&gt;Links&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgd8aeba7"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgb167197" class="outline-3"&gt;
-&lt;h3 id="orgb167197"&gt;Feature Pre-processing&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgb167197"&gt;
+&lt;div id="outline-container-orgbf88210" class="outline-3"&gt;
+&lt;h3 id="orgbf88210"&gt;Feature Pre-processing&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgbf88210"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;&lt;a href="http://scikit-learn.org/stable/modules/preprocessing.html"&gt;SKlearn's Preprocessing Documentation&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://www.coursera.org/learn/machine-learning/lecture/xx3Da/gradient-descent-in-practice-i-feature-scaling"&gt;Andrew Ng on Feature Scaling and its effect on Gradient Descent&lt;/a&gt;&lt;/li&gt;
@@ -1165,18 +1165,18 @@ Sometimes you want exact coordinates, but most times you want distances to some 
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orge3f8582" class="outline-3"&gt;
-&lt;h3 id="orge3f8582"&gt;Feature Engineering&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orge3f8582"&gt;
+&lt;div id="outline-container-orgff37823" class="outline-3"&gt;
+&lt;h3 id="orgff37823"&gt;Feature Engineering&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgff37823"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;&lt;a href="https://machinelearningmastery.com/discover-feature-engineering-how-to-engineer-features-and-how-to-get-good-at-it/"&gt;Machine Learning Mastery on Feature Engineering&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://www.quora.com/What-are-some-best-practices-in-Feature-Engineering"&gt;Quora: What are some best practices in Feature Engineering?&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description><category>features preprocessing notes</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/feature-preprocessing/</guid><pubDate>Wed, 08 Aug 2018 04:41:10 GMT</pubDate></item><item><title>Machine Learning Recap</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/machine-learning-recap/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-org0692788" class="outline-2"&gt;
-&lt;h2 id="org0692788"&gt;The Main Categories&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org0692788"&gt;
+&lt;/div&gt;</description><category>features preprocessing notes</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/feature-preprocessing/</guid><pubDate>Wed, 08 Aug 2018 04:41:10 GMT</pubDate></item><item><title>Machine Learning Recap</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/machine-learning-recap/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-org3fe09a4" class="outline-2"&gt;
+&lt;h2 id="org3fe09a4"&gt;The Main Categories&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org3fe09a4"&gt;
 &lt;p&gt;
 These are the four main categories of supervised machine learning algorithms that you'll encounter in kaggle competitions.
 &lt;/p&gt;
@@ -1200,9 +1200,9 @@ These are the four main categories of supervised machine learning algorithms tha
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org0c70821" class="outline-2"&gt;
-&lt;h2 id="org0c70821"&gt;The No Free Lunch Theorem&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org0c70821"&gt;
+&lt;div id="outline-container-org48f724a" class="outline-2"&gt;
+&lt;h2 id="org48f724a"&gt;The No Free Lunch Theorem&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org48f724a"&gt;
 &lt;blockquote&gt;
 &lt;p&gt;
 There is no method which outperforms all others for all tasks.
@@ -1214,9 +1214,9 @@ You cannot assume that an algorithm that did well on one set of data will do wel
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgdbe3b31" class="outline-2"&gt;
-&lt;h2 id="orgdbe3b31"&gt;Summary&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgdbe3b31"&gt;
+&lt;div id="outline-container-org60a669b" class="outline-2"&gt;
+&lt;h2 id="org60a669b"&gt;Summary&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org60a669b"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;there is no one algorithm to rule them all&lt;/li&gt;
 &lt;li&gt;Linear models split spaces into two sub-spaces&lt;/li&gt;
@@ -1229,9 +1229,9 @@ You cannot assume that an algorithm that did well on one set of data will do wel
 In general the two most powerful methods are &lt;b&gt;Gradient Boosted Decision Trees&lt;/b&gt; and &lt;b&gt;Neural Networks&lt;/b&gt;, but this won't always be the case.
 &lt;/p&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description><category>basics algorithms notes</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/machine-learning-recap/</guid><pubDate>Sun, 05 Aug 2018 01:13:44 GMT</pubDate></item><item><title>Real-World vs Kaggle</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/real-world-vs-kaggle/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-org85c2bae" class="outline-2"&gt;
-&lt;h2 id="org85c2bae"&gt;A Real World Pipeline&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org85c2bae"&gt;
+&lt;/div&gt;</description><category>basics algorithms notes</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/machine-learning-recap/</guid><pubDate>Sun, 05 Aug 2018 01:13:44 GMT</pubDate></item><item><title>Real-World vs Kaggle</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/real-world-vs-kaggle/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-org22d9484" class="outline-2"&gt;
+&lt;h2 id="org22d9484"&gt;A Real World Pipeline&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org22d9484"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;What is the business problem that you are trying to solve?&lt;/li&gt;
 &lt;li&gt;What is the formal version of the problem?&lt;/li&gt;
@@ -1251,39 +1251,39 @@ In general the two most powerful methods are &lt;b&gt;Gradient Boosted Decision 
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org32ef801" class="outline-2"&gt;
-&lt;h2 id="org32ef801"&gt;A Competition Pipeline&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org32ef801"&gt;
+&lt;div id="outline-container-orgd4f6943" class="outline-2"&gt;
+&lt;h2 id="orgd4f6943"&gt;A Competition Pipeline&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgd4f6943"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;How do you pre-process the data?&lt;/li&gt;
 &lt;li&gt;How do you create the model?&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org5ae98da" class="outline-2"&gt;
-&lt;h2 id="org5ae98da"&gt;So, how do you use a competition then?&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org5ae98da"&gt;
+&lt;div id="outline-container-org401b68b" class="outline-2"&gt;
+&lt;h2 id="org401b68b"&gt;So, how do you use a competition then?&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org401b68b"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;It's good to learn about machine learning&lt;/li&gt;
 &lt;li&gt;It' not just about the algorithms, let the data guide what you do&lt;/li&gt;
 &lt;li&gt;Try to be creative and do things that haven't been done before&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description><category>basics kaggle</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/real-world-vs-kaggle/</guid><pubDate>Sun, 05 Aug 2018 01:02:24 GMT</pubDate></item><item><title>Kaggle Mechanics</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/kaggle-mechanics/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-orgf34d8c8" class="outline-2"&gt;
-&lt;h2 id="orgf34d8c8"&gt;The Basics&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgf34d8c8"&gt;
+&lt;/div&gt;</description><category>basics kaggle</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/real-world-vs-kaggle/</guid><pubDate>Sun, 05 Aug 2018 01:02:24 GMT</pubDate></item><item><title>Kaggle Mechanics</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/kaggle-mechanics/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-org59eab29" class="outline-2"&gt;
+&lt;h2 id="org59eab29"&gt;The Basics&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org59eab29"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org1a3618d" class="outline-3"&gt;
-&lt;h3 id="org1a3618d"&gt;Data&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org1a3618d"&gt;
+&lt;div id="outline-container-org08b670b" class="outline-3"&gt;
+&lt;h3 id="org08b670b"&gt;Data&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org08b670b"&gt;
 &lt;p&gt;
 Every competition provides data so you can create a model, but there isn't a standardized format. Sometimes it will be CSVz, sometimes excel spreadsheets, sometimes image files, the sources can vary so you should read the data descriptions and adapt what you do to the competition. You aren't always limited to the data that is provided. If you were creating an image recognition model, for instance, it might be okay to include outside images or pre-trained models, it depends on the particulars of the competition.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgd1cf28f" class="outline-3"&gt;
-&lt;h3 id="orgd1cf28f"&gt;Models&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgd1cf28f"&gt;
+&lt;div id="outline-container-org49d1fdc" class="outline-3"&gt;
+&lt;h3 id="org49d1fdc"&gt;Models&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org49d1fdc"&gt;
 &lt;p&gt;
 This is what you are trying to create - a representation of the population based on the data you are given that will allow you to predict outcomes based on inputs not given in the data. The model needs two main features:
 &lt;/p&gt;
@@ -1297,34 +1297,34 @@ Note that a model is not the same as an algorithm. You might have to combine mul
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgb481425" class="outline-3"&gt;
-&lt;h3 id="orgb481425"&gt;Submission&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgb481425"&gt;
+&lt;div id="outline-container-orgfa467c2" class="outline-3"&gt;
+&lt;h3 id="orgfa467c2"&gt;Submission&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgfa467c2"&gt;
 &lt;p&gt;
 Your submission is typically your predictions on a test set. This isn't always the case but it is the most common way that the competitions are run.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgd6219f8" class="outline-3"&gt;
-&lt;h3 id="orgd6219f8"&gt;Evaluation&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgd6219f8"&gt;
+&lt;div id="outline-container-org626711a" class="outline-3"&gt;
+&lt;h3 id="org626711a"&gt;Evaluation&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org626711a"&gt;
 &lt;p&gt;
 How can you tell how well your model does? You need a function that maps your model and a data set to a score that evaluates how well the model does. There are many different metrics to use (accuracy, precision, recall, etc.) but the competition will choose one and tell you what it is in the description so make sure you read the description to get it.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgc848153" class="outline-3"&gt;
-&lt;h3 id="orgc848153"&gt;Leaderboard&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgc848153"&gt;
+&lt;div id="outline-container-orgadc45f9" class="outline-3"&gt;
+&lt;h3 id="orgadc45f9"&gt;Leaderboard&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgadc45f9"&gt;
 &lt;p&gt;
 This is the relative ranking of the participants in the competition. This is what makes it a competition. Even if your metric tells you your model is doing well, if you are ranked at the bottom, you still won't win. There are actually two leaderboards - public and private. The evaluation dataset is split by kaggle into two sets, public and private, and during the competition the results of testing on the public data are shown on the leaderborad. Once the competition is over the leaderboard is displayed using the evaluations using the private data.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgc97d7d3" class="outline-2"&gt;
-&lt;h2 id="orgc97d7d3"&gt;Other Competitions&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgc97d7d3"&gt;
+&lt;div id="outline-container-orga73401d" class="outline-2"&gt;
+&lt;h2 id="orga73401d"&gt;Other Competitions&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orga73401d"&gt;
 &lt;p&gt;
 &lt;a href="https://www.kaggle.com/"&gt;Kaggle&lt;/a&gt; isn't the only one running data-science competititons. Here are some others.
 &lt;/p&gt;
