@@ -20,6 +20,8 @@ The data in this assignment is taken from a real competition, and the funny thin
 
 * Imports
 
+During the importing of pandas (or scipy) you get a warning about a potential binary incompatibility. According to [[https://stackoverflow.com/questions/40845304/runtimewarning-numpy-dtype-size-changed-may-indicate-binary-incompatibility][Stack Overflow]] you can safely ignore this, so we'll use [[https://docs.python.org/3/library/warnings.html][warnings]] to suppress the messages, just so it doesn't keep bringing them up everytime I run this notebook.
+
 #+BEGIN_SRC ipython :session leakage :results none
 import warnings
 warnings.filterwarnings("ignore", message="numpy.dtype size changed")
@@ -27,6 +29,9 @@ warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
 #+END_SRC
 
 #+BEGIN_SRC ipython :session leakage :results none
+# python standard library
+import os
+
 # from pypi
 from tabulate import tabulate
 import matplotlib.pyplot as pyplot
@@ -41,16 +46,62 @@ import seaborn
 seaborn.set_style("whitegrid")
 FIGURE_SIZE = (12, 10)
 #+END_SRC
+* Helpers
+** Paths
+  Since I'm doing this as posts in nikola, but I'm trying to keep all non-post files outside of the =posts= folder, I'm going to use a class to keep the paths to the output (submission) files straight.
 
+#+BEGIN_SRC ipython :session leakage :results none
+class Paths:
+    """Helper to put submission files in the right folder"""
+    data = "../data/"
+    submissions = "../data/submissions/"
+    test_set = data + "test_pairs.csv"
 
+    @classmethod
+    def submit(cls, filename):
+        """Add the filename to the path
+
+        Args:
+         filename (str): name to add to the submissions folder
+
+        Returns:
+         str: path to the file in the submissions folder
+        """
+        return os.path.join(cls.submissions, filename)
+#+END_SRC
+** Data
+
+#+BEGIN_SRC ipython :session leakage :results none
+class TestSet:
+    """Loads the test-set data
+
+    Args:
+     paths: object with the path to the test-set
+    """
+    def __init__(self, paths=Paths):
+        self.paths = paths
+        self._data = None
+        return
+
+    @property
+    def data(self):
+        """the test-set data
+
+        Returns:
+         `pandas.DataFrame`: the test-set data
+        """
+        if self._data is None:
+            self._data = pandas.read_csv(self.paths.test_set)
+        return self._data
+#+END_SRC
 * Load the data
 
-Let's load the test data. Note, that we don't have any training data here, just test data. Moreover, *we will not even use any features* of test objects. All we need to solve this task is the file with the indices for the pairs, that we need to compare.
+Let's load the test data. Note, that we don't have any training data here, just test data. Moreover, *we will not use any features* of the test set. All we need to solve this task is the file with the indices for the pairs that we need to compare.
 
-Let's load the data with test indices.
+Let's load the data with the test indices.
 
-#+BEGIN_SRC ipython :session leakage :results output
-test = pandas.read_csv('../data/test_pairs.csv')
+#+BEGIN_SRC ipython :session leakage :results output :exports both
+test = TestSet().data
 print(test.head(10))
 #+END_SRC
 
@@ -70,19 +121,35 @@ print(test.head(10))
 #+end_example
 
 
-We don't know what the data represents in this case, but you can give them an arbitrary meaning. You could, for example, can think that there is a test dataset of images, and each image is assigned a unique `Id` from $0$ to $N-1$ (N -- is the number of images). In the dataframe from above `FirstId` and `SecondId` point to these `Id`'s and define pairs, that we should compare: e.g. do both images in the pair belong to the same class or not. So, for example for the first row: if images with `Id=1427` and `Id=8053` belong to the same class, we should predict $1$, and $0$ otherwise. 
+We don't know what the data represents in this case, but you can give them an arbitrary meaning. You could, for example, think that there is a test dataset of images, and each image is assigned a unique `Id` from $0$ to $N-1$ (N -- is the number of images). In the dataframe above `FirstId` and `SecondId` point to these `Id`'s and define pairs that we should compare: e.g. do both images in the pair belong to the same class or not. So, for example for the first row: if images with `Id=1427` and `Id=8053` belong to the same class, we should predict $1$, and $0$ otherwise. 
 
 But in our case we don't really care about the images, and how exactly we compare the images (as long as the output is binary).  
 
 **We suggest you to try to solve the puzzle yourself first.** You need to submit a `.csv` file with columns `pairId` and `Prediction` to the grader. The number of submissions allowed is made pretty huge to let you explore the data without worries. The returned score should be very close to $1$.
 
-**If you do not want to think much** -- scroll down and follow the instructions below.
+#+BEGIN_SRC ipython :session leakage :results raw drawer :ipyfile ../files/posts/data-leakages/first_vs_second.png
+figure, axe = pyplot.subplots(figsize=FIGURE_SIZE)
+axe.set_title("First ID vs Second ID", weight="bold")
+axe.set_xlabel("First ID")
+axe.set_ylabel("Second ID")
+plot = pyplot.scatter(test.FirstId, test.SecondId, marker='.')
+#+END_SRC
 
-* EDA and leakage intuition
+#+RESULTS:
+:RESULTS:
+# Out[27]:
+[[file:../files/posts/data-leakages/first_vs_second.png]]
+:END:
 
-As we already know, the key to discover data leakages is careful EDA. So let's start our work with some basic data exploration and build an intuition about the leakage.
+[[file:first_vs_second.png]]
 
-First, check, how many different `id`s are there: concatenate `FirstId` and `SecondId` and print the number of unique elements. Also print minimum and maximum value for that vector.
+So this doesn't appear to be a randomized data set. The first half of the Second IDs seem to be completely paired with the entire set of first IDs, while the second half of the second IDs creates some kind of strange diagonal pattern, except for the highest Second IDs which are once again completely matched with the First IDs.
+
+* EDA and Leakage Intuition
+
+As we already know, the key to discovering data leakages is careful Exploratory Data Analysis (EDA). So let's start our work with some basic data exploration and build an intuition about the leakage.
+
+First, check, how many different /id/'s are there: concatenate /FirstId/ and `SecondId/ and print the number of unique elements. Also print the minimum and maximum value for that vector.
 
 #+BEGIN_SRC ipython :session leakage :results output :exports both
 smashed = test.FirstId.apply(lambda row: str(row)) + ',' + test.SecondId.apply(lambda row: str(row))
@@ -97,18 +164,18 @@ print(smashed.head())
 : 4      16837,599
 : dtype: object
 
-#+BEGIN_SRC ipython :session leakage :results output :exports both
-print("Unique Pairs: {}".format(len(smashed.unique())))
-print("Total Pairs: {}".format(len(test)))
-print(smashed.min())
-print(smashed.max())
+#+BEGIN_SRC ipython :session leakage :results output raw :exports both
+print("|Unique Pairs| {}|".format(len(smashed.unique())))
+print("|Total Pairs| {}|".format(len(test)))
+print("|Lowest Valued Pair (ASCII)| ({})|".format(smashed.min()))
+print("|Highest Valued Pair| ({})|".format(smashed.max()))
 #+END_SRC
 
 #+RESULTS:
-: Unique Pairs: 368538
-: Total Pairs: 368550
-: 0,10552
-: 9999,8996
+| Unique Pairs               |      368538 |
+| Total Pairs                |      368550 |
+| Lowest Valued Pair (ASCII) |   (0,10552) |
+| Highest Valued Pair        | (9999,8996) |
 
 
 and then print how many pairs we need to classify (it is basically the number of rows in the test set)
@@ -136,11 +203,11 @@ print("Handshakes: {:,}".format(int((image_count * (image_count - 1))/2)))
 : Unique image IDs: 26,325
 : Handshakes: 346,489,650
 
-So the number of pairs we are given to classify is very very small compared to the total number of pairs. 
+So the number of pairs we are given to classify is very, very small compared to the total number of possible pairs. 
 
-To exploit the leak we need to **assume (or prove)**, that the total number of positive pairs is small, compared to the total number of pairs. For example: think about an image dataset with $1000$ classes, $N$ images per class. Then if the task was to tell whether a pair of images belongs to the same class or not, we would have $1000\frac{N(N-1)}{2}$ positive pairs, while total number of pairs was $\frac{1000N(1000N - 1)}{2}$.
+To exploit the leak we need to **assume (or prove)**, that the total number of positive pairs is small, compared to the total number of pairs. For example: think about an image dataset with $1000$ classes, $N$ images per class. Then if the task was to tell whether a pair of images belongs to the same class or not, we would have $1000\frac{N(N-1)}{2}$ positive pairs, while the total number of pairs was $\frac{1000N(1000N - 1)}{2}$.
 
-Another example: in [[https://www.kaggle.com/c/quora-question-pairs][Quora competitition]] the task was to classify whether a pair of questions are duplicates of each other or not. Of course, total number of question pairs is very huge, while number of duplicates (positive pairs) is much much smaller.
+Another example: in a [[https://www.kaggle.com/c/quora-question-pairs][Quora competitition]] the task was to classify whether a pair of questions are duplicates of each other or not. Of course, total number of question pairs is very huge, while number of duplicates (positive pairs) is much much smaller.
 
 Finally, let's get a fraction of pairs of class `1`. We just need to submit a constant prediction "all ones" and check the returned accuracy. Create a dataframe with columns `pairId` and `Prediction`, fill it and export it to `.csv` file. Then submit to grader and examine grader's output. 
 
@@ -148,7 +215,7 @@ Finally, let's get a fraction of pairs of class `1`. We just need to submit a co
 all_ones = test[["pairId"]].copy()
 all_ones["Prediction"] = [1] * len(all_ones)
 print(all_ones.head())
-all_ones.to_csv("../data/leakages/submission.csv", index=False)
+all_ones.to_csv(Paths.submit("submission_ones.csv"), index=False)
 #+END_SRC
 
 #+RESULTS:
@@ -169,9 +236,60 @@ So, we assumed the total number of pairs is much higher than the number of posit
 
 Now think, how we can exploit this fact? What is the leak here? If you get it now, you may try to get to the final answer yourself, othewise you can follow the instructions below.   
 
+#+BEGIN_SRC ipython :session leakage :results output :exports both
+all_zeros = test[["pairId"]].copy()
+all_zeros["Prediction"] = numpy.zeros(len(all_zeros))
+assert all_zeros.Prediction.shape == all_zeros.pairId.shape
+print(all_zeros.head())
+all_zeros.to_csv(Paths.submit("submission_zeros.csv"), index=False)
+#+END_SRC
+
+#+RESULTS:
+:    pairId  Prediction
+: 0       0         0.0
+: 1       1         0.0
+: 2       2         0.0
+: 3       3         0.0
+: 4       4         0.0
+
+
+This is the grader's output.
+
+#+BEGIN_EXAMPLE
+Your accuracy score is 0.500000. It seems too low, try one more time.
+#+END_EXAMPLE
+
+So it appears that the dataset is binary, with half the outputs being ones, the other half being zeros.
+
+#+BEGIN_SRC ipython :session leakage :results output :exports both
+random_predictions = test[["pairId"]].copy()
+random_predictions["Prediction"] = numpy.random.randint(0, 2, len(test))
+assert random_predictions.Prediction.shape == random_predictions.pairId.shape
+assert random_predictions.Prediction.max() == 1
+assert random_predictions.Prediction.min() == 0
+print(random_predictions.head())
+random_predictions.to_csv(Paths.submit("submission_random.csv"), index=False)
+#+END_SRC
+
+#+RESULTS:
+:    pairId  Prediction
+: 0       0           0
+: 1       1           0
+: 2       2           0
+: 3       3           1
+: 4       4           0
+
+The grader output for the random set:
+
+#+BEGIN_EXAMPLE
+Your accuracy score is 0.499058. It seems too low, try one more time.
+#+END_EXAMPLE
+
+Around the same as the other two, so flipping a coin doesn't improve things any, but it doesn't really make it much worse.
+
 * Building a magic feature
 
-In this section we will build a magic feature, that will solve the problem almost perfectly. The instructions will lead you to the correct solution, but please, try to explain the purpose of the steps we do to yourself -- it is very important.
+In this section we will build a magic feature that will solve the problem almost perfectly. The instructions will lead you to the correct solution, but please, try to explain the purpose of the steps we do to yourself -- it is very important.
 
 ** Incidence matrix
 
@@ -179,14 +297,14 @@ First, we need to build an [[https://en.wikipedia.org/wiki/Incidence_matrix][inc
 
 The incidence matrix is a matrix of size `(maxId + 1, maxId + 1)`, where each row (column) `i` corresponds `i-th` `Id`. In this matrix we put the value `1` to the position `[i, j]`, if and only if a pair `(i, j)` or `(j, i)` is present in  a given set of pairs `(FirstId, SecondId)`. All the other elements in the incidence matrix are zeros.   
  
-**Important!** The incidence matrices are typically very very sparse (small number of non-zero values). At the same time incidence matrices are usually huge in terms of total number of elements, and it is **impossible to store them in memory in dense format**. But due to their sparsity incidence matrices **can be easily represented as sparse matrices**. If you are not familiar with sparse matrices, please see [[https://en.wikipedia.org/wiki/Sparse_matrix][wikipedia]] and [[https://docs.scipy.org/doc/scipy/reference/sparse.html][scipy.sparse reference]]. Please, use any of `scipy.sparse` constructors to build incidence matrix. 
+**Important!** The incidence matrices are typically very, very sparse (there are a small number of non-zero values). At the same time the incidence matrices are usually huge in terms of the total number of elements and it is **impossible to store them in memory in the dense format**. But due to their sparsity, incidence matrices **can be easily represented as sparse matrices**. If you are not familiar with sparse matrices, please see [[https://en.wikipedia.org/wiki/Sparse_matrix][wikipedia]] and [[https://docs.scipy.org/doc/scipy/reference/sparse.html][scipy.sparse reference]]. Use any of the `scipy.sparse` constructors to build incidence matrix. 
 
-For example, you can use this constructor: `scipy.sparse.coo_matrix((data, (i, j)))`. We highly recommend to learn to use different `scipy.sparse` constuctors, and matrices types, but if you feel you don't want to use them, you can always build this matrix with a simple `for` loop. You will need first to create a matrix using `scipy.sparse.coo_matrix((M, N), [dtype])` with an appropriate shape `(M, N)` and then iterate through `(FirstId, SecondId)` pairs and fill corresponding elements in matrix with ones. 
+For example, you can use this constructor: `scipy.sparse.coo_matrix((data, (i, j)))`. We highly recommend you learn to use different `scipy.sparse` constuctors, and matrices types, but if you feel you don't want to use them, you can always build this matrix with a simple `for` loop. You will need to first create a matrix using `scipy.sparse.coo_matrix((M, N), [dtype])` with an appropriate shape `(M, N)` and then iterate through `(FirstId, SecondId)` pairs and fill the corresponding elements in the matrix with ones. 
 
-**Note**, that the matrix should be symmetric and consist only of zeros and ones. It is a way to check yourself.
+**Note**, that the matrix should be symmetric and consist only of zeros and ones. This is something you can use to check your matrix.
 
 *** De-duplicating the Data
-    The test data turns out to have duplicate ID pairs, which will cause our incidence matrix to produce numbers greater than 1 if we leave them in, so we need to remove them.
+    The test data turns out to have duplicate ID pairs, which will cause our incidence matrix to produce numbers greater than 1 if we leave them in, so we need to remove them (using the [[https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.duplicated.html][duplicated]] method).
 
 #+BEGIN_SRC ipython :session leakage :results none
 pairs_1 = pandas.Series(list(zip(test.FirstId, test.SecondId)), index=test.index)
@@ -198,6 +316,7 @@ assert not any(pairs.duplicated())
 
 #+BEGIN_SRC ipython :session leakage :results output :exports both
 pair_count = len(pairs)
+assert pair_count == 736872
 print(pair_count)
 #+END_SRC
 
@@ -213,6 +332,7 @@ assert i_indices.shape == (pair_count,)
 assert j_indices.shape == (pair_count,)
 #+END_SRC
 
+Now we create a sparse matrix where the row indices are our FirstIds and the column indices are our Second Ids and each of their pairs =(i, j)= is set to 1.
 #+BEGIN_SRC ipython :session leakage :results none
 data = numpy.ones(pair_count)
 inc_mat = scipy.sparse.coo_matrix((data, (i_indices, j_indices)))
@@ -235,7 +355,7 @@ Why did we build the incidence matrix? We can think of the rows in this matrix a
 Now select the rows from the incidence matrix, that correspond to `test.FirstId`'s, and `test.SecondId`'s.
 
 Note, scipy goes crazy if a matrix is indexed with pandas' series. So do not forget to convert `pd.series` to `np.array`.
-These lines should normally run very quickly 
+These lines should normally run very quickly.
 
 #+BEGIN_SRC ipython :session leakage :results none
 rows_FirstId   = inc_mat[test.FirstId.values]
@@ -265,7 +385,7 @@ plot = seaborn.distplot(f)
 
 #+RESULTS:
 :RESULTS:
-# Out[28]:
+# Out[17]:
 [[file:../files/posts/data-leakages/magic_feature_distributions.png]]
 :END:
 
@@ -273,12 +393,9 @@ plot = seaborn.distplot(f)
 
 But how do we convert this feature into binary predictions? We do not have a train set to learn a model, but we have a piece of information about test set: the baseline accuracy score that you got, when submitting constant. And we also have a very strong considerations about the data generative process, so probably we will be fine even without a training set. 
 
-We may try to choose a thresold, and set the predictions to 1, if the feature value `f` is higer than the threshold, and 0 otherwise. What threshold would you choose? 
+We may try to choose a thresold, and set the predictions to 1, if the feature value `f` is higher than the threshold, and 0 otherwise. What threshold would you choose? 
 
 How do we find a right threshold? Let's first examine this feature: print frequencies (or counts) of each value in the feature `f`.
-
-
-For example use `np.unique` function, check for flags
 
 #+BEGIN_SRC ipython :session leakage :results output raw :exports both
 f_frame = pandas.DataFrame(dict(f=f))
@@ -299,31 +416,76 @@ print(tabulate(counts, headers="keys", tablefmt="orgtbl",
 |    35 |     14 |
 |    21 |      6 |
 
-Do you see how this feature clusters the pairs? Maybe you can guess a good threshold by looking at the values? 
+#+BEGIN_SRC ipython :session leakage :results output raw :exports both
+fractions = counts/len(test)
+fractions["Value"] = counts.Value
+print(tabulate(fractions, headers="keys", tablefmt="orgtbl", showindex=False,
+               floatfmt=".3f"))
+#+END_SRC
 
-In fact, in other situations it can be not that obvious, but in general to pick a threshold you only need to remember the score of your baseline submission and use this information. Do you understand why and how?  
+#+RESULTS:
+|  Value | Count |
+|--------+-------|
+| 20.000 | 0.499 |
+| 14.000 | 0.497 |
+| 15.000 | 0.002 |
+| 19.000 | 0.001 |
+| 28.000 | 0.000 |
+| 35.000 | 0.000 |
+| 21.000 | 0.000 |
 
-Choose a threshold below: 
+So it looks like half the values are below 20 and half are above. We'll make our predictions by first getting a boolean array testing this case and then casting it to integers (0 is False, 1 is True).
 
 #+BEGIN_SRC ipython :session leakage :results none
-pred = f > 14
+predict_twenty = f >= 20
 #+END_SRC
 
 #+BEGIN_SRC ipython :session leakage :results none
 submission = test.loc[:,['pairId']]
-submission['Prediction'] = pred.astype(int)
+submission['Prediction'] = predict_twenty.astype(int)
 
-submission.to_csv('../data/leakages/submission.csv', index=False)
+submission.to_csv(Paths.submit('predict_twenty.csv'), index=False)
 #+END_SRC
 
-Now submit it to the grader! It is not possible to submit directly from this notebook, as we need to submit a `csv` file, not a single number (limitation of Coursera platform). 
+But if you look at the table, it looks like 20 alone accounts for exactly half the values.
+#+BEGIN_SRC ipython :session leakage :results none
+predict_only_twenty = f == 20
+#+END_SRC
 
-To download `submission.csv` file that you've just produced <a href='./submission.csv'>click here</a> (if the link opens in browser, right-click on it and shoose "Save link as"). Then go to [[https://www.coursera.org/learn/competitive-data-science/programming/KsASv/data-leakages/submission][assignment page]] and submit your `.csv` file in 'My submission' tab.
+#+BEGIN_SRC ipython :session leakage :results none
+submission = test.loc[:,['pairId']]
+submission['Prediction'] = predict_only_twenty.astype(int)
 
-If you did everything right, the score should be very high.
+submission.to_csv(Paths.submit('predict_only_twenty.csv'), index=False)
+#+END_SRC
+
+This is the grader output.
+
+#+BEGIN_EXAMPLE
+Well done! Your accuracy score is 0.998128 
+#+END_EXAMPLE
+
+
+#+BEGIN_SRC ipython :session leakage :results none
+predict_fourteen = f > 14
+#+END_SRC
+
+#+BEGIN_SRC ipython :session leakage :results none
+submission = test.loc[:,['pairId']]
+submission['Prediction'] = predict_fourteen.astype(int)
+
+submission.to_csv(Paths.submit('predict_fourteen.csv'), index=False)
+#+END_SRC
+
+This was the grader output.
+#+BEGIN_EXAMPLE
+Well done! Your accuracy score is 0.997298
+#+END_EXAMPLE
 
 **Finally:** try to explain to yourself, why the whole thing worked out. In fact, there is no magic in this feature, and the idea to use rows in the incidence matrix can be intuitively justified.
 
 * Bonus
 
 Interestingly, it is not the only leak in this dataset. There is another totally different way to get almost 100% accuracy. Try to find it!
+* What does it all mean then?
+  From our initial check uploading all the submissions as one (so all the ID-pairs were classified as having IDs from the same class) we saw that half the entries were 1's and half were 0's. Our incidence matrix showed that half the vectors had a similarity of 20 or more, so by predicting that all the pairs whose incidence matrix dot-products were 20 or greater were of the same class, we could predict with greater than 99% accuracy which IDs were from the same class.
