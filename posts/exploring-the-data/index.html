@@ -108,24 +108,24 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org0ee684d">Imports</a></li>
-<li><a href="#org8af51fe">The Tangle</a></li>
-<li><a href="#org6b4e49d">Helpers</a></li>
-<li><a href="#org7cf0494">Constants</a></li>
-<li><a href="#org749d6e3">The Files</a></li>
-<li><a href="#org39c0786">Some Counts</a></li>
-<li><a href="#org8be93ec">The Official Feature Descriptions</a></li>
-<li><a href="#org019513e">The Training Set</a></li>
+<li><a href="#org95409fe">Imports</a></li>
+<li><a href="#org405fa24">The Tangle</a></li>
+<li><a href="#orgd4e3a43">Helpers</a></li>
+<li><a href="#org8c44974">Constants</a></li>
+<li><a href="#org4276909">The Files</a></li>
+<li><a href="#org8940e53">Some Counts</a></li>
+<li><a href="#orgc616a4d">The Official Feature Descriptions</a></li>
+<li><a href="#orgde56b9a">The Training Set</a></li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org0ee684d" class="outline-2">
-<h2 id="org0ee684d">Imports</h2>
-<div class="outline-text-2" id="text-org0ee684d">
+<div id="outline-container-org95409fe" class="outline-2">
+<h2 id="org95409fe">Imports</h2>
+<div class="outline-text-2" id="text-org95409fe">
 </div>
-<div id="outline-container-org445967f" class="outline-3">
-<h3 id="org445967f">Suppressing the Numpy Warnings</h3>
-<div class="outline-text-3" id="text-org445967f">
+<div id="outline-container-orge977c6d" class="outline-3">
+<h3 id="orge977c6d">Suppressing the Numpy Warnings</h3>
+<div class="outline-text-3" id="text-orge977c6d">
 <p>
 When you import pandas you get some warnings:
 </p>
@@ -148,9 +148,9 @@ According to <a href="https://stackoverflow.com/questions/40845304/runtimewarnin
 </div>
 </div>
 
-<div id="outline-container-org2832107" class="outline-3">
-<h3 id="org2832107">The rest of the imports</h3>
-<div class="outline-text-3" id="text-org2832107">
+<div id="outline-container-orgb61072a" class="outline-3">
+<h3 id="orgb61072a">The rest of the imports</h3>
+<div class="outline-text-3" id="text-orgb61072a">
 <div class="highlight"><pre><span></span><span class="c1"># python standard library</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">pickle</span>
@@ -169,17 +169,17 @@ According to <a href="https://stackoverflow.com/questions/40845304/runtimewarnin
 </p>
 </div>
 </div>
-<div id="outline-container-orgd50493f" class="outline-3">
-<h3 id="orgd50493f">This is used for the tangle</h3>
-<div class="outline-text-3" id="text-orgd50493f">
+<div id="outline-container-org1cfdab6" class="outline-3">
+<h3 id="org1cfdab6">This is used for the tangle</h3>
+<div class="outline-text-3" id="text-org1cfdab6">
 <div class="highlight"><pre><span></span><span class="c1"># from pypi</span>
 <span class="kn">from</span> <span class="nn">tabulate</span> <span class="kn">import</span> <span class="n">tabulate</span>
 </pre></div>
 </div>
 </div>
-<div id="outline-container-org1bcd3df" class="outline-3">
-<h3 id="org1bcd3df">Set up the plotting</h3>
-<div class="outline-text-3" id="text-org1bcd3df">
+<div id="outline-container-org67efd6a" class="outline-3">
+<h3 id="org67efd6a">Set up the plotting</h3>
+<div class="outline-text-3" id="text-org67efd6a">
 <div class="highlight"><pre><span></span>% matplotlib inline
 seaborn.set_style("whitegrid")
 </pre></div>
@@ -187,18 +187,18 @@ seaborn.set_style("whitegrid")
 </div>
 </div>
 
-<div id="outline-container-org8af51fe" class="outline-2">
-<h2 id="org8af51fe">The Tangle</h2>
-<div class="outline-text-2" id="text-org8af51fe">
+<div id="outline-container-org405fa24" class="outline-2">
+<h2 id="org405fa24">The Tangle</h2>
+<div class="outline-text-2" id="text-org405fa24">
 <p>
 Exports so some of this can be re-used.
 </p>
 </div>
 </div>
 
-<div id="outline-container-org6b4e49d" class="outline-2">
-<h2 id="org6b4e49d">Helpers</h2>
-<div class="outline-text-2" id="text-org6b4e49d">
+<div id="outline-container-orgd4e3a43" class="outline-2">
+<h2 id="orgd4e3a43">Helpers</h2>
+<div class="outline-text-2" id="text-orgd4e3a43">
 <p>
 Just some functions that keep coming up.
 </p>
@@ -277,16 +277,16 @@ Just some functions that keep coming up.
 </div>
 </div>
 
-<div id="outline-container-org7cf0494" class="outline-2">
-<h2 id="org7cf0494">Constants</h2>
-<div class="outline-text-2" id="text-org7cf0494">
+<div id="outline-container-org8c44974" class="outline-2">
+<h2 id="org8c44974">Constants</h2>
+<div class="outline-text-2" id="text-org8c44974">
 <p>
 As always, I'll try to put constants in the same place.
 </p>
 </div>
-<div id="outline-container-org64be644" class="outline-3">
-<h3 id="org64be644">Data Names</h3>
-<div class="outline-text-3" id="text-org64be644">
+<div id="outline-container-org20ef46c" class="outline-3">
+<h3 id="org20ef46c">Data Names</h3>
+<div class="outline-text-3" id="text-org20ef46c">
 <p>
 This is just a re-mapping of the file-names since I keep forgetting them.
 </p>
@@ -301,9 +301,9 @@ This is just a re-mapping of the file-names since I keep forgetting them.
 </div>
 </div>
 
-<div id="outline-container-org393abec" class="outline-3">
-<h3 id="org393abec">Data Source</h3>
-<div class="outline-text-3" id="text-org393abec">
+<div id="outline-container-org87490ac" class="outline-3">
+<h3 id="org87490ac">Data Source</h3>
+<div class="outline-text-3" id="text-org87490ac">
 <div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">DataSource</span><span class="p">:</span>
     <span class="sd">"""Strings for the files</span>
 
@@ -369,9 +369,9 @@ This is just a re-mapping of the file-names since I keep forgetting them.
 </div>
 </div>
 
-<div id="outline-container-org4b211b0" class="outline-3">
-<h3 id="org4b211b0">Data Keys</h3>
-<div class="outline-text-3" id="text-org4b211b0">
+<div id="outline-container-orgb3dea46" class="outline-3">
+<h3 id="orgb3dea46">Data Keys</h3>
+<div class="outline-text-3" id="text-orgb3dea46">
 <div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">DataKeys</span><span class="p">:</span>
     <span class="sd">"""Column names/keys for the data."""</span>
     <span class="n">item_category</span> <span class="o">=</span> <span class="s2">"item_category_id"</span>
@@ -395,9 +395,9 @@ This is just a re-mapping of the file-names since I keep forgetting them.
 </div>
 </div>
 
-<div id="outline-container-org749d6e3" class="outline-2">
-<h2 id="org749d6e3">The Files</h2>
-<div class="outline-text-2" id="text-org749d6e3">
+<div id="outline-container-org4276909" class="outline-2">
+<h2 id="org4276909">The Files</h2>
+<div class="outline-text-2" id="text-org4276909">
 <p>
 These are the files we are given.
 </p>
@@ -430,9 +430,9 @@ I was originally thinking I would need to unzip the gzipped files but apparently
 </pre></div>
 </div>
 
-<div id="outline-container-org446d5f8" class="outline-3">
-<h3 id="org446d5f8">item_categories.csv</h3>
-<div class="outline-text-3" id="text-org446d5f8">
+<div id="outline-container-org33beb4f" class="outline-3">
+<h3 id="org33beb4f">item_categories.csv</h3>
+<div class="outline-text-3" id="text-org33beb4f">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-left">
@@ -478,9 +478,9 @@ None
 </div>
 </div>
 
-<div id="outline-container-org82beb4a" class="outline-3">
-<h3 id="org82beb4a">items.csv</h3>
-<div class="outline-text-3" id="text-org82beb4a">
+<div id="outline-container-org7e9fdd5" class="outline-3">
+<h3 id="org7e9fdd5">items.csv</h3>
+<div class="outline-text-3" id="text-org7e9fdd5">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-left">
@@ -534,9 +534,9 @@ None
 </div>
 </div>
 
-<div id="outline-container-org14aa6d5" class="outline-3">
-<h3 id="org14aa6d5">sales_train.csv.gz</h3>
-<div class="outline-text-3" id="text-org14aa6d5">
+<div id="outline-container-org22a0e0c" class="outline-3">
+<h3 id="org22a0e0c">sales_train.csv.gz</h3>
+<div class="outline-text-3" id="text-org22a0e0c">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-right">
@@ -614,9 +614,9 @@ None
 </div>
 </div>
 
-<div id="outline-container-orgd967f54" class="outline-3">
-<h3 id="orgd967f54">sample_submission.csv.gz</h3>
-<div class="outline-text-3" id="text-orgd967f54">
+<div id="outline-container-org1251b33" class="outline-3">
+<h3 id="org1251b33">sample_submission.csv.gz</h3>
+<div class="outline-text-3" id="text-org1251b33">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-right">
@@ -662,9 +662,9 @@ None
 </div>
 </div>
 
-<div id="outline-container-org609b7ac" class="outline-3">
-<h3 id="org609b7ac">shops.csv</h3>
-<div class="outline-text-3" id="text-org609b7ac">
+<div id="outline-container-org941ded8" class="outline-3">
+<h3 id="org941ded8">shops.csv</h3>
+<div class="outline-text-3" id="text-org941ded8">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-left">
@@ -710,9 +710,9 @@ None
 </div>
 </div>
 
-<div id="outline-container-org8a88d1c" class="outline-3">
-<h3 id="org8a88d1c">test.csv.gz</h3>
-<div class="outline-text-3" id="text-org8a88d1c">
+<div id="outline-container-org8ac14b4" class="outline-3">
+<h3 id="org8ac14b4">test.csv.gz</h3>
+<div class="outline-text-3" id="text-org8ac14b4">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-right">
@@ -767,13 +767,13 @@ None
 </div>
 </div>
 
-<div id="outline-container-org39c0786" class="outline-2">
-<h2 id="org39c0786">Some Counts</h2>
-<div class="outline-text-2" id="text-org39c0786">
+<div id="outline-container-org8940e53" class="outline-2">
+<h2 id="org8940e53">Some Counts</h2>
+<div class="outline-text-2" id="text-org8940e53">
 </div>
-<div id="outline-container-org8dfba4f" class="outline-3">
-<h3 id="org8dfba4f">How much data is there in the training set?</h3>
-<div class="outline-text-3" id="text-org8dfba4f">
+<div id="outline-container-org359f3ce" class="outline-3">
+<h3 id="org359f3ce">How much data is there in the training set?</h3>
+<div class="outline-text-3" id="text-org359f3ce">
 <div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s2">"There are {:,} rows in the training set."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">frames</span><span class="p">[</span><span class="n">data_source</span><span class="o">.</span><span class="n">sales_train</span><span class="p">])))</span>
 </pre></div>
 
@@ -783,9 +783,9 @@ There are 2,935,849 rows in the training set.
 </div>
 </div>
 
-<div id="outline-container-orgf502243" class="outline-3">
-<h3 id="orgf502243">How many shops are there?</h3>
-<div class="outline-text-3" id="text-orgf502243">
+<div id="outline-container-org0005884" class="outline-3">
+<h3 id="org0005884">How many shops are there?</h3>
+<div class="outline-text-3" id="text-org0005884">
 <div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s2">"There are {} shops."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">frames</span><span class="p">[</span><span class="n">data_source</span><span class="o">.</span><span class="n">shops</span><span class="p">])))</span>
 </pre></div>
 
@@ -795,9 +795,9 @@ There are 60 shops.
 </div>
 </div>
 
-<div id="outline-container-org8a69099" class="outline-3">
-<h3 id="org8a69099">How Many Items Are There?</h3>
-<div class="outline-text-3" id="text-org8a69099">
+<div id="outline-container-orgcb054bc" class="outline-3">
+<h3 id="orgcb054bc">How Many Items Are There?</h3>
+<div class="outline-text-3" id="text-orgcb054bc">
 <div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s2">"There are {:,} items."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">frames</span><span class="p">[</span><span class="n">data_source</span><span class="o">.</span><span class="n">items</span><span class="p">])))</span>
 </pre></div>
 
@@ -807,9 +807,9 @@ There are 22,170 items.
 </div>
 </div>
 
-<div id="outline-container-org0d8b21c" class="outline-3">
-<h3 id="org0d8b21c">How Many Item Categories are there?</h3>
-<div class="outline-text-3" id="text-org0d8b21c">
+<div id="outline-container-org79b225c" class="outline-3">
+<h3 id="org79b225c">How Many Item Categories are there?</h3>
+<div class="outline-text-3" id="text-org79b225c">
 <div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s2">"There are {:,} categories."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">frames</span><span class="p">[</span><span class="n">data_source</span><span class="o">.</span><span class="n">item_categories</span><span class="p">])))</span>
 </pre></div>
 
@@ -819,9 +819,9 @@ There are 84 categories.
 </div>
 </div>
 
-<div id="outline-container-org1d47463" class="outline-3">
-<h3 id="org1d47463">How many date-blocks are there?</h3>
-<div class="outline-text-3" id="text-org1d47463">
+<div id="outline-container-org2d44955" class="outline-3">
+<h3 id="org2d44955">How many date-blocks are there?</h3>
+<div class="outline-text-3" id="text-org2d44955">
 <div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s2">"There are {} date-blocks."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
     <span class="nb">len</span><span class="p">(</span><span class="n">frames</span><span class="p">[</span><span class="n">data_source</span><span class="o">.</span><span class="n">sales_train</span><span class="p">][</span><span class="n">DataKeys</span><span class="o">.</span><span class="n">date_block</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())))</span>
 </pre></div>
@@ -833,9 +833,9 @@ There are 34 date-blocks.
 </div>
 </div>
 
-<div id="outline-container-org8be93ec" class="outline-2">
-<h2 id="org8be93ec">The Official Feature Descriptions</h2>
-<div class="outline-text-2" id="text-org8be93ec">
+<div id="outline-container-orgc616a4d" class="outline-2">
+<h2 id="orgc616a4d">The Official Feature Descriptions</h2>
+<div class="outline-text-2" id="text-orgc616a4d">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <colgroup>
 <col class="org-left">
@@ -895,9 +895,9 @@ There are 34 date-blocks.
 </div>
 </div>
 
-<div id="outline-container-org019513e" class="outline-2">
-<h2 id="org019513e">The Training Set</h2>
-<div class="outline-text-2" id="text-org019513e">
+<div id="outline-container-orgde56b9a" class="outline-2">
+<h2 id="orgde56b9a">The Training Set</h2>
+<div class="outline-text-2" id="text-orgde56b9a">
 <div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="n">frames</span><span class="p">[</span><span class="n">data_source</span><span class="o">.</span><span class="n">sales_train</span><span class="p">]</span><span class="o">.</span><span class="n">dtypes</span><span class="p">)</span>
 </pre></div>
 
@@ -912,9 +912,9 @@ dtype: object
 </p>
 </div>
 
-<div id="outline-container-orge4364c1" class="outline-3">
-<h3 id="orge4364c1">Numeric Features</h3>
-<div class="outline-text-3" id="text-orge4364c1">
+<div id="outline-container-org46784c2" class="outline-3">
+<h3 id="org46784c2">Numeric Features</h3>
+<div class="outline-text-3" id="text-org46784c2">
 <div class="highlight"><pre><span></span><span class="n">Helpers</span><span class="o">.</span><span class="n">print_table</span><span class="p">(</span><span class="n">frames</span><span class="p">[</span><span class="n">data_source</span><span class="o">.</span><span class="n">sales_train</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">number</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
 </pre></div>
 
@@ -1002,9 +1002,9 @@ dtype: object
 </div>
 </div>
 
-<div id="outline-container-orgb869d73" class="outline-3">
-<h3 id="orgb869d73">Categorical Features</h3>
-<div class="outline-text-3" id="text-orgb869d73">
+<div id="outline-container-orgc70d47c" class="outline-3">
+<h3 id="orgc70d47c">Categorical Features</h3>
+<div class="outline-text-3" id="text-orgc70d47c">
 <div class="highlight"><pre><span></span><span class="n">Helpers</span><span class="o">.</span><span class="n">print_table</span><span class="p">(</span><span class="n">frames</span><span class="p">[</span><span class="n">data_source</span><span class="o">.</span><span class="n">sales_train</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">object</span><span class="p">,</span> <span class="n">pandas</span><span class="o">.</span><span class="n">Categorical</span><span class="p">])</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
 </pre></div>
 

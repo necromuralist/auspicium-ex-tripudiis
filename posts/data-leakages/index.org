@@ -292,8 +292,8 @@ This is the grader's output.
 Your accuracy score is 0.500000. It seems too low, try one more time.
 #+END_EXAMPLE
 
-So it appears we've confirmed that the dataset is binary, with half the outputs being ones, the other half being zeros.
 
+So this confirms that the dataset is binary, with half the outputs being ones, the other half being zeros.
 * Building a magic feature
 
 In this section we will build a magic feature that will solve the problem almost perfectly. The instructions will lead you to the correct solution, but please, try to explain the purpose of the steps we do to yourself -- it is very important.
@@ -371,9 +371,9 @@ rows_SecondId  = inc_mat[test.SecondId.values]
 
 Our magic feature will be the *dot product* between representations of a pair of objects. Dot product can be regarded as similarity measure -- for our non-negative representations the dot product is close to 0 when the representations are different, and is huge, when representations are similar. 
 
-Now compute dot product between corresponding rows in `rows_FirstId` and `rows_SecondId` matrices.
+Now compute the dot product between corresponding rows in the =rows_FirstId= and =rows_SecondId= matrices.
 
-Note, that in order to do pointwise multiplication in scipy.sparse you need to use function [[https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_matrix.multiply.html#scipy.sparse.csr_matrix.multiply][multiply]], regular `*` corresponds to matrix-matrix multiplication
+Note, that in order to do pointwise multiplication in scipy.sparse you need to use the [[https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_matrix.multiply.html#scipy.sparse.csr_matrix.multiply][multiply]] function (along with a sum), the regular `*` operator corresponds to matrix-matrix multiplication. Also, the expected shape provided is only an array, not a matrix, so we can use [[https://docs.scipy.org/doc/numpy/reference/generated/numpy.squeeze.html][numpy.squeeze]] to get change it (from having a single column to not having a column).
 
 #+BEGIN_SRC python :session leakage :results none
 f = numpy.squeeze(numpy.asarray(rows_FirstId.multiply(rows_SecondId).sum(axis=1)))

@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about preprocessing data kaggle)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/preprocessing-data-kaggle.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Tue, 04 Sep 2018 01:24:15 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Preprocessing the Kaggle Data</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/preprocessing-the-kaggle-data/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about preprocessing data kaggle)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/preprocessing-data-kaggle.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Mon, 17 Sep 2018 22:30:30 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Preprocessing the Kaggle Data</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/preprocessing-the-kaggle-data/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
 &lt;h2&gt;Table of Contents&lt;/h2&gt;
 &lt;div id="text-table-of-contents"&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/preprocessing-the-kaggle-data/#orged6c8f9"&gt;Introduction&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/preprocessing-the-kaggle-data/#orga0a03fe"&gt;Tangle&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/preprocessing-the-kaggle-data/#org669470e"&gt;Imports&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/preprocessing-the-kaggle-data/#org1372e04"&gt;Loading the Data&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/preprocessing-the-kaggle-data/#org05825a1"&gt;Limit the Target Range&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/preprocessing-the-kaggle-data/#orga1d2889"&gt;Introduction&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/preprocessing-the-kaggle-data/#orgc06b470"&gt;Tangle&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/preprocessing-the-kaggle-data/#org6d246d2"&gt;Imports&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/preprocessing-the-kaggle-data/#org7bbac33"&gt;Loading the Data&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/preprocessing-the-kaggle-data/#org2c6c201"&gt;Limit the Target Range&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orged6c8f9" class="outline-2"&gt;
-&lt;h2 id="orged6c8f9"&gt;Introduction&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orged6c8f9"&gt;
+&lt;div id="outline-container-orga1d2889" class="outline-2"&gt;
+&lt;h2 id="orga1d2889"&gt;Introduction&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orga1d2889"&gt;
 &lt;p&gt;
 This is a post to do some basic pre-processing on the data. It won't do anything fancy (i.e. no Feature Engineering), but will just get the data ready to be used by the models. In particular, the rules say that the test data target will be limited to a range and the features are categorical so we need to transform them for non-tree models.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orga0a03fe" class="outline-2"&gt;
-&lt;h2 id="orga0a03fe"&gt;Tangle&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orga0a03fe"&gt;
+&lt;div id="outline-container-orgc06b470" class="outline-2"&gt;
+&lt;h2 id="orgc06b470"&gt;Tangle&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgc06b470"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;pypi&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;imports&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&lt;/span&gt;
 
 &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;local&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;imports&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&lt;/span&gt;
@@ -31,18 +31,18 @@ This is a post to do some basic pre-processing on the data. It won't do anything
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org669470e" class="outline-2"&gt;
-&lt;h2 id="org669470e"&gt;Imports&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org669470e"&gt;
+&lt;div id="outline-container-org6d246d2" class="outline-2"&gt;
+&lt;h2 id="org6d246d2"&gt;Imports&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org6d246d2"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;warnings&lt;/span&gt;
 &lt;span class="n"&gt;warnings&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;filterwarnings&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"ignore"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;message&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"numpy.dtype size changed"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;warnings&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;filterwarnings&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"ignore"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;message&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"numpy.ufunc size changed"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org0eb96df" class="outline-3"&gt;
-&lt;h3 id="org0eb96df"&gt;From pypi&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org0eb96df"&gt;
+&lt;div id="outline-container-orgffa29da" class="outline-3"&gt;
+&lt;h3 id="orgffa29da"&gt;From pypi&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgffa29da"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;matplotlib.pyplot&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;pyplot&lt;/span&gt;
 &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;numpy&lt;/span&gt;
 &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;seaborn&lt;/span&gt;
@@ -54,18 +54,18 @@ This is a post to do some basic pre-processing on the data. It won't do anything
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgef2cfb6" class="outline-3"&gt;
-&lt;h3 id="orgef2cfb6"&gt;This project&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgef2cfb6"&gt;
+&lt;div id="outline-container-org013409e" class="outline-3"&gt;
+&lt;h3 id="org013409e"&gt;This project&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org013409e"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;kaggler.helpers.build_training_data&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Pickles&lt;/span&gt;
 &lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;kaggler.helpers.helpers&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Helpers&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org1372e04" class="outline-2"&gt;
-&lt;h2 id="org1372e04"&gt;Loading the Data&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org1372e04"&gt;
+&lt;div id="outline-container-org7bbac33" class="outline-2"&gt;
+&lt;h2 id="org7bbac33"&gt;Loading the Data&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org7bbac33"&gt;
 &lt;p&gt;
 This assumes you've run the &lt;code&gt;build_training_data.py&lt;/code&gt; code to get the testing and training data sets. The &lt;code&gt;Helpers&lt;/code&gt; class also expects a specific path, so you have to have the repository set up in &lt;code&gt;~/projects/kaggle-competitions/&lt;/code&gt;.
 &lt;/p&gt;
@@ -84,9 +84,9 @@ This assumes you've run the &lt;code&gt;build_training_data.py&lt;/code&gt; code
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org05825a1" class="outline-2"&gt;
-&lt;h2 id="org05825a1"&gt;Limit the Target Range&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org05825a1"&gt;
+&lt;div id="outline-container-org2c6c201" class="outline-2"&gt;
+&lt;h2 id="org2c6c201"&gt;Limit the Target Range&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org2c6c201"&gt;
 &lt;p&gt;
 According to the contest description the true target values are clipped to the &lt;code&gt;[0,20]&lt;/code&gt; range, so it might make sense to clip the target data in our training and testing data to the given range.
 &lt;/p&gt;

@@ -1,36 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about competition data target)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/competition-data-target.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Tue, 04 Sep 2018 01:24:15 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>The Target</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/the-target/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about competition data target)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/competition-data-target.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Mon, 17 Sep 2018 22:30:31 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>The Target</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/the-target/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
 &lt;h2&gt;Table of Contents&lt;/h2&gt;
 &lt;div id="text-table-of-contents"&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/the-target/#org0f6a87e"&gt;Introduction&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/the-target/#orgc89b38d"&gt;Imports&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/the-target/#orgfa55ea5"&gt;The Data&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/the-target/#orgd91ba5e"&gt;Dates&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/the-target/#orgd1ebbe7"&gt;Introduction&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/the-target/#orgec884df"&gt;Imports&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/the-target/#org26f5701"&gt;The Data&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/the-target/#org2071a31"&gt;Dates&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org0f6a87e" class="outline-2"&gt;
-&lt;h2 id="org0f6a87e"&gt;Introduction&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org0f6a87e"&gt;
+&lt;div id="outline-container-orgd1ebbe7" class="outline-2"&gt;
+&lt;h2 id="orgd1ebbe7"&gt;Introduction&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgd1ebbe7"&gt;
 &lt;p&gt;
 This is some stuff about what we are trying to predict. I realized that the description of the competition says that we are trying to predict the number of items sold per shop for the next month after the data, but I never said what that month is, so I'm making this just to put it somewhere.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgc89b38d" class="outline-2"&gt;
-&lt;h2 id="orgc89b38d"&gt;Imports&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgc89b38d"&gt;
+&lt;div id="outline-container-orgec884df" class="outline-2"&gt;
+&lt;h2 id="orgec884df"&gt;Imports&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgec884df"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;import warnings
 warnings.filterwarnings("ignore", message="numpy.dtype size changed")
 warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org20ac23e" class="outline-3"&gt;
-&lt;h3 id="org20ac23e"&gt;From pypi&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org20ac23e"&gt;
+&lt;div id="outline-container-org90b1fa6" class="outline-3"&gt;
+&lt;h3 id="org90b1fa6"&gt;From pypi&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org90b1fa6"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;import pandas
 import matplotlib.pyplot as pyplot
 import seaborn
@@ -38,9 +38,9 @@ import seaborn
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org6614d60" class="outline-3"&gt;
-&lt;h3 id="org6614d60"&gt;This project&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org6614d60"&gt;
+&lt;div id="outline-container-orgbed6595" class="outline-3"&gt;
+&lt;h3 id="orgbed6595"&gt;This project&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgbed6595"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;from kaggler.helpers.build_training_data import Pickles
 from kaggler.helpers.helpers import (
     DataKeys,
@@ -50,9 +50,9 @@ from kaggler.helpers.helpers import (
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgcab3349" class="outline-3"&gt;
-&lt;h3 id="orgcab3349"&gt;Setting up the plotting&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgcab3349"&gt;
+&lt;div id="outline-container-org5c3dfe7" class="outline-3"&gt;
+&lt;h3 id="org5c3dfe7"&gt;Setting up the plotting&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org5c3dfe7"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;% matplotlib inline
 seaborn.set_style("whitegrid")
 &lt;/pre&gt;&lt;/div&gt;
@@ -60,9 +60,9 @@ seaborn.set_style("whitegrid")
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgfa55ea5" class="outline-2"&gt;
-&lt;h2 id="orgfa55ea5"&gt;The Data&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgfa55ea5"&gt;
+&lt;div id="outline-container-org26f5701" class="outline-2"&gt;
+&lt;h2 id="org26f5701"&gt;The Data&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org26f5701"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;x_train = Helpers.unpickle(Pickles.x_train)
 y_train = Helpers.unpickle(Pickles.y_train)
 x_test = Helpers.unpickle(Pickles.x_test)
@@ -78,9 +78,9 @@ assert concatenated.shape == (len(x_train) + len(x_test), len(x_train.columns))
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgd91ba5e" class="outline-2"&gt;
-&lt;h2 id="orgd91ba5e"&gt;Dates&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgd91ba5e"&gt;
+&lt;div id="outline-container-org2071a31" class="outline-2"&gt;
+&lt;h2 id="org2071a31"&gt;Dates&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org2071a31"&gt;
 &lt;p&gt;
 Unfortunately I got rid of the days, which are required by the &lt;a href="https://pandas.pydata.org/pandas-docs/stable/timeseries.html"&gt;to_datetime&lt;/a&gt; function provided by pandas, so I'm going to construct a new date column with a day of 1 for each date.
 &lt;/p&gt;
