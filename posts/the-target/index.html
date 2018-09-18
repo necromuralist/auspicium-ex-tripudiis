@@ -108,34 +108,34 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org0c11099">Introduction</a></li>
-<li><a href="#orgda919d6">Imports</a></li>
-<li><a href="#org75b6a9b">The Data</a></li>
-<li><a href="#org6274f29">Dates</a></li>
+<li><a href="#org0f6a87e">Introduction</a></li>
+<li><a href="#orgc89b38d">Imports</a></li>
+<li><a href="#orgfa55ea5">The Data</a></li>
+<li><a href="#orgd91ba5e">Dates</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org0c11099" class="outline-2">
-<h2 id="org0c11099">Introduction</h2>
-<div class="outline-text-2" id="text-org0c11099">
+<div id="outline-container-org0f6a87e" class="outline-2">
+<h2 id="org0f6a87e">Introduction</h2>
+<div class="outline-text-2" id="text-org0f6a87e">
 <p>
 This is some stuff about what we are trying to predict. I realized that the description of the competition says that we are trying to predict the number of items sold per shop for the next month after the data, but I never said what that month is, so I'm making this just to put it somewhere.
 </p>
 </div>
 </div>
-<div id="outline-container-orgda919d6" class="outline-2">
-<h2 id="orgda919d6">Imports</h2>
-<div class="outline-text-2" id="text-orgda919d6">
+<div id="outline-container-orgc89b38d" class="outline-2">
+<h2 id="orgc89b38d">Imports</h2>
+<div class="outline-text-2" id="text-orgc89b38d">
 <div class="highlight"><pre><span></span>import warnings
 warnings.filterwarnings("ignore", message="numpy.dtype size changed")
 warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
 </pre></div>
 </div>
 
-<div id="outline-container-orgea5ae6d" class="outline-3">
-<h3 id="orgea5ae6d">From pypi</h3>
-<div class="outline-text-3" id="text-orgea5ae6d">
+<div id="outline-container-org20ac23e" class="outline-3">
+<h3 id="org20ac23e">From pypi</h3>
+<div class="outline-text-3" id="text-org20ac23e">
 <div class="highlight"><pre><span></span>import pandas
 import matplotlib.pyplot as pyplot
 import seaborn
@@ -143,9 +143,9 @@ import seaborn
 </div>
 </div>
 
-<div id="outline-container-org25322bc" class="outline-3">
-<h3 id="org25322bc">This project</h3>
-<div class="outline-text-3" id="text-org25322bc">
+<div id="outline-container-org6614d60" class="outline-3">
+<h3 id="org6614d60">This project</h3>
+<div class="outline-text-3" id="text-org6614d60">
 <div class="highlight"><pre><span></span>from kaggler.helpers.build_training_data import Pickles
 from kaggler.helpers.helpers import (
     DataKeys,
@@ -155,9 +155,9 @@ from kaggler.helpers.helpers import (
 </div>
 </div>
 
-<div id="outline-container-orge225aa1" class="outline-3">
-<h3 id="orge225aa1">Setting up the plotting</h3>
-<div class="outline-text-3" id="text-orge225aa1">
+<div id="outline-container-orgcab3349" class="outline-3">
+<h3 id="orgcab3349">Setting up the plotting</h3>
+<div class="outline-text-3" id="text-orgcab3349">
 <div class="highlight"><pre><span></span>% matplotlib inline
 seaborn.set_style("whitegrid")
 </pre></div>
@@ -165,9 +165,9 @@ seaborn.set_style("whitegrid")
 </div>
 </div>
 
-<div id="outline-container-org75b6a9b" class="outline-2">
-<h2 id="org75b6a9b">The Data</h2>
-<div class="outline-text-2" id="text-org75b6a9b">
+<div id="outline-container-orgfa55ea5" class="outline-2">
+<h2 id="orgfa55ea5">The Data</h2>
+<div class="outline-text-2" id="text-orgfa55ea5">
 <div class="highlight"><pre><span></span>x_train = Helpers.unpickle(Pickles.x_train)
 y_train = Helpers.unpickle(Pickles.y_train)
 x_test = Helpers.unpickle(Pickles.x_test)
@@ -183,9 +183,9 @@ assert concatenated.shape == (len(x_train) + len(x_test), len(x_train.columns))
 </div>
 </div>
 
-<div id="outline-container-org6274f29" class="outline-2">
-<h2 id="org6274f29">Dates</h2>
-<div class="outline-text-2" id="text-org6274f29">
+<div id="outline-container-orgd91ba5e" class="outline-2">
+<h2 id="orgd91ba5e">Dates</h2>
+<div class="outline-text-2" id="text-orgd91ba5e">
 <p>
 Unfortunately I got rid of the days, which are required by the <a href="https://pandas.pydata.org/pandas-docs/stable/timeseries.html">to_datetime</a> function provided by pandas, so I'm going to construct a new date column with a day of 1 for each date.
 </p>

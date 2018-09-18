@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about kaggle data exploration competition)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/kaggle-data-exploration-competition.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Sat, 15 Sep 2018 17:42:26 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Exploring The Data</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/exploring-the-data/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about kaggle data exploration competition)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/kaggle-data-exploration-competition.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Tue, 04 Sep 2018 01:24:15 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Exploring The Data</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/exploring-the-data/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
 &lt;h2&gt;Table of Contents&lt;/h2&gt;
 &lt;div id="text-table-of-contents"&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploring-the-data/#org7181941"&gt;Imports&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploring-the-data/#org355c07b"&gt;The Tangle&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploring-the-data/#orgf764fe4"&gt;Helpers&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploring-the-data/#org9db4f5a"&gt;Constants&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploring-the-data/#org14d6f8c"&gt;The Files&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploring-the-data/#org7852777"&gt;Some Counts&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploring-the-data/#org4a303c2"&gt;The Official Feature Descriptions&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploring-the-data/#org8f7a9cf"&gt;The Training Set&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploring-the-data/#org0ee684d"&gt;Imports&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploring-the-data/#org8af51fe"&gt;The Tangle&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploring-the-data/#org6b4e49d"&gt;Helpers&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploring-the-data/#org7cf0494"&gt;Constants&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploring-the-data/#org749d6e3"&gt;The Files&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploring-the-data/#org39c0786"&gt;Some Counts&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploring-the-data/#org8be93ec"&gt;The Official Feature Descriptions&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploring-the-data/#org019513e"&gt;The Training Set&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org7181941" class="outline-2"&gt;
-&lt;h2 id="org7181941"&gt;Imports&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org7181941"&gt;
+&lt;div id="outline-container-org0ee684d" class="outline-2"&gt;
+&lt;h2 id="org0ee684d"&gt;Imports&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org0ee684d"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org452c937" class="outline-3"&gt;
-&lt;h3 id="org452c937"&gt;Suppressing the Numpy Warnings&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org452c937"&gt;
+&lt;div id="outline-container-org445967f" class="outline-3"&gt;
+&lt;h3 id="org445967f"&gt;Suppressing the Numpy Warnings&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org445967f"&gt;
 &lt;p&gt;
 When you import pandas you get some warnings:
 &lt;/p&gt;
@@ -43,9 +43,9 @@ According to &lt;a href="https://stackoverflow.com/questions/40845304/runtimewar
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org807e2c5" class="outline-3"&gt;
-&lt;h3 id="org807e2c5"&gt;The rest of the imports&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org807e2c5"&gt;
+&lt;div id="outline-container-org2832107" class="outline-3"&gt;
+&lt;h3 id="org2832107"&gt;The rest of the imports&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org2832107"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# python standard library&lt;/span&gt;
 &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;os&lt;/span&gt;
 &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;pickle&lt;/span&gt;
@@ -64,17 +64,17 @@ According to &lt;a href="https://stackoverflow.com/questions/40845304/runtimewar
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgbef7eec" class="outline-3"&gt;
-&lt;h3 id="orgbef7eec"&gt;This is used for the tangle&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgbef7eec"&gt;
+&lt;div id="outline-container-orgd50493f" class="outline-3"&gt;
+&lt;h3 id="orgd50493f"&gt;This is used for the tangle&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgd50493f"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# from pypi&lt;/span&gt;
 &lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;tabulate&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;tabulate&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org51691aa" class="outline-3"&gt;
-&lt;h3 id="org51691aa"&gt;Set up the plotting&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org51691aa"&gt;
+&lt;div id="outline-container-org1bcd3df" class="outline-3"&gt;
+&lt;h3 id="org1bcd3df"&gt;Set up the plotting&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org1bcd3df"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;% matplotlib inline
 seaborn.set_style("whitegrid")
 &lt;/pre&gt;&lt;/div&gt;
@@ -82,18 +82,18 @@ seaborn.set_style("whitegrid")
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org355c07b" class="outline-2"&gt;
-&lt;h2 id="org355c07b"&gt;The Tangle&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org355c07b"&gt;
+&lt;div id="outline-container-org8af51fe" class="outline-2"&gt;
+&lt;h2 id="org8af51fe"&gt;The Tangle&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org8af51fe"&gt;
 &lt;p&gt;
 Exports so some of this can be re-used.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgf764fe4" class="outline-2"&gt;
-&lt;h2 id="orgf764fe4"&gt;Helpers&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgf764fe4"&gt;
+&lt;div id="outline-container-org6b4e49d" class="outline-2"&gt;
+&lt;h2 id="org6b4e49d"&gt;Helpers&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org6b4e49d"&gt;
 &lt;p&gt;
 Just some functions that keep coming up.
 &lt;/p&gt;
@@ -172,16 +172,16 @@ Just some functions that keep coming up.
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org9db4f5a" class="outline-2"&gt;
-&lt;h2 id="org9db4f5a"&gt;Constants&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org9db4f5a"&gt;
+&lt;div id="outline-container-org7cf0494" class="outline-2"&gt;
+&lt;h2 id="org7cf0494"&gt;Constants&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org7cf0494"&gt;
 &lt;p&gt;
 As always, I'll try to put constants in the same place.
 &lt;/p&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgff4e74e" class="outline-3"&gt;
-&lt;h3 id="orgff4e74e"&gt;Data Names&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgff4e74e"&gt;
+&lt;div id="outline-container-org64be644" class="outline-3"&gt;
+&lt;h3 id="org64be644"&gt;Data Names&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org64be644"&gt;
 &lt;p&gt;
 This is just a re-mapping of the file-names since I keep forgetting them.
 &lt;/p&gt;
@@ -196,9 +196,9 @@ This is just a re-mapping of the file-names since I keep forgetting them.
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org4363101" class="outline-3"&gt;
-&lt;h3 id="org4363101"&gt;Data Source&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org4363101"&gt;
+&lt;div id="outline-container-org393abec" class="outline-3"&gt;
+&lt;h3 id="org393abec"&gt;Data Source&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org393abec"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;DataSource&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
     &lt;span class="sd"&gt;"""Strings for the files&lt;/span&gt;
 
@@ -264,9 +264,9 @@ This is just a re-mapping of the file-names since I keep forgetting them.
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org40d5d49" class="outline-3"&gt;
-&lt;h3 id="org40d5d49"&gt;Data Keys&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org40d5d49"&gt;
+&lt;div id="outline-container-org4b211b0" class="outline-3"&gt;
+&lt;h3 id="org4b211b0"&gt;Data Keys&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org4b211b0"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;DataKeys&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
     &lt;span class="sd"&gt;"""Column names/keys for the data."""&lt;/span&gt;
     &lt;span class="n"&gt;item_category&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"item_category_id"&lt;/span&gt;
@@ -290,9 +290,9 @@ This is just a re-mapping of the file-names since I keep forgetting them.
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org14d6f8c" class="outline-2"&gt;
-&lt;h2 id="org14d6f8c"&gt;The Files&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org14d6f8c"&gt;
+&lt;div id="outline-container-org749d6e3" class="outline-2"&gt;
+&lt;h2 id="org749d6e3"&gt;The Files&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org749d6e3"&gt;
 &lt;p&gt;
 These are the files we are given.
 &lt;/p&gt;
@@ -326,9 +326,9 @@ I was originally thinking I would need to unzip the gzipped files but apparently
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org786c584" class="outline-3"&gt;
-&lt;h3 id="org786c584"&gt;item_categories.csv&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org786c584"&gt;
+&lt;div id="outline-container-org446d5f8" class="outline-3"&gt;
+&lt;h3 id="org446d5f8"&gt;item_categories.csv&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org446d5f8"&gt;
 &lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
 
 
@@ -384,9 +384,9 @@ None
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org10dee84" class="outline-3"&gt;
-&lt;h3 id="org10dee84"&gt;items.csv&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org10dee84"&gt;
+&lt;div id="outline-container-org82beb4a" class="outline-3"&gt;
+&lt;h3 id="org82beb4a"&gt;items.csv&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org82beb4a"&gt;
 &lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
 
 
@@ -451,9 +451,9 @@ None
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org8363b91" class="outline-3"&gt;
-&lt;h3 id="org8363b91"&gt;sales_train.csv.gz&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org8363b91"&gt;
+&lt;div id="outline-container-org14aa6d5" class="outline-3"&gt;
+&lt;h3 id="org14aa6d5"&gt;sales_train.csv.gz&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org14aa6d5"&gt;
 &lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
 
 
@@ -545,9 +545,9 @@ None
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org480b80a" class="outline-3"&gt;
-&lt;h3 id="org480b80a"&gt;sample_submission.csv.gz&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org480b80a"&gt;
+&lt;div id="outline-container-orgd967f54" class="outline-3"&gt;
+&lt;h3 id="orgd967f54"&gt;sample_submission.csv.gz&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgd967f54"&gt;
 &lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
 
 
@@ -603,9 +603,9 @@ None
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgefcb078" class="outline-3"&gt;
-&lt;h3 id="orgefcb078"&gt;shops.csv&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgefcb078"&gt;
+&lt;div id="outline-container-org609b7ac" class="outline-3"&gt;
+&lt;h3 id="org609b7ac"&gt;shops.csv&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org609b7ac"&gt;
 &lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
 
 
@@ -661,9 +661,9 @@ None
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org5c6d7a3" class="outline-3"&gt;
-&lt;h3 id="org5c6d7a3"&gt;test.csv.gz&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org5c6d7a3"&gt;
+&lt;div id="outline-container-org8a88d1c" class="outline-3"&gt;
+&lt;h3 id="org8a88d1c"&gt;test.csv.gz&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org8a88d1c"&gt;
 &lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
 
 
@@ -729,13 +729,13 @@ None
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org7852777" class="outline-2"&gt;
-&lt;h2 id="org7852777"&gt;Some Counts&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org7852777"&gt;
+&lt;div id="outline-container-org39c0786" class="outline-2"&gt;
+&lt;h2 id="org39c0786"&gt;Some Counts&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org39c0786"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org2279559" class="outline-3"&gt;
-&lt;h3 id="org2279559"&gt;How much data is there in the training set?&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org2279559"&gt;
+&lt;div id="outline-container-org8dfba4f" class="outline-3"&gt;
+&lt;h3 id="org8dfba4f"&gt;How much data is there in the training set?&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org8dfba4f"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"There are {:,} rows in the training set."&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;frames&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;data_source&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sales_train&lt;/span&gt;&lt;span class="p"&gt;])))&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -745,9 +745,9 @@ There are 2,935,849 rows in the training set.
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org8999172" class="outline-3"&gt;
-&lt;h3 id="org8999172"&gt;How many shops are there?&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org8999172"&gt;
+&lt;div id="outline-container-orgf502243" class="outline-3"&gt;
+&lt;h3 id="orgf502243"&gt;How many shops are there?&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgf502243"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"There are {} shops."&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;frames&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;data_source&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shops&lt;/span&gt;&lt;span class="p"&gt;])))&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -757,9 +757,9 @@ There are 60 shops.
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgadb509f" class="outline-3"&gt;
-&lt;h3 id="orgadb509f"&gt;How Many Items Are There?&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgadb509f"&gt;
+&lt;div id="outline-container-org8a69099" class="outline-3"&gt;
+&lt;h3 id="org8a69099"&gt;How Many Items Are There?&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org8a69099"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"There are {:,} items."&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;frames&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;data_source&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;items&lt;/span&gt;&lt;span class="p"&gt;])))&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -769,9 +769,9 @@ There are 22,170 items.
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org2ea72eb" class="outline-3"&gt;
-&lt;h3 id="org2ea72eb"&gt;How Many Item Categories are there?&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org2ea72eb"&gt;
+&lt;div id="outline-container-org0d8b21c" class="outline-3"&gt;
+&lt;h3 id="org0d8b21c"&gt;How Many Item Categories are there?&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org0d8b21c"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"There are {:,} categories."&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;frames&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;data_source&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;item_categories&lt;/span&gt;&lt;span class="p"&gt;])))&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -781,9 +781,9 @@ There are 84 categories.
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org4e94a08" class="outline-3"&gt;
-&lt;h3 id="org4e94a08"&gt;How many date-blocks are there?&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org4e94a08"&gt;
+&lt;div id="outline-container-org1d47463" class="outline-3"&gt;
+&lt;h3 id="org1d47463"&gt;How many date-blocks are there?&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org1d47463"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"There are {} date-blocks."&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
     &lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;frames&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;data_source&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sales_train&lt;/span&gt;&lt;span class="p"&gt;][&lt;/span&gt;&lt;span class="n"&gt;DataKeys&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;date_block&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;unique&lt;/span&gt;&lt;span class="p"&gt;())))&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
@@ -795,9 +795,9 @@ There are 34 date-blocks.
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org4a303c2" class="outline-2"&gt;
-&lt;h2 id="org4a303c2"&gt;The Official Feature Descriptions&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org4a303c2"&gt;
+&lt;div id="outline-container-org8be93ec" class="outline-2"&gt;
+&lt;h2 id="org8be93ec"&gt;The Official Feature Descriptions&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org8be93ec"&gt;
 &lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
 
 
@@ -872,9 +872,9 @@ There are 34 date-blocks.
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org8f7a9cf" class="outline-2"&gt;
-&lt;h2 id="org8f7a9cf"&gt;The Training Set&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org8f7a9cf"&gt;
+&lt;div id="outline-container-org019513e" class="outline-2"&gt;
+&lt;h2 id="org019513e"&gt;The Training Set&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org019513e"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;frames&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;data_source&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sales_train&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;dtypes&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -889,9 +889,9 @@ dtype: object
 &lt;/p&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orge385349" class="outline-3"&gt;
-&lt;h3 id="orge385349"&gt;Numeric Features&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orge385349"&gt;
+&lt;div id="outline-container-orge4364c1" class="outline-3"&gt;
+&lt;h3 id="orge4364c1"&gt;Numeric Features&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orge4364c1"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;Helpers&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;print_table&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;frames&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;data_source&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sales_train&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;describe&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;include&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;numpy&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;number&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;T&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -995,9 +995,9 @@ dtype: object
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgda594ef" class="outline-3"&gt;
-&lt;h3 id="orgda594ef"&gt;Categorical Features&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgda594ef"&gt;
+&lt;div id="outline-container-orgb869d73" class="outline-3"&gt;
+&lt;h3 id="orgb869d73"&gt;Categorical Features&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgb869d73"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;Helpers&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;print_table&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;frames&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;data_source&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sales_train&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;describe&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;include&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;numpy&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;object&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;pandas&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Categorical&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;T&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 

@@ -1,135 +1,161 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description>Notes on studying kaggle.</description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Mon, 17 Sep 2018 16:15:38 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Data Leakages</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
+<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description>Notes on studying kaggle.</description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Tue, 18 Sep 2018 01:40:29 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Data Leakages</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
 &lt;h2&gt;Table of Contents&lt;/h2&gt;
 &lt;div id="text-table-of-contents"&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#orga7ca1c1"&gt;Introduction&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#org835ea5e"&gt;Imports&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#org4c7b2df"&gt;Helpers&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#org4a0ccd3"&gt;Load the data&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#org01be94f"&gt;EDA and Leakage Intuition&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#orge42ca1e"&gt;Building a magic feature&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#orgb27ca78"&gt;Bonus&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#org3d00284"&gt;What does it all mean then?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#orga75f3c5"&gt;Introduction&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#org608aee9"&gt;Imports&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#org06c40a5"&gt;Helpers&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#orge4a725a"&gt;Load the data&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#org1450bf5"&gt;EDA and Leakage Intuition&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#orgcb26708"&gt;Building a magic feature&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#org91394ad"&gt;Bonus&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#org8d4f2f5"&gt;What does it all mean then?&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orga7ca1c1" class="outline-2"&gt;
-&lt;h2 id="orga7ca1c1"&gt;Introduction&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orga7ca1c1"&gt;
+&lt;div id="outline-container-orga75f3c5" class="outline-2"&gt;
+&lt;h2 id="orga75f3c5"&gt;Introduction&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orga75f3c5"&gt;
 &lt;p&gt;
-In this programming assignment we will illustrate a very severe data leakage, that can often be found in competitions, where the pairs of object should be scored, e.g. predict &lt;i&gt;1&lt;/i&gt; if two objects belong to the same class and &lt;i&gt;0&lt;/i&gt; otherwise. 
+In this programming assignment we will illustrate a very severe data leakage, of the sort that can often be found in competitions. The task is to score the pairs of objects, i.e. predict &lt;i&gt;1&lt;/i&gt; if two objects belong to the same class and &lt;i&gt;0&lt;/i&gt; otherwise. 
 &lt;/p&gt;
 
 &lt;p&gt;
-The data in this assignment is taken from a real competition, and the funny thing is that &lt;b&gt;we will not use the training set at all&lt;/b&gt; and still achieve an accuracy score of almost 100% - we will just exploit the leakage.
+The data in this assignment is taken from a real competition, and  &lt;b&gt;we will not use the training set at all&lt;/b&gt; and still achieve an accuracy score of almost 100% - just by exploiting the leakage.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org835ea5e" class="outline-2"&gt;
-&lt;h2 id="org835ea5e"&gt;Imports&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org835ea5e"&gt;
+&lt;div id="outline-container-org608aee9" class="outline-2"&gt;
+&lt;h2 id="org608aee9"&gt;Imports&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org608aee9"&gt;
 &lt;p&gt;
 During the importing of pandas (or scipy) you get a warning about a potential binary incompatibility. According to &lt;a href="https://stackoverflow.com/questions/40845304/runtimewarning-numpy-dtype-size-changed-may-indicate-binary-incompatibility"&gt;Stack Overflow&lt;/a&gt; you can safely ignore this, so we'll use &lt;a href="https://docs.python.org/3/library/warnings.html"&gt;warnings&lt;/a&gt; to suppress the messages, just so it doesn't keep bringing them up everytime I run this notebook.
 &lt;/p&gt;
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;import warnings
-warnings.filterwarnings("ignore", message="numpy.dtype size changed")
-warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;warnings&lt;/span&gt;
+&lt;span class="n"&gt;warnings&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;filterwarnings&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"ignore"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;message&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"numpy.dtype size changed"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;warnings&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;filterwarnings&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"ignore"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;message&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"numpy.ufunc size changed"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# python standard library
-import os
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# python standard library&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;os&lt;/span&gt;
 
-# from pypi
-from tabulate import tabulate
-import matplotlib.pyplot as pyplot
-import numpy
-import pandas
-import scipy.sparse
-import seaborn
+&lt;span class="c1"&gt;# from pypi&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;tabulate&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;tabulate&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;matplotlib.pyplot&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;pyplot&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;numpy&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;pandas&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;scipy.sparse&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;seaborn&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;% matplotlib inline
-seaborn.set_style("whitegrid")
-FIGURE_SIZE = (12, 10)
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="n"&gt;matplotlib&lt;/span&gt; &lt;span class="n"&gt;inline&lt;/span&gt;
+&lt;span class="n"&gt;seaborn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_style&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"whitegrid"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;FIGURE_SIZE&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;12&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org4c7b2df" class="outline-2"&gt;
-&lt;h2 id="org4c7b2df"&gt;Helpers&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org4c7b2df"&gt;
+&lt;div id="outline-container-org06c40a5" class="outline-2"&gt;
+&lt;h2 id="org06c40a5"&gt;Helpers&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org06c40a5"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org63b9718" class="outline-3"&gt;
-&lt;h3 id="org63b9718"&gt;Paths&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org63b9718"&gt;
+&lt;div id="outline-container-orgfd971c9" class="outline-3"&gt;
+&lt;h3 id="orgfd971c9"&gt;Paths&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgfd971c9"&gt;
 &lt;p&gt;
 Since I'm doing this as posts in nikola, but I'm trying to keep all non-post files outside of the &lt;code&gt;posts&lt;/code&gt; folder, I'm going to use a class to keep the paths to the output (submission) files straight.
 &lt;/p&gt;
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;class Paths:
-    """Helper to put submission files in the right folder"""
-    data = "../data/"
-    submissions = "../data/submissions/"
-    test_set = data + "test_pairs.csv"
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Paths&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="sd"&gt;"""Helper to put submission files in the right folder"""&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="fm"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+	&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;None&lt;/span&gt;
+	&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_submissions&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;None&lt;/span&gt;
+	&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_test_set&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;None&lt;/span&gt;
+	&lt;span class="k"&gt;return&lt;/span&gt;
 
-    @classmethod
-    def submit(cls, filename):
-	"""Add the filename to the path
+    &lt;span class="nd"&gt;@property&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;data&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+	&lt;span class="sd"&gt;"""The path to the data set"""&lt;/span&gt;
+	&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_data&lt;/span&gt; &lt;span class="ow"&gt;is&lt;/span&gt; &lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+	    &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"../data/"&lt;/span&gt;
+	    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="ow"&gt;not&lt;/span&gt; &lt;span class="n"&gt;os&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;isdir&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_data&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+		&lt;span class="n"&gt;os&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;mkdir&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_data&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+	&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_data&lt;/span&gt;
 
-	Args:
-	 filename (str): name to add to the submissions folder
+    &lt;span class="nd"&gt;@property&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;submissions&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+	&lt;span class="sd"&gt;"""Path to the submissions"""&lt;/span&gt;
+	&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_submissions&lt;/span&gt; &lt;span class="ow"&gt;is&lt;/span&gt; &lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+	    &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_submissions&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;os&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;join&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;"submissions/"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+	    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="ow"&gt;not&lt;/span&gt; &lt;span class="n"&gt;os&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;isdir&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_submissions&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+		&lt;span class="n"&gt;os&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;mkdir&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_submissions&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+	&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_submissions&lt;/span&gt;
 
-	Returns:
-	 str: path to the file in the submissions folder
-	"""
-	return os.path.join(cls.submissions, filename)
+    &lt;span class="nd"&gt;@property&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;test_set&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+	&lt;span class="sd"&gt;"""path to the test-set data"""&lt;/span&gt;
+	&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_test_set&lt;/span&gt; &lt;span class="ow"&gt;is&lt;/span&gt; &lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+	    &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_test_set&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;os&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;join&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;"test_pairs.csv"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+	&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_test_set&lt;/span&gt;
+
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;submit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;filename&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+	&lt;span class="sd"&gt;"""Add the filename to the path&lt;/span&gt;
+
+&lt;span class="sd"&gt;	Args:&lt;/span&gt;
+&lt;span class="sd"&gt;	 filename (str): name to add to the submissions folder&lt;/span&gt;
+
+&lt;span class="sd"&gt;	Returns:&lt;/span&gt;
+&lt;span class="sd"&gt;	 str: path to the file in the submissions folder&lt;/span&gt;
+&lt;span class="sd"&gt;	"""&lt;/span&gt;
+	&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;os&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;join&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;submissions&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;filename&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org961821a" class="outline-3"&gt;
-&lt;h3 id="org961821a"&gt;Data&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org961821a"&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;class TestSet:
-    """Loads the test-set data
+&lt;div id="outline-container-orga0cd000" class="outline-3"&gt;
+&lt;h3 id="orga0cd000"&gt;Data&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orga0cd000"&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;TestSet&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="sd"&gt;"""Loads the test-set data&lt;/span&gt;
 
-    Args:
-     paths: object with the path to the test-set
-    """
-    def __init__(self, paths=Paths):
-	self.paths = paths
-	self._data = None
-	return
+&lt;span class="sd"&gt;    Args:&lt;/span&gt;
+&lt;span class="sd"&gt;     paths: object with the path to the test-set&lt;/span&gt;
+&lt;span class="sd"&gt;    """&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="fm"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;paths&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;Paths&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+	&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;paths&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;paths&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+	&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;None&lt;/span&gt;
+	&lt;span class="k"&gt;return&lt;/span&gt;
 
-    @property
-    def data(self):
-	"""the test-set data
+    &lt;span class="nd"&gt;@property&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;data&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+	&lt;span class="sd"&gt;"""the test-set data&lt;/span&gt;
 
-	Returns:
-	 `pandas.DataFrame`: the test-set data
-	"""
-	if self._data is None:
-	    self._data = pandas.read_csv(self.paths.test_set)
-	return self._data
+&lt;span class="sd"&gt;	Returns:&lt;/span&gt;
+&lt;span class="sd"&gt;	 `pandas.DataFrame`: the test-set data&lt;/span&gt;
+&lt;span class="sd"&gt;	"""&lt;/span&gt;
+	&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_data&lt;/span&gt; &lt;span class="ow"&gt;is&lt;/span&gt; &lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+	    &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pandas&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;read_csv&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;paths&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;test_set&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+	&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_data&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org4a0ccd3" class="outline-2"&gt;
-&lt;h2 id="org4a0ccd3"&gt;Load the data&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org4a0ccd3"&gt;
+&lt;div id="outline-container-orge4a725a" class="outline-2"&gt;
+&lt;h2 id="orge4a725a"&gt;Load the data&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orge4a725a"&gt;
 &lt;p&gt;
-Let's load the test data. Note, that we don't have any training data here, just test data. Moreover, &lt;b&gt;we will not use any features&lt;/b&gt; of the test set. All we need to solve this task is the file with the indices for the pairs that we need to compare.
+Let's load the test data. Note that we don't have any training data here, just test data. Moreover, &lt;i&gt;we will not use any features of the test set&lt;/i&gt;. All we need to solve this task is the file with the indices for the pairs that we need to compare.
 &lt;/p&gt;
 
 &lt;p&gt;
 Let's load the data with the test indices.
 &lt;/p&gt;
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;test = TestSet().data
-print(test.head(10))
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;test&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;TestSet&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;head&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;pre class="example"&gt;
@@ -148,7 +174,7 @@ print(test.head(10))
 
 
 &lt;p&gt;
-We don't know what the data represents in this case, but you can give them an arbitrary meaning. You could, for example, think that there is a test dataset of images, and each image is assigned a unique `Id` from \(0\) to \(N-1\) (N – is the number of images). In the dataframe above `FirstId` and `SecondId` point to these `Id`'s and define pairs that we should compare: e.g. do both images in the pair belong to the same class or not. So, for example for the first row: if images with `Id=1427` and `Id=8053` belong to the same class, we should predict \(1\), and \(0\) otherwise. 
+We don't know what the data represents in this case, but you can give them an arbitrary meaning. You could, for example, think that there is a test dataset of images, and each image is assigned a unique `ID` from \(0\) to \(N-1\) (N – is the number of images). In the dataframe above &lt;code&gt;FirstId&lt;/code&gt; and &lt;code&gt;SecondId&lt;/code&gt; point to these IDs and define pairs that we should compare: e.g. &lt;i&gt;Do both images in the pair belong to the same class or not?&lt;/i&gt; So, for example for the first row: if images with `ID=1427` and `ID=8053` belong to the same class, we should predict \(1\) and \(0\) if they don't. 
 &lt;/p&gt;
 
 &lt;p&gt;
@@ -159,11 +185,11 @@ But in our case we don't really care about the images, and how exactly we compar
 &lt;b&gt;&lt;b&gt;We suggest you to try to solve the puzzle yourself first.&lt;/b&gt;&lt;/b&gt; You need to submit a `.csv` file with columns `pairId` and `Prediction` to the grader. The number of submissions allowed is made pretty huge to let you explore the data without worries. The returned score should be very close to \(1\).
 &lt;/p&gt;
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;figure, axe = pyplot.subplots(figsize=FIGURE_SIZE)
-axe.set_title("First ID vs Second ID", weight="bold")
-axe.set_xlabel("First ID")
-axe.set_ylabel("Second ID")
-plot = pyplot.scatter(test.FirstId, test.SecondId, marker='.')
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;figure&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;axe&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pyplot&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;subplots&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;figsize&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;FIGURE_SIZE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;axe&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_title&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"First ID vs Second ID"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;weight&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"bold"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;axe&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_xlabel&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"First ID"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;axe&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_ylabel&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"Second ID"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;plot&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pyplot&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;scatter&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;FirstId&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;SecondId&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;marker&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;'.'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -178,19 +204,19 @@ So this doesn't appear to be a randomized data set. The first half of the Second
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org01be94f" class="outline-2"&gt;
-&lt;h2 id="org01be94f"&gt;EDA and Leakage Intuition&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org01be94f"&gt;
+&lt;div id="outline-container-org1450bf5" class="outline-2"&gt;
+&lt;h2 id="org1450bf5"&gt;EDA and Leakage Intuition&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org1450bf5"&gt;
 &lt;p&gt;
 As we already know, the key to discovering data leakages is careful Exploratory Data Analysis (EDA). So let's start our work with some basic data exploration and build an intuition about the leakage.
 &lt;/p&gt;
 
 &lt;p&gt;
-First, check, how many different &lt;i&gt;id&lt;/i&gt;'s are there: concatenate &lt;i&gt;FirstId&lt;/i&gt; and `SecondId/ and print the number of unique elements. Also print the minimum and maximum value for that vector.
+First, check, how many different &lt;i&gt;id&lt;/i&gt;'s are there: concatenate &lt;i&gt;FirstId&lt;/i&gt; and &lt;i&gt;SecondId&lt;/i&gt; and print the number of unique elements. Also print the minimum and maximum value for that vector.
 &lt;/p&gt;
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;smashed = test.FirstId.apply(lambda row: str(row)) + ',' + test.SecondId.apply(lambda row: str(row))
-print(smashed.head())
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;smashed&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;FirstId&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;apply&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;lambda&lt;/span&gt; &lt;span class="n"&gt;row&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;str&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;row&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="s1"&gt;','&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;SecondId&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;apply&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;lambda&lt;/span&gt; &lt;span class="n"&gt;row&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;str&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;row&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;smashed&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;head&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;pre class="example"&gt;
@@ -203,10 +229,10 @@ dtype: object
 
 &lt;/pre&gt;
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;print("|Unique Pairs| {}|".format(len(smashed.unique())))
-print("|Total Pairs| {}|".format(len(test)))
-print("|Lowest Valued Pair (ASCII)| ({})|".format(smashed.min()))
-print("|Highest Valued Pair| ({})|".format(smashed.max()))
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"|Unique Pairs| {}|"&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;smashed&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;unique&lt;/span&gt;&lt;span class="p"&gt;())))&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"|Total Pairs| {}|"&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"|Lowest Valued Pair (ASCII)| ({})|"&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;smashed&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;min&lt;/span&gt;&lt;span class="p"&gt;()))&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"|Highest Valued Pair| ({})|"&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;smashed&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;max&lt;/span&gt;&lt;span class="p"&gt;()))&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
@@ -245,8 +271,8 @@ print("|Highest Valued Pair| ({})|".format(smashed.max()))
 and then print how many pairs we need to classify (it is basically the number of rows in the test set)
 &lt;/p&gt;
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;print(len(test))
-print(len(test) - len(smashed.unique()))
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;smashed&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;unique&lt;/span&gt;&lt;span class="p"&gt;()))&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;pre class="example"&gt;
@@ -260,10 +286,10 @@ print(len(test) - len(smashed.unique()))
 Now print, how many distinct pairs it would be possible to create out of all "images" in the dataset?   
 &lt;/p&gt;
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;catted = pandas.concat([test.FirstId, test.SecondId])
-image_count = len(catted.unique())
-print("Unique image IDs: {:,}".format(image_count))
-print("Handshakes: {:,}".format(int((image_count * (image_count - 1))/2)))
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;catted&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pandas&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;concat&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;FirstId&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;SecondId&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+&lt;span class="n"&gt;image_count&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;catted&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;unique&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"Unique image IDs: {:,}"&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;image_count&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"Handshakes: {:,}"&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;int&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;image_count&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;image_count&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;pre class="example"&gt;
@@ -277,21 +303,30 @@ So the number of pairs we are given to classify is very, very small compared to 
 &lt;/p&gt;
 
 &lt;p&gt;
-To exploit the leak we need to &lt;b&gt;&lt;b&gt;assume (or prove)&lt;/b&gt;&lt;/b&gt;, that the total number of positive pairs is small, compared to the total number of pairs. For example: think about an image dataset with \(1000\) classes, \(N\) images per class. Then if the task was to tell whether a pair of images belongs to the same class or not, we would have \(1000\frac{N(N-1)}{2}\) positive pairs, while the total number of pairs was \(\frac{1000N(1000N - 1)}{2}\).
+To exploit the leak we need to assume (or prove), that the total number of ID-pairs classified as 1 is small compared to the total number of pairs possible. For example, think about an image dataset with \(1000\) classes, \(N\) images per class. Then if the task was to tell whether a pair of images belongs to the same class or not, we would have \(1000\frac{N(N-1)}{2}\) positive pairs, while the total number of pairs was \(\frac{1000N(1000N - 1)}{2}\).
 &lt;/p&gt;
 
 &lt;p&gt;
-Another example: in a &lt;a href="https://www.kaggle.com/c/quora-question-pairs"&gt;Quora competitition&lt;/a&gt; the task was to classify whether a pair of questions are duplicates of each other or not. Of course, total number of question pairs is very huge, while number of duplicates (positive pairs) is much much smaller.
+Another example - in a &lt;a href="https://www.kaggle.com/c/quora-question-pairs"&gt;Quora competitition&lt;/a&gt; the task was to classify whether a pair of questions are duplicates of each other or not. Of course, the total number of question-pairs is huge, while the number of duplicates (positive pairs) is much, much smaller.
 &lt;/p&gt;
+&lt;/div&gt;
 
+&lt;div id="outline-container-org38805db" class="outline-3"&gt;
+&lt;h3 id="org38805db"&gt;Probing the Leaderboard&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org38805db"&gt;
 &lt;p&gt;
-Finally, let's get a fraction of pairs of class `1`. We just need to submit a constant prediction "all ones" and check the returned accuracy. Create a dataframe with columns `pairId` and `Prediction`, fill it and export it to `.csv` file. Then submit to grader and examine grader's output. 
+Finally, let's see what fraction of the ID-pairs have a class of `1`. To do this we just need to submit a constant prediction (all ones) and check the accuracy the grader reports. Create a dataframe with columns `pairId` and `Prediction`, fill it and export it to a `.csv` file. Then submit to the Coursera grader and examine the grader's output to get the fraction of 1s in the test-set.
 &lt;/p&gt;
+&lt;/div&gt;
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;all_ones = test[["pairId"]].copy()
-all_ones["Prediction"] = [1] * len(all_ones)
-print(all_ones.head())
-all_ones.to_csv(Paths.submit("submission_ones.csv"), index=False)
+&lt;div id="outline-container-orgb568610" class="outline-4"&gt;
+&lt;h4 id="orgb568610"&gt;All Ones&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-orgb568610"&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;paths&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Paths&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="n"&gt;all_ones&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="p"&gt;[[&lt;/span&gt;&lt;span class="s2"&gt;"pairId"&lt;/span&gt;&lt;span class="p"&gt;]]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;copy&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="n"&gt;all_ones&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;"Prediction"&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;all_ones&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;all_ones&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;head&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;
+&lt;span class="n"&gt;all_ones&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;to_csv&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;paths&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;submit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"submission_ones.csv"&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;index&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;pre class="example"&gt;
@@ -313,18 +348,27 @@ Your accuracy score is 0.500000. It seems too low, try one more time.
 &lt;/pre&gt;
 
 &lt;p&gt;
-So, we assumed the total number of pairs is much higher than the number of positive pairs, but it is not the case for the test set. It means that the test set is constructed not by sampling random pairs, but with a specific sampling algorithm. Pairs of class `1` are oversampled.
+So, we assumed the that there were many more pairs overall than there were pairs of class 1, but it is not the case for the test set. This means that the test set is constructed not by sampling random pairs, but with a specific sampling algorithm which caused the pairs of class `1` to be oversampled.
 &lt;/p&gt;
 
 &lt;p&gt;
-Now think, how we can exploit this fact? What is the leak here? If you get it now, you may try to get to the final answer yourself, othewise you can follow the instructions below.   
+Now think - how we can exploit this fact? What is the leak here? If you get it now, you may try to get to the final answer yourself, othewise you can follow the instructions below.   
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-org1a106a6" class="outline-4"&gt;
+&lt;h4 id="org1a106a6"&gt;All Zeros&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org1a106a6"&gt;
+&lt;p&gt;
+Although we're told that this was a binary data set (and you could check it just by printing out the unique values), I sort of flaked and submitted a set where all the pairs were classified as zeros anyway. Here's what happened.
 &lt;/p&gt;
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;all_zeros = test[["pairId"]].copy()
-all_zeros["Prediction"] = numpy.zeros(len(all_zeros))
-assert all_zeros.Prediction.shape == all_zeros.pairId.shape
-print(all_zeros.head())
-all_zeros.to_csv(Paths.submit("submission_zeros.csv"), index=False)
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;all_zeros&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="p"&gt;[[&lt;/span&gt;&lt;span class="s2"&gt;"pairId"&lt;/span&gt;&lt;span class="p"&gt;]]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;copy&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="n"&gt;all_zeros&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;"Prediction"&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;numpy&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;zeros&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;all_zeros&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="k"&gt;assert&lt;/span&gt; &lt;span class="n"&gt;all_zeros&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Prediction&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;all_zeros&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;pairId&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;all_zeros&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;head&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;
+&lt;span class="n"&gt;all_zeros&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;to_csv&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;paths&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;submit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"submission_zeros.csv"&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;index&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;pre class="example"&gt;
@@ -347,55 +391,26 @@ Your accuracy score is 0.500000. It seems too low, try one more time.
 &lt;/pre&gt;
 
 &lt;p&gt;
-So it appears that the dataset is binary, with half the outputs being ones, the other half being zeros.
-&lt;/p&gt;
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;random_predictions = test[["pairId"]].copy()
-random_predictions["Prediction"] = numpy.random.randint(0, 2, len(test))
-assert random_predictions.Prediction.shape == random_predictions.pairId.shape
-assert random_predictions.Prediction.max() == 1
-assert random_predictions.Prediction.min() == 0
-print(random_predictions.head())
-random_predictions.to_csv(Paths.submit("submission_random.csv"), index=False)
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;pre class="example"&gt;
-   pairId  Prediction
-0       0           0
-1       1           0
-2       2           0
-3       3           1
-4       4           0
-
-&lt;/pre&gt;
-
-&lt;p&gt;
-The grader output for the random set:
-&lt;/p&gt;
-
-&lt;pre class="example"&gt;
-Your accuracy score is 0.499058. It seems too low, try one more time.
-&lt;/pre&gt;
-
-&lt;p&gt;
-Around the same as the other two, so flipping a coin doesn't improve things any, but it doesn't really make it much worse.
+So it appears we've confirmed that the dataset is binary, with half the outputs being ones, the other half being zeros.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 
-&lt;div id="outline-container-orge42ca1e" class="outline-2"&gt;
-&lt;h2 id="orge42ca1e"&gt;Building a magic feature&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orge42ca1e"&gt;
+&lt;div id="outline-container-orgcb26708" class="outline-2"&gt;
+&lt;h2 id="orgcb26708"&gt;Building a magic feature&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgcb26708"&gt;
 &lt;p&gt;
 In this section we will build a magic feature that will solve the problem almost perfectly. The instructions will lead you to the correct solution, but please, try to explain the purpose of the steps we do to yourself – it is very important.
 &lt;/p&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgc4ab433" class="outline-3"&gt;
-&lt;h3 id="orgc4ab433"&gt;Incidence matrix&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgc4ab433"&gt;
+&lt;div id="outline-container-org37cb56c" class="outline-3"&gt;
+&lt;h3 id="org37cb56c"&gt;Incidence matrix&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org37cb56c"&gt;
 &lt;p&gt;
-First, we need to build an &lt;a href="https://en.wikipedia.org/wiki/Incidence_matrix"&gt;incidence matrix&lt;/a&gt;. You can think of pairs `(FirstId, SecondId)` as of edges in an undirected graph. 
+First, we need to build an &lt;a href="https://en.wikipedia.org/wiki/Incidence_matrix"&gt;incidence matrix&lt;/a&gt;. You can think of pairs `(FirstId, SecondId)` as edges in an undirected graph. 
 &lt;/p&gt;
 
 &lt;p&gt;
@@ -415,23 +430,23 @@ For example, you can use this constructor: `scipy.sparse.coo_matrix((data, (i, j
 &lt;/p&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org2878250" class="outline-4"&gt;
-&lt;h4 id="org2878250"&gt;De-duplicating the Data&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org2878250"&gt;
+&lt;div id="outline-container-orga7cb754" class="outline-4"&gt;
+&lt;h4 id="orga7cb754"&gt;De-duplicating the Data&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-orga7cb754"&gt;
 &lt;p&gt;
 The test data turns out to have duplicate ID pairs, which will cause our incidence matrix to produce numbers greater than 1 if we leave them in, so we need to remove them (using the &lt;a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.duplicated.html"&gt;duplicated&lt;/a&gt; method).
 &lt;/p&gt;
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pairs_1 = pandas.Series(list(zip(test.FirstId, test.SecondId)), index=test.index)
-pairs_2 = pandas.Series(list(zip(test.SecondId, test.FirstId)), index=test.index)
-pairs = pandas.concat([pairs_1, pairs_2])
-pairs = pairs[~pairs.duplicated()]
-assert not any(pairs.duplicated())
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;pairs_1&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pandas&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Series&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;list&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;zip&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;FirstId&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;SecondId&lt;/span&gt;&lt;span class="p"&gt;)),&lt;/span&gt; &lt;span class="n"&gt;index&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;index&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;pairs_2&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pandas&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Series&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;list&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;zip&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;SecondId&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;FirstId&lt;/span&gt;&lt;span class="p"&gt;)),&lt;/span&gt; &lt;span class="n"&gt;index&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;index&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;pairs&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pandas&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;concat&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="n"&gt;pairs_1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;pairs_2&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+&lt;span class="n"&gt;pairs&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pairs&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="n"&gt;pairs&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;duplicated&lt;/span&gt;&lt;span class="p"&gt;()]&lt;/span&gt;
+&lt;span class="k"&gt;assert&lt;/span&gt; &lt;span class="ow"&gt;not&lt;/span&gt; &lt;span class="nb"&gt;any&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pairs&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;duplicated&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pair_count = len(pairs)
-assert pair_count == 736872
-print(pair_count)
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;pair_count&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pairs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="k"&gt;assert&lt;/span&gt; &lt;span class="n"&gt;pair_count&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;736872&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pair_count&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;pre class="example"&gt;
@@ -443,36 +458,36 @@ print(pair_count)
 Which is the value provided to test the length of the matrix. Now we need to get the indices.
 &lt;/p&gt;
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;i_indices = pairs.apply(lambda row: row[0])
-j_indices = pairs.apply(lambda row: row[1])
-assert i_indices.shape == (pair_count,)
-assert j_indices.shape == (pair_count,)
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;i_indices&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pairs&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;apply&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;lambda&lt;/span&gt; &lt;span class="n"&gt;row&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;row&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+&lt;span class="n"&gt;j_indices&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pairs&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;apply&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;lambda&lt;/span&gt; &lt;span class="n"&gt;row&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;row&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+&lt;span class="k"&gt;assert&lt;/span&gt; &lt;span class="n"&gt;i_indices&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pair_count&lt;/span&gt;&lt;span class="p"&gt;,)&lt;/span&gt;
+&lt;span class="k"&gt;assert&lt;/span&gt; &lt;span class="n"&gt;j_indices&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pair_count&lt;/span&gt;&lt;span class="p"&gt;,)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;
 Now we create a sparse matrix where the row indices are our FirstIds and the column indices are our Second Ids and each of their pairs &lt;code&gt;(i, j)&lt;/code&gt; is set to 1.
 &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;data = numpy.ones(pair_count)
-inc_mat = scipy.sparse.coo_matrix((data, (i_indices, j_indices)))
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;numpy&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ones&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pair_count&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;inc_mat&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;scipy&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sparse&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;coo_matrix&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;i_indices&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;j_indices&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
 
-# Sanity checks
-assert inc_mat.max() == 1
-assert inc_mat.sum() == 736872
+&lt;span class="c1"&gt;# Sanity checks&lt;/span&gt;
+&lt;span class="k"&gt;assert&lt;/span&gt; &lt;span class="n"&gt;inc_mat&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;max&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
+&lt;span class="k"&gt;assert&lt;/span&gt; &lt;span class="n"&gt;inc_mat&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sum&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;736872&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;
 It is more convenient to have the incidence matrix in &lt;a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_matrix.html"&gt;Compressed Sparse Row (CSR)&lt;/a&gt; format, so convert it here.
 &lt;/p&gt;
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;inc_mat = inc_mat.tocsr()
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;inc_mat&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;inc_mat&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;tocsr&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgf9f3402" class="outline-3"&gt;
-&lt;h3 id="orgf9f3402"&gt;Now To Build the Magic Feature&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgf9f3402"&gt;
+&lt;div id="outline-container-org073fd2d" class="outline-3"&gt;
+&lt;h3 id="org073fd2d"&gt;Now To Build the Magic Feature&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org073fd2d"&gt;
 &lt;p&gt;
 Why did we build the incidence matrix? We can think of the rows in this matrix as a representation for the objects. The `i-th` row is a representation for an object with `Id = i`. Then, to measure the similarity between two objects we can measure similarity between their representations. And we will see that these representations are very good.
 &lt;/p&gt;
@@ -486,8 +501,8 @@ Note, scipy goes crazy if a matrix is indexed with pandas' series. So do not for
 These lines should normally run very quickly.
 &lt;/p&gt;
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;rows_FirstId   = inc_mat[test.FirstId.values]
-rows_SecondId  = inc_mat[test.SecondId.values]
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;rows_FirstId&lt;/span&gt;   &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;inc_mat&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;FirstId&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;values&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="n"&gt;rows_SecondId&lt;/span&gt;  &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;inc_mat&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;SecondId&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;values&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;
@@ -502,25 +517,25 @@ Now compute dot product between corresponding rows in `rows_FirstId` and `rows_S
 Note, that in order to do pointwise multiplication in scipy.sparse you need to use function &lt;a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_matrix.multiply.html#scipy.sparse.csr_matrix.multiply"&gt;multiply&lt;/a&gt;, regular `*` corresponds to matrix-matrix multiplication
 &lt;/p&gt;
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;f = numpy.squeeze(numpy.asarray(rows_FirstId.multiply(rows_SecondId).sum(axis=1)))
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;numpy&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;squeeze&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;numpy&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;asarray&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;rows_FirstId&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;multiply&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;rows_SecondId&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sum&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;axis&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
 
-# Sanity check
-assert f.shape == (368550, )
+&lt;span class="c1"&gt;# Sanity check&lt;/span&gt;
+&lt;span class="k"&gt;assert&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;368550&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;
 That is it! &lt;b&gt;&lt;b&gt;We've built our magic feature.&lt;/b&gt;&lt;/b&gt; 
 &lt;/p&gt;
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;figure, axe = pyplot.subplots(figsize=FIGURE_SIZE)
-axe.set_title("Distribution of Similarity Matrix (f)")
-plot = seaborn.distplot(f)
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;figure&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;axe&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pyplot&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;subplots&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;figsize&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;FIGURE_SIZE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;axe&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_title&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"Distribution of Similarity Matrix (f)"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;plot&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;seaborn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;distplot&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org98ce124" class="outline-4"&gt;
-&lt;h4 id="org98ce124"&gt;From magic feature to binary predictions&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org98ce124"&gt;
+&lt;div id="outline-container-org553d876" class="outline-4"&gt;
+&lt;h4 id="org553d876"&gt;From magic feature to binary predictions&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org553d876"&gt;
 &lt;p&gt;
 But how do we convert this feature into binary predictions? We do not have a train set to learn a model, but we have a piece of information about test set: the baseline accuracy score that you got, when submitting constant. And we also have a very strong considerations about the data generative process, so probably we will be fine even without a training set. 
 &lt;/p&gt;
@@ -533,11 +548,11 @@ We may try to choose a thresold, and set the predictions to 1, if the feature va
 How do we find a right threshold? Let's first examine this feature: print frequencies (or counts) of each value in the feature `f`.
 &lt;/p&gt;
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;f_frame = pandas.DataFrame(dict(f=f))
-counts = f_frame.f.value_counts().reset_index()
-counts.columns = ["Value" , "Count"]
-print(tabulate(counts, headers="keys", tablefmt="orgtbl",
-	       showindex=False))
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;f_frame&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pandas&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;DataFrame&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;dict&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="n"&gt;counts&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;f_frame&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;value_counts&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;reset_index&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="n"&gt;counts&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;columns&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;"Value"&lt;/span&gt; &lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;"Count"&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;tabulate&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;counts&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;headers&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"keys"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;tablefmt&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"orgtbl"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+	       &lt;span class="n"&gt;showindex&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
@@ -592,10 +607,10 @@ print(tabulate(counts, headers="keys", tablefmt="orgtbl",
 &lt;/tbody&gt;
 &lt;/table&gt;
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;fractions = counts/len(test)
-fractions["Value"] = counts.Value
-print(tabulate(fractions, headers="keys", tablefmt="orgtbl", showindex=False,
-	       floatfmt=".3f"))
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;fractions&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;counts&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;fractions&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;"Value"&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;counts&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Value&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;tabulate&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;fractions&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;headers&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"keys"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;tablefmt&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"orgtbl"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;showindex&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+	       &lt;span class="n"&gt;floatfmt&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;".3f"&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
@@ -654,25 +669,25 @@ print(tabulate(fractions, headers="keys", tablefmt="orgtbl", showindex=False,
 So it looks like half the values are below 20 and half are above. We'll make our predictions by first getting a boolean array testing this case and then casting it to integers (0 is False, 1 is True).
 &lt;/p&gt;
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;predict_twenty = f &amp;gt;= 20
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;predict_twenty&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;=&lt;/span&gt; &lt;span class="mi"&gt;20&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;submission = test.loc[:,['pairId']]
-submission['Prediction'] = predict_twenty.astype(int)
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;submission&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;loc&lt;/span&gt;&lt;span class="p"&gt;[:,[&lt;/span&gt;&lt;span class="s1"&gt;'pairId'&lt;/span&gt;&lt;span class="p"&gt;]]&lt;/span&gt;
+&lt;span class="n"&gt;submission&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'Prediction'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;predict_twenty&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;astype&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;int&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 
-submission.to_csv(Paths.submit('predict_twenty.csv'), index=False)
+&lt;span class="n"&gt;submission&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;to_csv&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;paths&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;submit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'predict_twenty.csv'&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;index&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;
 But if you look at the table, it looks like 20 alone accounts for exactly half the values.
 &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;predict_only_twenty = f == 20
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;predict_only_twenty&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;20&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;submission = test.loc[:,['pairId']]
-submission['Prediction'] = predict_only_twenty.astype(int)
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;submission&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;loc&lt;/span&gt;&lt;span class="p"&gt;[:,[&lt;/span&gt;&lt;span class="s1"&gt;'pairId'&lt;/span&gt;&lt;span class="p"&gt;]]&lt;/span&gt;
+&lt;span class="n"&gt;submission&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'Prediction'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;predict_only_twenty&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;astype&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;int&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 
-submission.to_csv(Paths.submit('predict_only_twenty.csv'), index=False)
+&lt;span class="n"&gt;submission&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;to_csv&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;paths&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;submit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'predict_only_twenty.csv'&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;index&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;
@@ -684,13 +699,13 @@ Well done! Your accuracy score is 0.998128
 &lt;/pre&gt;
 
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;predict_fourteen = f &amp;gt; 14
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;predict_fourteen&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="mi"&gt;14&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;submission = test.loc[:,['pairId']]
-submission['Prediction'] = predict_fourteen.astype(int)
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;submission&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;loc&lt;/span&gt;&lt;span class="p"&gt;[:,[&lt;/span&gt;&lt;span class="s1"&gt;'pairId'&lt;/span&gt;&lt;span class="p"&gt;]]&lt;/span&gt;
+&lt;span class="n"&gt;submission&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'Prediction'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;predict_fourteen&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;astype&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;int&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 
-submission.to_csv(Paths.submit('predict_fourteen.csv'), index=False)
+&lt;span class="n"&gt;submission&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;to_csv&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;paths&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;submit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'predict_fourteen.csv'&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;index&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;
@@ -708,40 +723,40 @@ Well done! Your accuracy score is 0.997298
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgb27ca78" class="outline-2"&gt;
-&lt;h2 id="orgb27ca78"&gt;Bonus&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgb27ca78"&gt;
+&lt;div id="outline-container-org91394ad" class="outline-2"&gt;
+&lt;h2 id="org91394ad"&gt;Bonus&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org91394ad"&gt;
 &lt;p&gt;
 Interestingly, it is not the only leak in this dataset. There is another totally different way to get almost 100% accuracy. Try to find it!
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org3d00284" class="outline-2"&gt;
-&lt;h2 id="org3d00284"&gt;What does it all mean then?&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org3d00284"&gt;
+&lt;div id="outline-container-org8d4f2f5" class="outline-2"&gt;
+&lt;h2 id="org8d4f2f5"&gt;What does it all mean then?&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org8d4f2f5"&gt;
 &lt;p&gt;
 From our initial check uploading all the submissions as one (so all the ID-pairs were classified as having IDs from the same class) we saw that half the entries were 1's and half were 0's. Our incidence matrix showed that half the vectors had a similarity of 20 or more, so by predicting that all the pairs whose incidence matrix dot-products were 20 or greater were of the same class, we could predict with greater than 99% accuracy which IDs were from the same class.
 &lt;/p&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description><category>assignment dataleaks</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/</guid><pubDate>Sun, 09 Sep 2018 01:31:29 GMT</pubDate></item><item><title>Data Leaks</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/data-leaks/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-orgb6c4200" class="outline-2"&gt;
-&lt;h2 id="orgb6c4200"&gt;What are data leaks?&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgb6c4200"&gt;
+&lt;/div&gt;</description><category>assignment dataleaks</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/</guid><pubDate>Sun, 09 Sep 2018 01:31:29 GMT</pubDate></item><item><title>Data Leaks</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/data-leaks/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-org43b6430" class="outline-2"&gt;
+&lt;h2 id="org43b6430"&gt;What are data leaks?&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org43b6430"&gt;
 &lt;p&gt;
 &lt;i&gt;Data Leaks&lt;/i&gt; are unexpected errors that expose extra information that wouldn't be available in production.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgafbb943" class="outline-2"&gt;
-&lt;h2 id="orgafbb943"&gt;Time Series&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgafbb943"&gt;
+&lt;div id="outline-container-org4219295" class="outline-2"&gt;
+&lt;h2 id="org4219295"&gt;Time Series&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org4219295"&gt;
 &lt;p&gt;
 Check if there are points in the training set that are in the future with regard to the test set.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org538834b" class="outline-2"&gt;
-&lt;h2 id="org538834b"&gt;Unexpected Information&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org538834b"&gt;
+&lt;div id="outline-container-org30c219a" class="outline-2"&gt;
+&lt;h2 id="org30c219a"&gt;Unexpected Information&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org30c219a"&gt;
 &lt;p&gt;
 Sometimes what looks like a non-predictive feature might prove to be useful because of the way the data-set was created.
 &lt;/p&gt;
@@ -752,21 +767,21 @@ Sometimes what looks like a non-predictive feature might prove to be useful beca
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org165f78d" class="outline-2"&gt;
-&lt;h2 id="org165f78d"&gt;Leaderboard Probing&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org165f78d"&gt;
+&lt;div id="outline-container-orgbb45b0a" class="outline-2"&gt;
+&lt;h2 id="orgbb45b0a"&gt;Leaderboard Probing&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgbb45b0a"&gt;
 &lt;p&gt;
 This is a method to look for dataleaks based on the leader board.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org33ada27" class="outline-2"&gt;
-&lt;h2 id="org33ada27"&gt;Quiz&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org33ada27"&gt;
+&lt;div id="outline-container-orgd31af32" class="outline-2"&gt;
+&lt;h2 id="orgd31af32"&gt;Quiz&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgd31af32"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org3c7ca32" class="outline-3"&gt;
-&lt;h3 id="org3c7ca32"&gt;One&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org3c7ca32"&gt;
+&lt;div id="outline-container-orgaec9dbc" class="outline-3"&gt;
+&lt;h3 id="orgaec9dbc"&gt;One&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgaec9dbc"&gt;
 &lt;p&gt;
 Suppose that you have a credit scoring task where you have to create a machine learning model that approximates expert evaluation of an individual's creditworthiness. Which of the following can potentially be a data leakage?
 &lt;/p&gt;
@@ -778,9 +793,9 @@ Suppose that you have a credit scoring task where you have to create a machine l
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org2711f73" class="outline-3"&gt;
-&lt;h3 id="org2711f73"&gt;Two&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org2711f73"&gt;
+&lt;div id="outline-container-orgb297375" class="outline-3"&gt;
+&lt;h3 id="orgb297375"&gt;Two&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgb297375"&gt;
 &lt;p&gt;
 What is the most foolproof way to set up a time-series competition?
 &lt;/p&gt;
@@ -792,9 +807,9 @@ What is the most foolproof way to set up a time-series competition?
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org37344f4" class="outline-3"&gt;
-&lt;h3 id="org37344f4"&gt;Three&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org37344f4"&gt;
+&lt;div id="outline-container-orgc95fb82" class="outline-3"&gt;
+&lt;h3 id="orgc95fb82"&gt;Three&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgc95fb82"&gt;
 &lt;p&gt;
 Suppose you have a binary feature classification task and it is evaluated by the logloss metric. You know that there are 10,000 entries in the public chunk of the test set and that a constant prediction of 0.3 gets a score of 1.01. The mean of the target variable in the training set is 0.44. What is the mean of the target variable in the public part  of the test data (up to 4 decimal places.)
 &lt;/p&gt;
@@ -814,9 +829,9 @@ Suppose you have a binary feature classification task and it is evaluated by the
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org7e705bf" class="outline-3"&gt;
-&lt;h3 id="org7e705bf"&gt;Four&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org7e705bf"&gt;
+&lt;div id="outline-container-orgb916fd4" class="outline-3"&gt;
+&lt;h3 id="orgb916fd4"&gt;Four&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgb916fd4"&gt;
 &lt;p&gt;
 Suppose you are solving an image classification task, what is the classification of the logo for this course?
 &lt;/p&gt;
@@ -831,21 +846,21 @@ Suppose you are solving an image classification task, what is the classification
 &lt;h2&gt;Table of Contents&lt;/h2&gt;
 &lt;div id="text-table-of-contents"&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#orgdaf62d0"&gt;Validation and Overfitting&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org674da7d"&gt;Three Main Methods of Splitting&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#orgb5cdb96"&gt;Stratification&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org388f244"&gt;Data Splitting&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org36f5ea8"&gt;Problems&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org8238b42"&gt;Practice Quiz&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org03ebc6f"&gt;Quiz&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org746ed2d"&gt;Links&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#orga418442"&gt;Validation and Overfitting&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org33fda23"&gt;Three Main Methods of Splitting&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org5c3515b"&gt;Stratification&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org673f5fc"&gt;Data Splitting&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org734139f"&gt;Problems&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org1b47d0f"&gt;Practice Quiz&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#orgb24a928"&gt;Quiz&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#orgac73e53"&gt;Links&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgdaf62d0" class="outline-2"&gt;
-&lt;h2 id="orgdaf62d0"&gt;Validation and Overfitting&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgdaf62d0"&gt;
+&lt;div id="outline-container-orga418442" class="outline-2"&gt;
+&lt;h2 id="orga418442"&gt;Validation and Overfitting&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orga418442"&gt;
 &lt;p&gt;
 To prevent your model from overfitting to the training set, you can hold out some of the training set and use it to validate the model after it has been fit to the rest of the training set.
 &lt;/p&gt;
@@ -856,16 +871,16 @@ To prevent your model from overfitting to the training set, you can hold out som
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org674da7d" class="outline-2"&gt;
-&lt;h2 id="org674da7d"&gt;Three Main Methods of Splitting&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org674da7d"&gt;
+&lt;div id="outline-container-org33fda23" class="outline-2"&gt;
+&lt;h2 id="org33fda23"&gt;Three Main Methods of Splitting&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org33fda23"&gt;
 &lt;p&gt;
 These are methods for splitting your training set into training and validation sets. Once you have a model, re-train it over the entire training set before applying it to the test set.
 &lt;/p&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgdf752cb" class="outline-3"&gt;
-&lt;h3 id="orgdf752cb"&gt;Holdout&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgdf752cb"&gt;
+&lt;div id="outline-container-org9e7efea" class="outline-3"&gt;
+&lt;h3 id="org9e7efea"&gt;Holdout&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org9e7efea"&gt;
 &lt;p&gt;
 This method just splits the data into one training and one validation set.
 &lt;/p&gt;
@@ -876,9 +891,9 @@ This method just splits the data into one training and one validation set.
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orge7e9228" class="outline-3"&gt;
-&lt;h3 id="orge7e9228"&gt;K-Fold&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orge7e9228"&gt;
+&lt;div id="outline-container-orgf921310" class="outline-3"&gt;
+&lt;h3 id="orgf921310"&gt;K-Fold&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgf921310"&gt;
 &lt;p&gt;
 Make &lt;i&gt;k&lt;/i&gt; splits of the training set, then use each of the validation sets while training on all the data not in the validation set. This differs from doing holdout k-times since we guarantee that the validation sets don't overlap. Uses the average score for the k-folds.
 &lt;/p&gt;
@@ -888,9 +903,9 @@ Make &lt;i&gt;k&lt;/i&gt; splits of the training set, then use each of the valid
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org0dbec8d" class="outline-3"&gt;
-&lt;h3 id="org0dbec8d"&gt;Leave One Out&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org0dbec8d"&gt;
+&lt;div id="outline-container-orge1b99e9" class="outline-3"&gt;
+&lt;h3 id="orge1b99e9"&gt;Leave One Out&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orge1b99e9"&gt;
 &lt;p&gt;
 This is like k-folds except we always use a validation set of size 1 - so we are iterating over each point in the data set and using it as the training set. This can be useful if the data set is small.
 &lt;/p&gt;
@@ -900,9 +915,9 @@ This is like k-folds except we always use a validation set of size 1 - so we are
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgb5cdb96" class="outline-2"&gt;
-&lt;h2 id="orgb5cdb96"&gt;Stratification&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgb5cdb96"&gt;
+&lt;div id="outline-container-org5c3515b" class="outline-2"&gt;
+&lt;h2 id="org5c3515b"&gt;Stratification&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org5c3515b"&gt;
 &lt;p&gt;
 Sometimes you need to make sure your validation sets have the same distribution as your set as a whole.
 &lt;/p&gt;
@@ -914,9 +929,9 @@ Sometimes you need to make sure your validation sets have the same distribution 
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org388f244" class="outline-2"&gt;
-&lt;h2 id="org388f244"&gt;Data Splitting&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org388f244"&gt;
+&lt;div id="outline-container-org673f5fc" class="outline-2"&gt;
+&lt;h2 id="org673f5fc"&gt;Data Splitting&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org673f5fc"&gt;
 &lt;p&gt;
 If you have time-based data, there's two ways to split the training data - randomly within the entire timespan, or put the first part of the data in the training set and put the second part of the data in the validation set. If the test-set is a time that is beyond the training data, then using the time-based split will produce a model that is better for the testing data.
 &lt;/p&gt;
@@ -934,25 +949,25 @@ The main point of this is that you want to set up your validation set to match t
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org36f5ea8" class="outline-2"&gt;
-&lt;h2 id="org36f5ea8"&gt;Problems&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org36f5ea8"&gt;
+&lt;div id="outline-container-org734139f" class="outline-2"&gt;
+&lt;h2 id="org734139f"&gt;Problems&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org734139f"&gt;
 &lt;p&gt;
 The point of doing the training-validation split is that you think the validation set(s) will approximate the test set. But what if that's not true?
 &lt;/p&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org6727bfa" class="outline-3"&gt;
-&lt;h3 id="org6727bfa"&gt;Causes of score differences&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org6727bfa"&gt;
+&lt;div id="outline-container-orgd1624bd" class="outline-3"&gt;
+&lt;h3 id="orgd1624bd"&gt;Causes of score differences&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgd1624bd"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;Too little data&lt;/li&gt;
 &lt;li&gt;The data is too diverse and inconsistent&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgf901a8f" class="outline-3"&gt;
-&lt;h3 id="orgf901a8f"&gt;Submission Differs from Validation&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgf901a8f"&gt;
+&lt;div id="outline-container-orgbaddcce" class="outline-3"&gt;
+&lt;h3 id="orgbaddcce"&gt;Submission Differs from Validation&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgbaddcce"&gt;
 &lt;ol class="org-ol"&gt;
 &lt;li&gt;Even K-fold validation has variation (check that the standard deviation across folds encompasses the leaderboard values)&lt;/li&gt;
 &lt;li&gt;Too little data on leaderboard (nothing you can do)&lt;/li&gt;
@@ -961,13 +976,13 @@ The point of doing the training-validation split is that you think the validatio
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org8238b42" class="outline-2"&gt;
-&lt;h2 id="org8238b42"&gt;Practice Quiz&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org8238b42"&gt;
+&lt;div id="outline-container-org1b47d0f" class="outline-2"&gt;
+&lt;h2 id="org1b47d0f"&gt;Practice Quiz&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org1b47d0f"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org352f592" class="outline-3"&gt;
-&lt;h3 id="org352f592"&gt;One&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org352f592"&gt;
+&lt;div id="outline-container-orga854703" class="outline-3"&gt;
+&lt;h3 id="orga854703"&gt;One&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orga854703"&gt;
 &lt;p&gt;
 We did a K-Fold cross validation on a huge dataset and noticed that scores on each fold are roughly the same. Which validation type is of most practical use?
 &lt;/p&gt;
@@ -978,9 +993,9 @@ We did a K-Fold cross validation on a huge dataset and noticed that scores on ea
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org0326285" class="outline-3"&gt;
-&lt;h3 id="org0326285"&gt;Two&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org0326285"&gt;
+&lt;div id="outline-container-org82cedaf" class="outline-3"&gt;
+&lt;h3 id="org82cedaf"&gt;Two&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org82cedaf"&gt;
 &lt;p&gt;
 We did a K-fold cross validation on a medium sized dataset and noticed that the validation scores varied widely. Which validation type is the most practical to use?
 &lt;/p&gt;
@@ -991,9 +1006,9 @@ We did a K-fold cross validation on a medium sized dataset and noticed that the 
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgc71db56" class="outline-3"&gt;
-&lt;h3 id="orgc71db56"&gt;Three&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgc71db56"&gt;
+&lt;div id="outline-container-orgbbdaac5" class="outline-3"&gt;
+&lt;h3 id="orgbbdaac5"&gt;Three&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgbbdaac5"&gt;
 &lt;p&gt;
 The features we generate depend on the train-test split. True or False?
 &lt;/p&gt;
@@ -1003,9 +1018,9 @@ The features we generate depend on the train-test split. True or False?
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgd543efe" class="outline-3"&gt;
-&lt;h3 id="orgd543efe"&gt;Which of these can indicate an expected leaderboard shuffle in a competition?&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgd543efe"&gt;
+&lt;div id="outline-container-org8688967" class="outline-3"&gt;
+&lt;h3 id="org8688967"&gt;Which of these can indicate an expected leaderboard shuffle in a competition?&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org8688967"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; Little training and/or testing data&lt;/li&gt;
 &lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; Most of the competitors have similar scores&lt;/li&gt;
@@ -1014,13 +1029,13 @@ The features we generate depend on the train-test split. True or False?
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org03ebc6f" class="outline-2"&gt;
-&lt;h2 id="org03ebc6f"&gt;Quiz&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org03ebc6f"&gt;
+&lt;div id="outline-container-orgb24a928" class="outline-2"&gt;
+&lt;h2 id="orgb24a928"&gt;Quiz&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgb24a928"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org10427ff" class="outline-3"&gt;
-&lt;h3 id="org10427ff"&gt;One&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org10427ff"&gt;
+&lt;div id="outline-container-org95ad1b1" class="outline-3"&gt;
+&lt;h3 id="org95ad1b1"&gt;One&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org95ad1b1"&gt;
 &lt;p&gt;
 Select the true statements.
 &lt;/p&gt;
@@ -1033,9 +1048,9 @@ Select the true statements.
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgf19d4e6" class="outline-3"&gt;
-&lt;h3 id="orgf19d4e6"&gt;Two&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgf19d4e6"&gt;
+&lt;div id="outline-container-org418eb40" class="outline-3"&gt;
+&lt;h3 id="org418eb40"&gt;Two&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org418eb40"&gt;
 &lt;p&gt;
 Kaggle usually allows you to submit two final submissions that will be checked against the private leader board. One common practice is to use a model that did the best on the validation scores and another that did best on the public leader board. What is the logic behind using these two models?
 &lt;/p&gt;
@@ -1046,9 +1061,9 @@ Kaggle usually allows you to submit two final submissions that will be checked a
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org8c9f4e2" class="outline-3"&gt;
-&lt;h3 id="org8c9f4e2"&gt;Three&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org8c9f4e2"&gt;
+&lt;div id="outline-container-org0cd3526" class="outline-3"&gt;
+&lt;h3 id="org0cd3526"&gt;Three&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org0cd3526"&gt;
 &lt;p&gt;
 Suppose we have a dataset of marketing campaigns. Each campain runs for a few weeks and for each campaign our target is the number of new customers. A row in the dataset looks like this:
 &lt;/p&gt;
@@ -1069,9 +1084,9 @@ The dataset contains multiple campaigns where the training set has the dates at 
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org1d64e74" class="outline-3"&gt;
-&lt;h3 id="org1d64e74"&gt;Four&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org1d64e74"&gt;
+&lt;div id="outline-container-orga7a2cd9" class="outline-3"&gt;
+&lt;h3 id="orga7a2cd9"&gt;Four&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orga7a2cd9"&gt;
 &lt;p&gt;
 Which of the following can you usually identify without the leaderboard?
 &lt;/p&gt;
@@ -1084,17 +1099,17 @@ Which of the following can you usually identify without the leaderboard?
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org746ed2d" class="outline-2"&gt;
-&lt;h2 id="org746ed2d"&gt;Links&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org746ed2d"&gt;
+&lt;div id="outline-container-orgac73e53" class="outline-2"&gt;
+&lt;h2 id="orgac73e53"&gt;Links&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgac73e53"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;&lt;a href="http://scikit-learn.org/stable/modules/cross_validation.html"&gt;Cross-validation in sklearn&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="http://www.chioka.in/how-to-select-your-final-models-in-a-kaggle-competitio/"&gt;Model Selection for Kaggle&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description><category>notes validation</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/validation/</guid><pubDate>Tue, 04 Sep 2018 15:01:59 GMT</pubDate></item><item><title>Springleaf Competition</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/springleaf-competition/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-orgd3acf9c" class="outline-2"&gt;
-&lt;h2 id="orgd3acf9c"&gt;Introduction&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgd3acf9c"&gt;
+&lt;/div&gt;</description><category>notes validation</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/validation/</guid><pubDate>Tue, 04 Sep 2018 15:01:59 GMT</pubDate></item><item><title>Springleaf Competition</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/springleaf-competition/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-orge357c55" class="outline-2"&gt;
+&lt;h2 id="orge357c55"&gt;Introduction&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orge357c55"&gt;
 &lt;p&gt;
 The data comes from the &lt;a href="https://www.kaggle.com/c/springleaf-marketing-response"&gt;Springleaf Marketing Response&lt;/a&gt; competition. Springleaf makes personal loans and wanted to be able to predict who would respond to their direct mail offers. Submissions are evaluated on the area under the ROC curve between the predicted probability and the target. The submission file should have an ID and the probability that the person would respond.
 &lt;/p&gt;
@@ -1110,66 +1125,66 @@ ID,target
 &lt;h2&gt;Table of Contents&lt;/h2&gt;
 &lt;div id="text-table-of-contents"&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/#orga7ca7b0"&gt;Building Your Intuition About the Data&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/#org6ae1a4e"&gt;Exploring Anonymized Data&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/#orga42a7b7"&gt;Visualizations&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/#org70345c8"&gt;Data Set Cleaning&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/#orgf6f6742"&gt;Quiz&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/#orgeedcf2a"&gt;Links&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/#org4ed0faf"&gt;Building Your Intuition About the Data&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/#org4bcad72"&gt;Exploring Anonymized Data&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/#org4f33354"&gt;Visualizations&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/#org3c88ee7"&gt;Data Set Cleaning&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/#org6d046dc"&gt;Quiz&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/#org5af161f"&gt;Links&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orga7ca7b0" class="outline-2"&gt;
-&lt;h2 id="orga7ca7b0"&gt;Building Your Intuition About the Data&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orga7ca7b0"&gt;
+&lt;div id="outline-container-org4ed0faf" class="outline-2"&gt;
+&lt;h2 id="org4ed0faf"&gt;Building Your Intuition About the Data&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org4ed0faf"&gt;
 &lt;p&gt;
 The first thing to do is to see if you can build up a mental model of what the data is about.
 &lt;/p&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org0a1a14d" class="outline-3"&gt;
-&lt;h3 id="org0a1a14d"&gt;Get Domain Knowledge&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org0a1a14d"&gt;
+&lt;div id="outline-container-org1ed3af8" class="outline-3"&gt;
+&lt;h3 id="org1ed3af8"&gt;Get Domain Knowledge&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org1ed3af8"&gt;
 &lt;p&gt;
 Find out something about the topic that the data describes.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orge4755c2" class="outline-3"&gt;
-&lt;h3 id="orge4755c2"&gt;Check if the Data is intuitive&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orge4755c2"&gt;
+&lt;div id="outline-container-orgbe8dd22" class="outline-3"&gt;
+&lt;h3 id="orgbe8dd22"&gt;Check if the Data is intuitive&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgbe8dd22"&gt;
 &lt;p&gt;
 See if there are any strange values and see if it makes sense given the data description.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org4a6688e" class="outline-3"&gt;
-&lt;h3 id="org4a6688e"&gt;Understand how the data was generated&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org4a6688e"&gt;
+&lt;div id="outline-container-org6d4cbf3" class="outline-3"&gt;
+&lt;h3 id="org6d4cbf3"&gt;Understand how the data was generated&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org6d4cbf3"&gt;
 &lt;p&gt;
 Is any of it synthetic? Was the training data generated the same way as the testing data?
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org6ae1a4e" class="outline-2"&gt;
-&lt;h2 id="org6ae1a4e"&gt;Exploring Anonymized Data&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org6ae1a4e"&gt;
+&lt;div id="outline-container-org4bcad72" class="outline-2"&gt;
+&lt;h2 id="org4bcad72"&gt;Exploring Anonymized Data&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org4bcad72"&gt;
 &lt;p&gt;
 Organizers sometimes encode data so you can't tell what it is.
 &lt;/p&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org6c5093d" class="outline-3"&gt;
-&lt;h3 id="org6c5093d"&gt;Try To Decode the Data&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org6c5093d"&gt;
+&lt;div id="outline-container-org01ca6d2" class="outline-3"&gt;
+&lt;h3 id="org01ca6d2"&gt;Try To Decode the Data&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org01ca6d2"&gt;
 &lt;p&gt;
 You generally won't be able to figure out what the data is if it's encoded, but sometimes they were created using simple shifting schemes that will let you figure out their original values.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org3a18170" class="outline-3"&gt;
-&lt;h3 id="org3a18170"&gt;Explore Individual Features&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org3a18170"&gt;
+&lt;div id="outline-container-orgd17f593" class="outline-3"&gt;
+&lt;h3 id="orgd17f593"&gt;Explore Individual Features&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgd17f593"&gt;
 &lt;p&gt;
 Even if you don't know what the data is, it's important to know what type of data it is so that you can use the right data preprocessing for your model.
 &lt;/p&gt;
@@ -1182,17 +1197,17 @@ Even if you don't know what the data is, it's important to know what type of dat
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orga42a7b7" class="outline-2"&gt;
-&lt;h2 id="orga42a7b7"&gt;Visualizations&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orga42a7b7"&gt;
+&lt;div id="outline-container-org4f33354" class="outline-2"&gt;
+&lt;h2 id="org4f33354"&gt;Visualizations&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org4f33354"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org0a8d1b7" class="outline-3"&gt;
-&lt;h3 id="org0a8d1b7"&gt;Features&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org0a8d1b7"&gt;
+&lt;div id="outline-container-org842c267" class="outline-3"&gt;
+&lt;h3 id="org842c267"&gt;Features&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org842c267"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org0324b8b" class="outline-4"&gt;
-&lt;h4 id="org0324b8b"&gt;Histograms&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org0324b8b"&gt;
+&lt;div id="outline-container-orgc44f5dc" class="outline-4"&gt;
+&lt;h4 id="orgc44f5dc"&gt;Histograms&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-orgc44f5dc"&gt;
 &lt;p&gt;
 This is useful for seeing the shape of the data.
 &lt;/p&gt;
@@ -1201,9 +1216,9 @@ This is useful for seeing the shape of the data.
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orge6ca6ac" class="outline-4"&gt;
-&lt;h4 id="orge6ca6ac"&gt;Index vs Value&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-orge6ca6ac"&gt;
+&lt;div id="outline-container-orgde5331d" class="outline-4"&gt;
+&lt;h4 id="orgde5331d"&gt;Index vs Value&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-orgde5331d"&gt;
 &lt;p&gt;
 This will show you how well distributed the data is within the data frame. Horizontal lines indicate repeated values and empty bands show areas where none of the data had this value. If you don't have vertical lines then the data was probably shuffled.
 &lt;/p&gt;
@@ -1212,9 +1227,9 @@ This will show you how well distributed the data is within the data frame. Horiz
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org9059dc9" class="outline-4"&gt;
-&lt;h4 id="org9059dc9"&gt;Index vs Value Colored By Class Label&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org9059dc9"&gt;
+&lt;div id="outline-container-orgc3560c0" class="outline-4"&gt;
+&lt;h4 id="orgc3560c0"&gt;Index vs Value Colored By Class Label&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-orgc3560c0"&gt;
 &lt;p&gt;
 If you plot the classes with different colors you can see if there are clusters and clear separations between them. (&lt;code&gt;y&lt;/code&gt; in the function call has the target values).
 &lt;/p&gt;
@@ -1223,9 +1238,9 @@ If you plot the classes with different colors you can see if there are clusters 
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgf7a10aa" class="outline-4"&gt;
-&lt;h4 id="orgf7a10aa"&gt;Plot Other Things&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-orgf7a10aa"&gt;
+&lt;div id="outline-container-org00b68c3" class="outline-4"&gt;
+&lt;h4 id="org00b68c3"&gt;Plot Other Things&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org00b68c3"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;Row vs Feature&lt;/li&gt;
 &lt;li&gt;Nan-values&lt;/li&gt;
@@ -1234,17 +1249,17 @@ If you plot the classes with different colors you can see if there are clusters 
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org90bcaff" class="outline-3"&gt;
-&lt;h3 id="org90bcaff"&gt;Relationships&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org90bcaff"&gt;
+&lt;div id="outline-container-orga638c81" class="outline-3"&gt;
+&lt;h3 id="orga638c81"&gt;Relationships&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orga638c81"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org5fbfc32" class="outline-4"&gt;
-&lt;h4 id="org5fbfc32"&gt;Scatter Plots&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org5fbfc32"&gt;
+&lt;div id="outline-container-org1914b89" class="outline-4"&gt;
+&lt;h4 id="org1914b89"&gt;Scatter Plots&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org1914b89"&gt;
 &lt;/div&gt;
 &lt;ul class="org-ul"&gt;
-&lt;li&gt;&lt;a id="org2ba358a"&gt;&lt;/a&gt;Pairwise Relationships&lt;br&gt;
-&lt;div class="outline-text-5" id="text-org2ba358a"&gt;
+&lt;li&gt;&lt;a id="org0ed352c"&gt;&lt;/a&gt;Pairwise Relationships&lt;br&gt;
+&lt;div class="outline-text-5" id="text-org0ed352c"&gt;
 &lt;p&gt;
 To make it eaiser to see relationships, you can plot them in pairs.
 &lt;/p&gt;
@@ -1253,15 +1268,15 @@ To make it eaiser to see relationships, you can plot them in pairs.
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/li&gt;
-&lt;li&gt;&lt;a id="org0c1ba14"&gt;&lt;/a&gt;Compare the Test Set&lt;br&gt;
-&lt;div class="outline-text-5" id="text-org0c1ba14"&gt;
+&lt;li&gt;&lt;a id="org62a3dba"&gt;&lt;/a&gt;Compare the Test Set&lt;br&gt;
+&lt;div class="outline-text-5" id="text-org62a3dba"&gt;
 &lt;p&gt;
 Plot the features and the test-set (using different colors) to see how well your training data matches your test data.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/li&gt;
-&lt;li&gt;&lt;a id="orgd7983ec"&gt;&lt;/a&gt;Scatter Matrix&lt;br&gt;
-&lt;div class="outline-text-5" id="text-orgd7983ec"&gt;
+&lt;li&gt;&lt;a id="org21977e7"&gt;&lt;/a&gt;Scatter Matrix&lt;br&gt;
+&lt;div class="outline-text-5" id="text-org21977e7"&gt;
 &lt;p&gt;
 Pandas has a convenience function that will plot all the pairwise scatter-plots for you.
 &lt;/p&gt;
@@ -1272,9 +1287,9 @@ Pandas has a convenience function that will plot all the pairwise scatter-plots 
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orge4c5609" class="outline-4"&gt;
-&lt;h4 id="orge4c5609"&gt;Corellation&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-orge4c5609"&gt;
+&lt;div id="outline-container-orgb161983" class="outline-4"&gt;
+&lt;h4 id="orgb161983"&gt;Corellation&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-orgb161983"&gt;
 &lt;p&gt;
 Plot the corellation matrix to see if there are feature-pairs that are related so you can make a new feature out of them and see if they help.
 &lt;/p&gt;
@@ -1287,9 +1302,9 @@ A straight correllation matrix might give you a sense of how correllated the fea
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org0f78f2b" class="outline-4"&gt;
-&lt;h4 id="org0f78f2b"&gt;Plot Statistics&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org0f78f2b"&gt;
+&lt;div id="outline-container-org1d8f783" class="outline-4"&gt;
+&lt;h4 id="org1d8f783"&gt;Plot Statistics&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org1d8f783"&gt;
 &lt;p&gt;
 Try plotting mean, differences, combination counts, etc. and see if you can create groups out of them.
 &lt;/p&gt;
@@ -1297,13 +1312,13 @@ Try plotting mean, differences, combination counts, etc. and see if you can crea
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org70345c8" class="outline-2"&gt;
-&lt;h2 id="org70345c8"&gt;Data Set Cleaning&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org70345c8"&gt;
+&lt;div id="outline-container-org3c88ee7" class="outline-2"&gt;
+&lt;h2 id="org3c88ee7"&gt;Data Set Cleaning&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org3c88ee7"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgae0f01b" class="outline-3"&gt;
-&lt;h3 id="orgae0f01b"&gt;Duplicated and Constant Features&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgae0f01b"&gt;
+&lt;div id="outline-container-org1a7353a" class="outline-3"&gt;
+&lt;h3 id="org1a7353a"&gt;Duplicated and Constant Features&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org1a7353a"&gt;
 &lt;p&gt;
 Sometimes a feature will have the same value in all the rows. If it's this way in both the training and test sets you can just remove it, but if there are different values in the test set you have to figure out how to handle them.
 &lt;/p&gt;
@@ -1324,22 +1339,22 @@ This can happen with rows as well, but it can be harder to decide whether this i
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org601f9d8" class="outline-3"&gt;
-&lt;h3 id="org601f9d8"&gt;Non-shuffled Data&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org601f9d8"&gt;
+&lt;div id="outline-container-org28f4260" class="outline-3"&gt;
+&lt;h3 id="org28f4260"&gt;Non-shuffled Data&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org28f4260"&gt;
 &lt;p&gt;
 If you plot the mean as a horizontal line the data should be evenly distributed around it, if not it might not have been shuffled and there could be an inadvertent pattern in the data. You might not be able to use it, but you should understand all the things about the data that you can find out.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgf6f6742" class="outline-2"&gt;
-&lt;h2 id="orgf6f6742"&gt;Quiz&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgf6f6742"&gt;
+&lt;div id="outline-container-org6d046dc" class="outline-2"&gt;
+&lt;h2 id="org6d046dc"&gt;Quiz&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org6d046dc"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgfb0f911" class="outline-3"&gt;
-&lt;h3 id="orgfb0f911"&gt;One&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgfb0f911"&gt;
+&lt;div id="outline-container-orgd057842" class="outline-3"&gt;
+&lt;h3 id="orgd057842"&gt;One&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgd057842"&gt;
 &lt;p&gt;
 Suppose we are given a data set with features &lt;i&gt;X&lt;/i&gt;, &lt;i&gt;Y&lt;/i&gt;, and &lt;i&gt;Z&lt;/i&gt;. Can you recover &lt;i&gt;z&lt;/i&gt; as a function of &lt;i&gt;x&lt;/i&gt; and &lt;i&gt;y&lt;/i&gt;?
 &lt;/p&gt;
@@ -1351,9 +1366,9 @@ Suppose we are given a data set with features &lt;i&gt;X&lt;/i&gt;, &lt;i&gt;Y&l
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org2f5a3ba" class="outline-3"&gt;
-&lt;h3 id="org2f5a3ba"&gt;Two&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org2f5a3ba"&gt;
+&lt;div id="outline-container-orgfa38811" class="outline-3"&gt;
+&lt;h3 id="orgfa38811"&gt;Two&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgfa38811"&gt;
 &lt;p&gt;
 What value do the red dots have?
 0.5 (wrong)
@@ -1361,9 +1376,9 @@ What value do the red dots have?
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org3c2f040" class="outline-3"&gt;
-&lt;h3 id="org3c2f040"&gt;Three&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org3c2f040"&gt;
+&lt;div id="outline-container-org47a6328" class="outline-3"&gt;
+&lt;h3 id="org47a6328"&gt;Three&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org47a6328"&gt;
 &lt;p&gt;
 What hypothesis about X can we not reject based on the plots?
 &lt;/p&gt;
@@ -1376,9 +1391,9 @@ What hypothesis about X can we not reject based on the plots?
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org4560230" class="outline-3"&gt;
-&lt;h3 id="org4560230"&gt;Four&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org4560230"&gt;
+&lt;div id="outline-container-orgd61b6c0" class="outline-3"&gt;
+&lt;h3 id="orgd61b6c0"&gt;Four&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgd61b6c0"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; Target is completely determined by coordinates (x,y)(x,y)(x,y), i.e. the label of the point is completely determined by point's position (x,y)(x,y)(x,y). Saying the same in other words: if we only had two features (x,y)(x,y)(x,y), we could build a classifier, that is accurate 100% of time.&lt;/li&gt;
 &lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; The top right plot is better than the top left in that everything you get from the top left can also be gotten from the top right, but not the other way around.&lt;/li&gt;
@@ -1387,16 +1402,16 @@ What hypothesis about X can we not reject based on the plots?
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgeedcf2a" class="outline-2"&gt;
-&lt;h2 id="orgeedcf2a"&gt;Links&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgeedcf2a"&gt;
+&lt;div id="outline-container-org5af161f" class="outline-2"&gt;
+&lt;h2 id="org5af161f"&gt;Links&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org5af161f"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;&lt;a href="http://scikit-learn.org/stable/auto_examples/bicluster/plot_spectral_biclustering.html"&gt;Sorting Correlation Plots&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description><category>notes data</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/</guid><pubDate>Tue, 04 Sep 2018 04:24:53 GMT</pubDate></item><item><title>References</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/references/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-orgcc0d050" class="outline-2"&gt;
-&lt;h2 id="orgcc0d050"&gt;Bibliography&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgcc0d050"&gt;
+&lt;/div&gt;</description><category>notes data</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/</guid><pubDate>Tue, 04 Sep 2018 04:24:53 GMT</pubDate></item><item><title>References</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/references/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-orge20137e" class="outline-2"&gt;
+&lt;h2 id="orge20137e"&gt;Bibliography&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orge20137e"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;[B1] 1. Albon C. Machine learning with Python cookbook: practical solutions from preprocessing to deep learning. First edition. Beijing Boston Farnham: O’Reilly; 2018. 349 p.&lt;/li&gt;
 &lt;/ul&gt;
@@ -1405,34 +1420,34 @@ What hypothesis about X can we not reject based on the plots?
 &lt;h2&gt;Table of Contents&lt;/h2&gt;
 &lt;div id="text-table-of-contents"&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/the-target/#org0c11099"&gt;Introduction&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/the-target/#orgda919d6"&gt;Imports&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/the-target/#org75b6a9b"&gt;The Data&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/the-target/#org6274f29"&gt;Dates&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/the-target/#org0f6a87e"&gt;Introduction&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/the-target/#orgc89b38d"&gt;Imports&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/the-target/#orgfa55ea5"&gt;The Data&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/the-target/#orgd91ba5e"&gt;Dates&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org0c11099" class="outline-2"&gt;
-&lt;h2 id="org0c11099"&gt;Introduction&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org0c11099"&gt;
+&lt;div id="outline-container-org0f6a87e" class="outline-2"&gt;
+&lt;h2 id="org0f6a87e"&gt;Introduction&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org0f6a87e"&gt;
 &lt;p&gt;
 This is some stuff about what we are trying to predict. I realized that the description of the competition says that we are trying to predict the number of items sold per shop for the next month after the data, but I never said what that month is, so I'm making this just to put it somewhere.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgda919d6" class="outline-2"&gt;
-&lt;h2 id="orgda919d6"&gt;Imports&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgda919d6"&gt;
+&lt;div id="outline-container-orgc89b38d" class="outline-2"&gt;
+&lt;h2 id="orgc89b38d"&gt;Imports&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgc89b38d"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;import warnings
 warnings.filterwarnings("ignore", message="numpy.dtype size changed")
 warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgea5ae6d" class="outline-3"&gt;
-&lt;h3 id="orgea5ae6d"&gt;From pypi&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgea5ae6d"&gt;
+&lt;div id="outline-container-org20ac23e" class="outline-3"&gt;
+&lt;h3 id="org20ac23e"&gt;From pypi&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org20ac23e"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;import pandas
 import matplotlib.pyplot as pyplot
 import seaborn
@@ -1440,9 +1455,9 @@ import seaborn
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org25322bc" class="outline-3"&gt;
-&lt;h3 id="org25322bc"&gt;This project&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org25322bc"&gt;
+&lt;div id="outline-container-org6614d60" class="outline-3"&gt;
+&lt;h3 id="org6614d60"&gt;This project&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org6614d60"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;from kaggler.helpers.build_training_data import Pickles
 from kaggler.helpers.helpers import (
     DataKeys,
@@ -1452,9 +1467,9 @@ from kaggler.helpers.helpers import (
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orge225aa1" class="outline-3"&gt;
-&lt;h3 id="orge225aa1"&gt;Setting up the plotting&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orge225aa1"&gt;
+&lt;div id="outline-container-orgcab3349" class="outline-3"&gt;
+&lt;h3 id="orgcab3349"&gt;Setting up the plotting&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgcab3349"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;% matplotlib inline
 seaborn.set_style("whitegrid")
 &lt;/pre&gt;&lt;/div&gt;
@@ -1462,9 +1477,9 @@ seaborn.set_style("whitegrid")
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org75b6a9b" class="outline-2"&gt;
-&lt;h2 id="org75b6a9b"&gt;The Data&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org75b6a9b"&gt;
+&lt;div id="outline-container-orgfa55ea5" class="outline-2"&gt;
+&lt;h2 id="orgfa55ea5"&gt;The Data&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgfa55ea5"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;x_train = Helpers.unpickle(Pickles.x_train)
 y_train = Helpers.unpickle(Pickles.y_train)
 x_test = Helpers.unpickle(Pickles.x_test)
@@ -1480,9 +1495,9 @@ assert concatenated.shape == (len(x_train) + len(x_test), len(x_train.columns))
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org6274f29" class="outline-2"&gt;
-&lt;h2 id="org6274f29"&gt;Dates&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org6274f29"&gt;
+&lt;div id="outline-container-orgd91ba5e" class="outline-2"&gt;
+&lt;h2 id="orgd91ba5e"&gt;Dates&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgd91ba5e"&gt;
 &lt;p&gt;
 Unfortunately I got rid of the days, which are required by the &lt;a href="https://pandas.pydata.org/pandas-docs/stable/timeseries.html"&gt;to_datetime&lt;/a&gt; function provided by pandas, so I'm going to construct a new date column with a day of 1 for each date.
 &lt;/p&gt;
@@ -1604,26 +1619,26 @@ So the last month in the data-set is October 2015, and we want to predict what t
 &lt;h2&gt;Table of Contents&lt;/h2&gt;
 &lt;div id="text-table-of-contents"&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/some-plots-of-the-data/#org1d5cc58"&gt;Imports&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/some-plots-of-the-data/#orgfe84b29"&gt;Build the data&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/some-plots-of-the-data/#orgbd3eb87"&gt;More Helpers&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/some-plots-of-the-data/#orgfbd0b95"&gt;Features vs Target&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/some-plots-of-the-data/#org43496dc"&gt;Imports&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/some-plots-of-the-data/#org681b960"&gt;Build the data&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/some-plots-of-the-data/#org60f4748"&gt;More Helpers&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/some-plots-of-the-data/#orgb501729"&gt;Features vs Target&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org1d5cc58" class="outline-2"&gt;
-&lt;h2 id="org1d5cc58"&gt;Imports&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org1d5cc58"&gt;
+&lt;div id="outline-container-org43496dc" class="outline-2"&gt;
+&lt;h2 id="org43496dc"&gt;Imports&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org43496dc"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;import warnings
 warnings.filterwarnings("ignore", message="numpy.dtype size changed")
 warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orge9cf811" class="outline-3"&gt;
-&lt;h3 id="orge9cf811"&gt;From pypi&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orge9cf811"&gt;
+&lt;div id="outline-container-org39cccf3" class="outline-3"&gt;
+&lt;h3 id="org39cccf3"&gt;From pypi&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org39cccf3"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;import matplotlib.pyplot as pyplot
 import numpy
 import seaborn
@@ -1635,9 +1650,9 @@ seaborn.set_style("whitegrid")
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org3cb160a" class="outline-3"&gt;
-&lt;h3 id="org3cb160a"&gt;This project&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org3cb160a"&gt;
+&lt;div id="outline-container-org03cdeac" class="outline-3"&gt;
+&lt;h3 id="org03cdeac"&gt;This project&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org03cdeac"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;from kaggler.helpers.build_training_data import Pickles
 from kaggler.helpers.helpers import (
     DataKeys,
@@ -1648,9 +1663,9 @@ from kaggler.helpers.helpers import (
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgfe84b29" class="outline-2"&gt;
-&lt;h2 id="orgfe84b29"&gt;Build the data&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgfe84b29"&gt;
+&lt;div id="outline-container-org681b960" class="outline-2"&gt;
+&lt;h2 id="org681b960"&gt;Build the data&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org681b960"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;x_train = Helpers.unpickle(Pickles.x_train)
 y_train = Helpers.unpickle(Pickles.y_train)
 DataKeys.target = "Month Count"
@@ -1749,9 +1764,9 @@ Helpers.print_head(x_train)
 &lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgbd3eb87" class="outline-2"&gt;
-&lt;h2 id="orgbd3eb87"&gt;More Helpers&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgbd3eb87"&gt;
+&lt;div id="outline-container-org60f4748" class="outline-2"&gt;
+&lt;h2 id="org60f4748"&gt;More Helpers&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org60f4748"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;def make_figure_and_axis(x_label, y_label, title, figsize=(10, 8)):
     """make a matplotlib figure
 
@@ -1772,13 +1787,13 @@ Helpers.print_head(x_train)
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgfbd0b95" class="outline-2"&gt;
-&lt;h2 id="orgfbd0b95"&gt;Features vs Target&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgfbd0b95"&gt;
+&lt;div id="outline-container-orgb501729" class="outline-2"&gt;
+&lt;h2 id="orgb501729"&gt;Features vs Target&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgb501729"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orga768b2f" class="outline-3"&gt;
-&lt;h3 id="orga768b2f"&gt;Date Block&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orga768b2f"&gt;
+&lt;div id="outline-container-org5282eb5" class="outline-3"&gt;
+&lt;h3 id="org5282eb5"&gt;Date Block&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org5282eb5"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;figure, axis = make_figure_and_axis("Date Block", "Count", "Date-Block Counts")
 grid = seaborn.catplot(ax=axis, x=DataKeys.date_block, kind="count", data=x_train)
 &lt;/pre&gt;&lt;/div&gt;
@@ -1857,9 +1872,9 @@ Perhaps not surprisingly, the month of December, when holiday sales spike, is th
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgaaae86d" class="outline-3"&gt;
-&lt;h3 id="orgaaae86d"&gt;Shop&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgaaae86d"&gt;
+&lt;div id="outline-container-orge521700" class="outline-3"&gt;
+&lt;h3 id="orge521700"&gt;Shop&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orge521700"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;group = x_train.groupby(DataKeys.shop).sum().reset_index().sort_values(DataKeys.target)
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -1875,9 +1890,9 @@ There appears to be seven or eight shops that dominate the sales.
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org66e3953" class="outline-3"&gt;
-&lt;h3 id="org66e3953"&gt;Item Category&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org66e3953"&gt;
+&lt;div id="outline-container-orgfbe0bc4" class="outline-3"&gt;
+&lt;h3 id="orgfbe0bc4"&gt;Item Category&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgfbe0bc4"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;group = x_train.groupby(DataKeys.item_category).sum().reset_index()
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -1892,13 +1907,13 @@ Some kind of weirdly coincidental linear relationship between the category ID an
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orga08f673" class="outline-3"&gt;
-&lt;h3 id="orga08f673"&gt;Biggest Over Time&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orga08f673"&gt;
+&lt;div id="outline-container-org4018aae" class="outline-3"&gt;
+&lt;h3 id="org4018aae"&gt;Biggest Over Time&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org4018aae"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orga9f648f" class="outline-4"&gt;
-&lt;h4 id="orga9f648f"&gt;Category&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-orga9f648f"&gt;
+&lt;div id="outline-container-orgf1535ce" class="outline-4"&gt;
+&lt;h4 id="orgf1535ce"&gt;Category&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-orgf1535ce"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;category_group = x_train.groupby([DataKeys.date, DataKeys.item_category]).sum().reset_index()
 biggest = category_group.iloc[category_group[DataKeys.target].idxmax()]
 biggest_category = category_group[category_group.item_category_id == biggest.item_category_id]
@@ -1935,26 +1950,26 @@ Percent Decline: 81.3 %
 &lt;h2&gt;Table of Contents&lt;/h2&gt;
 &lt;div id="text-table-of-contents"&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/preprocessing-the-kaggle-data/#orgb1601cf"&gt;Introduction&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/preprocessing-the-kaggle-data/#org602360c"&gt;Tangle&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/preprocessing-the-kaggle-data/#org35a46bd"&gt;Imports&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/preprocessing-the-kaggle-data/#org7b28e70"&gt;Loading the Data&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/preprocessing-the-kaggle-data/#orgd2ccaa6"&gt;Limit the Target Range&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/preprocessing-the-kaggle-data/#orged6c8f9"&gt;Introduction&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/preprocessing-the-kaggle-data/#orga0a03fe"&gt;Tangle&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/preprocessing-the-kaggle-data/#org669470e"&gt;Imports&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/preprocessing-the-kaggle-data/#org1372e04"&gt;Loading the Data&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/preprocessing-the-kaggle-data/#org05825a1"&gt;Limit the Target Range&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgb1601cf" class="outline-2"&gt;
-&lt;h2 id="orgb1601cf"&gt;Introduction&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgb1601cf"&gt;
+&lt;div id="outline-container-orged6c8f9" class="outline-2"&gt;
+&lt;h2 id="orged6c8f9"&gt;Introduction&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orged6c8f9"&gt;
 &lt;p&gt;
 This is a post to do some basic pre-processing on the data. It won't do anything fancy (i.e. no Feature Engineering), but will just get the data ready to be used by the models. In particular, the rules say that the test data target will be limited to a range and the features are categorical so we need to transform them for non-tree models.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org602360c" class="outline-2"&gt;
-&lt;h2 id="org602360c"&gt;Tangle&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org602360c"&gt;
+&lt;div id="outline-container-orga0a03fe" class="outline-2"&gt;
+&lt;h2 id="orga0a03fe"&gt;Tangle&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orga0a03fe"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;pypi&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;imports&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&lt;/span&gt;
 
 &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;local&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;imports&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&lt;/span&gt;
@@ -1963,18 +1978,18 @@ This is a post to do some basic pre-processing on the data. It won't do anything
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org35a46bd" class="outline-2"&gt;
-&lt;h2 id="org35a46bd"&gt;Imports&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org35a46bd"&gt;
+&lt;div id="outline-container-org669470e" class="outline-2"&gt;
+&lt;h2 id="org669470e"&gt;Imports&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org669470e"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;warnings&lt;/span&gt;
 &lt;span class="n"&gt;warnings&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;filterwarnings&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"ignore"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;message&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"numpy.dtype size changed"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;warnings&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;filterwarnings&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"ignore"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;message&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"numpy.ufunc size changed"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgee4ea42" class="outline-3"&gt;
-&lt;h3 id="orgee4ea42"&gt;From pypi&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgee4ea42"&gt;
+&lt;div id="outline-container-org0eb96df" class="outline-3"&gt;
+&lt;h3 id="org0eb96df"&gt;From pypi&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org0eb96df"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;matplotlib.pyplot&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;pyplot&lt;/span&gt;
 &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;numpy&lt;/span&gt;
 &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;seaborn&lt;/span&gt;
@@ -1986,18 +2001,18 @@ This is a post to do some basic pre-processing on the data. It won't do anything
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org4316211" class="outline-3"&gt;
-&lt;h3 id="org4316211"&gt;This project&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org4316211"&gt;
+&lt;div id="outline-container-orgef2cfb6" class="outline-3"&gt;
+&lt;h3 id="orgef2cfb6"&gt;This project&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgef2cfb6"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;kaggler.helpers.build_training_data&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Pickles&lt;/span&gt;
 &lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;kaggler.helpers.helpers&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Helpers&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org7b28e70" class="outline-2"&gt;
-&lt;h2 id="org7b28e70"&gt;Loading the Data&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org7b28e70"&gt;
+&lt;div id="outline-container-org1372e04" class="outline-2"&gt;
+&lt;h2 id="org1372e04"&gt;Loading the Data&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org1372e04"&gt;
 &lt;p&gt;
 This assumes you've run the &lt;code&gt;build_training_data.py&lt;/code&gt; code to get the testing and training data sets. The &lt;code&gt;Helpers&lt;/code&gt; class also expects a specific path, so you have to have the repository set up in &lt;code&gt;~/projects/kaggle-competitions/&lt;/code&gt;.
 &lt;/p&gt;
@@ -2016,9 +2031,9 @@ This assumes you've run the &lt;code&gt;build_training_data.py&lt;/code&gt; code
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgd2ccaa6" class="outline-2"&gt;
-&lt;h2 id="orgd2ccaa6"&gt;Limit the Target Range&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgd2ccaa6"&gt;
+&lt;div id="outline-container-org05825a1" class="outline-2"&gt;
+&lt;h2 id="org05825a1"&gt;Limit the Target Range&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org05825a1"&gt;
 &lt;p&gt;
 According to the contest description the true target values are clipped to the &lt;code&gt;[0,20]&lt;/code&gt; range, so it might make sense to clip the target data in our training and testing data to the given range.
 &lt;/p&gt;
@@ -2173,19 +2188,19 @@ That actually didn't really fix the distribution, strangely.
 &lt;h2&gt;Table of Contents&lt;/h2&gt;
 &lt;div id="text-table-of-contents"&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/building-the-training-set/#org6a7ecec"&gt;The Tangle&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/building-the-training-set/#org6c2aeb5"&gt;Imports&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/building-the-training-set/#org4f8adce"&gt;Helpers&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/building-the-training-set/#org622451f"&gt;Building Up the Super Set&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/building-the-training-set/#orgb04fce1"&gt;Setting up the Training and Validation Data&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/building-the-training-set/#orgc4d13e3"&gt;Creating the Validation Set&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/building-the-training-set/#org82438b9"&gt;The Tangle&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/building-the-training-set/#orga319808"&gt;Imports&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/building-the-training-set/#org113b4ba"&gt;Helpers&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/building-the-training-set/#orga915c5b"&gt;Building Up the Super Set&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/building-the-training-set/#org346293b"&gt;Setting up the Training and Validation Data&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/building-the-training-set/#org75c74a7"&gt;Creating the Validation Set&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org6a7ecec" class="outline-2"&gt;
-&lt;h2 id="org6a7ecec"&gt;The Tangle&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org6a7ecec"&gt;
+&lt;div id="outline-container-org82438b9" class="outline-2"&gt;
+&lt;h2 id="org82438b9"&gt;The Tangle&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org82438b9"&gt;
 &lt;p&gt;
 This is the exporter for stuff to be re-used outside of this post.
 &lt;/p&gt;
@@ -2235,21 +2250,21 @@ This is the exporter for stuff to be re-used outside of this post.
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org6c2aeb5" class="outline-2"&gt;
-&lt;h2 id="org6c2aeb5"&gt;Imports&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org6c2aeb5"&gt;
+&lt;div id="outline-container-orga319808" class="outline-2"&gt;
+&lt;h2 id="orga319808"&gt;Imports&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orga319808"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org4ad8b13" class="outline-3"&gt;
-&lt;h3 id="org4ad8b13"&gt;Python Standard Library&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org4ad8b13"&gt;
+&lt;div id="outline-container-org8268ff2" class="outline-3"&gt;
+&lt;h3 id="org8268ff2"&gt;Python Standard Library&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org8268ff2"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;os&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org4eeb5b5" class="outline-3"&gt;
-&lt;h3 id="org4eeb5b5"&gt;Suppressing the Numpy Warnings&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org4eeb5b5"&gt;
+&lt;div id="outline-container-orge6397f2" class="outline-3"&gt;
+&lt;h3 id="orge6397f2"&gt;Suppressing the Numpy Warnings&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orge6397f2"&gt;
 &lt;p&gt;
 This is to suppress the warnings when we import pandas.
 &lt;/p&gt;
@@ -2260,18 +2275,18 @@ This is to suppress the warnings when we import pandas.
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org99e85d7" class="outline-3"&gt;
-&lt;h3 id="org99e85d7"&gt;From pypi&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org99e85d7"&gt;
+&lt;div id="outline-container-orgd7ba4a4" class="outline-3"&gt;
+&lt;h3 id="orgd7ba4a4"&gt;From pypi&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgd7ba4a4"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;pandas&lt;/span&gt;
 &lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;sklearn.model_selection&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;train_test_split&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgeb95434" class="outline-3"&gt;
-&lt;h3 id="orgeb95434"&gt;This Project&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgeb95434"&gt;
+&lt;div id="outline-container-orgee232e4" class="outline-3"&gt;
+&lt;h3 id="orgee232e4"&gt;This Project&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgee232e4"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;kaggler.helpers.helpers&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;
     &lt;span class="n"&gt;DataKeys&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
     &lt;span class="n"&gt;DataNames&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
@@ -2283,13 +2298,13 @@ This is to suppress the warnings when we import pandas.
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org4f8adce" class="outline-2"&gt;
-&lt;h2 id="org4f8adce"&gt;Helpers&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org4f8adce"&gt;
+&lt;div id="outline-container-org113b4ba" class="outline-2"&gt;
+&lt;h2 id="org113b4ba"&gt;Helpers&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org113b4ba"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orge2be7cd" class="outline-3"&gt;
-&lt;h3 id="orge2be7cd"&gt;Pickles&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orge2be7cd"&gt;
+&lt;div id="outline-container-orge7249cc" class="outline-3"&gt;
+&lt;h3 id="orge7249cc"&gt;Pickles&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orge7249cc"&gt;
 &lt;p&gt;
 I'm going to pickle the data to re-load them later so this will hold the names.
 &lt;/p&gt;
@@ -2308,9 +2323,9 @@ I'm going to pickle the data to re-load them later so this will hold the names.
 &lt;/div&gt;
 
 
-&lt;div id="outline-container-org622451f" class="outline-2"&gt;
-&lt;h2 id="org622451f"&gt;Building Up the Super Set&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org622451f"&gt;
+&lt;div id="outline-container-orga915c5b" class="outline-2"&gt;
+&lt;h2 id="orga915c5b"&gt;Building Up the Super Set&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orga915c5b"&gt;
 &lt;p&gt;
 Since we have some variables in separate sets I thought it would be useful to combine them into a single training set.
 &lt;/p&gt;
@@ -2324,9 +2339,9 @@ Since we have some variables in separate sets I thought it would be useful to co
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org71330d4" class="outline-3"&gt;
-&lt;h3 id="org71330d4"&gt;The Data Source&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org71330d4"&gt;
+&lt;div id="outline-container-orgdf67298" class="outline-3"&gt;
+&lt;h3 id="orgdf67298"&gt;The Data Source&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgdf67298"&gt;
 &lt;p&gt;
 I put the paths into a class called DataSource, this is just to instantiate it.
 &lt;/p&gt;
@@ -2342,9 +2357,9 @@ I put the paths into a class called DataSource, this is just to instantiate it.
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org4e63dc1" class="outline-3"&gt;
-&lt;h3 id="org4e63dc1"&gt;Building the Super Set&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org4e63dc1"&gt;
+&lt;div id="outline-container-orga3d07a2" class="outline-3"&gt;
+&lt;h3 id="orga3d07a2"&gt;Building the Super Set&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orga3d07a2"&gt;
 &lt;p&gt;
 The &lt;code&gt;super_set&lt;/code&gt; will be a combination of the different data-sources.
 &lt;/p&gt;
@@ -2363,9 +2378,9 @@ The &lt;code&gt;super_set&lt;/code&gt; will be a combination of the different da
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgfd80e94" class="outline-3"&gt;
-&lt;h3 id="orgfd80e94"&gt;Adding the Category IDs&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgfd80e94"&gt;
+&lt;div id="outline-container-org2e4c1c6" class="outline-3"&gt;
+&lt;h3 id="org2e4c1c6"&gt;Adding the Category IDs&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org2e4c1c6"&gt;
 &lt;p&gt;
 The &lt;code&gt;items.csv&lt;/code&gt; file holds a map of the item-ids to category-ids so we can &lt;a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.merge.html"&gt;merge&lt;/a&gt; it in to get the category ids for our data-set.
 &lt;/p&gt;
@@ -2579,9 +2594,9 @@ This is also going to add the name of the item, which I'm thinking won't be as u
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org5f48e67" class="outline-3"&gt;
-&lt;h3 id="org5f48e67"&gt;Splitting the Dates&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org5f48e67"&gt;
+&lt;div id="outline-container-org469c5e2" class="outline-3"&gt;
+&lt;h3 id="org469c5e2"&gt;Splitting the Dates&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org469c5e2"&gt;
 &lt;p&gt;
 The &lt;code&gt;date&lt;/code&gt; column has a string formatted &lt;code&gt;dd.mm.yy&lt;/code&gt;. Since we want sales per month and it might change over time, I'll split the date-stamp up into day, month, and year (although I don't think I'll be keeping day).
 &lt;/p&gt;
@@ -2826,9 +2841,9 @@ Nowe we can see what our &lt;code&gt;super_set&lt;/code&gt; looks like.
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgb4d7820" class="outline-3"&gt;
-&lt;h3 id="orgb4d7820"&gt;Cleaning Up&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgb4d7820"&gt;
+&lt;div id="outline-container-org5c55d54" class="outline-3"&gt;
+&lt;h3 id="org5c55d54"&gt;Cleaning Up&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org5c55d54"&gt;
 &lt;p&gt;
 The &lt;code&gt;date&lt;/code&gt; column is now superfluous, and I don't think we need the day, since we are predicting by month. I'm also going to assume that names aren't as useful as the numeric ids. This might not be true, but I think using the text would require pre-processing which is beyond what I'm doing here, so I'm going to leave them out (there is another file with shop names that needs to be loaded if the text turns out to be significant). I'm going to &lt;a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.drop.html"&gt;drop&lt;/a&gt; the columns that I don't think I'll need.
 &lt;/p&gt;
@@ -2956,9 +2971,9 @@ The &lt;code&gt;date&lt;/code&gt; column is now superfluous, and I don't think w
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgb34c1c4" class="outline-3"&gt;
-&lt;h3 id="orgb34c1c4"&gt;Saving the Super Set&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgb34c1c4"&gt;
+&lt;div id="outline-container-orgaeeef54" class="outline-3"&gt;
+&lt;h3 id="orgaeeef54"&gt;Saving the Super Set&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgaeeef54"&gt;
 &lt;p&gt;
 Now I'll pickle it up so it can be loaded later.
 &lt;/p&gt;
@@ -2970,17 +2985,17 @@ Now I'll pickle it up so it can be loaded later.
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgb04fce1" class="outline-2"&gt;
-&lt;h2 id="orgb04fce1"&gt;Setting up the Training and Validation Data&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgb04fce1"&gt;
+&lt;div id="outline-container-org346293b" class="outline-2"&gt;
+&lt;h2 id="org346293b"&gt;Setting up the Training and Validation Data&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org346293b"&gt;
 &lt;p&gt;
 Although I went through the trouble of smashing all the values into one Data Frame, it turns out that I need things grouped by month, and doing the grouping after adding the columns just make it messy, so I'm going to back-track a little here to set up the data we need for training and testing.
 &lt;/p&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org726257f" class="outline-3"&gt;
-&lt;h3 id="org726257f"&gt;The Grouper&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org726257f"&gt;
+&lt;div id="outline-container-orgb087d57" class="outline-3"&gt;
+&lt;h3 id="orgb087d57"&gt;The Grouper&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgb087d57"&gt;
 &lt;p&gt;
 Since I'm going to aggregate by the month (really the &lt;code&gt;date_block_num&lt;/code&gt;), leaving in things like the price doesn't really make sense so I'll make a sub-frame that I can &lt;a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.groupby.html"&gt;group&lt;/a&gt;.
 &lt;/p&gt;
@@ -3165,13 +3180,13 @@ So we're going to &lt;a href="https://pandas.pydata.org/pandas-docs/stable/gener
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org2f61b51" class="outline-3"&gt;
-&lt;h3 id="org2f61b51"&gt;Adding the Columns Back&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org2f61b51"&gt;
+&lt;div id="outline-container-org2195a9a" class="outline-3"&gt;
+&lt;h3 id="org2195a9a"&gt;Adding the Columns Back&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org2195a9a"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgf7ed621" class="outline-4"&gt;
-&lt;h4 id="orgf7ed621"&gt;Group the Super Set&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-orgf7ed621"&gt;
+&lt;div id="outline-container-org3d17bb1" class="outline-4"&gt;
+&lt;h4 id="org3d17bb1"&gt;Group the Super Set&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org3d17bb1"&gt;
 &lt;p&gt;
 Back to the super-set. Since there are multiple entries for items in a given month, I'm going to group the items by shop and date-block (month) and then grab the last entry for each group. 
 &lt;/p&gt;
@@ -3302,9 +3317,9 @@ Back to the super-set. Since there are multiple entries for items in a given mon
 &lt;/div&gt;
 
 
-&lt;div id="outline-container-org6c4e423" class="outline-4"&gt;
-&lt;h4 id="org6c4e423"&gt;Re-add the missing columns&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org6c4e423"&gt;
+&lt;div id="outline-container-orgf738f9b" class="outline-4"&gt;
+&lt;h4 id="orgf738f9b"&gt;Re-add the missing columns&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-orgf738f9b"&gt;
 &lt;p&gt;
 Now we need to get the category id, price, etc, back into the grouped data by merging it with the de-duplicated one we just created.
 &lt;/p&gt;
@@ -3449,9 +3464,9 @@ Now we need to get the category id, price, etc, back into the grouped data by me
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org9078e45" class="outline-4"&gt;
-&lt;h4 id="org9078e45"&gt;Save the grouped-up data&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org9078e45"&gt;
+&lt;div id="outline-container-org0ce6468" class="outline-4"&gt;
+&lt;h4 id="org0ce6468"&gt;Save the grouped-up data&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org0ce6468"&gt;
 &lt;p&gt;
 I'm calling it &lt;code&gt;grouped_months_data.pkl&lt;/code&gt;, but since the name is in the &lt;code&gt;Pickles&lt;/code&gt; class, I'll just have to remember to use &lt;code&gt;grouped&lt;/code&gt;.
 &lt;/p&gt;
@@ -3460,16 +3475,16 @@ I'm calling it &lt;code&gt;grouped_months_data.pkl&lt;/code&gt;, but since the n
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgc4d13e3" class="outline-2"&gt;
-&lt;h2 id="orgc4d13e3"&gt;Creating the Validation Set&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgc4d13e3"&gt;
+&lt;div id="outline-container-org75c74a7" class="outline-2"&gt;
+&lt;h2 id="org75c74a7"&gt;Creating the Validation Set&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org75c74a7"&gt;
 &lt;p&gt;
 To make my validation and training set I'm going to use sklearn's &lt;a href="http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html"&gt;train_test_split&lt;/a&gt;. 
 &lt;/p&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org1426325" class="outline-3"&gt;
-&lt;h3 id="org1426325"&gt;Targets and Features&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org1426325"&gt;
+&lt;div id="outline-container-org6542f5b" class="outline-3"&gt;
+&lt;h3 id="org6542f5b"&gt;Targets and Features&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org6542f5b"&gt;
 &lt;p&gt;
 First we need to split the data up into inputs and targets
 &lt;/p&gt;
@@ -3583,9 +3598,9 @@ First we need to split the data up into inputs and targets
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgba1c212" class="outline-3"&gt;
-&lt;h3 id="orgba1c212"&gt;Make Like a Banana&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgba1c212"&gt;
+&lt;div id="outline-container-org3c6f7d6" class="outline-3"&gt;
+&lt;h3 id="org3c6f7d6"&gt;Make Like a Banana&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org3c6f7d6"&gt;
 &lt;p&gt;
 I'm going to create a training set with 80% of the data and leave the other 20% as the validation data.
 &lt;/p&gt;

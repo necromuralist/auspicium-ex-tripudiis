@@ -95,29 +95,29 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="posts/feature-extraction-from-text-and-images/#org9c16155">How do you convert text to data?</a></li>
-<li><a href="posts/feature-extraction-from-text-and-images/#org5dffe75">Practice Quiz</a></li>
-<li><a href="posts/feature-extraction-from-text-and-images/#org4442b30">Quiz</a></li>
-<li><a href="posts/feature-extraction-from-text-and-images/#org91a564a">Links</a></li>
+<li><a href="posts/feature-extraction-from-text-and-images/#orgfeb2b30">How do you convert text to data?</a></li>
+<li><a href="posts/feature-extraction-from-text-and-images/#orgd0d2c46">Practice Quiz</a></li>
+<li><a href="posts/feature-extraction-from-text-and-images/#orga47dfcb">Quiz</a></li>
+<li><a href="posts/feature-extraction-from-text-and-images/#orgeb9a2d8">Links</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org9c16155" class="outline-2">
-<h2 id="org9c16155">How do you convert text to data?</h2>
-<div class="outline-text-2" id="text-org9c16155">
+<div id="outline-container-orgfeb2b30" class="outline-2">
+<h2 id="orgfeb2b30">How do you convert text to data?</h2>
+<div class="outline-text-2" id="text-orgfeb2b30">
 </div>
-<div id="outline-container-org1e94a7a" class="outline-3">
-<h3 id="org1e94a7a">Two Main Methods</h3>
-<div class="outline-text-3" id="text-org1e94a7a">
+<div id="outline-container-org2bfe738" class="outline-3">
+<h3 id="org2bfe738">Two Main Methods</h3>
+<div class="outline-text-3" id="text-org2bfe738">
 </div>
-<div id="outline-container-orgda76e36" class="outline-4">
-<h4 id="orgda76e36">Bag Of Words</h4>
-<div class="outline-text-4" id="text-orgda76e36">
+<div id="outline-container-orga60dac5" class="outline-4">
+<h4 id="orga60dac5">Bag Of Words</h4>
+<div class="outline-text-4" id="text-orga60dac5">
 </div>
 <ul class="org-ul">
 <li>
-<a id="org9a9fdf5"></a>Vectorization<br><div class="outline-text-5" id="text-org9a9fdf5">
+<a id="org9bb0d0f"></a>Vectorization<br><div class="outline-text-5" id="text-org9bb0d0f">
 <p>
 This method counts the number of occurrences of each word in the source. For each word it creates a column and then in the row puts the counts for that instance of data.
 </p>
@@ -128,7 +128,7 @@ This method counts the number of occurrences of each word in the source. For eac
 </div>
 </li>
 <li>
-<a id="org7321050"></a>Term Frequency/Inverse Document Frequency (TF/IDF)<br><div class="outline-text-5" id="text-org7321050">
+<a id="orgb771ad6"></a>Term Frequency/Inverse Document Frequency (TF/IDF)<br><div class="outline-text-5" id="text-orgb771ad6">
 <p>
 This method tries to make word counts comparable even if the texts are of different sizes and also to emphasize more important words.
 </p>
@@ -141,7 +141,7 @@ This method tries to make word counts comparable even if the texts are of differ
 </div>
 </li>
 <li>
-<a id="orga6e7cf6"></a>N-Grams<br><div class="outline-text-5" id="text-orga6e7cf6">
+<a id="orgb6ea07f"></a>N-Grams<br><div class="outline-text-5" id="text-orgb6ea07f">
 <p>
 This method that creates a bag of words by grouping them into sub-sequences of words. A 3-gram, for instance, sweeps the text to create sequences of words made up of 3 adjacent words.
 </p>
@@ -152,7 +152,7 @@ This method that creates a bag of words by grouping them into sub-sequences of w
 </div>
 </li>
 <li>
-<a id="org8964ede"></a>Text Preprocessing<br><div class="outline-text-5" id="text-org8964ede">
+<a id="org0e2c3f7"></a>Text Preprocessing<br><div class="outline-text-5" id="text-org0e2c3f7">
 <ul class="org-ul">
 <li>lowercase:
 Change all the words to lower-case</li>
@@ -166,7 +166,7 @@ Remove common words (e.g. a, and, or, etc.)</li>
 </div>
 </li>
 <li>
-<a id="orgf4056ec"></a>The Bag Of Words Pipeline<br><div class="outline-text-5" id="text-orgf4056ec">
+<a id="org94da243"></a>The Bag Of Words Pipeline<br><div class="outline-text-5" id="text-org94da243">
 <ol class="org-ol">
 <li>Preprocessing (lowercase, lemmatization, stemming, stopwords)</li>
 <li>Create n-grams</li>
@@ -176,9 +176,9 @@ Remove common words (e.g. a, and, or, etc.)</li>
 </li>
 </ul>
 </div>
-<div id="outline-container-org31719ec" class="outline-4">
-<h4 id="org31719ec">Embeddings (e.g. Word2Vec)</h4>
-<div class="outline-text-4" id="text-org31719ec">
+<div id="outline-container-org5dfff27" class="outline-4">
+<h4 id="org5dfff27">Embeddings (e.g. Word2Vec)</h4>
+<div class="outline-text-4" id="text-org5dfff27">
 <ul class="org-ul">
 <li>Uses neural-nets</li>
 <li>much smaller vectors than bag of words</li>
@@ -189,13 +189,13 @@ Remove common words (e.g. a, and, or, etc.)</li>
 </div>
 </div>
 </div>
-<div id="outline-container-org5dffe75" class="outline-2">
-<h2 id="org5dffe75">Practice Quiz</h2>
-<div class="outline-text-2" id="text-org5dffe75">
+<div id="outline-container-orgd0d2c46" class="outline-2">
+<h2 id="orgd0d2c46">Practice Quiz</h2>
+<div class="outline-text-2" id="text-orgd0d2c46">
 </div>
-<div id="outline-container-org1df0b48" class="outline-3">
-<h3 id="org1df0b48">One</h3>
-<div class="outline-text-3" id="text-org1df0b48">
+<div id="outline-container-org46a9334" class="outline-3">
+<h3 id="org46a9334">One</h3>
+<div class="outline-text-3" id="text-org46a9334">
 <p>
 TF-IDF is applied to a matrix where each column represents a word, each row represents a document, and each value shows the number of times a particular word occurred in a particular document. Choose the correct statements.
 </p>
@@ -211,9 +211,9 @@ TF-IDF is applied to a matrix where each column represents a word, each row repr
 </ul>
 </div>
 </div>
-<div id="outline-container-org08ecc1c" class="outline-3">
-<h3 id="org08ecc1c">Two</h3>
-<div class="outline-text-3" id="text-org08ecc1c">
+<div id="outline-container-org5c96619" class="outline-3">
+<h3 id="org5c96619">Two</h3>
+<div class="outline-text-3" id="text-org5c96619">
 <p>
 Which of these methods can be used to preprocess text?
 </p>
@@ -235,9 +235,9 @@ Which of these methods can be used to preprocess text?
 </ul>
 </div>
 </div>
-<div id="outline-container-org3c0d557" class="outline-3">
-<h3 id="org3c0d557">Three</h3>
-<div class="outline-text-3" id="text-org3c0d557">
+<div id="outline-container-orgb29fbea" class="outline-3">
+<h3 id="orgb29fbea">Three</h3>
+<div class="outline-text-3" id="text-orgb29fbea">
 <p>
 What is the main purpose of lemmatization and stemming?
 </p>
@@ -253,9 +253,9 @@ What is the main purpose of lemmatization and stemming?
 </ul>
 </div>
 </div>
-<div id="outline-container-orgbfb5d8c" class="outline-3">
-<h3 id="orgbfb5d8c">Four</h3>
-<div class="outline-text-3" id="text-orgbfb5d8c">
+<div id="outline-container-org6e9e549" class="outline-3">
+<h3 id="org6e9e549">Four</h3>
+<div class="outline-text-3" id="text-org6e9e549">
 <p>
 To learn Word2Vec embeddings we need:
 </p>
@@ -272,13 +272,13 @@ To learn Word2Vec embeddings we need:
 </div>
 </div>
 </div>
-<div id="outline-container-org4442b30" class="outline-2">
-<h2 id="org4442b30">Quiz</h2>
-<div class="outline-text-2" id="text-org4442b30">
+<div id="outline-container-orga47dfcb" class="outline-2">
+<h2 id="orga47dfcb">Quiz</h2>
+<div class="outline-text-2" id="text-orga47dfcb">
 </div>
-<div id="outline-container-org4aec9c8" class="outline-3">
-<h3 id="org4aec9c8">One</h3>
-<div class="outline-text-3" id="text-org4aec9c8">
+<div id="outline-container-org9f4bf4d" class="outline-3">
+<h3 id="org9f4bf4d">One</h3>
+<div class="outline-text-3" id="text-org9f4bf4d">
 <p>
 Select true statements about n-grams.
 </p>
@@ -294,9 +294,9 @@ Select true statements about n-grams.
 </ul>
 </div>
 </div>
-<div id="outline-container-org54643b5" class="outline-3">
-<h3 id="org54643b5">Two</h3>
-<div class="outline-text-3" id="text-org54643b5">
+<div id="outline-container-org121bb24" class="outline-3">
+<h3 id="org121bb24">Two</h3>
+<div class="outline-text-3" id="text-org121bb24">
 <p>
 Select the true statements.
 </p>
@@ -315,9 +315,9 @@ Select the true statements.
 </ul>
 </div>
 </div>
-<div id="outline-container-org81e0f32" class="outline-3">
-<h3 id="org81e0f32">Three</h3>
-<div class="outline-text-3" id="text-org81e0f32">
+<div id="outline-container-org87d4ddc" class="outline-3">
+<h3 id="org87d4ddc">Three</h3>
+<div class="outline-text-3" id="text-org87d4ddc">
 <p>
 Suppose in a new competition we are given a dataset of 2D medical images. We want to extract image descriptors from a hidden layer of a neural network pretrained on the ImageNet dataset. We will then use extracted descriptors to train a simple logistic regression model to classify images from our dataset.
 </p>
@@ -343,9 +343,9 @@ We are considering using two networks: ResNet-50 with an ImageNet accuracy of X 
 </ul>
 </div>
 </div>
-<div id="outline-container-orgb5fd47f" class="outline-3">
-<h3 id="orgb5fd47f">Four</h3>
-<div class="outline-text-3" id="text-orgb5fd47f">
+<div id="outline-container-org95d17e0" class="outline-3">
+<h3 id="org95d17e0">Four</h3>
+<div class="outline-text-3" id="text-org95d17e0">
 <p>
 Data augmentation can be used at (1) train time and (2) test time
 </p>
@@ -362,17 +362,17 @@ Data augmentation can be used at (1) train time and (2) test time
 </div>
 </div>
 </div>
-<div id="outline-container-org91a564a" class="outline-2">
-<h2 id="org91a564a">Links</h2>
-<div class="outline-text-2" id="text-org91a564a">
+<div id="outline-container-orgeb9a2d8" class="outline-2">
+<h2 id="orgeb9a2d8">Links</h2>
+<div class="outline-text-2" id="text-orgeb9a2d8">
 </div>
-<div id="outline-container-org2dea633" class="outline-3">
-<h3 id="org2dea633">Text</h3>
-<div class="outline-text-3" id="text-org2dea633">
+<div id="outline-container-org9cb224d" class="outline-3">
+<h3 id="org9cb224d">Text</h3>
+<div class="outline-text-3" id="text-org9cb224d">
 </div>
-<div id="outline-container-org888604f" class="outline-4">
-<h4 id="org888604f">Bag Of Words</h4>
-<div class="outline-text-4" id="text-org888604f">
+<div id="outline-container-org2c40d49" class="outline-4">
+<h4 id="org2c40d49">Bag Of Words</h4>
+<div class="outline-text-4" id="text-org2c40d49">
 <ul class="org-ul">
 <li><a href="http://scikit-learn.org/stable/modules/feature_extraction.html">SKlearn on feature extraction</a></li>
 <li>
@@ -380,9 +380,9 @@ Data augmentation can be used at (1) train time and (2) test time
 </ul>
 </div>
 </div>
-<div id="outline-container-org47d387e" class="outline-4">
-<h4 id="org47d387e">Word2Vec</h4>
-<div class="outline-text-4" id="text-org47d387e">
+<div id="outline-container-orgf58e6c4" class="outline-4">
+<h4 id="orgf58e6c4">Word2Vec</h4>
+<div class="outline-text-4" id="text-orgf58e6c4">
 <ul class="org-ul">
 <li><a href="https://www.tensorflow.org/tutorials/representation/word2vec">TensorFlow tutorial</a></li>
 <li>
@@ -392,9 +392,9 @@ Data augmentation can be used at (1) train time and (2) test time
 </ul>
 </div>
 </div>
-<div id="outline-container-orga0fdad3" class="outline-4">
-<h4 id="orga0fdad3">Natural Language Processing with Python</h4>
-<div class="outline-text-4" id="text-orga0fdad3">
+<div id="outline-container-orge34e04c" class="outline-4">
+<h4 id="orge34e04c">Natural Language Processing with Python</h4>
+<div class="outline-text-4" id="text-orge34e04c">
 <ul class="org-ul">
 <li><a href="http://www.nltk.org/">nltk</a></li>
 <li><a href="https://textblob.readthedocs.io/en/dev/">TextBlob</a></li>
@@ -402,22 +402,22 @@ Data augmentation can be used at (1) train time and (2) test time
 </div>
 </div>
 </div>
-<div id="outline-container-orgab0ffa7" class="outline-3">
-<h3 id="orgab0ffa7">Images</h3>
-<div class="outline-text-3" id="text-orgab0ffa7">
+<div id="outline-container-orgfae8717" class="outline-3">
+<h3 id="orgfae8717">Images</h3>
+<div class="outline-text-3" id="text-orgfae8717">
 </div>
-<div id="outline-container-orgd0cb270" class="outline-4">
-<h4 id="orgd0cb270">Pre-trained Models</h4>
-<div class="outline-text-4" id="text-orgd0cb270">
+<div id="outline-container-org1a02b96" class="outline-4">
+<h4 id="org1a02b96">Pre-trained Models</h4>
+<div class="outline-text-4" id="text-org1a02b96">
 <ul class="org-ul">
 <li><a href="https://keras.io/applications/">Keras</a></li>
 <li><a href="https://www.kernix.com/blog/image-classification-with-a-pre-trained-deep-neural-network_p11">How To use a pre-trained model</a></li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org7540737" class="outline-4">
-<h4 id="org7540737">Fine-Tuning</h4>
-<div class="outline-text-4" id="text-org7540737">
+<div id="outline-container-orga780bd9" class="outline-4">
+<h4 id="orga780bd9">Fine-Tuning</h4>
+<div class="outline-text-4" id="text-orga780bd9">
 <ul class="org-ul">
 <li><a href="https://www.tensorflow.org/hub/tutorials/image_retraining">Re-train a tensorflow image classifier</a></li>
 <li><a href="https://flyyufelix.github.io/2016/10/08/fine-tuning-in-keras-part2.html">Fine-tuning deep learning models in keras</a></li>
