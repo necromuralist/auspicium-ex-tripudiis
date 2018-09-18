@@ -292,8 +292,8 @@ This is the grader's output.
 Your accuracy score is 0.500000. It seems too low, try one more time.
 #+END_EXAMPLE
 
+So it appears we've confirmed that the dataset is binary, with half the outputs being ones, the other half being zeros.
 
-So this confirms that the dataset is binary, with half the outputs being ones, the other half being zeros.
 * Building a magic feature
 
 In this section we will build a magic feature that will solve the problem almost perfectly. The instructions will lead you to the correct solution, but please, try to explain the purpose of the steps we do to yourself -- it is very important.
