@@ -94,21 +94,21 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="posts/data-leakages/#org7db1ce1">Introduction</a></li>
-<li><a href="posts/data-leakages/#orgc10597e">Imports</a></li>
-<li><a href="posts/data-leakages/#org5b64c8b">Helpers</a></li>
-<li><a href="posts/data-leakages/#orgd7997c5">Load the data</a></li>
-<li><a href="posts/data-leakages/#org4d5deea">EDA and Leakage Intuition</a></li>
-<li><a href="posts/data-leakages/#orgb69cb64">Building a magic feature</a></li>
-<li><a href="posts/data-leakages/#orgefd5bff">Bonus</a></li>
-<li><a href="posts/data-leakages/#orgeb18c89">What does it all mean then?</a></li>
+<li><a href="posts/data-leakages/#org8db2b91">Introduction</a></li>
+<li><a href="posts/data-leakages/#orgfbf2705">Imports</a></li>
+<li><a href="posts/data-leakages/#org322bdd6">Helpers</a></li>
+<li><a href="posts/data-leakages/#org17f7c97">Load the data</a></li>
+<li><a href="posts/data-leakages/#org386dd7a">EDA and Leakage Intuition</a></li>
+<li><a href="posts/data-leakages/#org3b1b5b9">Building a magic feature</a></li>
+<li><a href="posts/data-leakages/#orgdf0e4e8">Bonus</a></li>
+<li><a href="posts/data-leakages/#org4c6f2ee">What does it all mean then?</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org7db1ce1" class="outline-2">
-<h2 id="org7db1ce1">Introduction</h2>
-<div class="outline-text-2" id="text-org7db1ce1">
+<div id="outline-container-org8db2b91" class="outline-2">
+<h2 id="org8db2b91">Introduction</h2>
+<div class="outline-text-2" id="text-org8db2b91">
 <p>
 In this programming assignment we will illustrate a very severe data leakage, of the sort that can often be found in competitions. The task is to score the pairs of objects, i.e. predict <i>1</i> if two objects belong to the same class and <i>0</i> otherwise. 
 </p>
@@ -119,9 +119,9 @@ The data in this assignment is taken from a real competition, and  <b>we will no
 </div>
 </div>
 
-<div id="outline-container-orgc10597e" class="outline-2">
-<h2 id="orgc10597e">Imports</h2>
-<div class="outline-text-2" id="text-orgc10597e">
+<div id="outline-container-orgfbf2705" class="outline-2">
+<h2 id="orgfbf2705">Imports</h2>
+<div class="outline-text-2" id="text-orgfbf2705">
 <p>
 During the importing of pandas (or scipy) you get a warning about a potential binary incompatibility. According to <a href="https://stackoverflow.com/questions/40845304/runtimewarning-numpy-dtype-size-changed-may-indicate-binary-incompatibility">Stack Overflow</a> you can safely ignore this, so we'll use <a href="https://docs.python.org/3/library/warnings.html">warnings</a> to suppress the messages, just so it doesn't keep bringing them up everytime I run this notebook.
 </p>
@@ -149,13 +149,13 @@ During the importing of pandas (or scipy) you get a warning about a potential bi
 </pre></div>
 </div>
 </div>
-<div id="outline-container-org5b64c8b" class="outline-2">
-<h2 id="org5b64c8b">Helpers</h2>
-<div class="outline-text-2" id="text-org5b64c8b">
+<div id="outline-container-org322bdd6" class="outline-2">
+<h2 id="org322bdd6">Helpers</h2>
+<div class="outline-text-2" id="text-org322bdd6">
 </div>
-<div id="outline-container-orgc9d9bfe" class="outline-3">
-<h3 id="orgc9d9bfe">Paths</h3>
-<div class="outline-text-3" id="text-orgc9d9bfe">
+<div id="outline-container-orgbd43ef5" class="outline-3">
+<h3 id="orgbd43ef5">Paths</h3>
+<div class="outline-text-3" id="text-orgbd43ef5">
 <p>
 Since I'm doing this as posts in nikola, but I'm trying to keep all non-post files outside of the <code>posts</code> folder, I'm going to use a class to keep the paths to the output (submission) files straight.
 </p>
@@ -206,9 +206,9 @@ Since I'm doing this as posts in nikola, but I'm trying to keep all non-post fil
 </pre></div>
 </div>
 </div>
-<div id="outline-container-org145f1ae" class="outline-3">
-<h3 id="org145f1ae">Data</h3>
-<div class="outline-text-3" id="text-org145f1ae">
+<div id="outline-container-orgc38f5eb" class="outline-3">
+<h3 id="orgc38f5eb">Data</h3>
+<div class="outline-text-3" id="text-orgc38f5eb">
 <div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">TestSet</span><span class="p">:</span>
     <span class="sd">"""Loads the test-set data</span>
 
@@ -234,9 +234,9 @@ Since I'm doing this as posts in nikola, but I'm trying to keep all non-post fil
 </div>
 </div>
 </div>
-<div id="outline-container-orgd7997c5" class="outline-2">
-<h2 id="orgd7997c5">Load the data</h2>
-<div class="outline-text-2" id="text-orgd7997c5">
+<div id="outline-container-org17f7c97" class="outline-2">
+<h2 id="org17f7c97">Load the data</h2>
+<div class="outline-text-2" id="text-org17f7c97">
 <p>
 Let's load the test data. Note that we don't have any training data here, just test data. Moreover, <i>we will not use any features of the test set</i>. All we need to solve this task is the file with the indices for the pairs that we need to compare.
 </p>
@@ -294,9 +294,9 @@ So this doesn't appear to be a randomized data set. The first half of the Second
 </div>
 </div>
 
-<div id="outline-container-org4d5deea" class="outline-2">
-<h2 id="org4d5deea">EDA and Leakage Intuition</h2>
-<div class="outline-text-2" id="text-org4d5deea">
+<div id="outline-container-org386dd7a" class="outline-2">
+<h2 id="org386dd7a">EDA and Leakage Intuition</h2>
+<div class="outline-text-2" id="text-org386dd7a">
 <p>
 As we already know, the key to discovering data leakages is careful Exploratory Data Analysis (EDA). So let's start our work with some basic data exploration and build an intuition about the leakage.
 </p>
@@ -393,17 +393,17 @@ Another example - in a <a href="https://www.kaggle.com/c/quora-question-pairs">Q
 </p>
 </div>
 
-<div id="outline-container-org6f9c9ec" class="outline-3">
-<h3 id="org6f9c9ec">Probing the Leaderboard</h3>
-<div class="outline-text-3" id="text-org6f9c9ec">
+<div id="outline-container-org5bd754c" class="outline-3">
+<h3 id="org5bd754c">Probing the Leaderboard</h3>
+<div class="outline-text-3" id="text-org5bd754c">
 <p>
 Finally, let's see what fraction of the ID-pairs have a class of `1`. To do this we just need to submit a constant prediction (all ones) and check the accuracy the grader reports. Create a dataframe with columns `pairId` and `Prediction`, fill it and export it to a `.csv` file. Then submit to the Coursera grader and examine the grader's output to get the fraction of 1s in the test-set.
 </p>
 </div>
 
-<div id="outline-container-org989b0dc" class="outline-4">
-<h4 id="org989b0dc">All Ones</h4>
-<div class="outline-text-4" id="text-org989b0dc">
+<div id="outline-container-orgb9976b2" class="outline-4">
+<h4 id="orgb9976b2">All Ones</h4>
+<div class="outline-text-4" id="text-orgb9976b2">
 <div class="highlight"><pre><span></span><span class="n">paths</span> <span class="o">=</span> <span class="n">Paths</span><span class="p">()</span>
 <span class="n">all_ones</span> <span class="o">=</span> <span class="n">test</span><span class="p">[[</span><span class="s2">"pairId"</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 <span class="n">all_ones</span><span class="p">[</span><span class="s2">"Prediction"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_ones</span><span class="p">)</span>
@@ -439,9 +439,9 @@ Now think - how we can exploit this fact? What is the leak here? If you get it n
 </div>
 </div>
 
-<div id="outline-container-org3e2fd3e" class="outline-4">
-<h4 id="org3e2fd3e">All Zeros</h4>
-<div class="outline-text-4" id="text-org3e2fd3e">
+<div id="outline-container-org1da1a3a" class="outline-4">
+<h4 id="org1da1a3a">All Zeros</h4>
+<div class="outline-text-4" id="text-org1da1a3a">
 <p>
 Although we're told that this was a binary data set (and you could check it just by printing out the unique values), I sort of flaked and submitted a set where all the pairs were classified as zeros anyway. Here's what happened.
 </p>
@@ -472,25 +472,25 @@ This is the grader's output.
 Your accuracy score is 0.500000. It seems too low, try one more time.
 </pre>
 
-
 <p>
-So this confirms that the dataset is binary, with half the outputs being ones, the other half being zeros.
+So it appears we've confirmed that the dataset is binary, with half the outputs being ones, the other half being zeros.
 </p>
 </div>
 </div>
 </div>
 </div>
-<div id="outline-container-orgb69cb64" class="outline-2">
-<h2 id="orgb69cb64">Building a magic feature</h2>
-<div class="outline-text-2" id="text-orgb69cb64">
+
+<div id="outline-container-org3b1b5b9" class="outline-2">
+<h2 id="org3b1b5b9">Building a magic feature</h2>
+<div class="outline-text-2" id="text-org3b1b5b9">
 <p>
 In this section we will build a magic feature that will solve the problem almost perfectly. The instructions will lead you to the correct solution, but please, try to explain the purpose of the steps we do to yourself – it is very important.
 </p>
 </div>
 
-<div id="outline-container-org0fc49c5" class="outline-3">
-<h3 id="org0fc49c5">Incidence matrix</h3>
-<div class="outline-text-3" id="text-org0fc49c5">
+<div id="outline-container-orgcd2a109" class="outline-3">
+<h3 id="orgcd2a109">Incidence matrix</h3>
+<div class="outline-text-3" id="text-orgcd2a109">
 <p>
 First, we need to build an <a href="https://en.wikipedia.org/wiki/Incidence_matrix">incidence matrix</a>. You can think of pairs `(FirstId, SecondId)` as edges in an undirected graph. 
 </p>
@@ -512,9 +512,9 @@ For example, you can use this constructor: `scipy.sparse.coo_matrix((data, (i, j
 </p>
 </div>
 
-<div id="outline-container-org2bcb113" class="outline-4">
-<h4 id="org2bcb113">De-duplicating the Data</h4>
-<div class="outline-text-4" id="text-org2bcb113">
+<div id="outline-container-orgb1cd2bf" class="outline-4">
+<h4 id="orgb1cd2bf">De-duplicating the Data</h4>
+<div class="outline-text-4" id="text-orgb1cd2bf">
 <p>
 The test data turns out to have duplicate ID pairs, which will cause our incidence matrix to produce numbers greater than 1 if we leave them in, so we need to remove them (using the <a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.duplicated.html">duplicated</a> method).
 </p>
@@ -567,9 +567,9 @@ It is more convenient to have the incidence matrix in <a href="https://docs.scip
 </div>
 </div>
 
-<div id="outline-container-org903cd3a" class="outline-3">
-<h3 id="org903cd3a">Now To Build the Magic Feature</h3>
-<div class="outline-text-3" id="text-org903cd3a">
+<div id="outline-container-org2d7ea5a" class="outline-3">
+<h3 id="org2d7ea5a">Now To Build the Magic Feature</h3>
+<div class="outline-text-3" id="text-org2d7ea5a">
 <p>
 Why did we build the incidence matrix? We can think of the rows in this matrix as a representation for the objects. The `i-th` row is a representation for an object with `Id = i`. Then, to measure the similarity between two objects we can measure similarity between their representations. And we will see that these representations are very good.
 </p>
@@ -615,9 +615,9 @@ That is it! <b><b>We've built our magic feature.</b></b>
 </pre></div>
 </div>
 
-<div id="outline-container-orgbea7232" class="outline-4">
-<h4 id="orgbea7232">From magic feature to binary predictions</h4>
-<div class="outline-text-4" id="text-orgbea7232">
+<div id="outline-container-org493a4a6" class="outline-4">
+<h4 id="org493a4a6">From magic feature to binary predictions</h4>
+<div class="outline-text-4" id="text-org493a4a6">
 <p>
 But how do we convert this feature into binary predictions? We do not have a train set to learn a model, but we have a piece of information about test set: the baseline accuracy score that you got, when submitting constant. And we also have a very strong considerations about the data generative process, so probably we will be fine even without a training set. 
 </p>
@@ -781,17 +781,17 @@ Well done! Your accuracy score is 0.997298
 </div>
 </div>
 
-<div id="outline-container-orgefd5bff" class="outline-2">
-<h2 id="orgefd5bff">Bonus</h2>
-<div class="outline-text-2" id="text-orgefd5bff">
+<div id="outline-container-orgdf0e4e8" class="outline-2">
+<h2 id="orgdf0e4e8">Bonus</h2>
+<div class="outline-text-2" id="text-orgdf0e4e8">
 <p>
 Interestingly, it is not the only leak in this dataset. There is another totally different way to get almost 100% accuracy. Try to find it!
 </p>
 </div>
 </div>
-<div id="outline-container-orgeb18c89" class="outline-2">
-<h2 id="orgeb18c89">What does it all mean then?</h2>
-<div class="outline-text-2" id="text-orgeb18c89">
+<div id="outline-container-org4c6f2ee" class="outline-2">
+<h2 id="org4c6f2ee">What does it all mean then?</h2>
+<div class="outline-text-2" id="text-org4c6f2ee">
 <p>
 From our initial check uploading all the submissions as one (so all the ID-pairs were classified as having IDs from the same class) we saw that half the entries were 1's and half were 0's. Our incidence matrix showed that half the vectors had a similarity of 20 or more, so by predicting that all the pairs whose incidence matrix dot-products were 20 or greater were of the same class, we could predict with greater than 99% accuracy which IDs were from the same class.
 </p>

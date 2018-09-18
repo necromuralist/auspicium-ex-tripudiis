@@ -7,7 +7,7 @@
                         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
  <sitemap>
   <loc>https://necromuralist.github.io/Kaggle-Competitions/categories/assignment-dataleaks.xml</loc>
-  <lastmod>2018-09-18T19:39:00Z</lastmod>
+  <lastmod>2018-09-18T19:40:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://necromuralist.github.io/Kaggle-Competitions/categories/basics-algorithms-notes.xml</loc>
@@ -22,16 +22,12 @@
   <lastmod>2018-09-18T19:39:00Z</lastmod>
  </sitemap>
  <sitemap>
-  <loc>https://necromuralist.github.io/Kaggle-Competitions/categories/basics-rules.xml</loc>
-  <lastmod>2018-09-17T22:30:00Z</lastmod>
- </sitemap>
- <sitemap>
   <loc>https://necromuralist.github.io/Kaggle-Competitions/categories/bilbiography-references.xml</loc>
   <lastmod>2018-09-17T22:30:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://necromuralist.github.io/Kaggle-Competitions/categories/cat_assignment.xml</loc>
-  <lastmod>2018-09-18T19:39:00Z</lastmod>
+  <lastmod>2018-09-18T19:40:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://necromuralist.github.io/Kaggle-Competitions/categories/cat_competition.xml</loc>
@@ -119,10 +115,10 @@
  </sitemap>
  <sitemap>
   <loc>https://necromuralist.github.io/Kaggle-Competitions/rss.xml</loc>
-  <lastmod>2018-09-18T19:39:00Z</lastmod>
+  <lastmod>2018-09-18T19:40:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://necromuralist.github.io/Kaggle-Competitions/sitemap.xml</loc>
-  <lastmod>2018-09-18T19:39:00Z</lastmod>
+  <lastmod>2018-09-18T19:40:00Z</lastmod>
  </sitemap>
 </sitemapindex>
