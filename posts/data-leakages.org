@@ -96,7 +96,7 @@ class TestSet:
 #+END_SRC
 * Load the data
 
-Let's load the test data. Note, that we don't have any training data here, just test data. Moreover, *we will not use any features* of the test set. All we need to solve this task is the file with the indices for the pairs that we need to compare.
+Let's load the test data. Note, that we don't have any training data here, just test data. Moreover, /we will not use any features of the test set/. All we need to solve this task is the file with the indices for the pairs that we need to compare.
 
 Let's load the data with the test indices.
 
@@ -207,7 +207,9 @@ So the number of pairs we are given to classify is very, very small compared to 
 
 To exploit the leak we need to **assume (or prove)**, that the total number of positive pairs is small, compared to the total number of pairs. For example: think about an image dataset with $1000$ classes, $N$ images per class. Then if the task was to tell whether a pair of images belongs to the same class or not, we would have $1000\frac{N(N-1)}{2}$ positive pairs, while the total number of pairs was $\frac{1000N(1000N - 1)}{2}$.
 
-Another example: in a [[https://www.kaggle.com/c/quora-question-pairs][Quora competitition]] the task was to classify whether a pair of questions are duplicates of each other or not. Of course, total number of question pairs is very huge, while number of duplicates (positive pairs) is much much smaller.
+Another example: in a [[https://www.kaggle.com/c/quora-question-pairs][Quora competitition]] the task was to classify whether a pair of questions are duplicates of each other or not. Of course, the total number of question pairs is huge, while the number of duplicates (positive pairs) is much, much smaller.
+
+** Probing the Leaderboard
 
 Finally, let's get a fraction of pairs of class `1`. We just need to submit a constant prediction "all ones" and check the returned accuracy. Create a dataframe with columns `pairId` and `Prediction`, fill it and export it to `.csv` file. Then submit to grader and examine grader's output. 
 
@@ -259,33 +261,7 @@ This is the grader's output.
 Your accuracy score is 0.500000. It seems too low, try one more time.
 #+END_EXAMPLE
 
-So it appears that the dataset is binary, with half the outputs being ones, the other half being zeros.
-
-#+BEGIN_SRC ipython :session leakage :results output :exports both
-random_predictions = test[["pairId"]].copy()
-random_predictions["Prediction"] = numpy.random.randint(0, 2, len(test))
-assert random_predictions.Prediction.shape == random_predictions.pairId.shape
-assert random_predictions.Prediction.max() == 1
-assert random_predictions.Prediction.min() == 0
-print(random_predictions.head())
-random_predictions.to_csv(Paths.submit("submission_random.csv"), index=False)
-#+END_SRC
-
-#+RESULTS:
-:    pairId  Prediction
-: 0       0           0
-: 1       1           0
-: 2       2           0
-: 3       3           1
-: 4       4           0
-
-The grader output for the random set:
-
-#+BEGIN_EXAMPLE
-Your accuracy score is 0.499058. It seems too low, try one more time.
-#+END_EXAMPLE
-
-Around the same as the other two, so flipping a coin doesn't improve things any, but it doesn't really make it much worse.
+So this confirms that the dataset is binary, with half the outputs being ones, the other half being zeros.
 
 * Building a magic feature
 
@@ -364,9 +340,9 @@ rows_SecondId  = inc_mat[test.SecondId.values]
 
 Our magic feature will be the *dot product* between representations of a pair of objects. Dot product can be regarded as similarity measure -- for our non-negative representations the dot product is close to 0 when the representations are different, and is huge, when representations are similar. 
 
-Now compute dot product between corresponding rows in `rows_FirstId` and `rows_SecondId` matrices.
+Now compute the dot product between corresponding rows in the =rows_FirstId= and =rows_SecondId= matrices.
 
-Note, that in order to do pointwise multiplication in scipy.sparse you need to use function [[https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_matrix.multiply.html#scipy.sparse.csr_matrix.multiply][multiply]], regular `*` corresponds to matrix-matrix multiplication
+Note, that in order to do pointwise multiplication in scipy.sparse you need to use the [[https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_matrix.multiply.html#scipy.sparse.csr_matrix.multiply][multiply]] function (along with a sum), the regular `*` operator corresponds to matrix-matrix multiplication. Also, the expected shape provided is only an array, not a matrix, so we can use [[https://docs.scipy.org/doc/numpy/reference/generated/numpy.squeeze.html][numpy.squeeze]] to get change it (from having a single column to not having a column).
 
 #+BEGIN_SRC ipython :session leakage :results none
 f = numpy.squeeze(numpy.asarray(rows_FirstId.multiply(rows_SecondId).sum(axis=1)))
