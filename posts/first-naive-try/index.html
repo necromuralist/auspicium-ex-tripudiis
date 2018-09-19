@@ -108,29 +108,29 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org0744582">Introduction</a></li>
-<li><a href="#org9a9e77a">Imports</a></li>
-<li><a href="#orgb0f718b">Loading the Data</a></li>
-<li><a href="#orgced7cf6">November Only</a></li>
-<li><a href="#org0c47437">The Linear Model</a></li>
+<li><a href="#org6a9b6df">Introduction</a></li>
+<li><a href="#orgdf4f390">Imports</a></li>
+<li><a href="#orgaff2504">Loading the Data</a></li>
+<li><a href="#orgad199c8">November Only</a></li>
+<li><a href="#orgf6caac3">The Linear Model</a></li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org0744582" class="outline-2">
-<h2 id="org0744582">Introduction</h2>
-<div class="outline-text-2" id="text-org0744582">
+<div id="outline-container-org6a9b6df" class="outline-2">
+<h2 id="org6a9b6df">Introduction</h2>
+<div class="outline-text-2" id="text-org6a9b6df">
 <p>
 Our goal is to predict the number of sales for each shop for November 2015 (based on the prior months). I'm going to make some very naive guesses here with some models that only use the prior dates and the target counts.
 </p>
 </div>
 </div>
-<div id="outline-container-org9a9e77a" class="outline-2">
-<h2 id="org9a9e77a">Imports</h2>
-<div class="outline-text-2" id="text-org9a9e77a">
+<div id="outline-container-orgdf4f390" class="outline-2">
+<h2 id="orgdf4f390">Imports</h2>
+<div class="outline-text-2" id="text-orgdf4f390">
 </div>
-<div id="outline-container-org0c14f63" class="outline-3">
-<h3 id="org0c14f63">Python Standard Library</h3>
-<div class="outline-text-3" id="text-org0c14f63">
+<div id="outline-container-org5297699" class="outline-3">
+<h3 id="org5297699">Python Standard Library</h3>
+<div class="outline-text-3" id="text-org5297699">
 <div class="highlight"><pre><span></span># python standard library
 import warnings
 import os
@@ -139,18 +139,18 @@ import pickle
 </div>
 </div>
 
-<div id="outline-container-org0becb7b" class="outline-3">
-<h3 id="org0becb7b">Supress the Warnings</h3>
-<div class="outline-text-3" id="text-org0becb7b">
+<div id="outline-container-org1e06f9e" class="outline-3">
+<h3 id="org1e06f9e">Supress the Warnings</h3>
+<div class="outline-text-3" id="text-org1e06f9e">
 <div class="highlight"><pre><span></span>warnings.filterwarnings("ignore", message="numpy.dtype size changed")
 warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
 </pre></div>
 </div>
 </div>
 
-<div id="outline-container-org2786f1a" class="outline-3">
-<h3 id="org2786f1a">From pypi</h3>
-<div class="outline-text-3" id="text-org2786f1a">
+<div id="outline-container-org1f76a2f" class="outline-3">
+<h3 id="org1f76a2f">From pypi</h3>
+<div class="outline-text-3" id="text-org1f76a2f">
 <div class="highlight"><pre><span></span>import numpy
 import pandas
 from sklearn.metrics import mean_squared_error
@@ -161,9 +161,9 @@ from tabulate import tabulate
 </div>
 </div>
 
-<div id="outline-container-org9e99b9d" class="outline-3">
-<h3 id="org9e99b9d">This Project</h3>
-<div class="outline-text-3" id="text-org9e99b9d">
+<div id="outline-container-org6cdd4e0" class="outline-3">
+<h3 id="org6cdd4e0">This Project</h3>
+<div class="outline-text-3" id="text-org6cdd4e0">
 <div class="highlight"><pre><span></span># this project
 from helpers.helpers import (
     Helpers,
@@ -175,9 +175,9 @@ from helpers.helpers import (
 </div>
 </div>
 </div>
-<div id="outline-container-orgb0f718b" class="outline-2">
-<h2 id="orgb0f718b">Loading the Data</h2>
-<div class="outline-text-2" id="text-orgb0f718b">
+<div id="outline-container-orgaff2504" class="outline-2">
+<h2 id="orgaff2504">Loading the Data</h2>
+<div class="outline-text-2" id="text-orgaff2504">
 <div class="highlight"><pre><span></span>x_train = Helpers.unpickle(Pickles.x_train)
 x_test = Helpers.unpickle(Pickles.x_test)
 y_train = Helpers.unpickle(Pickles.y_train)
@@ -272,9 +272,9 @@ x_test[DataKeys.target] = y_test.values
 </table>
 </div>
 </div>
-<div id="outline-container-orgced7cf6" class="outline-2">
-<h2 id="orgced7cf6">November Only</h2>
-<div class="outline-text-2" id="text-orgced7cf6">
+<div id="outline-container-orgad199c8" class="outline-2">
+<h2 id="orgad199c8">November Only</h2>
+<div class="outline-text-2" id="text-orgad199c8">
 <p>
 What happens if we only use the month of November in the data?
 </p>
@@ -286,9 +286,9 @@ What happens if we only use the month of November in the data?
 </pre></div>
 </div>
 </div>
-<div id="outline-container-org0c47437" class="outline-2">
-<h2 id="org0c47437">The Linear Model</h2>
-<div class="outline-text-2" id="text-org0c47437">
+<div id="outline-container-orgf6caac3" class="outline-2">
+<h2 id="orgf6caac3">The Linear Model</h2>
+<div class="outline-text-2" id="text-orgf6caac3">
 <p>
 What happens if we just use the default linear regression model? The first problem we have is that we have both non-numeric data and categorical data. I think removing the <code>item_name</code> variable seems reasonable at this point, since we have unique <code>item_id</code> values for each item, although it's possible that some text-mining might reveal something in the names, because this is just a naive approach that will use linear regression.
 </p>

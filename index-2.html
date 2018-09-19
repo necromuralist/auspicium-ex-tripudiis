@@ -83,7 +83,1339 @@
 
     
 <div class="postindex">
-    <article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/feature-extraction-from-text-and-images/" class="u-url">Feature Extraction From Text and Images</a></h1>
+    <article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/building-the-training-set/" class="u-url">Building The Training Set</a></h1>
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                Cloistered Monkey
+            </span></p>
+            <p class="dateline"><a href="posts/building-the-training-set/" rel="bookmark"><time class="published dt-published" datetime="2018-08-25T09:31:43-07:00" title="2018-08-25 09:31">2018-08-25 09:31</time></a></p>
+        </div>
+    </header><div class="e-content entry-content">
+    <div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="posts/building-the-training-set/#org82438b9">The Tangle</a></li>
+<li><a href="posts/building-the-training-set/#orga319808">Imports</a></li>
+<li><a href="posts/building-the-training-set/#org113b4ba">Helpers</a></li>
+<li><a href="posts/building-the-training-set/#orga915c5b">Building Up the Super Set</a></li>
+<li><a href="posts/building-the-training-set/#org346293b">Setting up the Training and Validation Data</a></li>
+<li><a href="posts/building-the-training-set/#org75c74a7">Creating the Validation Set</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org82438b9" class="outline-2">
+<h2 id="org82438b9">The Tangle</h2>
+<div class="outline-text-2" id="text-org82438b9">
+<p>
+This is the exporter for stuff to be re-used outside of this post.
+</p>
+<div class="highlight"><pre><span></span><span class="o">&lt;&lt;</span><span class="n">python</span><span class="o">-</span><span class="n">imports</span><span class="o">&gt;&gt;</span>
+
+<span class="o">&lt;&lt;</span><span class="n">suppress</span><span class="o">-</span><span class="n">warnings</span><span class="o">&gt;&gt;</span>
+
+<span class="o">&lt;&lt;</span><span class="n">pypi</span><span class="o">-</span><span class="n">imports</span><span class="o">&gt;&gt;</span>
+
+<span class="o">&lt;&lt;</span><span class="n">local</span><span class="o">-</span><span class="n">imports</span><span class="o">&gt;&gt;</span>
+
+<span class="o">&lt;&lt;</span><span class="n">pickles</span><span class="o">&gt;&gt;</span>
+
+<span class="o">&lt;&lt;</span><span class="nb">super</span><span class="o">-</span><span class="nb">set</span><span class="o">-</span><span class="n">creator</span><span class="o">&gt;&gt;</span>
+
+    <span class="o">&lt;&lt;</span><span class="n">data</span><span class="o">-</span><span class="n">source</span><span class="o">&gt;&gt;</span>
+
+    <span class="o">&lt;&lt;</span><span class="nb">super</span><span class="o">-</span><span class="nb">set</span><span class="o">&gt;&gt;</span>
+
+<span class="o">&lt;&lt;</span><span class="n">load</span><span class="o">-</span><span class="n">items</span><span class="o">&gt;&gt;</span>
+
+
+<span class="o">&lt;&lt;</span><span class="nb">super</span><span class="o">-</span><span class="n">duper</span><span class="o">-</span><span class="nb">set</span><span class="o">&gt;&gt;</span>
+
+
+<span class="o">&lt;&lt;</span><span class="nb">super</span><span class="o">-</span><span class="n">dates</span><span class="o">&gt;&gt;</span>
+
+<span class="o">&lt;&lt;</span><span class="n">clean</span><span class="o">-</span><span class="nb">super</span><span class="o">-</span><span class="nb">set</span><span class="o">&gt;&gt;</span>
+
+
+<span class="o">&lt;&lt;</span><span class="n">make</span><span class="o">-</span><span class="n">grouper</span><span class="o">&gt;&gt;</span>
+
+
+<span class="o">&lt;&lt;</span><span class="n">make</span><span class="o">-</span><span class="n">chunked</span><span class="o">&gt;&gt;</span>
+
+<span class="o">&lt;&lt;</span><span class="nb">super</span><span class="o">-</span><span class="n">group</span><span class="o">&gt;&gt;</span>
+
+<span class="o">&lt;&lt;</span><span class="n">merge</span><span class="o">-</span><span class="n">chunked</span><span class="o">&gt;&gt;</span>
+
+<span class="o">&lt;&lt;</span><span class="n">delete</span><span class="o">-</span><span class="n">day</span><span class="o">-</span><span class="n">count</span><span class="o">&gt;&gt;</span>
+
+
+<span class="o">&lt;&lt;</span><span class="n">targets</span><span class="o">-</span><span class="n">features</span><span class="o">&gt;&gt;</span>
+
+<span class="o">&lt;&lt;</span><span class="n">train</span><span class="o">-</span><span class="n">test</span><span class="o">-</span><span class="n">split</span><span class="o">&gt;&gt;</span>
+</pre></div>
+</div>
+</div>
+
+<div id="outline-container-orga319808" class="outline-2">
+<h2 id="orga319808">Imports</h2>
+<div class="outline-text-2" id="text-orga319808">
+</div>
+<div id="outline-container-org8268ff2" class="outline-3">
+<h3 id="org8268ff2">Python Standard Library</h3>
+<div class="outline-text-3" id="text-org8268ff2">
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+</pre></div>
+</div>
+</div>
+
+<div id="outline-container-orge6397f2" class="outline-3">
+<h3 id="orge6397f2">Suppressing the Numpy Warnings</h3>
+<div class="outline-text-3" id="text-orge6397f2">
+<p>
+This is to suppress the warnings when we import pandas.
+</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">"ignore"</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">"numpy.dtype size changed"</span><span class="p">)</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">"ignore"</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">"numpy.ufunc size changed"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+
+<div id="outline-container-orgd7ba4a4" class="outline-3">
+<h3 id="orgd7ba4a4">From pypi</h3>
+<div class="outline-text-3" id="text-orgd7ba4a4">
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+</pre></div>
+</div>
+</div>
+
+<div id="outline-container-orgee232e4" class="outline-3">
+<h3 id="orgee232e4">This Project</h3>
+<div class="outline-text-3" id="text-orgee232e4">
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">kaggler.helpers.helpers</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">DataKeys</span><span class="p">,</span>
+    <span class="n">DataNames</span><span class="p">,</span>
+    <span class="n">DataSource</span><span class="p">,</span>
+    <span class="n">Helpers</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org113b4ba" class="outline-2">
+<h2 id="org113b4ba">Helpers</h2>
+<div class="outline-text-2" id="text-org113b4ba">
+</div>
+<div id="outline-container-orge7249cc" class="outline-3">
+<h3 id="orge7249cc">Pickles</h3>
+<div class="outline-text-3" id="text-orge7249cc">
+<p>
+I'm going to pickle the data to re-load them later so this will hold the names.
+</p>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Pickles</span><span class="p">:</span>
+    <span class="sd">"""Holder of the pickle names"""</span>
+    <span class="n">super_set</span> <span class="o">=</span> <span class="s2">"training_data"</span>
+    <span class="n">grouped</span> <span class="o">=</span> <span class="s2">"grouped_months_data"</span>
+    <span class="n">x_train</span> <span class="o">=</span> <span class="s2">"x_train"</span>
+    <span class="n">x_test</span> <span class="o">=</span> <span class="s2">"x_test"</span>
+    <span class="n">y_train</span> <span class="o">=</span> <span class="s2">"y_train"</span>
+    <span class="n">y_test</span> <span class="o">=</span> <span class="s2">"y_test"</span>
+    <span class="n">train_test</span> <span class="o">=</span> <span class="s2">"train_test"</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orga915c5b" class="outline-2">
+<h2 id="orga915c5b">Building Up the Super Set</h2>
+<div class="outline-text-2" id="text-orga915c5b">
+<p>
+Since we have some variables in separate sets I thought it would be useful to combine them into a single training set.
+</p>
+
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SuperSet</span><span class="p">:</span>
+    <span class="sd">"""Creates the super-set of data"""</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">_data_sources</span> <span class="o">=</span> <span class="bp">None</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="bp">None</span>
+	<span class="k">return</span>
+</pre></div>
+</div>
+
+<div id="outline-container-orgdf67298" class="outline-3">
+<h3 id="orgdf67298">The Data Source</h3>
+<div class="outline-text-3" id="text-orgdf67298">
+<p>
+I put the paths into a class called DataSource, this is just to instantiate it.
+</p>
+
+<div class="highlight"><pre><span></span><span class="nd">@property</span>
+<span class="k">def</span> <span class="nf">data_sources</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">"""string-values for the data sources"""</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_sources</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">_data_sources</span> <span class="o">=</span> <span class="n">DataSource</span><span class="p">()</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">_data_sources</span><span class="o">.</span><span class="n">set_attributes</span><span class="p">()</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_sources</span>
+</pre></div>
+</div>
+</div>
+
+<div id="outline-container-orga3d07a2" class="outline-3">
+<h3 id="orga3d07a2">Building the Super Set</h3>
+<div class="outline-text-3" id="text-orga3d07a2">
+<p>
+The <code>super_set</code> will be a combination of the different data-sources.
+</p>
+
+<div class="highlight"><pre><span></span><span class="nd">@property</span>
+<span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">"""the super-set"""</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
+	    <span class="bp">self</span><span class="o">.</span><span class="n">data_sources</span><span class="o">.</span><span class="n">file_name_paths</span><span class="p">[</span><span class="n">DataNames</span><span class="o">.</span><span class="n">training</span><span class="p">])</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">Helpers</span><span class="o">.</span><span class="n">print_head</span><span class="p">(</span><span class="n">super_set</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+
+<div id="outline-container-org2e4c1c6" class="outline-3">
+<h3 id="org2e4c1c6">Adding the Category IDs</h3>
+<div class="outline-text-3" id="text-org2e4c1c6">
+<p>
+The <code>items.csv</code> file holds a map of the item-ids to category-ids so we can <a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.merge.html">merge</a> it in to get the category ids for our data-set.
+</p>
+
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Items</span><span class="p">:</span>
+    <span class="sd">"""sale items data"""</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="bp">None</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">_data_sources</span> <span class="o">=</span> <span class="bp">None</span>
+	<span class="k">return</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">data_sources</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="sd">"""a Data-Source object"""</span>
+	<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_sources</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+	    <span class="bp">self</span><span class="o">.</span><span class="n">_data_sources</span> <span class="o">=</span> <span class="n">DataSource</span><span class="p">()</span>
+	<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_sources</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="sd">"""dataframe of sale items"""</span>
+	<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+	    <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">data_sources</span><span class="o">.</span><span class="n">file_name_paths</span><span class="p">[</span><span class="n">DataNames</span><span class="o">.</span><span class="n">items</span><span class="p">])</span>
+	<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">Helpers</span><span class="o">.</span><span class="n">print_head</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
+</pre></div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-left">
+<col class="org-right">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-left">item_name</th>
+<th scope="col" class="org-right">item_id</th>
+<th scope="col" class="org-right">item_category_id</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-left">! ВО ВЛАСТИ НАВАЖДЕНИЯ (ПЛАСТ.)         D</td>
+<td class="org-right">0</td>
+<td class="org-right">40</td>
+</tr>
+<tr>
+<td class="org-left">!ABBYY FineReader 12 Professional Edition Full [PC, Цифровая версия]</td>
+<td class="org-right">1</td>
+<td class="org-right">76</td>
+</tr>
+<tr>
+<td class="org-left">***В ЛУЧАХ СЛАВЫ   (UNV)                    D</td>
+<td class="org-right">2</td>
+<td class="org-right">40</td>
+</tr>
+<tr>
+<td class="org-left">***ГОЛУБАЯ ВОЛНА  (Univ)                      D</td>
+<td class="org-right">3</td>
+<td class="org-right">40</td>
+</tr>
+<tr>
+<td class="org-left">***КОРОБКА (СТЕКЛО)                       D</td>
+<td class="org-right">4</td>
+<td class="org-right">40</td>
+</tr>
+</tbody>
+</table>
+<p>
+This is also going to add the name of the item, which I'm thinking won't be as useful, but we can clean that out later.
+</p>
+
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SuperDuper</span><span class="p">:</span>
+    <span class="sd">"""super set with item counts"""</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="bp">None</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">_super_set</span> <span class="o">=</span> <span class="bp">None</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">_items</span> <span class="o">=</span> <span class="bp">None</span>
+	<span class="k">return</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">super_set</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="sd">"""super-set of data"""</span>
+	<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_super_set</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+	    <span class="bp">self</span><span class="o">.</span><span class="n">_super_set</span> <span class="o">=</span> <span class="n">SuperSet</span><span class="p">()</span><span class="o">.</span><span class="n">data</span>
+	<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_super_set</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">items</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="sd">"""sale-items data"""</span>
+	<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+	    <span class="bp">self</span><span class="o">.</span><span class="n">_items</span> <span class="o">=</span> <span class="n">Items</span><span class="p">()</span><span class="o">.</span><span class="n">data</span>
+	<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="sd">"""super set with sale items"""</span>
+	<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+	    <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">super_set</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">,</span>
+					      <span class="n">on</span><span class="o">=</span><span class="n">DataKeys</span><span class="o">.</span><span class="n">item</span><span class="p">,</span>
+					      <span class="n">how</span><span class="o">=</span><span class="s2">"left"</span><span class="p">)</span>
+
+	    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">super_set</span><span class="p">)</span>
+	<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">Helpers</span><span class="o">.</span><span class="n">print_head</span><span class="p">(</span><span class="n">super_set</span><span class="p">)</span>
+</pre></div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-left">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-right">date</th>
+<th scope="col" class="org-right">date_block_num</th>
+<th scope="col" class="org-right">shop_id</th>
+<th scope="col" class="org-right">item_id</th>
+<th scope="col" class="org-right">item_price</th>
+<th scope="col" class="org-right">item_cnt_day</th>
+<th scope="col" class="org-left">item_name</th>
+<th scope="col" class="org-right">item_category_id</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-right">02.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">59</td>
+<td class="org-right">22154</td>
+<td class="org-right">999</td>
+<td class="org-right">1</td>
+<td class="org-left">ЯВЛЕНИЕ 2012 (BD)</td>
+<td class="org-right">37</td>
+</tr>
+<tr>
+<td class="org-right">03.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2552</td>
+<td class="org-right">899</td>
+<td class="org-right">1</td>
+<td class="org-left">DEEP PURPLE  The House Of Blue Light  LP</td>
+<td class="org-right">58</td>
+</tr>
+<tr>
+<td class="org-right">05.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2552</td>
+<td class="org-right">899</td>
+<td class="org-right">-1</td>
+<td class="org-left">DEEP PURPLE  The House Of Blue Light  LP</td>
+<td class="org-right">58</td>
+</tr>
+<tr>
+<td class="org-right">06.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2554</td>
+<td class="org-right">1709.05</td>
+<td class="org-right">1</td>
+<td class="org-left">DEEP PURPLE  Who Do You Think We Are  LP</td>
+<td class="org-right">58</td>
+</tr>
+<tr>
+<td class="org-right">15.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2555</td>
+<td class="org-right">1099</td>
+<td class="org-right">1</td>
+<td class="org-left">DEEP PURPLE 30 Very Best Of 2CD (Фирм.)</td>
+<td class="org-right">56</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-org469c5e2" class="outline-3">
+<h3 id="org469c5e2">Splitting the Dates</h3>
+<div class="outline-text-3" id="text-org469c5e2">
+<p>
+The <code>date</code> column has a string formatted <code>dd.mm.yy</code>. Since we want sales per month and it might change over time, I'll split the date-stamp up into day, month, and year (although I don't think I'll be keeping day).
+</p>
+
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SuperDates</span><span class="p">:</span>
+    <span class="sd">"""Super-set with dates split out"""</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">_super_duper</span> <span class="o">=</span> <span class="bp">None</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">_date_expression</span> <span class="o">=</span> <span class="bp">None</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">_dates</span> <span class="o">=</span> <span class="bp">None</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="bp">None</span>
+	<span class="k">return</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">super_duper</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="sd">"""A super-duper data set"""</span>
+	<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_super_duper</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+	    <span class="bp">self</span><span class="o">.</span><span class="n">_super_duper</span> <span class="o">=</span> <span class="n">SuperDuper</span><span class="p">()</span><span class="o">.</span><span class="n">data</span>
+	<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_super_duper</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">date_expression</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="sd">"""regular expression to parse the dates"""</span>
+	<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_date_expression</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+	    <span class="bp">self</span><span class="o">.</span><span class="n">_date_expression</span> <span class="o">=</span> <span class="p">(</span><span class="sa">r</span><span class="s1">'(?P&lt;{}&gt;\d{{2}})\.'</span>
+				     <span class="s1">'(?P&lt;{}&gt;\d{{2}})\.'</span>
+				     <span class="s1">'(?P&lt;{}&gt;\d{{4}})'</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+					 <span class="n">DataKeys</span><span class="o">.</span><span class="n">day</span><span class="p">,</span>
+					 <span class="n">DataKeys</span><span class="o">.</span><span class="n">month</span><span class="p">,</span>
+					 <span class="n">DataKeys</span><span class="o">.</span><span class="n">year</span><span class="p">)</span>
+	<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_date_expression</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">dates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="sd">"""dataframe of dates"""</span>
+	<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dates</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+	    <span class="bp">self</span><span class="o">.</span><span class="n">_dates</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">super_duper</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">date_expression</span><span class="p">)</span>
+	<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dates</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="sd">"""data set with date columns"""</span>
+	<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+	    <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span>
+		<span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">super_duper</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dates</span><span class="p">),</span>
+		<span class="n">axis</span><span class="o">=</span><span class="s1">'columns'</span><span class="p">)</span>
+	<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s2">"={}="</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">date_expression</span><span class="p">))</span>
+</pre></div>
+
+<p>
+<code>(?P&lt;day&gt;\d{2})\.(?P&lt;month&gt;\d{2})\.(?P&lt;year&gt;\d{4})</code>
+</p>
+
+
+
+
+<p>
+Here's what <code>dates</code> looks like.
+</p>
+
+<div class="highlight"><pre><span></span><span class="n">Helpers</span><span class="o">.</span><span class="n">print_head</span><span class="p">(</span><span class="n">dates</span><span class="p">)</span>
+</pre></div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-right">day</th>
+<th scope="col" class="org-right">month</th>
+<th scope="col" class="org-right">year</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-right">02</td>
+<td class="org-right">01</td>
+<td class="org-right">2013</td>
+</tr>
+<tr>
+<td class="org-right">03</td>
+<td class="org-right">01</td>
+<td class="org-right">2013</td>
+</tr>
+<tr>
+<td class="org-right">05</td>
+<td class="org-right">01</td>
+<td class="org-right">2013</td>
+</tr>
+<tr>
+<td class="org-right">06</td>
+<td class="org-right">01</td>
+<td class="org-right">2013</td>
+</tr>
+<tr>
+<td class="org-right">15</td>
+<td class="org-right">01</td>
+<td class="org-right">2013</td>
+</tr>
+</tbody>
+</table>
+<p>
+Now we can smash our new data frame onto the transactions using the <a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.concat.html">concat</a> function. By default it will try to add the rows from the second data frame to the rows of the first, but since we're adding new columns we need to pass in the <code>axis='columns'</code> argument.
+</p>
+
+<p>
+Nowe we can see what our <code>super_set</code> looks like.
+</p>
+
+<div class="highlight"><pre><span></span><span class="n">Helpers</span><span class="o">.</span><span class="n">print_head</span><span class="p">(</span><span class="n">super_set</span><span class="p">)</span>
+</pre></div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-left">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-right">date</th>
+<th scope="col" class="org-right">date_block_num</th>
+<th scope="col" class="org-right">shop_id</th>
+<th scope="col" class="org-right">item_id</th>
+<th scope="col" class="org-right">item_price</th>
+<th scope="col" class="org-right">item_cnt_day</th>
+<th scope="col" class="org-left">item_name</th>
+<th scope="col" class="org-right">item_category_id</th>
+<th scope="col" class="org-right">day</th>
+<th scope="col" class="org-right">month</th>
+<th scope="col" class="org-right">year</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-right">02.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">59</td>
+<td class="org-right">22154</td>
+<td class="org-right">999</td>
+<td class="org-right">1</td>
+<td class="org-left">ЯВЛЕНИЕ 2012 (BD)</td>
+<td class="org-right">37</td>
+<td class="org-right">02</td>
+<td class="org-right">01</td>
+<td class="org-right">2013</td>
+</tr>
+<tr>
+<td class="org-right">03.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2552</td>
+<td class="org-right">899</td>
+<td class="org-right">1</td>
+<td class="org-left">DEEP PURPLE  The House Of Blue Light  LP</td>
+<td class="org-right">58</td>
+<td class="org-right">03</td>
+<td class="org-right">01</td>
+<td class="org-right">2013</td>
+</tr>
+<tr>
+<td class="org-right">05.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2552</td>
+<td class="org-right">899</td>
+<td class="org-right">-1</td>
+<td class="org-left">DEEP PURPLE  The House Of Blue Light  LP</td>
+<td class="org-right">58</td>
+<td class="org-right">05</td>
+<td class="org-right">01</td>
+<td class="org-right">2013</td>
+</tr>
+<tr>
+<td class="org-right">06.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2554</td>
+<td class="org-right">1709.05</td>
+<td class="org-right">1</td>
+<td class="org-left">DEEP PURPLE  Who Do You Think We Are  LP</td>
+<td class="org-right">58</td>
+<td class="org-right">06</td>
+<td class="org-right">01</td>
+<td class="org-right">2013</td>
+</tr>
+<tr>
+<td class="org-right">15.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2555</td>
+<td class="org-right">1099</td>
+<td class="org-right">1</td>
+<td class="org-left">DEEP PURPLE 30 Very Best Of 2CD (Фирм.)</td>
+<td class="org-right">56</td>
+<td class="org-right">15</td>
+<td class="org-right">01</td>
+<td class="org-right">2013</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-org5c55d54" class="outline-3">
+<h3 id="org5c55d54">Cleaning Up</h3>
+<div class="outline-text-3" id="text-org5c55d54">
+<p>
+The <code>date</code> column is now superfluous, and I don't think we need the day, since we are predicting by month. I'm also going to assume that names aren't as useful as the numeric ids. This might not be true, but I think using the text would require pre-processing which is beyond what I'm doing here, so I'm going to leave them out (there is another file with shop names that needs to be loaded if the text turns out to be significant). I'm going to <a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.drop.html">drop</a> the columns that I don't think I'll need.
+</p>
+
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SuperClean</span><span class="p">:</span>
+    <span class="sd">"""The super-set data with extra columns removed"""</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="p">[</span><span class="n">DataKeys</span><span class="o">.</span><span class="n">date</span><span class="p">,</span> <span class="n">DataKeys</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">DataKeys</span><span class="o">.</span><span class="n">day</span><span class="p">]):</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">drop</span> <span class="o">=</span> <span class="n">drop</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">_super_set</span> <span class="o">=</span> <span class="bp">None</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="bp">None</span>
+	<span class="k">return</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">super_set</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="sd">"""the super-set data"""</span>
+	<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_super_set</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+	    <span class="bp">self</span><span class="o">.</span><span class="n">_super_set</span> <span class="o">=</span> <span class="n">SuperDates</span><span class="p">()</span><span class="o">.</span><span class="n">data</span>
+	<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_super_set</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="sd">"""The cleaned data"""</span>
+	<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+	    <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">super_set</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">drop</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s2">"columns"</span><span class="p">)</span>
+	<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span>
+
+    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="sd">"""Saves the data as a pickle"""</span>
+	<span class="n">Helpers</span><span class="o">.</span><span class="n">pickle_it</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">Pickles</span><span class="o">.</span><span class="n">super_set</span><span class="p">)</span>
+	<span class="k">return</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">Helpers</span><span class="o">.</span><span class="n">print_head</span><span class="p">(</span><span class="n">super_set</span><span class="p">)</span>
+</pre></div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-right">date_block_num</th>
+<th scope="col" class="org-right">shop_id</th>
+<th scope="col" class="org-right">item_id</th>
+<th scope="col" class="org-right">item_price</th>
+<th scope="col" class="org-right">item_cnt_day</th>
+<th scope="col" class="org-right">item_category_id</th>
+<th scope="col" class="org-right">month</th>
+<th scope="col" class="org-right">year</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-right">0</td>
+<td class="org-right">59</td>
+<td class="org-right">22154</td>
+<td class="org-right">999</td>
+<td class="org-right">1</td>
+<td class="org-right">37</td>
+<td class="org-right">01</td>
+<td class="org-right">2013</td>
+</tr>
+<tr>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2552</td>
+<td class="org-right">899</td>
+<td class="org-right">1</td>
+<td class="org-right">58</td>
+<td class="org-right">01</td>
+<td class="org-right">2013</td>
+</tr>
+<tr>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2552</td>
+<td class="org-right">899</td>
+<td class="org-right">-1</td>
+<td class="org-right">58</td>
+<td class="org-right">01</td>
+<td class="org-right">2013</td>
+</tr>
+<tr>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2554</td>
+<td class="org-right">1709.05</td>
+<td class="org-right">1</td>
+<td class="org-right">58</td>
+<td class="org-right">01</td>
+<td class="org-right">2013</td>
+</tr>
+<tr>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2555</td>
+<td class="org-right">1099</td>
+<td class="org-right">1</td>
+<td class="org-right">56</td>
+<td class="org-right">01</td>
+<td class="org-right">2013</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-orgaeeef54" class="outline-3">
+<h3 id="orgaeeef54">Saving the Super Set</h3>
+<div class="outline-text-3" id="text-orgaeeef54">
+<p>
+Now I'll pickle it up so it can be loaded later.
+</p>
+
+
+<div class="highlight"><pre><span></span><span class="n">Helpers</span><span class="o">.</span><span class="n">pickle_it</span><span class="p">(</span><span class="n">super_set</span><span class="p">,</span> <span class="n">Pickles</span><span class="o">.</span><span class="n">super_set</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org346293b" class="outline-2">
+<h2 id="org346293b">Setting up the Training and Validation Data</h2>
+<div class="outline-text-2" id="text-org346293b">
+<p>
+Although I went through the trouble of smashing all the values into one Data Frame, it turns out that I need things grouped by month, and doing the grouping after adding the columns just make it messy, so I'm going to back-track a little here to set up the data we need for training and testing.
+</p>
+</div>
+
+<div id="outline-container-orgb087d57" class="outline-3">
+<h3 id="orgb087d57">The Grouper</h3>
+<div class="outline-text-3" id="text-orgb087d57">
+<p>
+Since I'm going to aggregate by the month (really the <code>date_block_num</code>), leaving in things like the price doesn't really make sense so I'll make a sub-frame that I can <a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.groupby.html">group</a>.
+</p>
+
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Grouper</span><span class="p">:</span>
+    <span class="sd">"""Data Grouped by month, shop, item"""</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">_cleaned</span> <span class="o">=</span> <span class="bp">None</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">_grouper</span> <span class="o">=</span> <span class="bp">None</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="bp">None</span>
+	<span class="k">return</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">cleaned</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="sd">"""cleaned super-set"""</span>
+	<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cleaned</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+	    <span class="bp">self</span><span class="o">.</span><span class="n">_cleaned</span> <span class="o">=</span> <span class="n">SuperClean</span><span class="p">()</span><span class="o">.</span><span class="n">data</span>
+	<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cleaned</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">grouper</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="sd">"""goups the data by columns"""</span>
+	<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_grouper</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+	    <span class="bp">self</span><span class="o">.</span><span class="n">_grouper</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cleaned</span><span class="p">[[</span><span class="n">DataKeys</span><span class="o">.</span><span class="n">date_block</span><span class="p">,</span> <span class="n">DataKeys</span><span class="o">.</span><span class="n">shop</span><span class="p">,</span>
+					  <span class="n">DataKeys</span><span class="o">.</span><span class="n">item</span><span class="p">,</span>
+					  <span class="n">DataKeys</span><span class="o">.</span><span class="n">day_count</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+	<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_grouper</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="sd">"""the summed group-data"""</span>
+	<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+	    <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">grouper</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="n">DataKeys</span><span class="o">.</span><span class="n">date_block</span><span class="p">,</span>
+					       <span class="n">DataKeys</span><span class="o">.</span><span class="n">shop</span><span class="p">,</span>
+					       <span class="n">DataKeys</span><span class="o">.</span><span class="n">item</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+	<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">Helpers</span><span class="o">.</span><span class="n">print_head</span><span class="p">(</span><span class="n">grouped</span><span class="p">)</span>
+</pre></div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup><col class="org-right"></colgroup>
+<thead><tr>
+<th scope="col" class="org-right">item_cnt_day</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-right">6</td>
+</tr>
+<tr>
+<td class="org-right">3</td>
+</tr>
+<tr>
+<td class="org-right">1</td>
+</tr>
+<tr>
+<td class="org-right">1</td>
+</tr>
+<tr>
+<td class="org-right">2</td>
+</tr>
+</tbody>
+</table>
+<p>
+The reason why it looks like we lost most of the data is that the <code>groupy</code> method moved the groups into the index.
+</p>
+
+<div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="n">grouped</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+
+<p>
+                                item_cnt_day
+date_block_num shop_id item_id              
+0              0       32                6.0
+                       33                3.0
+                       35                1.0
+                       43                1.0
+                       51                2.0
+</p>
+
+<p>
+So we're going to <a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.reset_index.html">reset the index</a>, which will convert the <a href="https://pandas.pydata.org/pandas-docs/stable/advanced.html">multiindex</a> into columns. I'm also going to re-name the <code>item_cnt_day</code> column since it now represents the count for the whole month, not one day.
+</p>
+
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Chunked</span><span class="p">:</span>
+    <span class="sd">"""Data set chunked-up to the months"""</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">_grouped</span> <span class="o">=</span> <span class="bp">None</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="bp">None</span>
+	<span class="k">return</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">grouped</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="sd">"""grouped data"""</span>
+	<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_grouped</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+	    <span class="bp">self</span><span class="o">.</span><span class="n">_grouped</span> <span class="o">=</span> <span class="n">Grouper</span><span class="p">()</span><span class="o">.</span><span class="n">data</span>
+	<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_grouped</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="sd">"""The chunked data with the counts renamed"""</span>
+	<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+	    <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span>  <span class="bp">self</span><span class="o">.</span><span class="n">grouped</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+	    <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span>
+		<span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="n">DataKeys</span><span class="o">.</span><span class="n">day_count</span><span class="p">:</span> <span class="n">DataKeys</span><span class="o">.</span><span class="n">month_count</span><span class="p">},</span>
+		<span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+	<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">Helpers</span><span class="o">.</span><span class="n">print_head</span><span class="p">(</span><span class="n">chunked</span><span class="p">)</span>
+</pre></div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-right">date_block_num</th>
+<th scope="col" class="org-right">shop_id</th>
+<th scope="col" class="org-right">item_id</th>
+<th scope="col" class="org-right">item_count_month</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">32</td>
+<td class="org-right">6</td>
+</tr>
+<tr>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">33</td>
+<td class="org-right">3</td>
+</tr>
+<tr>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">35</td>
+<td class="org-right">1</td>
+</tr>
+<tr>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">43</td>
+<td class="org-right">1</td>
+</tr>
+<tr>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">51</td>
+<td class="org-right">2</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-org2195a9a" class="outline-3">
+<h3 id="org2195a9a">Adding the Columns Back</h3>
+<div class="outline-text-3" id="text-org2195a9a">
+</div>
+<div id="outline-container-org3d17bb1" class="outline-4">
+<h4 id="org3d17bb1">Group the Super Set</h4>
+<div class="outline-text-4" id="text-org3d17bb1">
+<p>
+Back to the super-set. Since there are multiple entries for items in a given month, I'm going to group the items by shop and date-block (month) and then grab the last entry for each group. 
+</p>
+
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SuperGroup</span><span class="p">:</span>
+    <span class="sd">"""Super Set grouped</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">     groups: list of columns to form the groups</span>
+<span class="sd">    """</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">groups</span><span class="o">=</span><span class="p">[</span><span class="n">DataKeys</span><span class="o">.</span><span class="n">date_block</span><span class="p">,</span>
+			       <span class="n">DataKeys</span><span class="o">.</span><span class="n">shop</span><span class="p">,</span>
+			       <span class="n">DataKeys</span><span class="o">.</span><span class="n">item</span><span class="p">]):</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">groups</span> <span class="o">=</span> <span class="n">groups</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">_super_set</span> <span class="o">=</span> <span class="bp">None</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="bp">None</span>
+	<span class="k">return</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">super_set</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="sd">"""cleaned super set of data"""</span>
+	<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_super_set</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+	    <span class="bp">self</span><span class="o">.</span><span class="n">_super_set</span> <span class="o">=</span> <span class="n">SuperClean</span><span class="p">()</span><span class="o">.</span><span class="n">data</span>
+	<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_super_set</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="sd">"""the super group data"""</span>
+	<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+	    <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">super_set</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">groups</span><span class="p">)</span><span class="o">.</span><span class="n">last</span><span class="p">()</span>
+	    <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+	<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">Helpers</span><span class="o">.</span><span class="n">print_head</span><span class="p">(</span><span class="n">super_group</span><span class="p">)</span>
+</pre></div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-right">date_block_num</th>
+<th scope="col" class="org-right">shop_id</th>
+<th scope="col" class="org-right">item_id</th>
+<th scope="col" class="org-right">item_price</th>
+<th scope="col" class="org-right">item_cnt_day</th>
+<th scope="col" class="org-right">item_category_id</th>
+<th scope="col" class="org-right">month</th>
+<th scope="col" class="org-right">year</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">32</td>
+<td class="org-right">221</td>
+<td class="org-right">1</td>
+<td class="org-right">40</td>
+<td class="org-right">01</td>
+<td class="org-right">2013</td>
+</tr>
+<tr>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">33</td>
+<td class="org-right">347</td>
+<td class="org-right">1</td>
+<td class="org-right">37</td>
+<td class="org-right">01</td>
+<td class="org-right">2013</td>
+</tr>
+<tr>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">35</td>
+<td class="org-right">247</td>
+<td class="org-right">1</td>
+<td class="org-right">40</td>
+<td class="org-right">01</td>
+<td class="org-right">2013</td>
+</tr>
+<tr>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">43</td>
+<td class="org-right">221</td>
+<td class="org-right">1</td>
+<td class="org-right">40</td>
+<td class="org-right">01</td>
+<td class="org-right">2013</td>
+</tr>
+<tr>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">51</td>
+<td class="org-right">127</td>
+<td class="org-right">1</td>
+<td class="org-right">57</td>
+<td class="org-right">01</td>
+<td class="org-right">2013</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+<div id="outline-container-orgf738f9b" class="outline-4">
+<h4 id="orgf738f9b">Re-add the missing columns</h4>
+<div class="outline-text-4" id="text-orgf738f9b">
+<p>
+Now we need to get the category id, price, etc, back into the grouped data by merging it with the de-duplicated one we just created.
+</p>
+
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MergeChunked</span><span class="p">:</span>
+    <span class="sd">"""merge the super-set and the chunked data"""</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">_chunked</span> <span class="o">=</span> <span class="bp">None</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">_super_group</span> <span class="o">=</span> <span class="bp">None</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="bp">None</span>
+	<span class="k">return</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">chunked</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chunked</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+	    <span class="bp">self</span><span class="o">.</span><span class="n">_chunked</span> <span class="o">=</span> <span class="n">Chunked</span><span class="p">()</span><span class="o">.</span><span class="n">data</span>
+	<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chunked</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">super_group</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_super_group</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+	    <span class="bp">self</span><span class="o">.</span><span class="n">_super_group</span> <span class="o">=</span> <span class="n">SuperGroup</span><span class="p">()</span><span class="o">.</span><span class="n">data</span>
+	<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_super_group</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+	    <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunked</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">super_group</span><span class="p">,</span>
+			<span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="n">DataKeys</span><span class="o">.</span><span class="n">date_block</span><span class="p">,</span>
+			    <span class="n">DataKeys</span><span class="o">.</span><span class="n">shop</span><span class="p">,</span>
+			    <span class="n">DataKeys</span><span class="o">.</span><span class="n">item</span><span class="p">],</span>
+			<span class="n">how</span><span class="o">=</span><span class="s2">"left"</span><span class="p">)</span>
+	    <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="n">DataKeys</span><span class="o">.</span><span class="n">day_count</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="s2">"columns"</span><span class="p">)</span>
+	<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="sd">"""save the data as a pickle"""</span>
+	<span class="n">Helpers</span><span class="o">.</span><span class="n">pickle_it</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">Pickles</span><span class="o">.</span><span class="n">grouped</span><span class="p">)</span>
+	<span class="k">return</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="n">Helpers</span><span class="o">.</span><span class="n">print_head</span><span class="p">(</span><span class="n">chunked</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-right">date_block_num</th>
+<th scope="col" class="org-right">shop_id</th>
+<th scope="col" class="org-right">item_id</th>
+<th scope="col" class="org-right">item_count_month</th>
+<th scope="col" class="org-right">item_price</th>
+<th scope="col" class="org-right">item_cnt_day</th>
+<th scope="col" class="org-right">item_category_id</th>
+<th scope="col" class="org-right">month</th>
+<th scope="col" class="org-right">year</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">32</td>
+<td class="org-right">6</td>
+<td class="org-right">221</td>
+<td class="org-right">1</td>
+<td class="org-right">40</td>
+<td class="org-right">01</td>
+<td class="org-right">2013</td>
+</tr>
+<tr>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">33</td>
+<td class="org-right">3</td>
+<td class="org-right">347</td>
+<td class="org-right">1</td>
+<td class="org-right">37</td>
+<td class="org-right">01</td>
+<td class="org-right">2013</td>
+</tr>
+<tr>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">35</td>
+<td class="org-right">1</td>
+<td class="org-right">247</td>
+<td class="org-right">1</td>
+<td class="org-right">40</td>
+<td class="org-right">01</td>
+<td class="org-right">2013</td>
+</tr>
+<tr>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">43</td>
+<td class="org-right">1</td>
+<td class="org-right">221</td>
+<td class="org-right">1</td>
+<td class="org-right">40</td>
+<td class="org-right">01</td>
+<td class="org-right">2013</td>
+</tr>
+<tr>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">51</td>
+<td class="org-right">2</td>
+<td class="org-right">127</td>
+<td class="org-right">1</td>
+<td class="org-right">57</td>
+<td class="org-right">01</td>
+<td class="org-right">2013</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-org0ce6468" class="outline-4">
+<h4 id="org0ce6468">Save the grouped-up data</h4>
+<div class="outline-text-4" id="text-org0ce6468">
+<p>
+I'm calling it <code>grouped_months_data.pkl</code>, but since the name is in the <code>Pickles</code> class, I'll just have to remember to use <code>grouped</code>.
+</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org75c74a7" class="outline-2">
+<h2 id="org75c74a7">Creating the Validation Set</h2>
+<div class="outline-text-2" id="text-org75c74a7">
+<p>
+To make my validation and training set I'm going to use sklearn's <a href="http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html">train_test_split</a>. 
+</p>
+</div>
+<div id="outline-container-org6542f5b" class="outline-3">
+<h3 id="org6542f5b">Targets and Features</h3>
+<div class="outline-text-3" id="text-org6542f5b">
+<p>
+First we need to split the data up into inputs and targets
+</p>
+
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">TrainValidation</span><span class="p">:</span>
+    <span class="sd">"""Makes the training and validation sets</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">     test_size: fraction of data to use as validaiton data</span>
+<span class="sd">     seed: random seed</span>
+<span class="sd">    """</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">2018</span><span class="p">):</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">test_size</span> <span class="o">=</span> <span class="n">test_size</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="n">seed</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">_target</span> <span class="o">=</span> <span class="bp">None</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">_features</span> <span class="o">=</span> <span class="bp">None</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">_chunked</span> <span class="o">=</span> <span class="bp">None</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">_x_train</span> <span class="o">=</span> <span class="bp">None</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">_x_test</span> <span class="o">=</span> <span class="bp">None</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">_y_train</span> <span class="o">=</span> <span class="bp">None</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">_y_test</span> <span class="o">=</span> <span class="bp">None</span>
+	<span class="k">return</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">chunked</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="sd">"""the data chunked by month"""</span>
+	<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chunked</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+	    <span class="bp">self</span><span class="o">.</span><span class="n">_chunked</span> <span class="o">=</span> <span class="n">MergeChunked</span><span class="p">()</span><span class="o">.</span><span class="n">data</span>
+	<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chunked</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">target</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="sd">"""the target data"""</span>
+	<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_target</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+	    <span class="bp">self</span><span class="o">.</span><span class="n">_target</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunked</span><span class="p">[</span><span class="n">DataKeys</span><span class="o">.</span><span class="n">month_count</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+	<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_target</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">features</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="sd">"""The feature data"""</span>
+	<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_features</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+	    <span class="bp">self</span><span class="o">.</span><span class="n">_features</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunked</span><span class="p">[</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">chunked</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span>
+		    <span class="o">~</span><span class="bp">self</span><span class="o">.</span><span class="n">chunked</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="n">DataKeys</span><span class="o">.</span><span class="n">month_count</span><span class="p">,</span>
+						<span class="n">DataKeys</span><span class="o">.</span><span class="n">day_count</span><span class="p">])]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+	<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_features</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">x_train</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x_train</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+	    <span class="bp">self</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+	<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x_train</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">x_test</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x_test</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+	    <span class="bp">self</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+	<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x_test</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">y_train</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y_train</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+	    <span class="bp">self</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+	<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y_train</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">y_test</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y_test</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+	    <span class="bp">self</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+	<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y_test</span>
+
+    <span class="k">def</span> <span class="nf">split</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="bp">self</span><span class="o">.</span><span class="n">_x_train</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x_test</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y_train</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+	    <span class="bp">self</span><span class="o">.</span><span class="n">features</span><span class="p">,</span>
+	    <span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">,</span>
+	    <span class="n">test_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">test_size</span><span class="p">,</span>
+	    <span class="n">random_state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">seed</span>
+	<span class="p">)</span>
+	<span class="k">return</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="sd">"""stores the data-files"""</span>
+	<span class="n">Helpers</span><span class="o">.</span><span class="n">pickle_it</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x_train</span><span class="p">,</span> <span class="n">Pickles</span><span class="o">.</span><span class="n">x_train</span><span class="p">)</span>
+	<span class="n">Helpers</span><span class="o">.</span><span class="n">pickle_it</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x_test</span><span class="p">,</span> <span class="n">Pickles</span><span class="o">.</span><span class="n">x_test</span><span class="p">)</span>
+	<span class="n">Helpers</span><span class="o">.</span><span class="n">pickle_it</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y_train</span><span class="p">,</span> <span class="n">Pickles</span><span class="o">.</span><span class="n">y_train</span><span class="p">)</span>
+	<span class="n">Helpers</span><span class="o">.</span><span class="n">pickle_it</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y_test</span><span class="p">,</span> <span class="n">Pickles</span><span class="o">.</span><span class="n">y_test</span><span class="p">)</span>
+	<span class="k">return</span>
+
+    <span class="k">def</span> <span class="nf">check</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="sd">"""checks the columns for the data"""</span>
+	<span class="k">assert</span> <span class="n">DataKeys</span><span class="o">.</span><span class="n">month_count</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">features</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="s2">"Features has target"</span>
+	<span class="k">assert</span> <span class="n">DataKeys</span><span class="o">.</span><span class="n">month_count</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_train</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="s2">"x_train has target"</span>
+	<span class="k">assert</span> <span class="n">DataKeys</span><span class="o">.</span><span class="n">month_count</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_test</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="s2">"x_test has target"</span>
+	<span class="k">assert</span> <span class="n">DataKeys</span><span class="o">.</span><span class="n">day_count</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">features</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="s2">"Features has day count"</span>
+	<span class="k">assert</span> <span class="n">DataKeys</span><span class="o">.</span><span class="n">day_count</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_train</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="s2">"x_train has day count"</span>
+	<span class="k">assert</span> <span class="n">DataKeys</span><span class="o">.</span><span class="n">day_count</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_test</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="s2">"x_test has day count"</span>
+	<span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">DataKeys</span><span class="o">.</span><span class="n">month_count</span><span class="p">,</span> <span class="s2">"Target not month count"</span>
+	<span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_test</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">DataKeys</span><span class="o">.</span><span class="n">month_count</span><span class="p">,</span> <span class="s2">"y-test not month count"</span>
+	<span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_train</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">DataKeys</span><span class="o">.</span><span class="n">month_count</span><span class="p">,</span> <span class="s2">"y-train not month count"</span>
+	<span class="k">return</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="n">target</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">features</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+
+<p>
+(1609124,)
+(1609124, 7)
+</p>
+</div>
+</div>
+
+<div id="outline-container-org3c6f7d6" class="outline-3">
+<h3 id="org3c6f7d6">Make Like a Banana</h3>
+<div class="outline-text-3" id="text-org3c6f7d6">
+<p>
+I'm going to create a training set with 80% of the data and leave the other 20% as the validation data.
+</p>
+
+<div class="highlight"><pre><span></span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">TrainValidation</span><span class="p">()</span>
+    <span class="n">data</span><span class="p">()</span>
+    <span class="n">data</span><span class="o">.</span><span class="n">check</span><span class="p">()</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="n">x_train</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">x_test</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">y_train</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">y_test</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+
+<p>
+(1287299, 7)
+(321825, 7)
+(1287299,)
+(321825,)
+</p>
+
+<p>
+So now we're set to get started.
+</p>
+</div>
+</div>
+</div>
+    </div>
+    </article><article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/feature-extraction-from-text-and-images/" class="u-url">Feature Extraction From Text and Images</a></h1>
         <div class="metadata">
             <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
                 Cloistered Monkey
@@ -95,29 +1427,29 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="posts/feature-extraction-from-text-and-images/#org8cb0aa1">How do you convert text to data?</a></li>
-<li><a href="posts/feature-extraction-from-text-and-images/#org34c0118">Practice Quiz</a></li>
-<li><a href="posts/feature-extraction-from-text-and-images/#org0e0c001">Quiz</a></li>
-<li><a href="posts/feature-extraction-from-text-and-images/#orgce3e50a">Links</a></li>
+<li><a href="posts/feature-extraction-from-text-and-images/#orgfeb2b30">How do you convert text to data?</a></li>
+<li><a href="posts/feature-extraction-from-text-and-images/#orgd0d2c46">Practice Quiz</a></li>
+<li><a href="posts/feature-extraction-from-text-and-images/#orga47dfcb">Quiz</a></li>
+<li><a href="posts/feature-extraction-from-text-and-images/#orgeb9a2d8">Links</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org8cb0aa1" class="outline-2">
-<h2 id="org8cb0aa1">How do you convert text to data?</h2>
-<div class="outline-text-2" id="text-org8cb0aa1">
+<div id="outline-container-orgfeb2b30" class="outline-2">
+<h2 id="orgfeb2b30">How do you convert text to data?</h2>
+<div class="outline-text-2" id="text-orgfeb2b30">
 </div>
-<div id="outline-container-org93086c0" class="outline-3">
-<h3 id="org93086c0">Two Main Methods</h3>
-<div class="outline-text-3" id="text-org93086c0">
+<div id="outline-container-org2bfe738" class="outline-3">
+<h3 id="org2bfe738">Two Main Methods</h3>
+<div class="outline-text-3" id="text-org2bfe738">
 </div>
-<div id="outline-container-orgcc4b03a" class="outline-4">
-<h4 id="orgcc4b03a">Bag Of Words</h4>
-<div class="outline-text-4" id="text-orgcc4b03a">
+<div id="outline-container-orga60dac5" class="outline-4">
+<h4 id="orga60dac5">Bag Of Words</h4>
+<div class="outline-text-4" id="text-orga60dac5">
 </div>
 <ul class="org-ul">
 <li>
-<a id="org6981de9"></a>Vectorization<br><div class="outline-text-5" id="text-org6981de9">
+<a id="org9bb0d0f"></a>Vectorization<br><div class="outline-text-5" id="text-org9bb0d0f">
 <p>
 This method counts the number of occurrences of each word in the source. For each word it creates a column and then in the row puts the counts for that instance of data.
 </p>
@@ -128,7 +1460,7 @@ This method counts the number of occurrences of each word in the source. For eac
 </div>
 </li>
 <li>
-<a id="orgb35f8ca"></a>Term Frequency/Inverse Document Frequency (TF/IDF)<br><div class="outline-text-5" id="text-orgb35f8ca">
+<a id="orgb771ad6"></a>Term Frequency/Inverse Document Frequency (TF/IDF)<br><div class="outline-text-5" id="text-orgb771ad6">
 <p>
 This method tries to make word counts comparable even if the texts are of different sizes and also to emphasize more important words.
 </p>
@@ -141,7 +1473,7 @@ This method tries to make word counts comparable even if the texts are of differ
 </div>
 </li>
 <li>
-<a id="org1287ef3"></a>N-Grams<br><div class="outline-text-5" id="text-org1287ef3">
+<a id="orgb6ea07f"></a>N-Grams<br><div class="outline-text-5" id="text-orgb6ea07f">
 <p>
 This method that creates a bag of words by grouping them into sub-sequences of words. A 3-gram, for instance, sweeps the text to create sequences of words made up of 3 adjacent words.
 </p>
@@ -152,7 +1484,7 @@ This method that creates a bag of words by grouping them into sub-sequences of w
 </div>
 </li>
 <li>
-<a id="org2a20580"></a>Text Preprocessing<br><div class="outline-text-5" id="text-org2a20580">
+<a id="org0e2c3f7"></a>Text Preprocessing<br><div class="outline-text-5" id="text-org0e2c3f7">
 <ul class="org-ul">
 <li>lowercase:
 Change all the words to lower-case</li>
@@ -166,7 +1498,7 @@ Remove common words (e.g. a, and, or, etc.)</li>
 </div>
 </li>
 <li>
-<a id="org70714c9"></a>The Bag Of Words Pipeline<br><div class="outline-text-5" id="text-org70714c9">
+<a id="org94da243"></a>The Bag Of Words Pipeline<br><div class="outline-text-5" id="text-org94da243">
 <ol class="org-ol">
 <li>Preprocessing (lowercase, lemmatization, stemming, stopwords)</li>
 <li>Create n-grams</li>
@@ -176,9 +1508,9 @@ Remove common words (e.g. a, and, or, etc.)</li>
 </li>
 </ul>
 </div>
-<div id="outline-container-orgab7c48e" class="outline-4">
-<h4 id="orgab7c48e">Embeddings (e.g. Word2Vec)</h4>
-<div class="outline-text-4" id="text-orgab7c48e">
+<div id="outline-container-org5dfff27" class="outline-4">
+<h4 id="org5dfff27">Embeddings (e.g. Word2Vec)</h4>
+<div class="outline-text-4" id="text-org5dfff27">
 <ul class="org-ul">
 <li>Uses neural-nets</li>
 <li>much smaller vectors than bag of words</li>
@@ -189,13 +1521,13 @@ Remove common words (e.g. a, and, or, etc.)</li>
 </div>
 </div>
 </div>
-<div id="outline-container-org34c0118" class="outline-2">
-<h2 id="org34c0118">Practice Quiz</h2>
-<div class="outline-text-2" id="text-org34c0118">
+<div id="outline-container-orgd0d2c46" class="outline-2">
+<h2 id="orgd0d2c46">Practice Quiz</h2>
+<div class="outline-text-2" id="text-orgd0d2c46">
 </div>
-<div id="outline-container-org813029b" class="outline-3">
-<h3 id="org813029b">One</h3>
-<div class="outline-text-3" id="text-org813029b">
+<div id="outline-container-org46a9334" class="outline-3">
+<h3 id="org46a9334">One</h3>
+<div class="outline-text-3" id="text-org46a9334">
 <p>
 TF-IDF is applied to a matrix where each column represents a word, each row represents a document, and each value shows the number of times a particular word occurred in a particular document. Choose the correct statements.
 </p>
@@ -211,9 +1543,9 @@ TF-IDF is applied to a matrix where each column represents a word, each row repr
 </ul>
 </div>
 </div>
-<div id="outline-container-orgdb4c45c" class="outline-3">
-<h3 id="orgdb4c45c">Two</h3>
-<div class="outline-text-3" id="text-orgdb4c45c">
+<div id="outline-container-org5c96619" class="outline-3">
+<h3 id="org5c96619">Two</h3>
+<div class="outline-text-3" id="text-org5c96619">
 <p>
 Which of these methods can be used to preprocess text?
 </p>
@@ -235,9 +1567,9 @@ Which of these methods can be used to preprocess text?
 </ul>
 </div>
 </div>
-<div id="outline-container-orga0899ed" class="outline-3">
-<h3 id="orga0899ed">Three</h3>
-<div class="outline-text-3" id="text-orga0899ed">
+<div id="outline-container-orgb29fbea" class="outline-3">
+<h3 id="orgb29fbea">Three</h3>
+<div class="outline-text-3" id="text-orgb29fbea">
 <p>
 What is the main purpose of lemmatization and stemming?
 </p>
@@ -253,9 +1585,9 @@ What is the main purpose of lemmatization and stemming?
 </ul>
 </div>
 </div>
-<div id="outline-container-org021da8c" class="outline-3">
-<h3 id="org021da8c">Four</h3>
-<div class="outline-text-3" id="text-org021da8c">
+<div id="outline-container-org6e9e549" class="outline-3">
+<h3 id="org6e9e549">Four</h3>
+<div class="outline-text-3" id="text-org6e9e549">
 <p>
 To learn Word2Vec embeddings we need:
 </p>
@@ -272,13 +1604,13 @@ To learn Word2Vec embeddings we need:
 </div>
 </div>
 </div>
-<div id="outline-container-org0e0c001" class="outline-2">
-<h2 id="org0e0c001">Quiz</h2>
-<div class="outline-text-2" id="text-org0e0c001">
+<div id="outline-container-orga47dfcb" class="outline-2">
+<h2 id="orga47dfcb">Quiz</h2>
+<div class="outline-text-2" id="text-orga47dfcb">
 </div>
-<div id="outline-container-orgc214beb" class="outline-3">
-<h3 id="orgc214beb">One</h3>
-<div class="outline-text-3" id="text-orgc214beb">
+<div id="outline-container-org9f4bf4d" class="outline-3">
+<h3 id="org9f4bf4d">One</h3>
+<div class="outline-text-3" id="text-org9f4bf4d">
 <p>
 Select true statements about n-grams.
 </p>
@@ -294,9 +1626,9 @@ Select true statements about n-grams.
 </ul>
 </div>
 </div>
-<div id="outline-container-org7a24038" class="outline-3">
-<h3 id="org7a24038">Two</h3>
-<div class="outline-text-3" id="text-org7a24038">
+<div id="outline-container-org121bb24" class="outline-3">
+<h3 id="org121bb24">Two</h3>
+<div class="outline-text-3" id="text-org121bb24">
 <p>
 Select the true statements.
 </p>
@@ -315,9 +1647,9 @@ Select the true statements.
 </ul>
 </div>
 </div>
-<div id="outline-container-orgf58bb26" class="outline-3">
-<h3 id="orgf58bb26">Three</h3>
-<div class="outline-text-3" id="text-orgf58bb26">
+<div id="outline-container-org87d4ddc" class="outline-3">
+<h3 id="org87d4ddc">Three</h3>
+<div class="outline-text-3" id="text-org87d4ddc">
 <p>
 Suppose in a new competition we are given a dataset of 2D medical images. We want to extract image descriptors from a hidden layer of a neural network pretrained on the ImageNet dataset. We will then use extracted descriptors to train a simple logistic regression model to classify images from our dataset.
 </p>
@@ -343,9 +1675,9 @@ We are considering using two networks: ResNet-50 with an ImageNet accuracy of X 
 </ul>
 </div>
 </div>
-<div id="outline-container-org18afcb8" class="outline-3">
-<h3 id="org18afcb8">Four</h3>
-<div class="outline-text-3" id="text-org18afcb8">
+<div id="outline-container-org95d17e0" class="outline-3">
+<h3 id="org95d17e0">Four</h3>
+<div class="outline-text-3" id="text-org95d17e0">
 <p>
 Data augmentation can be used at (1) train time and (2) test time
 </p>
@@ -362,17 +1694,17 @@ Data augmentation can be used at (1) train time and (2) test time
 </div>
 </div>
 </div>
-<div id="outline-container-orgce3e50a" class="outline-2">
-<h2 id="orgce3e50a">Links</h2>
-<div class="outline-text-2" id="text-orgce3e50a">
+<div id="outline-container-orgeb9a2d8" class="outline-2">
+<h2 id="orgeb9a2d8">Links</h2>
+<div class="outline-text-2" id="text-orgeb9a2d8">
 </div>
-<div id="outline-container-org9232cc7" class="outline-3">
-<h3 id="org9232cc7">Text</h3>
-<div class="outline-text-3" id="text-org9232cc7">
+<div id="outline-container-org9cb224d" class="outline-3">
+<h3 id="org9cb224d">Text</h3>
+<div class="outline-text-3" id="text-org9cb224d">
 </div>
-<div id="outline-container-orge18959d" class="outline-4">
-<h4 id="orge18959d">Bag Of Words</h4>
-<div class="outline-text-4" id="text-orge18959d">
+<div id="outline-container-org2c40d49" class="outline-4">
+<h4 id="org2c40d49">Bag Of Words</h4>
+<div class="outline-text-4" id="text-org2c40d49">
 <ul class="org-ul">
 <li><a href="http://scikit-learn.org/stable/modules/feature_extraction.html">SKlearn on feature extraction</a></li>
 <li>
@@ -380,9 +1712,9 @@ Data augmentation can be used at (1) train time and (2) test time
 </ul>
 </div>
 </div>
-<div id="outline-container-org68c4857" class="outline-4">
-<h4 id="org68c4857">Word2Vec</h4>
-<div class="outline-text-4" id="text-org68c4857">
+<div id="outline-container-orgf58e6c4" class="outline-4">
+<h4 id="orgf58e6c4">Word2Vec</h4>
+<div class="outline-text-4" id="text-orgf58e6c4">
 <ul class="org-ul">
 <li><a href="https://www.tensorflow.org/tutorials/representation/word2vec">TensorFlow tutorial</a></li>
 <li>
@@ -392,9 +1724,9 @@ Data augmentation can be used at (1) train time and (2) test time
 </ul>
 </div>
 </div>
-<div id="outline-container-orgae7867c" class="outline-4">
-<h4 id="orgae7867c">Natural Language Processing with Python</h4>
-<div class="outline-text-4" id="text-orgae7867c">
+<div id="outline-container-orge34e04c" class="outline-4">
+<h4 id="orge34e04c">Natural Language Processing with Python</h4>
+<div class="outline-text-4" id="text-orge34e04c">
 <ul class="org-ul">
 <li><a href="http://www.nltk.org/">nltk</a></li>
 <li><a href="https://textblob.readthedocs.io/en/dev/">TextBlob</a></li>
@@ -402,22 +1734,22 @@ Data augmentation can be used at (1) train time and (2) test time
 </div>
 </div>
 </div>
-<div id="outline-container-orgfdeada8" class="outline-3">
-<h3 id="orgfdeada8">Images</h3>
-<div class="outline-text-3" id="text-orgfdeada8">
+<div id="outline-container-orgfae8717" class="outline-3">
+<h3 id="orgfae8717">Images</h3>
+<div class="outline-text-3" id="text-orgfae8717">
 </div>
-<div id="outline-container-org855838a" class="outline-4">
-<h4 id="org855838a">Pre-trained Models</h4>
-<div class="outline-text-4" id="text-org855838a">
+<div id="outline-container-org1a02b96" class="outline-4">
+<h4 id="org1a02b96">Pre-trained Models</h4>
+<div class="outline-text-4" id="text-org1a02b96">
 <ul class="org-ul">
 <li><a href="https://keras.io/applications/">Keras</a></li>
 <li><a href="https://www.kernix.com/blog/image-classification-with-a-pre-trained-deep-neural-network_p11">How To use a pre-trained model</a></li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org55e6776" class="outline-4">
-<h4 id="org55e6776">Fine-Tuning</h4>
-<div class="outline-text-4" id="text-org55e6776">
+<div id="outline-container-orga780bd9" class="outline-4">
+<h4 id="orga780bd9">Fine-Tuning</h4>
+<div class="outline-text-4" id="text-orga780bd9">
 <ul class="org-ul">
 <li><a href="https://www.tensorflow.org/hub/tutorials/image_retraining">Re-train a tensorflow image classifier</a></li>
 <li><a href="https://flyyufelix.github.io/2016/10/08/fine-tuning-in-keras-part2.html">Fine-tuning deep learning models in keras</a></li>

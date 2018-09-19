@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about data preprocessing competition)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/data-preprocessing-competition.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Mon, 17 Sep 2018 22:30:31 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Building The Training Set</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/building-the-training-set/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about data preprocessing competition)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/data-preprocessing-competition.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Mon, 27 Aug 2018 16:39:14 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Building The Training Set</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/building-the-training-set/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
 &lt;h2&gt;Table of Contents&lt;/h2&gt;
 &lt;div id="text-table-of-contents"&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/building-the-training-set/#orge1f49f7"&gt;The Tangle&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/building-the-training-set/#org9d38200"&gt;Imports&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/building-the-training-set/#org49c8d6b"&gt;Helpers&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/building-the-training-set/#orgb7468d4"&gt;Building Up the Super Set&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/building-the-training-set/#orgbd920c1"&gt;Setting up the Training and Validation Data&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/building-the-training-set/#org9e67801"&gt;Creating the Validation Set&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/building-the-training-set/#org82438b9"&gt;The Tangle&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/building-the-training-set/#orga319808"&gt;Imports&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/building-the-training-set/#org113b4ba"&gt;Helpers&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/building-the-training-set/#orga915c5b"&gt;Building Up the Super Set&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/building-the-training-set/#org346293b"&gt;Setting up the Training and Validation Data&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/building-the-training-set/#org75c74a7"&gt;Creating the Validation Set&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orge1f49f7" class="outline-2"&gt;
-&lt;h2 id="orge1f49f7"&gt;The Tangle&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orge1f49f7"&gt;
+&lt;div id="outline-container-org82438b9" class="outline-2"&gt;
+&lt;h2 id="org82438b9"&gt;The Tangle&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org82438b9"&gt;
 &lt;p&gt;
 This is the exporter for stuff to be re-used outside of this post.
 &lt;/p&gt;
@@ -65,21 +65,21 @@ This is the exporter for stuff to be re-used outside of this post.
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org9d38200" class="outline-2"&gt;
-&lt;h2 id="org9d38200"&gt;Imports&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org9d38200"&gt;
+&lt;div id="outline-container-orga319808" class="outline-2"&gt;
+&lt;h2 id="orga319808"&gt;Imports&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orga319808"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org79b14fc" class="outline-3"&gt;
-&lt;h3 id="org79b14fc"&gt;Python Standard Library&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org79b14fc"&gt;
+&lt;div id="outline-container-org8268ff2" class="outline-3"&gt;
+&lt;h3 id="org8268ff2"&gt;Python Standard Library&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org8268ff2"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;os&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgfa1827e" class="outline-3"&gt;
-&lt;h3 id="orgfa1827e"&gt;Suppressing the Numpy Warnings&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgfa1827e"&gt;
+&lt;div id="outline-container-orge6397f2" class="outline-3"&gt;
+&lt;h3 id="orge6397f2"&gt;Suppressing the Numpy Warnings&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orge6397f2"&gt;
 &lt;p&gt;
 This is to suppress the warnings when we import pandas.
 &lt;/p&gt;
@@ -90,18 +90,18 @@ This is to suppress the warnings when we import pandas.
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org5236dba" class="outline-3"&gt;
-&lt;h3 id="org5236dba"&gt;From pypi&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org5236dba"&gt;
+&lt;div id="outline-container-orgd7ba4a4" class="outline-3"&gt;
+&lt;h3 id="orgd7ba4a4"&gt;From pypi&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgd7ba4a4"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;pandas&lt;/span&gt;
 &lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;sklearn.model_selection&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;train_test_split&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgdd894ea" class="outline-3"&gt;
-&lt;h3 id="orgdd894ea"&gt;This Project&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgdd894ea"&gt;
+&lt;div id="outline-container-orgee232e4" class="outline-3"&gt;
+&lt;h3 id="orgee232e4"&gt;This Project&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgee232e4"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;kaggler.helpers.helpers&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;
     &lt;span class="n"&gt;DataKeys&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
     &lt;span class="n"&gt;DataNames&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
@@ -113,13 +113,13 @@ This is to suppress the warnings when we import pandas.
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org49c8d6b" class="outline-2"&gt;
-&lt;h2 id="org49c8d6b"&gt;Helpers&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org49c8d6b"&gt;
+&lt;div id="outline-container-org113b4ba" class="outline-2"&gt;
+&lt;h2 id="org113b4ba"&gt;Helpers&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org113b4ba"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgf09ce30" class="outline-3"&gt;
-&lt;h3 id="orgf09ce30"&gt;Pickles&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgf09ce30"&gt;
+&lt;div id="outline-container-orge7249cc" class="outline-3"&gt;
+&lt;h3 id="orge7249cc"&gt;Pickles&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orge7249cc"&gt;
 &lt;p&gt;
 I'm going to pickle the data to re-load them later so this will hold the names.
 &lt;/p&gt;
@@ -138,9 +138,9 @@ I'm going to pickle the data to re-load them later so this will hold the names.
 &lt;/div&gt;
 
 
-&lt;div id="outline-container-orgb7468d4" class="outline-2"&gt;
-&lt;h2 id="orgb7468d4"&gt;Building Up the Super Set&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgb7468d4"&gt;
+&lt;div id="outline-container-orga915c5b" class="outline-2"&gt;
+&lt;h2 id="orga915c5b"&gt;Building Up the Super Set&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orga915c5b"&gt;
 &lt;p&gt;
 Since we have some variables in separate sets I thought it would be useful to combine them into a single training set.
 &lt;/p&gt;
@@ -154,9 +154,9 @@ Since we have some variables in separate sets I thought it would be useful to co
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org5483960" class="outline-3"&gt;
-&lt;h3 id="org5483960"&gt;The Data Source&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org5483960"&gt;
+&lt;div id="outline-container-orgdf67298" class="outline-3"&gt;
+&lt;h3 id="orgdf67298"&gt;The Data Source&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgdf67298"&gt;
 &lt;p&gt;
 I put the paths into a class called DataSource, this is just to instantiate it.
 &lt;/p&gt;
@@ -172,9 +172,9 @@ I put the paths into a class called DataSource, this is just to instantiate it.
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org4931807" class="outline-3"&gt;
-&lt;h3 id="org4931807"&gt;Building the Super Set&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org4931807"&gt;
+&lt;div id="outline-container-orga3d07a2" class="outline-3"&gt;
+&lt;h3 id="orga3d07a2"&gt;Building the Super Set&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orga3d07a2"&gt;
 &lt;p&gt;
 The &lt;code&gt;super_set&lt;/code&gt; will be a combination of the different data-sources.
 &lt;/p&gt;
@@ -193,9 +193,9 @@ The &lt;code&gt;super_set&lt;/code&gt; will be a combination of the different da
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org2f8063e" class="outline-3"&gt;
-&lt;h3 id="org2f8063e"&gt;Adding the Category IDs&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org2f8063e"&gt;
+&lt;div id="outline-container-org2e4c1c6" class="outline-3"&gt;
+&lt;h3 id="org2e4c1c6"&gt;Adding the Category IDs&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org2e4c1c6"&gt;
 &lt;p&gt;
 The &lt;code&gt;items.csv&lt;/code&gt; file holds a map of the item-ids to category-ids so we can &lt;a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.merge.html"&gt;merge&lt;/a&gt; it in to get the category ids for our data-set.
 &lt;/p&gt;
@@ -409,9 +409,9 @@ This is also going to add the name of the item, which I'm thinking won't be as u
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org4f96e40" class="outline-3"&gt;
-&lt;h3 id="org4f96e40"&gt;Splitting the Dates&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org4f96e40"&gt;
+&lt;div id="outline-container-org469c5e2" class="outline-3"&gt;
+&lt;h3 id="org469c5e2"&gt;Splitting the Dates&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org469c5e2"&gt;
 &lt;p&gt;
 The &lt;code&gt;date&lt;/code&gt; column has a string formatted &lt;code&gt;dd.mm.yy&lt;/code&gt;. Since we want sales per month and it might change over time, I'll split the date-stamp up into day, month, and year (although I don't think I'll be keeping day).
 &lt;/p&gt;
@@ -656,9 +656,9 @@ Nowe we can see what our &lt;code&gt;super_set&lt;/code&gt; looks like.
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgd772d6c" class="outline-3"&gt;
-&lt;h3 id="orgd772d6c"&gt;Cleaning Up&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgd772d6c"&gt;
+&lt;div id="outline-container-org5c55d54" class="outline-3"&gt;
+&lt;h3 id="org5c55d54"&gt;Cleaning Up&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org5c55d54"&gt;
 &lt;p&gt;
 The &lt;code&gt;date&lt;/code&gt; column is now superfluous, and I don't think we need the day, since we are predicting by month. I'm also going to assume that names aren't as useful as the numeric ids. This might not be true, but I think using the text would require pre-processing which is beyond what I'm doing here, so I'm going to leave them out (there is another file with shop names that needs to be loaded if the text turns out to be significant). I'm going to &lt;a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.drop.html"&gt;drop&lt;/a&gt; the columns that I don't think I'll need.
 &lt;/p&gt;
@@ -786,9 +786,9 @@ The &lt;code&gt;date&lt;/code&gt; column is now superfluous, and I don't think w
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org9f069d7" class="outline-3"&gt;
-&lt;h3 id="org9f069d7"&gt;Saving the Super Set&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org9f069d7"&gt;
+&lt;div id="outline-container-orgaeeef54" class="outline-3"&gt;
+&lt;h3 id="orgaeeef54"&gt;Saving the Super Set&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgaeeef54"&gt;
 &lt;p&gt;
 Now I'll pickle it up so it can be loaded later.
 &lt;/p&gt;
@@ -800,17 +800,17 @@ Now I'll pickle it up so it can be loaded later.
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgbd920c1" class="outline-2"&gt;
-&lt;h2 id="orgbd920c1"&gt;Setting up the Training and Validation Data&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgbd920c1"&gt;
+&lt;div id="outline-container-org346293b" class="outline-2"&gt;
+&lt;h2 id="org346293b"&gt;Setting up the Training and Validation Data&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org346293b"&gt;
 &lt;p&gt;
 Although I went through the trouble of smashing all the values into one Data Frame, it turns out that I need things grouped by month, and doing the grouping after adding the columns just make it messy, so I'm going to back-track a little here to set up the data we need for training and testing.
 &lt;/p&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orga1eed79" class="outline-3"&gt;
-&lt;h3 id="orga1eed79"&gt;The Grouper&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orga1eed79"&gt;
+&lt;div id="outline-container-orgb087d57" class="outline-3"&gt;
+&lt;h3 id="orgb087d57"&gt;The Grouper&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgb087d57"&gt;
 &lt;p&gt;
 Since I'm going to aggregate by the month (really the &lt;code&gt;date_block_num&lt;/code&gt;), leaving in things like the price doesn't really make sense so I'll make a sub-frame that I can &lt;a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.groupby.html"&gt;group&lt;/a&gt;.
 &lt;/p&gt;
@@ -995,13 +995,13 @@ So we're going to &lt;a href="https://pandas.pydata.org/pandas-docs/stable/gener
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orga76d5e6" class="outline-3"&gt;
-&lt;h3 id="orga76d5e6"&gt;Adding the Columns Back&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orga76d5e6"&gt;
+&lt;div id="outline-container-org2195a9a" class="outline-3"&gt;
+&lt;h3 id="org2195a9a"&gt;Adding the Columns Back&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org2195a9a"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orge6f43ed" class="outline-4"&gt;
-&lt;h4 id="orge6f43ed"&gt;Group the Super Set&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-orge6f43ed"&gt;
+&lt;div id="outline-container-org3d17bb1" class="outline-4"&gt;
+&lt;h4 id="org3d17bb1"&gt;Group the Super Set&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org3d17bb1"&gt;
 &lt;p&gt;
 Back to the super-set. Since there are multiple entries for items in a given month, I'm going to group the items by shop and date-block (month) and then grab the last entry for each group. 
 &lt;/p&gt;
@@ -1132,9 +1132,9 @@ Back to the super-set. Since there are multiple entries for items in a given mon
 &lt;/div&gt;
 
 
-&lt;div id="outline-container-org727c764" class="outline-4"&gt;
-&lt;h4 id="org727c764"&gt;Re-add the missing columns&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org727c764"&gt;
+&lt;div id="outline-container-orgf738f9b" class="outline-4"&gt;
+&lt;h4 id="orgf738f9b"&gt;Re-add the missing columns&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-orgf738f9b"&gt;
 &lt;p&gt;
 Now we need to get the category id, price, etc, back into the grouped data by merging it with the de-duplicated one we just created.
 &lt;/p&gt;
@@ -1279,9 +1279,9 @@ Now we need to get the category id, price, etc, back into the grouped data by me
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org309a129" class="outline-4"&gt;
-&lt;h4 id="org309a129"&gt;Save the grouped-up data&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org309a129"&gt;
+&lt;div id="outline-container-org0ce6468" class="outline-4"&gt;
+&lt;h4 id="org0ce6468"&gt;Save the grouped-up data&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org0ce6468"&gt;
 &lt;p&gt;
 I'm calling it &lt;code&gt;grouped_months_data.pkl&lt;/code&gt;, but since the name is in the &lt;code&gt;Pickles&lt;/code&gt; class, I'll just have to remember to use &lt;code&gt;grouped&lt;/code&gt;.
 &lt;/p&gt;
@@ -1290,16 +1290,16 @@ I'm calling it &lt;code&gt;grouped_months_data.pkl&lt;/code&gt;, but since the n
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org9e67801" class="outline-2"&gt;
-&lt;h2 id="org9e67801"&gt;Creating the Validation Set&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org9e67801"&gt;
+&lt;div id="outline-container-org75c74a7" class="outline-2"&gt;
+&lt;h2 id="org75c74a7"&gt;Creating the Validation Set&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org75c74a7"&gt;
 &lt;p&gt;
 To make my validation and training set I'm going to use sklearn's &lt;a href="http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html"&gt;train_test_split&lt;/a&gt;. 
 &lt;/p&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orge0ce06a" class="outline-3"&gt;
-&lt;h3 id="orge0ce06a"&gt;Targets and Features&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orge0ce06a"&gt;
+&lt;div id="outline-container-org6542f5b" class="outline-3"&gt;
+&lt;h3 id="org6542f5b"&gt;Targets and Features&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org6542f5b"&gt;
 &lt;p&gt;
 First we need to split the data up into inputs and targets
 &lt;/p&gt;
@@ -1413,9 +1413,9 @@ First we need to split the data up into inputs and targets
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org872d1d2" class="outline-3"&gt;
-&lt;h3 id="org872d1d2"&gt;Make Like a Banana&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org872d1d2"&gt;
+&lt;div id="outline-container-org3c6f7d6" class="outline-3"&gt;
+&lt;h3 id="org3c6f7d6"&gt;Make Like a Banana&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org3c6f7d6"&gt;
 &lt;p&gt;
 I'm going to create a training set with 80% of the data and leave the other 20% as the validation data.
 &lt;/p&gt;

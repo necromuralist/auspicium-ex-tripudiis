@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about howto)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/cat_howto.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Mon, 17 Sep 2018 22:30:31 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Set Up the Kaggle Command-Line Command</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/set-up-the-kaggle-command-line-command/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about howto)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/cat_howto.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Sat, 25 Aug 2018 18:58:31 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Set Up the Kaggle Command-Line Command</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/set-up-the-kaggle-command-line-command/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
 &lt;h2&gt;Table of Contents&lt;/h2&gt;
 &lt;div id="text-table-of-contents"&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/set-up-the-kaggle-command-line-command/#org81101ac"&gt;Install the Command&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/set-up-the-kaggle-command-line-command/#orgd2306fc"&gt;Get Your Credentials&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/set-up-the-kaggle-command-line-command/#orgbaffde6"&gt;Test it out&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/set-up-the-kaggle-command-line-command/#orge10ca65"&gt;The Actual API&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/set-up-the-kaggle-command-line-command/#org615e90f"&gt;Install the Command&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/set-up-the-kaggle-command-line-command/#org91e3109"&gt;Get Your Credentials&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/set-up-the-kaggle-command-line-command/#org2df4a2d"&gt;Test it out&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/set-up-the-kaggle-command-line-command/#org27c7035"&gt;The Actual API&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -15,9 +15,9 @@
 These are my notes as I set up the command-line interface. The official instructions are in the &lt;a href="https://github.com/Kaggle/kaggle-api"&gt;README on github&lt;/a&gt;.
 &lt;/p&gt;
 
-&lt;div id="outline-container-org81101ac" class="outline-2"&gt;
-&lt;h2 id="org81101ac"&gt;Install the Command&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org81101ac"&gt;
+&lt;div id="outline-container-org615e90f" class="outline-2"&gt;
+&lt;h2 id="org615e90f"&gt;Install the Command&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org615e90f"&gt;
 &lt;p&gt;
 The code is available through &lt;a href="https://pypi.org/project/kaggle/"&gt;pypi&lt;/a&gt; so you can install it through pip. Their instructions say to install it at the user-level but I'm doing it in a &lt;code&gt;virtualenv&lt;/code&gt; so that actually doesn't work for me, instead I did a regular &lt;code&gt;pip&lt;/code&gt; install (after installing &lt;code&gt;wheel&lt;/code&gt;).
 &lt;/p&gt;
@@ -28,13 +28,13 @@ pip install kaggle
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgd2306fc" class="outline-2"&gt;
-&lt;h2 id="orgd2306fc"&gt;Get Your Credentials&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgd2306fc"&gt;
+&lt;div id="outline-container-org91e3109" class="outline-2"&gt;
+&lt;h2 id="org91e3109"&gt;Get Your Credentials&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org91e3109"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgb3cbfc8" class="outline-3"&gt;
-&lt;h3 id="orgb3cbfc8"&gt;Download the JSON File From Kaggle&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgb3cbfc8"&gt;
+&lt;div id="outline-container-org003b2cb" class="outline-3"&gt;
+&lt;h3 id="org003b2cb"&gt;Download the JSON File From Kaggle&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org003b2cb"&gt;
 &lt;p&gt;
 Log in to your kaggle account and click on the &lt;i&gt;Account&lt;/i&gt; menu (it's hidden until you hover over the drop-down widget).
 &lt;/p&gt;
@@ -67,9 +67,9 @@ This will start a file download, if it prompts you save it to your computer.
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org3ac9318" class="outline-3"&gt;
-&lt;h3 id="org3ac9318"&gt;Set Up the File&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org3ac9318"&gt;
+&lt;div id="outline-container-orga2349fb" class="outline-3"&gt;
+&lt;h3 id="orga2349fb"&gt;Set Up the File&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orga2349fb"&gt;
 &lt;p&gt;
 Store this file in a folder named &lt;code&gt;.kaggle&lt;/code&gt;.
 &lt;/p&gt;
@@ -102,9 +102,9 @@ The instructions say you could also export the values as environment variables, 
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgbaffde6" class="outline-2"&gt;
-&lt;h2 id="orgbaffde6"&gt;Test it out&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgbaffde6"&gt;
+&lt;div id="outline-container-org2df4a2d" class="outline-2"&gt;
+&lt;h2 id="org2df4a2d"&gt;Test it out&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org2df4a2d"&gt;
 &lt;p&gt;
 It's a python command that uses the basic help system you would expect if you've used python command-line programs before.
 &lt;/p&gt;
@@ -140,17 +140,17 @@ kaggle competitions download -c competitive-data-science-final-project data
 &lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orge10ca65" class="outline-2"&gt;
-&lt;h2 id="orge10ca65"&gt;The Actual API&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orge10ca65"&gt;
+&lt;div id="outline-container-org27c7035" class="outline-2"&gt;
+&lt;h2 id="org27c7035"&gt;The Actual API&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org27c7035"&gt;
 &lt;p&gt;
 If you look under the hood the command is just doing REST calls. To make it programattic you could probably use &lt;a href="http://docs.python-requests.org/en/master/"&gt;requests&lt;/a&gt; or something similar to interact with it directly. You can see the calls you need to make by looking at the &lt;a href="https://github.com/Kaggle/kaggle-api/blob/master/KaggleSwagger.yaml"&gt;swagger file&lt;/a&gt;.
 &lt;/p&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgd69ed54" class="outline-3"&gt;
-&lt;h3 id="orgd69ed54"&gt;How the CLI does it&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgd69ed54"&gt;
+&lt;div id="outline-container-orgdbc496b" class="outline-3"&gt;
+&lt;h3 id="orgdbc496b"&gt;How the CLI does it&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgdbc496b"&gt;
 &lt;p&gt;
 If you look in the &lt;code&gt;kaggle.__init__.py&lt;/code&gt; file in the repository you'll see these imports.
 &lt;/p&gt;
