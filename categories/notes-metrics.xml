@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about notes metrics)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/notes-metrics.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Wed, 19 Sep 2018 22:02:33 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Metrics Optimization 2</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/metrics-optimization-2/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-orga06ea0a" class="outline-2"&gt;
-&lt;h2 id="orga06ea0a"&gt;(R)MSPE, MAPE, and (R)MSLE&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orga06ea0a"&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about notes metrics)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/notes-metrics.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Thu, 20 Sep 2018 04:17:50 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Metrics Optimization 2</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/metrics-optimization-2/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-org9a9e527" class="outline-2"&gt;
+&lt;h2 id="org9a9e527"&gt;(R)MSPE, MAPE, and (R)MSLE&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org9a9e527"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org0125661" class="outline-3"&gt;
-&lt;h3 id="org0125661"&gt;An Off-By-One Example&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org0125661"&gt;
+&lt;div id="outline-container-org2b0a770" class="outline-3"&gt;
+&lt;h3 id="org2b0a770"&gt;An Off-By-One Example&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org2b0a770"&gt;
 &lt;p&gt;
 Suppose we are predicting sales for two shops and the two shops have different sales volumes but our predictions for both cases are off by one. In this case our Mean-Squared-Error (MSE) might be the same, but they have a different significance.
 &lt;/p&gt;
@@ -49,9 +49,9 @@ Suppose we are predicting sales for two shops and the two shops have different s
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgc555c3a" class="outline-2"&gt;
-&lt;h2 id="orgc555c3a"&gt;Root Mean Squared Percentage Error and Mean Absolute Percentage Error&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgc555c3a"&gt;
+&lt;div id="outline-container-org7d129ef" class="outline-2"&gt;
+&lt;h2 id="org7d129ef"&gt;Root Mean Squared Percentage Error and Mean Absolute Percentage Error&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org7d129ef"&gt;
 &lt;p&gt;
 The MSE and Mean-Absolute-Error (MAE) are absolute errors which don't take into account how significant the error is. There are two relative errors,  Mean-Squared-Percentage-Error (MSPE) and Mean-Absolute-Percentage-Error (MAPE) that divide each error term by the actual value to give you a realive error instead of an absolute error.
 &lt;/p&gt;
@@ -73,9 +73,9 @@ The MAPE will be inversely proportional to its target and the MSPE will be inver
 &lt;/p&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgea5e0a2" class="outline-3"&gt;
-&lt;h3 id="orgea5e0a2"&gt;Optimal Constant Predictions&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgea5e0a2"&gt;
+&lt;div id="outline-container-org33dedb3" class="outline-3"&gt;
+&lt;h3 id="org33dedb3"&gt;Optimal Constant Predictions&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org33dedb3"&gt;
 &lt;p&gt;
 The best constant prediction you can make when using the Mean Squared Error is to predict the mean of the target values. The best prediction you can make for the MSPE is to take a weighted mean of the target values. The best constant prediction you can make for the Mean Absolute Percentage Error is the weighted median.
 &lt;/p&gt;
@@ -83,9 +83,9 @@ The best constant prediction you can make when using the Mean Squared Error is t
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgf9c7416" class="outline-2"&gt;
-&lt;h2 id="orgf9c7416"&gt;Root Mean Squared Logarithmic Error (MSLE)&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgf9c7416"&gt;
+&lt;div id="outline-container-org72d9283" class="outline-2"&gt;
+&lt;h2 id="org72d9283"&gt;Root Mean Squared Logarithmic Error (MSLE)&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org72d9283"&gt;
 &lt;p&gt;
 \[
 MSLE = \sqrt{\frac{1}{N}\sum_{i=1}^N (\log (y_i + 1) - \log(\hat{y}_i + 1))^2}\\

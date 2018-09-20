@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about notes validation)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/notes-validation.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Tue, 11 Sep 2018 19:52:01 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Validation</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/validation/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about notes validation)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/notes-validation.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Sat, 15 Sep 2018 17:42:27 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Validation</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/validation/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
 &lt;h2&gt;Table of Contents&lt;/h2&gt;
 &lt;div id="text-table-of-contents"&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#orga418442"&gt;Validation and Overfitting&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org33fda23"&gt;Three Main Methods of Splitting&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org5c3515b"&gt;Stratification&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org673f5fc"&gt;Data Splitting&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org734139f"&gt;Problems&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org1b47d0f"&gt;Practice Quiz&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#orgb24a928"&gt;Quiz&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#orgac73e53"&gt;Links&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#orgdaf62d0"&gt;Validation and Overfitting&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org674da7d"&gt;Three Main Methods of Splitting&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#orgb5cdb96"&gt;Stratification&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org388f244"&gt;Data Splitting&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org36f5ea8"&gt;Problems&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org8238b42"&gt;Practice Quiz&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org03ebc6f"&gt;Quiz&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org746ed2d"&gt;Links&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orga418442" class="outline-2"&gt;
-&lt;h2 id="orga418442"&gt;Validation and Overfitting&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orga418442"&gt;
+&lt;div id="outline-container-orgdaf62d0" class="outline-2"&gt;
+&lt;h2 id="orgdaf62d0"&gt;Validation and Overfitting&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgdaf62d0"&gt;
 &lt;p&gt;
 To prevent your model from overfitting to the training set, you can hold out some of the training set and use it to validate the model after it has been fit to the rest of the training set.
 &lt;/p&gt;
@@ -28,16 +28,16 @@ To prevent your model from overfitting to the training set, you can hold out som
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org33fda23" class="outline-2"&gt;
-&lt;h2 id="org33fda23"&gt;Three Main Methods of Splitting&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org33fda23"&gt;
+&lt;div id="outline-container-org674da7d" class="outline-2"&gt;
+&lt;h2 id="org674da7d"&gt;Three Main Methods of Splitting&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org674da7d"&gt;
 &lt;p&gt;
 These are methods for splitting your training set into training and validation sets. Once you have a model, re-train it over the entire training set before applying it to the test set.
 &lt;/p&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org9e7efea" class="outline-3"&gt;
-&lt;h3 id="org9e7efea"&gt;Holdout&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org9e7efea"&gt;
+&lt;div id="outline-container-orgdf752cb" class="outline-3"&gt;
+&lt;h3 id="orgdf752cb"&gt;Holdout&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgdf752cb"&gt;
 &lt;p&gt;
 This method just splits the data into one training and one validation set.
 &lt;/p&gt;
@@ -48,9 +48,9 @@ This method just splits the data into one training and one validation set.
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgf921310" class="outline-3"&gt;
-&lt;h3 id="orgf921310"&gt;K-Fold&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgf921310"&gt;
+&lt;div id="outline-container-orge7e9228" class="outline-3"&gt;
+&lt;h3 id="orge7e9228"&gt;K-Fold&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orge7e9228"&gt;
 &lt;p&gt;
 Make &lt;i&gt;k&lt;/i&gt; splits of the training set, then use each of the validation sets while training on all the data not in the validation set. This differs from doing holdout k-times since we guarantee that the validation sets don't overlap. Uses the average score for the k-folds.
 &lt;/p&gt;
@@ -60,9 +60,9 @@ Make &lt;i&gt;k&lt;/i&gt; splits of the training set, then use each of the valid
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orge1b99e9" class="outline-3"&gt;
-&lt;h3 id="orge1b99e9"&gt;Leave One Out&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orge1b99e9"&gt;
+&lt;div id="outline-container-org0dbec8d" class="outline-3"&gt;
+&lt;h3 id="org0dbec8d"&gt;Leave One Out&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org0dbec8d"&gt;
 &lt;p&gt;
 This is like k-folds except we always use a validation set of size 1 - so we are iterating over each point in the data set and using it as the training set. This can be useful if the data set is small.
 &lt;/p&gt;
@@ -72,9 +72,9 @@ This is like k-folds except we always use a validation set of size 1 - so we are
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org5c3515b" class="outline-2"&gt;
-&lt;h2 id="org5c3515b"&gt;Stratification&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org5c3515b"&gt;
+&lt;div id="outline-container-orgb5cdb96" class="outline-2"&gt;
+&lt;h2 id="orgb5cdb96"&gt;Stratification&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgb5cdb96"&gt;
 &lt;p&gt;
 Sometimes you need to make sure your validation sets have the same distribution as your set as a whole.
 &lt;/p&gt;
@@ -86,9 +86,9 @@ Sometimes you need to make sure your validation sets have the same distribution 
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org673f5fc" class="outline-2"&gt;
-&lt;h2 id="org673f5fc"&gt;Data Splitting&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org673f5fc"&gt;
+&lt;div id="outline-container-org388f244" class="outline-2"&gt;
+&lt;h2 id="org388f244"&gt;Data Splitting&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org388f244"&gt;
 &lt;p&gt;
 If you have time-based data, there's two ways to split the training data - randomly within the entire timespan, or put the first part of the data in the training set and put the second part of the data in the validation set. If the test-set is a time that is beyond the training data, then using the time-based split will produce a model that is better for the testing data.
 &lt;/p&gt;
@@ -106,25 +106,25 @@ The main point of this is that you want to set up your validation set to match t
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org734139f" class="outline-2"&gt;
-&lt;h2 id="org734139f"&gt;Problems&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org734139f"&gt;
+&lt;div id="outline-container-org36f5ea8" class="outline-2"&gt;
+&lt;h2 id="org36f5ea8"&gt;Problems&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org36f5ea8"&gt;
 &lt;p&gt;
 The point of doing the training-validation split is that you think the validation set(s) will approximate the test set. But what if that's not true?
 &lt;/p&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgd1624bd" class="outline-3"&gt;
-&lt;h3 id="orgd1624bd"&gt;Causes of score differences&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgd1624bd"&gt;
+&lt;div id="outline-container-org6727bfa" class="outline-3"&gt;
+&lt;h3 id="org6727bfa"&gt;Causes of score differences&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org6727bfa"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;Too little data&lt;/li&gt;
 &lt;li&gt;The data is too diverse and inconsistent&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgbaddcce" class="outline-3"&gt;
-&lt;h3 id="orgbaddcce"&gt;Submission Differs from Validation&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgbaddcce"&gt;
+&lt;div id="outline-container-orgf901a8f" class="outline-3"&gt;
+&lt;h3 id="orgf901a8f"&gt;Submission Differs from Validation&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgf901a8f"&gt;
 &lt;ol class="org-ol"&gt;
 &lt;li&gt;Even K-fold validation has variation (check that the standard deviation across folds encompasses the leaderboard values)&lt;/li&gt;
 &lt;li&gt;Too little data on leaderboard (nothing you can do)&lt;/li&gt;
@@ -133,13 +133,13 @@ The point of doing the training-validation split is that you think the validatio
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org1b47d0f" class="outline-2"&gt;
-&lt;h2 id="org1b47d0f"&gt;Practice Quiz&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org1b47d0f"&gt;
+&lt;div id="outline-container-org8238b42" class="outline-2"&gt;
+&lt;h2 id="org8238b42"&gt;Practice Quiz&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org8238b42"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orga854703" class="outline-3"&gt;
-&lt;h3 id="orga854703"&gt;One&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orga854703"&gt;
+&lt;div id="outline-container-org352f592" class="outline-3"&gt;
+&lt;h3 id="org352f592"&gt;One&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org352f592"&gt;
 &lt;p&gt;
 We did a K-Fold cross validation on a huge dataset and noticed that scores on each fold are roughly the same. Which validation type is of most practical use?
 &lt;/p&gt;
@@ -150,9 +150,9 @@ We did a K-Fold cross validation on a huge dataset and noticed that scores on ea
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org82cedaf" class="outline-3"&gt;
-&lt;h3 id="org82cedaf"&gt;Two&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org82cedaf"&gt;
+&lt;div id="outline-container-org0326285" class="outline-3"&gt;
+&lt;h3 id="org0326285"&gt;Two&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org0326285"&gt;
 &lt;p&gt;
 We did a K-fold cross validation on a medium sized dataset and noticed that the validation scores varied widely. Which validation type is the most practical to use?
 &lt;/p&gt;
@@ -163,9 +163,9 @@ We did a K-fold cross validation on a medium sized dataset and noticed that the 
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgbbdaac5" class="outline-3"&gt;
-&lt;h3 id="orgbbdaac5"&gt;Three&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgbbdaac5"&gt;
+&lt;div id="outline-container-orgc71db56" class="outline-3"&gt;
+&lt;h3 id="orgc71db56"&gt;Three&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgc71db56"&gt;
 &lt;p&gt;
 The features we generate depend on the train-test split. True or False?
 &lt;/p&gt;
@@ -175,9 +175,9 @@ The features we generate depend on the train-test split. True or False?
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org8688967" class="outline-3"&gt;
-&lt;h3 id="org8688967"&gt;Which of these can indicate an expected leaderboard shuffle in a competition?&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org8688967"&gt;
+&lt;div id="outline-container-orgd543efe" class="outline-3"&gt;
+&lt;h3 id="orgd543efe"&gt;Which of these can indicate an expected leaderboard shuffle in a competition?&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgd543efe"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; Little training and/or testing data&lt;/li&gt;
 &lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; Most of the competitors have similar scores&lt;/li&gt;
@@ -186,13 +186,13 @@ The features we generate depend on the train-test split. True or False?
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgb24a928" class="outline-2"&gt;
-&lt;h2 id="orgb24a928"&gt;Quiz&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgb24a928"&gt;
+&lt;div id="outline-container-org03ebc6f" class="outline-2"&gt;
+&lt;h2 id="org03ebc6f"&gt;Quiz&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org03ebc6f"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org95ad1b1" class="outline-3"&gt;
-&lt;h3 id="org95ad1b1"&gt;One&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org95ad1b1"&gt;
+&lt;div id="outline-container-org10427ff" class="outline-3"&gt;
+&lt;h3 id="org10427ff"&gt;One&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org10427ff"&gt;
 &lt;p&gt;
 Select the true statements.
 &lt;/p&gt;
@@ -205,9 +205,9 @@ Select the true statements.
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org418eb40" class="outline-3"&gt;
-&lt;h3 id="org418eb40"&gt;Two&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org418eb40"&gt;
+&lt;div id="outline-container-orgf19d4e6" class="outline-3"&gt;
+&lt;h3 id="orgf19d4e6"&gt;Two&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgf19d4e6"&gt;
 &lt;p&gt;
 Kaggle usually allows you to submit two final submissions that will be checked against the private leader board. One common practice is to use a model that did the best on the validation scores and another that did best on the public leader board. What is the logic behind using these two models?
 &lt;/p&gt;
@@ -218,9 +218,9 @@ Kaggle usually allows you to submit two final submissions that will be checked a
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org0cd3526" class="outline-3"&gt;
-&lt;h3 id="org0cd3526"&gt;Three&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org0cd3526"&gt;
+&lt;div id="outline-container-org8c9f4e2" class="outline-3"&gt;
+&lt;h3 id="org8c9f4e2"&gt;Three&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org8c9f4e2"&gt;
 &lt;p&gt;
 Suppose we have a dataset of marketing campaigns. Each campain runs for a few weeks and for each campaign our target is the number of new customers. A row in the dataset looks like this:
 &lt;/p&gt;
@@ -241,9 +241,9 @@ The dataset contains multiple campaigns where the training set has the dates at 
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orga7a2cd9" class="outline-3"&gt;
-&lt;h3 id="orga7a2cd9"&gt;Four&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orga7a2cd9"&gt;
+&lt;div id="outline-container-org1d64e74" class="outline-3"&gt;
+&lt;h3 id="org1d64e74"&gt;Four&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org1d64e74"&gt;
 &lt;p&gt;
 Which of the following can you usually identify without the leaderboard?
 &lt;/p&gt;
@@ -256,9 +256,9 @@ Which of the following can you usually identify without the leaderboard?
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgac73e53" class="outline-2"&gt;
-&lt;h2 id="orgac73e53"&gt;Links&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgac73e53"&gt;
+&lt;div id="outline-container-org746ed2d" class="outline-2"&gt;
+&lt;h2 id="org746ed2d"&gt;Links&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org746ed2d"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;&lt;a href="http://scikit-learn.org/stable/modules/cross_validation.html"&gt;Cross-validation in sklearn&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="http://www.chioka.in/how-to-select-your-final-models-in-a-kaggle-competitio/"&gt;Model Selection for Kaggle&lt;/a&gt;&lt;/li&gt;

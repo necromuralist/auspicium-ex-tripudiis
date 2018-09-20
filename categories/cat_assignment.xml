@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about assignment)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/cat_assignment.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Wed, 19 Sep 2018 15:19:00 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Data Leakages</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about assignment)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/cat_assignment.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Thu, 20 Sep 2018 04:17:50 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Data Leakages</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
 &lt;h2&gt;Table of Contents&lt;/h2&gt;
 &lt;div id="text-table-of-contents"&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#orgbc4af4e"&gt;Introduction&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#org76330e2"&gt;Imports&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#orgfe7d7d2"&gt;Helpers&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#orgc6bca12"&gt;Load the data&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#orgd5824b1"&gt;EDA and Leakage Intuition&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#org19fd55d"&gt;Building a magic feature&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#orge37ace8"&gt;Bonus&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#org83fd432"&gt;What does it all mean then?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#org44df1ae"&gt;Introduction&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#org8df2c16"&gt;Imports&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#orgd38192b"&gt;Helpers&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#org360df0c"&gt;Load the data&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#org73c6492"&gt;EDA and Leakage Intuition&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#org9108cf7"&gt;Building a magic feature&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#org5bfd205"&gt;Bonus&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#org6429bae"&gt;What does it all mean then?&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgbc4af4e" class="outline-2"&gt;
-&lt;h2 id="orgbc4af4e"&gt;Introduction&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgbc4af4e"&gt;
+&lt;div id="outline-container-org44df1ae" class="outline-2"&gt;
+&lt;h2 id="org44df1ae"&gt;Introduction&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org44df1ae"&gt;
 &lt;p&gt;
 In this programming assignment we will illustrate a very severe data leakage, of the sort that can often be found in competitions. The task is to score the pairs of objects, i.e. predict &lt;i&gt;1&lt;/i&gt; if two objects belong to the same class and &lt;i&gt;0&lt;/i&gt; otherwise. 
 &lt;/p&gt;
@@ -28,9 +28,9 @@ The data in this assignment is taken from a real competition, and  &lt;b&gt;we w
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org76330e2" class="outline-2"&gt;
-&lt;h2 id="org76330e2"&gt;Imports&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org76330e2"&gt;
+&lt;div id="outline-container-org8df2c16" class="outline-2"&gt;
+&lt;h2 id="org8df2c16"&gt;Imports&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org8df2c16"&gt;
 &lt;p&gt;
 During the importing of pandas (or scipy) you get a warning about a potential binary incompatibility. According to &lt;a href="https://stackoverflow.com/questions/40845304/runtimewarning-numpy-dtype-size-changed-may-indicate-binary-incompatibility"&gt;Stack Overflow&lt;/a&gt; you can safely ignore this, so we'll use &lt;a href="https://docs.python.org/3/library/warnings.html"&gt;warnings&lt;/a&gt; to suppress the messages, just so it doesn't keep bringing them up everytime I run this notebook.
 &lt;/p&gt;
@@ -58,13 +58,13 @@ During the importing of pandas (or scipy) you get a warning about a potential bi
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgfe7d7d2" class="outline-2"&gt;
-&lt;h2 id="orgfe7d7d2"&gt;Helpers&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgfe7d7d2"&gt;
+&lt;div id="outline-container-orgd38192b" class="outline-2"&gt;
+&lt;h2 id="orgd38192b"&gt;Helpers&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgd38192b"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgf986b4d" class="outline-3"&gt;
-&lt;h3 id="orgf986b4d"&gt;Paths&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgf986b4d"&gt;
+&lt;div id="outline-container-org3bb9e2a" class="outline-3"&gt;
+&lt;h3 id="org3bb9e2a"&gt;Paths&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org3bb9e2a"&gt;
 &lt;p&gt;
 Since I'm doing this as posts in nikola, but I'm trying to keep all non-post files outside of the &lt;code&gt;posts&lt;/code&gt; folder, I'm going to use a class to keep the paths to the output (submission) files straight.
 &lt;/p&gt;
@@ -115,9 +115,9 @@ Since I'm doing this as posts in nikola, but I'm trying to keep all non-post fil
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgd46dd53" class="outline-3"&gt;
-&lt;h3 id="orgd46dd53"&gt;Data&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgd46dd53"&gt;
+&lt;div id="outline-container-orgba945b7" class="outline-3"&gt;
+&lt;h3 id="orgba945b7"&gt;Data&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgba945b7"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;TestSet&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
     &lt;span class="sd"&gt;"""Loads the test-set data&lt;/span&gt;
 
@@ -143,9 +143,9 @@ Since I'm doing this as posts in nikola, but I'm trying to keep all non-post fil
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgc6bca12" class="outline-2"&gt;
-&lt;h2 id="orgc6bca12"&gt;Load the data&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgc6bca12"&gt;
+&lt;div id="outline-container-org360df0c" class="outline-2"&gt;
+&lt;h2 id="org360df0c"&gt;Load the data&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org360df0c"&gt;
 &lt;p&gt;
 Let's load the test data. Note that we don't have any training data here, just test data. Moreover, &lt;i&gt;we will not use any features of the test set&lt;/i&gt;. All we need to solve this task is the file with the indices for the pairs that we need to compare.
 &lt;/p&gt;
@@ -204,9 +204,9 @@ So this doesn't appear to be a randomized data set. The first half of the Second
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgd5824b1" class="outline-2"&gt;
-&lt;h2 id="orgd5824b1"&gt;EDA and Leakage Intuition&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgd5824b1"&gt;
+&lt;div id="outline-container-org73c6492" class="outline-2"&gt;
+&lt;h2 id="org73c6492"&gt;EDA and Leakage Intuition&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org73c6492"&gt;
 &lt;p&gt;
 As we already know, the key to discovering data leakages is careful Exploratory Data Analysis (EDA). So let's start our work with some basic data exploration and build an intuition about the leakage.
 &lt;/p&gt;
@@ -311,17 +311,17 @@ Another example - in a &lt;a href="https://www.kaggle.com/c/quora-question-pairs
 &lt;/p&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org6d1dc6b" class="outline-3"&gt;
-&lt;h3 id="org6d1dc6b"&gt;Probing the Leaderboard&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org6d1dc6b"&gt;
+&lt;div id="outline-container-org045f69c" class="outline-3"&gt;
+&lt;h3 id="org045f69c"&gt;Probing the Leaderboard&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org045f69c"&gt;
 &lt;p&gt;
 Finally, let's see what fraction of the ID-pairs have a class of `1`. To do this we just need to submit a constant prediction (all ones) and check the accuracy the grader reports. Create a dataframe with columns `pairId` and `Prediction`, fill it and export it to a `.csv` file. Then submit to the Coursera grader and examine the grader's output to get the fraction of 1s in the test-set.
 &lt;/p&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orge685ec7" class="outline-4"&gt;
-&lt;h4 id="orge685ec7"&gt;All Ones&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-orge685ec7"&gt;
+&lt;div id="outline-container-org56f6462" class="outline-4"&gt;
+&lt;h4 id="org56f6462"&gt;All Ones&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org56f6462"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;paths&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Paths&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;span class="n"&gt;all_ones&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="p"&gt;[[&lt;/span&gt;&lt;span class="s2"&gt;"pairId"&lt;/span&gt;&lt;span class="p"&gt;]]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;copy&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;span class="n"&gt;all_ones&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;"Prediction"&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;all_ones&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
@@ -357,9 +357,9 @@ Now think - how we can exploit this fact? What is the leak here? If you get it n
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org204ab5d" class="outline-4"&gt;
-&lt;h4 id="org204ab5d"&gt;All Zeros&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org204ab5d"&gt;
+&lt;div id="outline-container-orgee90c14" class="outline-4"&gt;
+&lt;h4 id="orgee90c14"&gt;All Zeros&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-orgee90c14"&gt;
 &lt;p&gt;
 Although we're told that this was a binary data set (and you could check it just by printing out the unique values), I sort of flaked and submitted a set where all the pairs were classified as zeros anyway. Here's what happened.
 &lt;/p&gt;
@@ -398,17 +398,17 @@ So it appears we've confirmed that the dataset is binary, with half the outputs 
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org19fd55d" class="outline-2"&gt;
-&lt;h2 id="org19fd55d"&gt;Building a magic feature&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org19fd55d"&gt;
+&lt;div id="outline-container-org9108cf7" class="outline-2"&gt;
+&lt;h2 id="org9108cf7"&gt;Building a magic feature&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org9108cf7"&gt;
 &lt;p&gt;
 In this section we will build a magic feature that will solve the problem almost perfectly. The instructions will lead you to the correct solution, but please, try to explain the purpose of the steps we do to yourself – it is very important.
 &lt;/p&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgd40cd31" class="outline-3"&gt;
-&lt;h3 id="orgd40cd31"&gt;Incidence matrix&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgd40cd31"&gt;
+&lt;div id="outline-container-orgb7808f2" class="outline-3"&gt;
+&lt;h3 id="orgb7808f2"&gt;Incidence matrix&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgb7808f2"&gt;
 &lt;p&gt;
 First, we need to build an &lt;a href="https://en.wikipedia.org/wiki/Incidence_matrix"&gt;incidence matrix&lt;/a&gt;. You can think of pairs `(FirstId, SecondId)` as edges in an undirected graph. 
 &lt;/p&gt;
@@ -430,9 +430,9 @@ For example, you can use this constructor: `scipy.sparse.coo_matrix((data, (i, j
 &lt;/p&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgc422d86" class="outline-4"&gt;
-&lt;h4 id="orgc422d86"&gt;De-duplicating the Data&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-orgc422d86"&gt;
+&lt;div id="outline-container-org564fb4d" class="outline-4"&gt;
+&lt;h4 id="org564fb4d"&gt;De-duplicating the Data&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org564fb4d"&gt;
 &lt;p&gt;
 The test data turns out to have duplicate ID pairs, which will cause our incidence matrix to produce numbers greater than 1 if we leave them in, so we need to remove them (using the &lt;a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.duplicated.html"&gt;duplicated&lt;/a&gt; method).
 &lt;/p&gt;
@@ -485,9 +485,9 @@ It is more convenient to have the incidence matrix in &lt;a href="https://docs.s
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgc18d901" class="outline-3"&gt;
-&lt;h3 id="orgc18d901"&gt;Now To Build the Magic Feature&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgc18d901"&gt;
+&lt;div id="outline-container-org3967cf8" class="outline-3"&gt;
+&lt;h3 id="org3967cf8"&gt;Now To Build the Magic Feature&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org3967cf8"&gt;
 &lt;p&gt;
 Why did we build the incidence matrix? We can think of the rows in this matrix as a representation for the objects. The `i-th` row is a representation for an object with `Id = i`. Then, to measure the similarity between two objects we can measure similarity between their representations. And we will see that these representations are very good.
 &lt;/p&gt;
@@ -533,9 +533,9 @@ That is it! &lt;b&gt;&lt;b&gt;We've built our magic feature.&lt;/b&gt;&lt;/b&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org73e5d7b" class="outline-4"&gt;
-&lt;h4 id="org73e5d7b"&gt;From magic feature to binary predictions&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org73e5d7b"&gt;
+&lt;div id="outline-container-orgb960c50" class="outline-4"&gt;
+&lt;h4 id="orgb960c50"&gt;From magic feature to binary predictions&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-orgb960c50"&gt;
 &lt;p&gt;
 But how do we convert this feature into binary predictions? We do not have a train set to learn a model, but we have a piece of information about test set: the baseline accuracy score that you got, when submitting constant. And we also have a very strong considerations about the data generative process, so probably we will be fine even without a training set. 
 &lt;/p&gt;
@@ -723,17 +723,17 @@ Well done! Your accuracy score is 0.997298
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orge37ace8" class="outline-2"&gt;
-&lt;h2 id="orge37ace8"&gt;Bonus&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orge37ace8"&gt;
+&lt;div id="outline-container-org5bfd205" class="outline-2"&gt;
+&lt;h2 id="org5bfd205"&gt;Bonus&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org5bfd205"&gt;
 &lt;p&gt;
 Interestingly, it is not the only leak in this dataset. There is another totally different way to get almost 100% accuracy. Try to find it!
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org83fd432" class="outline-2"&gt;
-&lt;h2 id="org83fd432"&gt;What does it all mean then?&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org83fd432"&gt;
+&lt;div id="outline-container-org6429bae" class="outline-2"&gt;
+&lt;h2 id="org6429bae"&gt;What does it all mean then?&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org6429bae"&gt;
 &lt;p&gt;
 From our initial check uploading all the submissions as one (so all the ID-pairs were classified as having IDs from the same class) we saw that half the entries were 1's and half were 0's. Our incidence matrix showed that half the vectors had a similarity of 20 or more, so by predicting that all the pairs whose incidence matrix dot-products were 20 or greater were of the same class, we could predict with greater than 99% accuracy which IDs were from the same class.
 &lt;/p&gt;

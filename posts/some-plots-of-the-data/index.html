@@ -108,26 +108,26 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org43496dc">Imports</a></li>
-<li><a href="#org681b960">Build the data</a></li>
-<li><a href="#org60f4748">More Helpers</a></li>
-<li><a href="#orgb501729">Features vs Target</a></li>
+<li><a href="#org1d5cc58">Imports</a></li>
+<li><a href="#orgfe84b29">Build the data</a></li>
+<li><a href="#orgbd3eb87">More Helpers</a></li>
+<li><a href="#orgfbd0b95">Features vs Target</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org43496dc" class="outline-2">
-<h2 id="org43496dc">Imports</h2>
-<div class="outline-text-2" id="text-org43496dc">
+<div id="outline-container-org1d5cc58" class="outline-2">
+<h2 id="org1d5cc58">Imports</h2>
+<div class="outline-text-2" id="text-org1d5cc58">
 <div class="highlight"><pre><span></span>import warnings
 warnings.filterwarnings("ignore", message="numpy.dtype size changed")
 warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
 </pre></div>
 </div>
 
-<div id="outline-container-org39cccf3" class="outline-3">
-<h3 id="org39cccf3">From pypi</h3>
-<div class="outline-text-3" id="text-org39cccf3">
+<div id="outline-container-orge9cf811" class="outline-3">
+<h3 id="orge9cf811">From pypi</h3>
+<div class="outline-text-3" id="text-orge9cf811">
 <div class="highlight"><pre><span></span>import matplotlib.pyplot as pyplot
 import numpy
 import seaborn
@@ -139,9 +139,9 @@ seaborn.set_style("whitegrid")
 </div>
 </div>
 
-<div id="outline-container-org03cdeac" class="outline-3">
-<h3 id="org03cdeac">This project</h3>
-<div class="outline-text-3" id="text-org03cdeac">
+<div id="outline-container-org3cb160a" class="outline-3">
+<h3 id="org3cb160a">This project</h3>
+<div class="outline-text-3" id="text-org3cb160a">
 <div class="highlight"><pre><span></span>from kaggler.helpers.build_training_data import Pickles
 from kaggler.helpers.helpers import (
     DataKeys,
@@ -152,9 +152,9 @@ from kaggler.helpers.helpers import (
 </div>
 </div>
 
-<div id="outline-container-org681b960" class="outline-2">
-<h2 id="org681b960">Build the data</h2>
-<div class="outline-text-2" id="text-org681b960">
+<div id="outline-container-orgfe84b29" class="outline-2">
+<h2 id="orgfe84b29">Build the data</h2>
+<div class="outline-text-2" id="text-orgfe84b29">
 <div class="highlight"><pre><span></span>x_train = Helpers.unpickle(Pickles.x_train)
 y_train = Helpers.unpickle(Pickles.y_train)
 DataKeys.target = "Month Count"
@@ -238,9 +238,9 @@ Helpers.print_head(x_train)
 </table>
 </div>
 </div>
-<div id="outline-container-org60f4748" class="outline-2">
-<h2 id="org60f4748">More Helpers</h2>
-<div class="outline-text-2" id="text-org60f4748">
+<div id="outline-container-orgbd3eb87" class="outline-2">
+<h2 id="orgbd3eb87">More Helpers</h2>
+<div class="outline-text-2" id="text-orgbd3eb87">
 <div class="highlight"><pre><span></span>def make_figure_and_axis(x_label, y_label, title, figsize=(10, 8)):
     """make a matplotlib figure
 
@@ -261,13 +261,13 @@ Helpers.print_head(x_train)
 </pre></div>
 </div>
 </div>
-<div id="outline-container-orgb501729" class="outline-2">
-<h2 id="orgb501729">Features vs Target</h2>
-<div class="outline-text-2" id="text-orgb501729">
+<div id="outline-container-orgfbd0b95" class="outline-2">
+<h2 id="orgfbd0b95">Features vs Target</h2>
+<div class="outline-text-2" id="text-orgfbd0b95">
 </div>
-<div id="outline-container-org5282eb5" class="outline-3">
-<h3 id="org5282eb5">Date Block</h3>
-<div class="outline-text-3" id="text-org5282eb5">
+<div id="outline-container-orga768b2f" class="outline-3">
+<h3 id="orga768b2f">Date Block</h3>
+<div class="outline-text-3" id="text-orga768b2f">
 <div class="highlight"><pre><span></span>figure, axis = make_figure_and_axis("Date Block", "Count", "Date-Block Counts")
 grid = seaborn.catplot(ax=axis, x=DataKeys.date_block, kind="count", data=x_train)
 </pre></div>
@@ -338,9 +338,9 @@ Perhaps not surprisingly, the month of December, when holiday sales spike, is th
 </p>
 </div>
 </div>
-<div id="outline-container-orge521700" class="outline-3">
-<h3 id="orge521700">Shop</h3>
-<div class="outline-text-3" id="text-orge521700">
+<div id="outline-container-orgaaae86d" class="outline-3">
+<h3 id="orgaaae86d">Shop</h3>
+<div class="outline-text-3" id="text-orgaaae86d">
 <div class="highlight"><pre><span></span>group = x_train.groupby(DataKeys.shop).sum().reset_index().sort_values(DataKeys.target)
 </pre></div>
 
@@ -356,9 +356,9 @@ There appears to be seven or eight shops that dominate the sales.
 </div>
 </div>
 
-<div id="outline-container-orgfbe0bc4" class="outline-3">
-<h3 id="orgfbe0bc4">Item Category</h3>
-<div class="outline-text-3" id="text-orgfbe0bc4">
+<div id="outline-container-org66e3953" class="outline-3">
+<h3 id="org66e3953">Item Category</h3>
+<div class="outline-text-3" id="text-org66e3953">
 <div class="highlight"><pre><span></span>group = x_train.groupby(DataKeys.item_category).sum().reset_index()
 </pre></div>
 
@@ -373,13 +373,13 @@ Some kind of weirdly coincidental linear relationship between the category ID an
 </div>
 </div>
 
-<div id="outline-container-org4018aae" class="outline-3">
-<h3 id="org4018aae">Biggest Over Time</h3>
-<div class="outline-text-3" id="text-org4018aae">
+<div id="outline-container-orga08f673" class="outline-3">
+<h3 id="orga08f673">Biggest Over Time</h3>
+<div class="outline-text-3" id="text-orga08f673">
 </div>
-<div id="outline-container-orgf1535ce" class="outline-4">
-<h4 id="orgf1535ce">Category</h4>
-<div class="outline-text-4" id="text-orgf1535ce">
+<div id="outline-container-orga9f648f" class="outline-4">
+<h4 id="orga9f648f">Category</h4>
+<div class="outline-text-4" id="text-orga9f648f">
 <div class="highlight"><pre><span></span>category_group = x_train.groupby([DataKeys.date, DataKeys.item_category]).sum().reset_index()
 biggest = category_group.iloc[category_group[DataKeys.target].idxmax()]
 biggest_category = category_group[category_group.item_category_id == biggest.item_category_id]

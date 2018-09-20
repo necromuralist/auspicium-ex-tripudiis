@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description>Notes on studying kaggle.</description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Wed, 19 Sep 2018 22:02:33 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Metrics Optimization 2</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/metrics-optimization-2/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-orga06ea0a" class="outline-2"&gt;
-&lt;h2 id="orga06ea0a"&gt;(R)MSPE, MAPE, and (R)MSLE&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orga06ea0a"&gt;
+<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description>Notes on studying kaggle.</description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Thu, 20 Sep 2018 04:17:50 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Metrics Optimization 2</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/metrics-optimization-2/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-org9a9e527" class="outline-2"&gt;
+&lt;h2 id="org9a9e527"&gt;(R)MSPE, MAPE, and (R)MSLE&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org9a9e527"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org0125661" class="outline-3"&gt;
-&lt;h3 id="org0125661"&gt;An Off-By-One Example&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org0125661"&gt;
+&lt;div id="outline-container-org2b0a770" class="outline-3"&gt;
+&lt;h3 id="org2b0a770"&gt;An Off-By-One Example&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org2b0a770"&gt;
 &lt;p&gt;
 Suppose we are predicting sales for two shops and the two shops have different sales volumes but our predictions for both cases are off by one. In this case our Mean-Squared-Error (MSE) might be the same, but they have a different significance.
 &lt;/p&gt;
@@ -49,9 +49,9 @@ Suppose we are predicting sales for two shops and the two shops have different s
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgc555c3a" class="outline-2"&gt;
-&lt;h2 id="orgc555c3a"&gt;Root Mean Squared Percentage Error and Mean Absolute Percentage Error&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgc555c3a"&gt;
+&lt;div id="outline-container-org7d129ef" class="outline-2"&gt;
+&lt;h2 id="org7d129ef"&gt;Root Mean Squared Percentage Error and Mean Absolute Percentage Error&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org7d129ef"&gt;
 &lt;p&gt;
 The MSE and Mean-Absolute-Error (MAE) are absolute errors which don't take into account how significant the error is. There are two relative errors,  Mean-Squared-Percentage-Error (MSPE) and Mean-Absolute-Percentage-Error (MAPE) that divide each error term by the actual value to give you a realive error instead of an absolute error.
 &lt;/p&gt;
@@ -73,9 +73,9 @@ The MAPE will be inversely proportional to its target and the MSPE will be inver
 &lt;/p&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgea5e0a2" class="outline-3"&gt;
-&lt;h3 id="orgea5e0a2"&gt;Optimal Constant Predictions&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgea5e0a2"&gt;
+&lt;div id="outline-container-org33dedb3" class="outline-3"&gt;
+&lt;h3 id="org33dedb3"&gt;Optimal Constant Predictions&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org33dedb3"&gt;
 &lt;p&gt;
 The best constant prediction you can make when using the Mean Squared Error is to predict the mean of the target values. The best prediction you can make for the MSPE is to take a weighted mean of the target values. The best constant prediction you can make for the Mean Absolute Percentage Error is the weighted median.
 &lt;/p&gt;
@@ -83,9 +83,9 @@ The best constant prediction you can make when using the Mean Squared Error is t
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgf9c7416" class="outline-2"&gt;
-&lt;h2 id="orgf9c7416"&gt;Root Mean Squared Logarithmic Error (MSLE)&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgf9c7416"&gt;
+&lt;div id="outline-container-org72d9283" class="outline-2"&gt;
+&lt;h2 id="org72d9283"&gt;Root Mean Squared Logarithmic Error (MSLE)&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org72d9283"&gt;
 &lt;p&gt;
 \[
 MSLE = \sqrt{\frac{1}{N}\sum_{i=1}^N (\log (y_i + 1) - \log(\hat{y}_i + 1))^2}\\
@@ -143,25 +143,117 @@ These are the best constant predictions you can make for the competition data se
 &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description><category>notes metrics</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/metrics-optimization-2/</guid><pubDate>Wed, 19 Sep 2018 15:04:33 GMT</pubDate></item><item><title>Data Leakages</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
+&lt;/div&gt;</description><category>notes metrics</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/metrics-optimization-2/</guid><pubDate>Wed, 19 Sep 2018 15:04:33 GMT</pubDate></item><item><title>Metrics</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/metrics/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
 &lt;h2&gt;Table of Contents&lt;/h2&gt;
 &lt;div id="text-table-of-contents"&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#orgbc4af4e"&gt;Introduction&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#org76330e2"&gt;Imports&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#orgfe7d7d2"&gt;Helpers&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#orgc6bca12"&gt;Load the data&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#orgd5824b1"&gt;EDA and Leakage Intuition&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#org19fd55d"&gt;Building a magic feature&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#orge37ace8"&gt;Bonus&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#org83fd432"&gt;What does it all mean then?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/metrics/#orgd5014ac"&gt;About Metrics&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/metrics/#org4c7b753"&gt;The Most Common Metrics&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgbc4af4e" class="outline-2"&gt;
-&lt;h2 id="orgbc4af4e"&gt;Introduction&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgbc4af4e"&gt;
+&lt;div id="outline-container-orgd5014ac" class="outline-2"&gt;
+&lt;h2 id="orgd5014ac"&gt;About Metrics&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgd5014ac"&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org2b7b99d" class="outline-3"&gt;
+&lt;h3 id="org2b7b99d"&gt;What are metrics?&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org2b7b99d"&gt;
+&lt;p&gt;
+Metrics are numeric values that you are trying to optimize - they are how your model is graded.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org8688e79" class="outline-3"&gt;
+&lt;h3 id="org8688e79"&gt;Why are there so many metrics?&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org8688e79"&gt;
+&lt;p&gt;
+Each metric can tell you something different, so what metric you need depends on the problem you are trying to solve. For competitions, it is sometimes possible to do metrics probing just like you can sometimes do leaderboard probing to find peculiarities created by the chosen metric.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org4c7b753" class="outline-2"&gt;
+&lt;h2 id="org4c7b753"&gt;The Most Common Metrics&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org4c7b753"&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgdb984a1" class="outline-3"&gt;
+&lt;h3 id="orgdb984a1"&gt;Regression&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgdb984a1"&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgc8c1fd7" class="outline-4"&gt;
+&lt;h4 id="orgc8c1fd7"&gt;Mean Squared Error&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-orgc8c1fd7"&gt;
+&lt;p&gt;
+This is the average of the square of the errors.
+\[
+MSE = \frac{1}{N}
+\]
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgdad37bb" class="outline-4"&gt;
+&lt;h4 id="orgdad37bb"&gt;Root Mean Squared Error&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-orgdad37bb"&gt;
+&lt;p&gt;
+This is the square root of the mean squared error.
+&lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;minimizing the RMSE is also minimizes the MSE&lt;/li&gt;
+&lt;li&gt;RMSE is more intuitive&lt;/li&gt;
+&lt;li&gt;They can differ when used by gradient-based models&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org2901caa" class="outline-4"&gt;
+&lt;h4 id="org2901caa"&gt;R-squared&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org2901caa"&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;Optimizing r-squared is equivalent to optimizing MSE&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org3fed0d1" class="outline-4"&gt;
+&lt;h4 id="org3fed0d1"&gt;Mean Absolute Error&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org3fed0d1"&gt;
+&lt;p&gt;
+This is more common when you are explaining it to a non-statistician. It is also more robust. Mathematically, it isn't something that you can calculate the derivate for.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org3e12f33" class="outline-4"&gt;
+&lt;h4 id="org3e12f33"&gt;MAE vs MSE&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org3e12f33"&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;Outliers: use MAE&lt;/li&gt;
+&lt;li&gt;Unexpected Values that we should still care about (not true outliers (mistakes), just rare): use MSE&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org8bb886e" class="outline-3"&gt;
+&lt;h3 id="org8bb886e"&gt;Classification&lt;/h3&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description><category>metrics notes</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/metrics/</guid><pubDate>Tue, 18 Sep 2018 04:49:35 GMT</pubDate></item><item><title>Data Leakages</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
+&lt;h2&gt;Table of Contents&lt;/h2&gt;
+&lt;div id="text-table-of-contents"&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#org44df1ae"&gt;Introduction&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#org8df2c16"&gt;Imports&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#orgd38192b"&gt;Helpers&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#org360df0c"&gt;Load the data&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#org73c6492"&gt;EDA and Leakage Intuition&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#org9108cf7"&gt;Building a magic feature&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#org5bfd205"&gt;Bonus&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#org6429bae"&gt;What does it all mean then?&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-org44df1ae" class="outline-2"&gt;
+&lt;h2 id="org44df1ae"&gt;Introduction&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org44df1ae"&gt;
 &lt;p&gt;
 In this programming assignment we will illustrate a very severe data leakage, of the sort that can often be found in competitions. The task is to score the pairs of objects, i.e. predict &lt;i&gt;1&lt;/i&gt; if two objects belong to the same class and &lt;i&gt;0&lt;/i&gt; otherwise. 
 &lt;/p&gt;
@@ -172,9 +264,9 @@ The data in this assignment is taken from a real competition, and  &lt;b&gt;we w
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org76330e2" class="outline-2"&gt;
-&lt;h2 id="org76330e2"&gt;Imports&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org76330e2"&gt;
+&lt;div id="outline-container-org8df2c16" class="outline-2"&gt;
+&lt;h2 id="org8df2c16"&gt;Imports&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org8df2c16"&gt;
 &lt;p&gt;
 During the importing of pandas (or scipy) you get a warning about a potential binary incompatibility. According to &lt;a href="https://stackoverflow.com/questions/40845304/runtimewarning-numpy-dtype-size-changed-may-indicate-binary-incompatibility"&gt;Stack Overflow&lt;/a&gt; you can safely ignore this, so we'll use &lt;a href="https://docs.python.org/3/library/warnings.html"&gt;warnings&lt;/a&gt; to suppress the messages, just so it doesn't keep bringing them up everytime I run this notebook.
 &lt;/p&gt;
@@ -202,13 +294,13 @@ During the importing of pandas (or scipy) you get a warning about a potential bi
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgfe7d7d2" class="outline-2"&gt;
-&lt;h2 id="orgfe7d7d2"&gt;Helpers&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgfe7d7d2"&gt;
+&lt;div id="outline-container-orgd38192b" class="outline-2"&gt;
+&lt;h2 id="orgd38192b"&gt;Helpers&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgd38192b"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgf986b4d" class="outline-3"&gt;
-&lt;h3 id="orgf986b4d"&gt;Paths&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgf986b4d"&gt;
+&lt;div id="outline-container-org3bb9e2a" class="outline-3"&gt;
+&lt;h3 id="org3bb9e2a"&gt;Paths&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org3bb9e2a"&gt;
 &lt;p&gt;
 Since I'm doing this as posts in nikola, but I'm trying to keep all non-post files outside of the &lt;code&gt;posts&lt;/code&gt; folder, I'm going to use a class to keep the paths to the output (submission) files straight.
 &lt;/p&gt;
@@ -259,9 +351,9 @@ Since I'm doing this as posts in nikola, but I'm trying to keep all non-post fil
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgd46dd53" class="outline-3"&gt;
-&lt;h3 id="orgd46dd53"&gt;Data&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgd46dd53"&gt;
+&lt;div id="outline-container-orgba945b7" class="outline-3"&gt;
+&lt;h3 id="orgba945b7"&gt;Data&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgba945b7"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;TestSet&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
     &lt;span class="sd"&gt;"""Loads the test-set data&lt;/span&gt;
 
@@ -287,9 +379,9 @@ Since I'm doing this as posts in nikola, but I'm trying to keep all non-post fil
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgc6bca12" class="outline-2"&gt;
-&lt;h2 id="orgc6bca12"&gt;Load the data&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgc6bca12"&gt;
+&lt;div id="outline-container-org360df0c" class="outline-2"&gt;
+&lt;h2 id="org360df0c"&gt;Load the data&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org360df0c"&gt;
 &lt;p&gt;
 Let's load the test data. Note that we don't have any training data here, just test data. Moreover, &lt;i&gt;we will not use any features of the test set&lt;/i&gt;. All we need to solve this task is the file with the indices for the pairs that we need to compare.
 &lt;/p&gt;
@@ -348,9 +440,9 @@ So this doesn't appear to be a randomized data set. The first half of the Second
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgd5824b1" class="outline-2"&gt;
-&lt;h2 id="orgd5824b1"&gt;EDA and Leakage Intuition&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgd5824b1"&gt;
+&lt;div id="outline-container-org73c6492" class="outline-2"&gt;
+&lt;h2 id="org73c6492"&gt;EDA and Leakage Intuition&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org73c6492"&gt;
 &lt;p&gt;
 As we already know, the key to discovering data leakages is careful Exploratory Data Analysis (EDA). So let's start our work with some basic data exploration and build an intuition about the leakage.
 &lt;/p&gt;
@@ -455,17 +547,17 @@ Another example - in a &lt;a href="https://www.kaggle.com/c/quora-question-pairs
 &lt;/p&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org6d1dc6b" class="outline-3"&gt;
-&lt;h3 id="org6d1dc6b"&gt;Probing the Leaderboard&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org6d1dc6b"&gt;
+&lt;div id="outline-container-org045f69c" class="outline-3"&gt;
+&lt;h3 id="org045f69c"&gt;Probing the Leaderboard&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org045f69c"&gt;
 &lt;p&gt;
 Finally, let's see what fraction of the ID-pairs have a class of `1`. To do this we just need to submit a constant prediction (all ones) and check the accuracy the grader reports. Create a dataframe with columns `pairId` and `Prediction`, fill it and export it to a `.csv` file. Then submit to the Coursera grader and examine the grader's output to get the fraction of 1s in the test-set.
 &lt;/p&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orge685ec7" class="outline-4"&gt;
-&lt;h4 id="orge685ec7"&gt;All Ones&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-orge685ec7"&gt;
+&lt;div id="outline-container-org56f6462" class="outline-4"&gt;
+&lt;h4 id="org56f6462"&gt;All Ones&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org56f6462"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;paths&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Paths&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;span class="n"&gt;all_ones&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="p"&gt;[[&lt;/span&gt;&lt;span class="s2"&gt;"pairId"&lt;/span&gt;&lt;span class="p"&gt;]]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;copy&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;span class="n"&gt;all_ones&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;"Prediction"&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;all_ones&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
@@ -501,9 +593,9 @@ Now think - how we can exploit this fact? What is the leak here? If you get it n
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org204ab5d" class="outline-4"&gt;
-&lt;h4 id="org204ab5d"&gt;All Zeros&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org204ab5d"&gt;
+&lt;div id="outline-container-orgee90c14" class="outline-4"&gt;
+&lt;h4 id="orgee90c14"&gt;All Zeros&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-orgee90c14"&gt;
 &lt;p&gt;
 Although we're told that this was a binary data set (and you could check it just by printing out the unique values), I sort of flaked and submitted a set where all the pairs were classified as zeros anyway. Here's what happened.
 &lt;/p&gt;
@@ -542,17 +634,17 @@ So it appears we've confirmed that the dataset is binary, with half the outputs 
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org19fd55d" class="outline-2"&gt;
-&lt;h2 id="org19fd55d"&gt;Building a magic feature&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org19fd55d"&gt;
+&lt;div id="outline-container-org9108cf7" class="outline-2"&gt;
+&lt;h2 id="org9108cf7"&gt;Building a magic feature&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org9108cf7"&gt;
 &lt;p&gt;
 In this section we will build a magic feature that will solve the problem almost perfectly. The instructions will lead you to the correct solution, but please, try to explain the purpose of the steps we do to yourself – it is very important.
 &lt;/p&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgd40cd31" class="outline-3"&gt;
-&lt;h3 id="orgd40cd31"&gt;Incidence matrix&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgd40cd31"&gt;
+&lt;div id="outline-container-orgb7808f2" class="outline-3"&gt;
+&lt;h3 id="orgb7808f2"&gt;Incidence matrix&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgb7808f2"&gt;
 &lt;p&gt;
 First, we need to build an &lt;a href="https://en.wikipedia.org/wiki/Incidence_matrix"&gt;incidence matrix&lt;/a&gt;. You can think of pairs `(FirstId, SecondId)` as edges in an undirected graph. 
 &lt;/p&gt;
@@ -574,9 +666,9 @@ For example, you can use this constructor: `scipy.sparse.coo_matrix((data, (i, j
 &lt;/p&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgc422d86" class="outline-4"&gt;
-&lt;h4 id="orgc422d86"&gt;De-duplicating the Data&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-orgc422d86"&gt;
+&lt;div id="outline-container-org564fb4d" class="outline-4"&gt;
+&lt;h4 id="org564fb4d"&gt;De-duplicating the Data&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org564fb4d"&gt;
 &lt;p&gt;
 The test data turns out to have duplicate ID pairs, which will cause our incidence matrix to produce numbers greater than 1 if we leave them in, so we need to remove them (using the &lt;a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.duplicated.html"&gt;duplicated&lt;/a&gt; method).
 &lt;/p&gt;
@@ -629,9 +721,9 @@ It is more convenient to have the incidence matrix in &lt;a href="https://docs.s
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgc18d901" class="outline-3"&gt;
-&lt;h3 id="orgc18d901"&gt;Now To Build the Magic Feature&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgc18d901"&gt;
+&lt;div id="outline-container-org3967cf8" class="outline-3"&gt;
+&lt;h3 id="org3967cf8"&gt;Now To Build the Magic Feature&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org3967cf8"&gt;
 &lt;p&gt;
 Why did we build the incidence matrix? We can think of the rows in this matrix as a representation for the objects. The `i-th` row is a representation for an object with `Id = i`. Then, to measure the similarity between two objects we can measure similarity between their representations. And we will see that these representations are very good.
 &lt;/p&gt;
@@ -677,9 +769,9 @@ That is it! &lt;b&gt;&lt;b&gt;We've built our magic feature.&lt;/b&gt;&lt;/b&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org73e5d7b" class="outline-4"&gt;
-&lt;h4 id="org73e5d7b"&gt;From magic feature to binary predictions&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org73e5d7b"&gt;
+&lt;div id="outline-container-orgb960c50" class="outline-4"&gt;
+&lt;h4 id="orgb960c50"&gt;From magic feature to binary predictions&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-orgb960c50"&gt;
 &lt;p&gt;
 But how do we convert this feature into binary predictions? We do not have a train set to learn a model, but we have a piece of information about test set: the baseline accuracy score that you got, when submitting constant. And we also have a very strong considerations about the data generative process, so probably we will be fine even without a training set. 
 &lt;/p&gt;
@@ -867,40 +959,40 @@ Well done! Your accuracy score is 0.997298
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orge37ace8" class="outline-2"&gt;
-&lt;h2 id="orge37ace8"&gt;Bonus&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orge37ace8"&gt;
+&lt;div id="outline-container-org5bfd205" class="outline-2"&gt;
+&lt;h2 id="org5bfd205"&gt;Bonus&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org5bfd205"&gt;
 &lt;p&gt;
 Interestingly, it is not the only leak in this dataset. There is another totally different way to get almost 100% accuracy. Try to find it!
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org83fd432" class="outline-2"&gt;
-&lt;h2 id="org83fd432"&gt;What does it all mean then?&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org83fd432"&gt;
+&lt;div id="outline-container-org6429bae" class="outline-2"&gt;
+&lt;h2 id="org6429bae"&gt;What does it all mean then?&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org6429bae"&gt;
 &lt;p&gt;
 From our initial check uploading all the submissions as one (so all the ID-pairs were classified as having IDs from the same class) we saw that half the entries were 1's and half were 0's. Our incidence matrix showed that half the vectors had a similarity of 20 or more, so by predicting that all the pairs whose incidence matrix dot-products were 20 or greater were of the same class, we could predict with greater than 99% accuracy which IDs were from the same class.
 &lt;/p&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description><category>assignment dataleaks</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/</guid><pubDate>Sun, 09 Sep 2018 01:31:29 GMT</pubDate></item><item><title>Data Leaks</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/data-leaks/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-org43b6430" class="outline-2"&gt;
-&lt;h2 id="org43b6430"&gt;What are data leaks?&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org43b6430"&gt;
+&lt;/div&gt;</description><category>assignment dataleaks</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/</guid><pubDate>Sun, 09 Sep 2018 01:31:29 GMT</pubDate></item><item><title>Data Leaks</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/data-leaks/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-orgb6c4200" class="outline-2"&gt;
+&lt;h2 id="orgb6c4200"&gt;What are data leaks?&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgb6c4200"&gt;
 &lt;p&gt;
 &lt;i&gt;Data Leaks&lt;/i&gt; are unexpected errors that expose extra information that wouldn't be available in production.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org4219295" class="outline-2"&gt;
-&lt;h2 id="org4219295"&gt;Time Series&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org4219295"&gt;
+&lt;div id="outline-container-orgafbb943" class="outline-2"&gt;
+&lt;h2 id="orgafbb943"&gt;Time Series&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgafbb943"&gt;
 &lt;p&gt;
 Check if there are points in the training set that are in the future with regard to the test set.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org30c219a" class="outline-2"&gt;
-&lt;h2 id="org30c219a"&gt;Unexpected Information&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org30c219a"&gt;
+&lt;div id="outline-container-org538834b" class="outline-2"&gt;
+&lt;h2 id="org538834b"&gt;Unexpected Information&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org538834b"&gt;
 &lt;p&gt;
 Sometimes what looks like a non-predictive feature might prove to be useful because of the way the data-set was created.
 &lt;/p&gt;
@@ -911,21 +1003,21 @@ Sometimes what looks like a non-predictive feature might prove to be useful beca
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgbb45b0a" class="outline-2"&gt;
-&lt;h2 id="orgbb45b0a"&gt;Leaderboard Probing&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgbb45b0a"&gt;
+&lt;div id="outline-container-org165f78d" class="outline-2"&gt;
+&lt;h2 id="org165f78d"&gt;Leaderboard Probing&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org165f78d"&gt;
 &lt;p&gt;
 This is a method to look for dataleaks based on the leader board.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgd31af32" class="outline-2"&gt;
-&lt;h2 id="orgd31af32"&gt;Quiz&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgd31af32"&gt;
+&lt;div id="outline-container-org33ada27" class="outline-2"&gt;
+&lt;h2 id="org33ada27"&gt;Quiz&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org33ada27"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgaec9dbc" class="outline-3"&gt;
-&lt;h3 id="orgaec9dbc"&gt;One&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgaec9dbc"&gt;
+&lt;div id="outline-container-org3c7ca32" class="outline-3"&gt;
+&lt;h3 id="org3c7ca32"&gt;One&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org3c7ca32"&gt;
 &lt;p&gt;
 Suppose that you have a credit scoring task where you have to create a machine learning model that approximates expert evaluation of an individual's creditworthiness. Which of the following can potentially be a data leakage?
 &lt;/p&gt;
@@ -937,9 +1029,9 @@ Suppose that you have a credit scoring task where you have to create a machine l
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgb297375" class="outline-3"&gt;
-&lt;h3 id="orgb297375"&gt;Two&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgb297375"&gt;
+&lt;div id="outline-container-org2711f73" class="outline-3"&gt;
+&lt;h3 id="org2711f73"&gt;Two&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org2711f73"&gt;
 &lt;p&gt;
 What is the most foolproof way to set up a time-series competition?
 &lt;/p&gt;
@@ -951,9 +1043,9 @@ What is the most foolproof way to set up a time-series competition?
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgc95fb82" class="outline-3"&gt;
-&lt;h3 id="orgc95fb82"&gt;Three&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgc95fb82"&gt;
+&lt;div id="outline-container-org37344f4" class="outline-3"&gt;
+&lt;h3 id="org37344f4"&gt;Three&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org37344f4"&gt;
 &lt;p&gt;
 Suppose you have a binary feature classification task and it is evaluated by the logloss metric. You know that there are 10,000 entries in the public chunk of the test set and that a constant prediction of 0.3 gets a score of 1.01. The mean of the target variable in the training set is 0.44. What is the mean of the target variable in the public part  of the test data (up to 4 decimal places.)
 &lt;/p&gt;
@@ -973,9 +1065,9 @@ Suppose you have a binary feature classification task and it is evaluated by the
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgb916fd4" class="outline-3"&gt;
-&lt;h3 id="orgb916fd4"&gt;Four&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgb916fd4"&gt;
+&lt;div id="outline-container-org7e705bf" class="outline-3"&gt;
+&lt;h3 id="org7e705bf"&gt;Four&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org7e705bf"&gt;
 &lt;p&gt;
 Suppose you are solving an image classification task, what is the classification of the logo for this course?
 &lt;/p&gt;
@@ -990,21 +1082,21 @@ Suppose you are solving an image classification task, what is the classification
 &lt;h2&gt;Table of Contents&lt;/h2&gt;
 &lt;div id="text-table-of-contents"&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#orga418442"&gt;Validation and Overfitting&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org33fda23"&gt;Three Main Methods of Splitting&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org5c3515b"&gt;Stratification&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org673f5fc"&gt;Data Splitting&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org734139f"&gt;Problems&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org1b47d0f"&gt;Practice Quiz&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#orgb24a928"&gt;Quiz&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#orgac73e53"&gt;Links&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#orgdaf62d0"&gt;Validation and Overfitting&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org674da7d"&gt;Three Main Methods of Splitting&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#orgb5cdb96"&gt;Stratification&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org388f244"&gt;Data Splitting&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org36f5ea8"&gt;Problems&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org8238b42"&gt;Practice Quiz&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org03ebc6f"&gt;Quiz&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org746ed2d"&gt;Links&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orga418442" class="outline-2"&gt;
-&lt;h2 id="orga418442"&gt;Validation and Overfitting&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orga418442"&gt;
+&lt;div id="outline-container-orgdaf62d0" class="outline-2"&gt;
+&lt;h2 id="orgdaf62d0"&gt;Validation and Overfitting&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgdaf62d0"&gt;
 &lt;p&gt;
 To prevent your model from overfitting to the training set, you can hold out some of the training set and use it to validate the model after it has been fit to the rest of the training set.
 &lt;/p&gt;
@@ -1015,16 +1107,16 @@ To prevent your model from overfitting to the training set, you can hold out som
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org33fda23" class="outline-2"&gt;
-&lt;h2 id="org33fda23"&gt;Three Main Methods of Splitting&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org33fda23"&gt;
+&lt;div id="outline-container-org674da7d" class="outline-2"&gt;
+&lt;h2 id="org674da7d"&gt;Three Main Methods of Splitting&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org674da7d"&gt;
 &lt;p&gt;
 These are methods for splitting your training set into training and validation sets. Once you have a model, re-train it over the entire training set before applying it to the test set.
 &lt;/p&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org9e7efea" class="outline-3"&gt;
-&lt;h3 id="org9e7efea"&gt;Holdout&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org9e7efea"&gt;
+&lt;div id="outline-container-orgdf752cb" class="outline-3"&gt;
+&lt;h3 id="orgdf752cb"&gt;Holdout&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgdf752cb"&gt;
 &lt;p&gt;
 This method just splits the data into one training and one validation set.
 &lt;/p&gt;
@@ -1035,9 +1127,9 @@ This method just splits the data into one training and one validation set.
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgf921310" class="outline-3"&gt;
-&lt;h3 id="orgf921310"&gt;K-Fold&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgf921310"&gt;
+&lt;div id="outline-container-orge7e9228" class="outline-3"&gt;
+&lt;h3 id="orge7e9228"&gt;K-Fold&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orge7e9228"&gt;
 &lt;p&gt;
 Make &lt;i&gt;k&lt;/i&gt; splits of the training set, then use each of the validation sets while training on all the data not in the validation set. This differs from doing holdout k-times since we guarantee that the validation sets don't overlap. Uses the average score for the k-folds.
 &lt;/p&gt;
@@ -1047,9 +1139,9 @@ Make &lt;i&gt;k&lt;/i&gt; splits of the training set, then use each of the valid
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orge1b99e9" class="outline-3"&gt;
-&lt;h3 id="orge1b99e9"&gt;Leave One Out&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orge1b99e9"&gt;
+&lt;div id="outline-container-org0dbec8d" class="outline-3"&gt;
+&lt;h3 id="org0dbec8d"&gt;Leave One Out&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org0dbec8d"&gt;
 &lt;p&gt;
 This is like k-folds except we always use a validation set of size 1 - so we are iterating over each point in the data set and using it as the training set. This can be useful if the data set is small.
 &lt;/p&gt;
@@ -1059,9 +1151,9 @@ This is like k-folds except we always use a validation set of size 1 - so we are
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org5c3515b" class="outline-2"&gt;
-&lt;h2 id="org5c3515b"&gt;Stratification&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org5c3515b"&gt;
+&lt;div id="outline-container-orgb5cdb96" class="outline-2"&gt;
+&lt;h2 id="orgb5cdb96"&gt;Stratification&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgb5cdb96"&gt;
 &lt;p&gt;
 Sometimes you need to make sure your validation sets have the same distribution as your set as a whole.
 &lt;/p&gt;
@@ -1073,9 +1165,9 @@ Sometimes you need to make sure your validation sets have the same distribution 
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org673f5fc" class="outline-2"&gt;
-&lt;h2 id="org673f5fc"&gt;Data Splitting&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org673f5fc"&gt;
+&lt;div id="outline-container-org388f244" class="outline-2"&gt;
+&lt;h2 id="org388f244"&gt;Data Splitting&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org388f244"&gt;
 &lt;p&gt;
 If you have time-based data, there's two ways to split the training data - randomly within the entire timespan, or put the first part of the data in the training set and put the second part of the data in the validation set. If the test-set is a time that is beyond the training data, then using the time-based split will produce a model that is better for the testing data.
 &lt;/p&gt;
@@ -1093,25 +1185,25 @@ The main point of this is that you want to set up your validation set to match t
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org734139f" class="outline-2"&gt;
-&lt;h2 id="org734139f"&gt;Problems&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org734139f"&gt;
+&lt;div id="outline-container-org36f5ea8" class="outline-2"&gt;
+&lt;h2 id="org36f5ea8"&gt;Problems&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org36f5ea8"&gt;
 &lt;p&gt;
 The point of doing the training-validation split is that you think the validation set(s) will approximate the test set. But what if that's not true?
 &lt;/p&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgd1624bd" class="outline-3"&gt;
-&lt;h3 id="orgd1624bd"&gt;Causes of score differences&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgd1624bd"&gt;
+&lt;div id="outline-container-org6727bfa" class="outline-3"&gt;
+&lt;h3 id="org6727bfa"&gt;Causes of score differences&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org6727bfa"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;Too little data&lt;/li&gt;
 &lt;li&gt;The data is too diverse and inconsistent&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgbaddcce" class="outline-3"&gt;
-&lt;h3 id="orgbaddcce"&gt;Submission Differs from Validation&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgbaddcce"&gt;
+&lt;div id="outline-container-orgf901a8f" class="outline-3"&gt;
+&lt;h3 id="orgf901a8f"&gt;Submission Differs from Validation&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgf901a8f"&gt;
 &lt;ol class="org-ol"&gt;
 &lt;li&gt;Even K-fold validation has variation (check that the standard deviation across folds encompasses the leaderboard values)&lt;/li&gt;
 &lt;li&gt;Too little data on leaderboard (nothing you can do)&lt;/li&gt;
@@ -1120,13 +1212,13 @@ The point of doing the training-validation split is that you think the validatio
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org1b47d0f" class="outline-2"&gt;
-&lt;h2 id="org1b47d0f"&gt;Practice Quiz&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org1b47d0f"&gt;
+&lt;div id="outline-container-org8238b42" class="outline-2"&gt;
+&lt;h2 id="org8238b42"&gt;Practice Quiz&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org8238b42"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orga854703" class="outline-3"&gt;
-&lt;h3 id="orga854703"&gt;One&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orga854703"&gt;
+&lt;div id="outline-container-org352f592" class="outline-3"&gt;
+&lt;h3 id="org352f592"&gt;One&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org352f592"&gt;
 &lt;p&gt;
 We did a K-Fold cross validation on a huge dataset and noticed that scores on each fold are roughly the same. Which validation type is of most practical use?
 &lt;/p&gt;
@@ -1137,9 +1229,9 @@ We did a K-Fold cross validation on a huge dataset and noticed that scores on ea
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org82cedaf" class="outline-3"&gt;
-&lt;h3 id="org82cedaf"&gt;Two&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org82cedaf"&gt;
+&lt;div id="outline-container-org0326285" class="outline-3"&gt;
+&lt;h3 id="org0326285"&gt;Two&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org0326285"&gt;
 &lt;p&gt;
 We did a K-fold cross validation on a medium sized dataset and noticed that the validation scores varied widely. Which validation type is the most practical to use?
 &lt;/p&gt;
@@ -1150,9 +1242,9 @@ We did a K-fold cross validation on a medium sized dataset and noticed that the 
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgbbdaac5" class="outline-3"&gt;
-&lt;h3 id="orgbbdaac5"&gt;Three&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgbbdaac5"&gt;
+&lt;div id="outline-container-orgc71db56" class="outline-3"&gt;
+&lt;h3 id="orgc71db56"&gt;Three&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgc71db56"&gt;
 &lt;p&gt;
 The features we generate depend on the train-test split. True or False?
 &lt;/p&gt;
@@ -1162,9 +1254,9 @@ The features we generate depend on the train-test split. True or False?
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org8688967" class="outline-3"&gt;
-&lt;h3 id="org8688967"&gt;Which of these can indicate an expected leaderboard shuffle in a competition?&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org8688967"&gt;
+&lt;div id="outline-container-orgd543efe" class="outline-3"&gt;
+&lt;h3 id="orgd543efe"&gt;Which of these can indicate an expected leaderboard shuffle in a competition?&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgd543efe"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; Little training and/or testing data&lt;/li&gt;
 &lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; Most of the competitors have similar scores&lt;/li&gt;
@@ -1173,13 +1265,13 @@ The features we generate depend on the train-test split. True or False?
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgb24a928" class="outline-2"&gt;
-&lt;h2 id="orgb24a928"&gt;Quiz&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgb24a928"&gt;
+&lt;div id="outline-container-org03ebc6f" class="outline-2"&gt;
+&lt;h2 id="org03ebc6f"&gt;Quiz&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org03ebc6f"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org95ad1b1" class="outline-3"&gt;
-&lt;h3 id="org95ad1b1"&gt;One&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org95ad1b1"&gt;
+&lt;div id="outline-container-org10427ff" class="outline-3"&gt;
+&lt;h3 id="org10427ff"&gt;One&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org10427ff"&gt;
 &lt;p&gt;
 Select the true statements.
 &lt;/p&gt;
@@ -1192,9 +1284,9 @@ Select the true statements.
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org418eb40" class="outline-3"&gt;
-&lt;h3 id="org418eb40"&gt;Two&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org418eb40"&gt;
+&lt;div id="outline-container-orgf19d4e6" class="outline-3"&gt;
+&lt;h3 id="orgf19d4e6"&gt;Two&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgf19d4e6"&gt;
 &lt;p&gt;
 Kaggle usually allows you to submit two final submissions that will be checked against the private leader board. One common practice is to use a model that did the best on the validation scores and another that did best on the public leader board. What is the logic behind using these two models?
 &lt;/p&gt;
@@ -1205,9 +1297,9 @@ Kaggle usually allows you to submit two final submissions that will be checked a
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org0cd3526" class="outline-3"&gt;
-&lt;h3 id="org0cd3526"&gt;Three&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org0cd3526"&gt;
+&lt;div id="outline-container-org8c9f4e2" class="outline-3"&gt;
+&lt;h3 id="org8c9f4e2"&gt;Three&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org8c9f4e2"&gt;
 &lt;p&gt;
 Suppose we have a dataset of marketing campaigns. Each campain runs for a few weeks and for each campaign our target is the number of new customers. A row in the dataset looks like this:
 &lt;/p&gt;
@@ -1228,9 +1320,9 @@ The dataset contains multiple campaigns where the training set has the dates at 
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orga7a2cd9" class="outline-3"&gt;
-&lt;h3 id="orga7a2cd9"&gt;Four&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orga7a2cd9"&gt;
+&lt;div id="outline-container-org1d64e74" class="outline-3"&gt;
+&lt;h3 id="org1d64e74"&gt;Four&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org1d64e74"&gt;
 &lt;p&gt;
 Which of the following can you usually identify without the leaderboard?
 &lt;/p&gt;
@@ -1243,17 +1335,17 @@ Which of the following can you usually identify without the leaderboard?
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgac73e53" class="outline-2"&gt;
-&lt;h2 id="orgac73e53"&gt;Links&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgac73e53"&gt;
+&lt;div id="outline-container-org746ed2d" class="outline-2"&gt;
+&lt;h2 id="org746ed2d"&gt;Links&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org746ed2d"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;&lt;a href="http://scikit-learn.org/stable/modules/cross_validation.html"&gt;Cross-validation in sklearn&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="http://www.chioka.in/how-to-select-your-final-models-in-a-kaggle-competitio/"&gt;Model Selection for Kaggle&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description><category>notes validation</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/validation/</guid><pubDate>Tue, 04 Sep 2018 15:01:59 GMT</pubDate></item><item><title>Springleaf Competition</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/springleaf-competition/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-orge357c55" class="outline-2"&gt;
-&lt;h2 id="orge357c55"&gt;Introduction&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orge357c55"&gt;
+&lt;/div&gt;</description><category>notes validation</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/validation/</guid><pubDate>Tue, 04 Sep 2018 15:01:59 GMT</pubDate></item><item><title>Springleaf Competition</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/springleaf-competition/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-orgd3acf9c" class="outline-2"&gt;
+&lt;h2 id="orgd3acf9c"&gt;Introduction&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgd3acf9c"&gt;
 &lt;p&gt;
 The data comes from the &lt;a href="https://www.kaggle.com/c/springleaf-marketing-response"&gt;Springleaf Marketing Response&lt;/a&gt; competition. Springleaf makes personal loans and wanted to be able to predict who would respond to their direct mail offers. Submissions are evaluated on the area under the ROC curve between the predicted probability and the target. The submission file should have an ID and the probability that the person would respond.
 &lt;/p&gt;
@@ -1269,66 +1361,66 @@ ID,target
 &lt;h2&gt;Table of Contents&lt;/h2&gt;
 &lt;div id="text-table-of-contents"&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/#org4ed0faf"&gt;Building Your Intuition About the Data&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/#org4bcad72"&gt;Exploring Anonymized Data&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/#org4f33354"&gt;Visualizations&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/#org3c88ee7"&gt;Data Set Cleaning&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/#org6d046dc"&gt;Quiz&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/#org5af161f"&gt;Links&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/#orga7ca7b0"&gt;Building Your Intuition About the Data&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/#org6ae1a4e"&gt;Exploring Anonymized Data&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/#orga42a7b7"&gt;Visualizations&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/#org70345c8"&gt;Data Set Cleaning&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/#orgf6f6742"&gt;Quiz&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/#orgeedcf2a"&gt;Links&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org4ed0faf" class="outline-2"&gt;
-&lt;h2 id="org4ed0faf"&gt;Building Your Intuition About the Data&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org4ed0faf"&gt;
+&lt;div id="outline-container-orga7ca7b0" class="outline-2"&gt;
+&lt;h2 id="orga7ca7b0"&gt;Building Your Intuition About the Data&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orga7ca7b0"&gt;
 &lt;p&gt;
 The first thing to do is to see if you can build up a mental model of what the data is about.
 &lt;/p&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org1ed3af8" class="outline-3"&gt;
-&lt;h3 id="org1ed3af8"&gt;Get Domain Knowledge&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org1ed3af8"&gt;
+&lt;div id="outline-container-org0a1a14d" class="outline-3"&gt;
+&lt;h3 id="org0a1a14d"&gt;Get Domain Knowledge&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org0a1a14d"&gt;
 &lt;p&gt;
 Find out something about the topic that the data describes.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgbe8dd22" class="outline-3"&gt;
-&lt;h3 id="orgbe8dd22"&gt;Check if the Data is intuitive&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgbe8dd22"&gt;
+&lt;div id="outline-container-orge4755c2" class="outline-3"&gt;
+&lt;h3 id="orge4755c2"&gt;Check if the Data is intuitive&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orge4755c2"&gt;
 &lt;p&gt;
 See if there are any strange values and see if it makes sense given the data description.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org6d4cbf3" class="outline-3"&gt;
-&lt;h3 id="org6d4cbf3"&gt;Understand how the data was generated&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org6d4cbf3"&gt;
+&lt;div id="outline-container-org4a6688e" class="outline-3"&gt;
+&lt;h3 id="org4a6688e"&gt;Understand how the data was generated&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org4a6688e"&gt;
 &lt;p&gt;
 Is any of it synthetic? Was the training data generated the same way as the testing data?
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org4bcad72" class="outline-2"&gt;
-&lt;h2 id="org4bcad72"&gt;Exploring Anonymized Data&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org4bcad72"&gt;
+&lt;div id="outline-container-org6ae1a4e" class="outline-2"&gt;
+&lt;h2 id="org6ae1a4e"&gt;Exploring Anonymized Data&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org6ae1a4e"&gt;
 &lt;p&gt;
 Organizers sometimes encode data so you can't tell what it is.
 &lt;/p&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org01ca6d2" class="outline-3"&gt;
-&lt;h3 id="org01ca6d2"&gt;Try To Decode the Data&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org01ca6d2"&gt;
+&lt;div id="outline-container-org6c5093d" class="outline-3"&gt;
+&lt;h3 id="org6c5093d"&gt;Try To Decode the Data&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org6c5093d"&gt;
 &lt;p&gt;
 You generally won't be able to figure out what the data is if it's encoded, but sometimes they were created using simple shifting schemes that will let you figure out their original values.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgd17f593" class="outline-3"&gt;
-&lt;h3 id="orgd17f593"&gt;Explore Individual Features&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgd17f593"&gt;
+&lt;div id="outline-container-org3a18170" class="outline-3"&gt;
+&lt;h3 id="org3a18170"&gt;Explore Individual Features&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org3a18170"&gt;
 &lt;p&gt;
 Even if you don't know what the data is, it's important to know what type of data it is so that you can use the right data preprocessing for your model.
 &lt;/p&gt;
@@ -1341,17 +1433,17 @@ Even if you don't know what the data is, it's important to know what type of dat
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org4f33354" class="outline-2"&gt;
-&lt;h2 id="org4f33354"&gt;Visualizations&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org4f33354"&gt;
+&lt;div id="outline-container-orga42a7b7" class="outline-2"&gt;
+&lt;h2 id="orga42a7b7"&gt;Visualizations&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orga42a7b7"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org842c267" class="outline-3"&gt;
-&lt;h3 id="org842c267"&gt;Features&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org842c267"&gt;
+&lt;div id="outline-container-org0a8d1b7" class="outline-3"&gt;
+&lt;h3 id="org0a8d1b7"&gt;Features&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org0a8d1b7"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgc44f5dc" class="outline-4"&gt;
-&lt;h4 id="orgc44f5dc"&gt;Histograms&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-orgc44f5dc"&gt;
+&lt;div id="outline-container-org0324b8b" class="outline-4"&gt;
+&lt;h4 id="org0324b8b"&gt;Histograms&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org0324b8b"&gt;
 &lt;p&gt;
 This is useful for seeing the shape of the data.
 &lt;/p&gt;
@@ -1360,9 +1452,9 @@ This is useful for seeing the shape of the data.
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgde5331d" class="outline-4"&gt;
-&lt;h4 id="orgde5331d"&gt;Index vs Value&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-orgde5331d"&gt;
+&lt;div id="outline-container-orge6ca6ac" class="outline-4"&gt;
+&lt;h4 id="orge6ca6ac"&gt;Index vs Value&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-orge6ca6ac"&gt;
 &lt;p&gt;
 This will show you how well distributed the data is within the data frame. Horizontal lines indicate repeated values and empty bands show areas where none of the data had this value. If you don't have vertical lines then the data was probably shuffled.
 &lt;/p&gt;
@@ -1371,9 +1463,9 @@ This will show you how well distributed the data is within the data frame. Horiz
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgc3560c0" class="outline-4"&gt;
-&lt;h4 id="orgc3560c0"&gt;Index vs Value Colored By Class Label&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-orgc3560c0"&gt;
+&lt;div id="outline-container-org9059dc9" class="outline-4"&gt;
+&lt;h4 id="org9059dc9"&gt;Index vs Value Colored By Class Label&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org9059dc9"&gt;
 &lt;p&gt;
 If you plot the classes with different colors you can see if there are clusters and clear separations between them. (&lt;code&gt;y&lt;/code&gt; in the function call has the target values).
 &lt;/p&gt;
@@ -1382,9 +1474,9 @@ If you plot the classes with different colors you can see if there are clusters 
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org00b68c3" class="outline-4"&gt;
-&lt;h4 id="org00b68c3"&gt;Plot Other Things&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org00b68c3"&gt;
+&lt;div id="outline-container-orgf7a10aa" class="outline-4"&gt;
+&lt;h4 id="orgf7a10aa"&gt;Plot Other Things&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-orgf7a10aa"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;Row vs Feature&lt;/li&gt;
 &lt;li&gt;Nan-values&lt;/li&gt;
@@ -1393,17 +1485,17 @@ If you plot the classes with different colors you can see if there are clusters 
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orga638c81" class="outline-3"&gt;
-&lt;h3 id="orga638c81"&gt;Relationships&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orga638c81"&gt;
+&lt;div id="outline-container-org90bcaff" class="outline-3"&gt;
+&lt;h3 id="org90bcaff"&gt;Relationships&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org90bcaff"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org1914b89" class="outline-4"&gt;
-&lt;h4 id="org1914b89"&gt;Scatter Plots&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org1914b89"&gt;
+&lt;div id="outline-container-org5fbfc32" class="outline-4"&gt;
+&lt;h4 id="org5fbfc32"&gt;Scatter Plots&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org5fbfc32"&gt;
 &lt;/div&gt;
 &lt;ul class="org-ul"&gt;
-&lt;li&gt;&lt;a id="org0ed352c"&gt;&lt;/a&gt;Pairwise Relationships&lt;br&gt;
-&lt;div class="outline-text-5" id="text-org0ed352c"&gt;
+&lt;li&gt;&lt;a id="org2ba358a"&gt;&lt;/a&gt;Pairwise Relationships&lt;br&gt;
+&lt;div class="outline-text-5" id="text-org2ba358a"&gt;
 &lt;p&gt;
 To make it eaiser to see relationships, you can plot them in pairs.
 &lt;/p&gt;
@@ -1412,15 +1504,15 @@ To make it eaiser to see relationships, you can plot them in pairs.
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/li&gt;
-&lt;li&gt;&lt;a id="org62a3dba"&gt;&lt;/a&gt;Compare the Test Set&lt;br&gt;
-&lt;div class="outline-text-5" id="text-org62a3dba"&gt;
+&lt;li&gt;&lt;a id="org0c1ba14"&gt;&lt;/a&gt;Compare the Test Set&lt;br&gt;
+&lt;div class="outline-text-5" id="text-org0c1ba14"&gt;
 &lt;p&gt;
 Plot the features and the test-set (using different colors) to see how well your training data matches your test data.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/li&gt;
-&lt;li&gt;&lt;a id="org21977e7"&gt;&lt;/a&gt;Scatter Matrix&lt;br&gt;
-&lt;div class="outline-text-5" id="text-org21977e7"&gt;
+&lt;li&gt;&lt;a id="orgd7983ec"&gt;&lt;/a&gt;Scatter Matrix&lt;br&gt;
+&lt;div class="outline-text-5" id="text-orgd7983ec"&gt;
 &lt;p&gt;
 Pandas has a convenience function that will plot all the pairwise scatter-plots for you.
 &lt;/p&gt;
@@ -1431,9 +1523,9 @@ Pandas has a convenience function that will plot all the pairwise scatter-plots 
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgb161983" class="outline-4"&gt;
-&lt;h4 id="orgb161983"&gt;Corellation&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-orgb161983"&gt;
+&lt;div id="outline-container-orge4c5609" class="outline-4"&gt;
+&lt;h4 id="orge4c5609"&gt;Corellation&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-orge4c5609"&gt;
 &lt;p&gt;
 Plot the corellation matrix to see if there are feature-pairs that are related so you can make a new feature out of them and see if they help.
 &lt;/p&gt;
@@ -1446,9 +1538,9 @@ A straight correllation matrix might give you a sense of how correllated the fea
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org1d8f783" class="outline-4"&gt;
-&lt;h4 id="org1d8f783"&gt;Plot Statistics&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org1d8f783"&gt;
+&lt;div id="outline-container-org0f78f2b" class="outline-4"&gt;
+&lt;h4 id="org0f78f2b"&gt;Plot Statistics&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org0f78f2b"&gt;
 &lt;p&gt;
 Try plotting mean, differences, combination counts, etc. and see if you can create groups out of them.
 &lt;/p&gt;
@@ -1456,13 +1548,13 @@ Try plotting mean, differences, combination counts, etc. and see if you can crea
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org3c88ee7" class="outline-2"&gt;
-&lt;h2 id="org3c88ee7"&gt;Data Set Cleaning&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org3c88ee7"&gt;
+&lt;div id="outline-container-org70345c8" class="outline-2"&gt;
+&lt;h2 id="org70345c8"&gt;Data Set Cleaning&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org70345c8"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org1a7353a" class="outline-3"&gt;
-&lt;h3 id="org1a7353a"&gt;Duplicated and Constant Features&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org1a7353a"&gt;
+&lt;div id="outline-container-orgae0f01b" class="outline-3"&gt;
+&lt;h3 id="orgae0f01b"&gt;Duplicated and Constant Features&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgae0f01b"&gt;
 &lt;p&gt;
 Sometimes a feature will have the same value in all the rows. If it's this way in both the training and test sets you can just remove it, but if there are different values in the test set you have to figure out how to handle them.
 &lt;/p&gt;
@@ -1483,22 +1575,22 @@ This can happen with rows as well, but it can be harder to decide whether this i
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org28f4260" class="outline-3"&gt;
-&lt;h3 id="org28f4260"&gt;Non-shuffled Data&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org28f4260"&gt;
+&lt;div id="outline-container-org601f9d8" class="outline-3"&gt;
+&lt;h3 id="org601f9d8"&gt;Non-shuffled Data&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org601f9d8"&gt;
 &lt;p&gt;
 If you plot the mean as a horizontal line the data should be evenly distributed around it, if not it might not have been shuffled and there could be an inadvertent pattern in the data. You might not be able to use it, but you should understand all the things about the data that you can find out.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org6d046dc" class="outline-2"&gt;
-&lt;h2 id="org6d046dc"&gt;Quiz&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org6d046dc"&gt;
+&lt;div id="outline-container-orgf6f6742" class="outline-2"&gt;
+&lt;h2 id="orgf6f6742"&gt;Quiz&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgf6f6742"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgd057842" class="outline-3"&gt;
-&lt;h3 id="orgd057842"&gt;One&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgd057842"&gt;
+&lt;div id="outline-container-orgfb0f911" class="outline-3"&gt;
+&lt;h3 id="orgfb0f911"&gt;One&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgfb0f911"&gt;
 &lt;p&gt;
 Suppose we are given a data set with features &lt;i&gt;X&lt;/i&gt;, &lt;i&gt;Y&lt;/i&gt;, and &lt;i&gt;Z&lt;/i&gt;. Can you recover &lt;i&gt;z&lt;/i&gt; as a function of &lt;i&gt;x&lt;/i&gt; and &lt;i&gt;y&lt;/i&gt;?
 &lt;/p&gt;
@@ -1510,9 +1602,9 @@ Suppose we are given a data set with features &lt;i&gt;X&lt;/i&gt;, &lt;i&gt;Y&l
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgfa38811" class="outline-3"&gt;
-&lt;h3 id="orgfa38811"&gt;Two&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgfa38811"&gt;
+&lt;div id="outline-container-org2f5a3ba" class="outline-3"&gt;
+&lt;h3 id="org2f5a3ba"&gt;Two&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org2f5a3ba"&gt;
 &lt;p&gt;
 What value do the red dots have?
 0.5 (wrong)
@@ -1520,9 +1612,9 @@ What value do the red dots have?
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org47a6328" class="outline-3"&gt;
-&lt;h3 id="org47a6328"&gt;Three&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org47a6328"&gt;
+&lt;div id="outline-container-org3c2f040" class="outline-3"&gt;
+&lt;h3 id="org3c2f040"&gt;Three&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org3c2f040"&gt;
 &lt;p&gt;
 What hypothesis about X can we not reject based on the plots?
 &lt;/p&gt;
@@ -1535,9 +1627,9 @@ What hypothesis about X can we not reject based on the plots?
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgd61b6c0" class="outline-3"&gt;
-&lt;h3 id="orgd61b6c0"&gt;Four&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgd61b6c0"&gt;
+&lt;div id="outline-container-org4560230" class="outline-3"&gt;
+&lt;h3 id="org4560230"&gt;Four&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org4560230"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; Target is completely determined by coordinates (x,y)(x,y)(x,y), i.e. the label of the point is completely determined by point's position (x,y)(x,y)(x,y). Saying the same in other words: if we only had two features (x,y)(x,y)(x,y), we could build a classifier, that is accurate 100% of time.&lt;/li&gt;
 &lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; The top right plot is better than the top left in that everything you get from the top left can also be gotten from the top right, but not the other way around.&lt;/li&gt;
@@ -1546,16 +1638,16 @@ What hypothesis about X can we not reject based on the plots?
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org5af161f" class="outline-2"&gt;
-&lt;h2 id="org5af161f"&gt;Links&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org5af161f"&gt;
+&lt;div id="outline-container-orgeedcf2a" class="outline-2"&gt;
+&lt;h2 id="orgeedcf2a"&gt;Links&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgeedcf2a"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;&lt;a href="http://scikit-learn.org/stable/auto_examples/bicluster/plot_spectral_biclustering.html"&gt;Sorting Correlation Plots&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description><category>notes data</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/</guid><pubDate>Tue, 04 Sep 2018 04:24:53 GMT</pubDate></item><item><title>References</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/references/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-orge20137e" class="outline-2"&gt;
-&lt;h2 id="orge20137e"&gt;Bibliography&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orge20137e"&gt;
+&lt;/div&gt;</description><category>notes data</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/</guid><pubDate>Tue, 04 Sep 2018 04:24:53 GMT</pubDate></item><item><title>References</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/references/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-orgcc0d050" class="outline-2"&gt;
+&lt;h2 id="orgcc0d050"&gt;Bibliography&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgcc0d050"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;[B1] 1. Albon C. Machine learning with Python cookbook: practical solutions from preprocessing to deep learning. First edition. Beijing Boston Farnham: O’Reilly; 2018. 349 p.&lt;/li&gt;
 &lt;/ul&gt;
@@ -1564,34 +1656,34 @@ What hypothesis about X can we not reject based on the plots?
 &lt;h2&gt;Table of Contents&lt;/h2&gt;
 &lt;div id="text-table-of-contents"&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/the-target/#org0f6a87e"&gt;Introduction&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/the-target/#orgc89b38d"&gt;Imports&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/the-target/#orgfa55ea5"&gt;The Data&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/the-target/#orgd91ba5e"&gt;Dates&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/the-target/#org0c11099"&gt;Introduction&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/the-target/#orgda919d6"&gt;Imports&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/the-target/#org75b6a9b"&gt;The Data&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/the-target/#org6274f29"&gt;Dates&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org0f6a87e" class="outline-2"&gt;
-&lt;h2 id="org0f6a87e"&gt;Introduction&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org0f6a87e"&gt;
+&lt;div id="outline-container-org0c11099" class="outline-2"&gt;
+&lt;h2 id="org0c11099"&gt;Introduction&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org0c11099"&gt;
 &lt;p&gt;
 This is some stuff about what we are trying to predict. I realized that the description of the competition says that we are trying to predict the number of items sold per shop for the next month after the data, but I never said what that month is, so I'm making this just to put it somewhere.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgc89b38d" class="outline-2"&gt;
-&lt;h2 id="orgc89b38d"&gt;Imports&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgc89b38d"&gt;
+&lt;div id="outline-container-orgda919d6" class="outline-2"&gt;
+&lt;h2 id="orgda919d6"&gt;Imports&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgda919d6"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;import warnings
 warnings.filterwarnings("ignore", message="numpy.dtype size changed")
 warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org20ac23e" class="outline-3"&gt;
-&lt;h3 id="org20ac23e"&gt;From pypi&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org20ac23e"&gt;
+&lt;div id="outline-container-orgea5ae6d" class="outline-3"&gt;
+&lt;h3 id="orgea5ae6d"&gt;From pypi&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgea5ae6d"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;import pandas
 import matplotlib.pyplot as pyplot
 import seaborn
@@ -1599,9 +1691,9 @@ import seaborn
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org6614d60" class="outline-3"&gt;
-&lt;h3 id="org6614d60"&gt;This project&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org6614d60"&gt;
+&lt;div id="outline-container-org25322bc" class="outline-3"&gt;
+&lt;h3 id="org25322bc"&gt;This project&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org25322bc"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;from kaggler.helpers.build_training_data import Pickles
 from kaggler.helpers.helpers import (
     DataKeys,
@@ -1611,9 +1703,9 @@ from kaggler.helpers.helpers import (
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgcab3349" class="outline-3"&gt;
-&lt;h3 id="orgcab3349"&gt;Setting up the plotting&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgcab3349"&gt;
+&lt;div id="outline-container-orge225aa1" class="outline-3"&gt;
+&lt;h3 id="orge225aa1"&gt;Setting up the plotting&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orge225aa1"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;% matplotlib inline
 seaborn.set_style("whitegrid")
 &lt;/pre&gt;&lt;/div&gt;
@@ -1621,9 +1713,9 @@ seaborn.set_style("whitegrid")
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgfa55ea5" class="outline-2"&gt;
-&lt;h2 id="orgfa55ea5"&gt;The Data&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgfa55ea5"&gt;
+&lt;div id="outline-container-org75b6a9b" class="outline-2"&gt;
+&lt;h2 id="org75b6a9b"&gt;The Data&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org75b6a9b"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;x_train = Helpers.unpickle(Pickles.x_train)
 y_train = Helpers.unpickle(Pickles.y_train)
 x_test = Helpers.unpickle(Pickles.x_test)
@@ -1639,9 +1731,9 @@ assert concatenated.shape == (len(x_train) + len(x_test), len(x_train.columns))
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgd91ba5e" class="outline-2"&gt;
-&lt;h2 id="orgd91ba5e"&gt;Dates&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgd91ba5e"&gt;
+&lt;div id="outline-container-org6274f29" class="outline-2"&gt;
+&lt;h2 id="org6274f29"&gt;Dates&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org6274f29"&gt;
 &lt;p&gt;
 Unfortunately I got rid of the days, which are required by the &lt;a href="https://pandas.pydata.org/pandas-docs/stable/timeseries.html"&gt;to_datetime&lt;/a&gt; function provided by pandas, so I'm going to construct a new date column with a day of 1 for each date.
 &lt;/p&gt;
@@ -1763,26 +1855,26 @@ So the last month in the data-set is October 2015, and we want to predict what t
 &lt;h2&gt;Table of Contents&lt;/h2&gt;
 &lt;div id="text-table-of-contents"&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/some-plots-of-the-data/#org43496dc"&gt;Imports&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/some-plots-of-the-data/#org681b960"&gt;Build the data&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/some-plots-of-the-data/#org60f4748"&gt;More Helpers&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/some-plots-of-the-data/#orgb501729"&gt;Features vs Target&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/some-plots-of-the-data/#org1d5cc58"&gt;Imports&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/some-plots-of-the-data/#orgfe84b29"&gt;Build the data&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/some-plots-of-the-data/#orgbd3eb87"&gt;More Helpers&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/some-plots-of-the-data/#orgfbd0b95"&gt;Features vs Target&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org43496dc" class="outline-2"&gt;
-&lt;h2 id="org43496dc"&gt;Imports&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org43496dc"&gt;
+&lt;div id="outline-container-org1d5cc58" class="outline-2"&gt;
+&lt;h2 id="org1d5cc58"&gt;Imports&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org1d5cc58"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;import warnings
 warnings.filterwarnings("ignore", message="numpy.dtype size changed")
 warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org39cccf3" class="outline-3"&gt;
-&lt;h3 id="org39cccf3"&gt;From pypi&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org39cccf3"&gt;
+&lt;div id="outline-container-orge9cf811" class="outline-3"&gt;
+&lt;h3 id="orge9cf811"&gt;From pypi&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orge9cf811"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;import matplotlib.pyplot as pyplot
 import numpy
 import seaborn
@@ -1794,9 +1886,9 @@ seaborn.set_style("whitegrid")
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org03cdeac" class="outline-3"&gt;
-&lt;h3 id="org03cdeac"&gt;This project&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org03cdeac"&gt;
+&lt;div id="outline-container-org3cb160a" class="outline-3"&gt;
+&lt;h3 id="org3cb160a"&gt;This project&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org3cb160a"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;from kaggler.helpers.build_training_data import Pickles
 from kaggler.helpers.helpers import (
     DataKeys,
@@ -1807,9 +1899,9 @@ from kaggler.helpers.helpers import (
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org681b960" class="outline-2"&gt;
-&lt;h2 id="org681b960"&gt;Build the data&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org681b960"&gt;
+&lt;div id="outline-container-orgfe84b29" class="outline-2"&gt;
+&lt;h2 id="orgfe84b29"&gt;Build the data&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgfe84b29"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;x_train = Helpers.unpickle(Pickles.x_train)
 y_train = Helpers.unpickle(Pickles.y_train)
 DataKeys.target = "Month Count"
@@ -1908,9 +2000,9 @@ Helpers.print_head(x_train)
 &lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org60f4748" class="outline-2"&gt;
-&lt;h2 id="org60f4748"&gt;More Helpers&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org60f4748"&gt;
+&lt;div id="outline-container-orgbd3eb87" class="outline-2"&gt;
+&lt;h2 id="orgbd3eb87"&gt;More Helpers&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgbd3eb87"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;def make_figure_and_axis(x_label, y_label, title, figsize=(10, 8)):
     """make a matplotlib figure
 
@@ -1931,13 +2023,13 @@ Helpers.print_head(x_train)
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgb501729" class="outline-2"&gt;
-&lt;h2 id="orgb501729"&gt;Features vs Target&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgb501729"&gt;
+&lt;div id="outline-container-orgfbd0b95" class="outline-2"&gt;
+&lt;h2 id="orgfbd0b95"&gt;Features vs Target&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgfbd0b95"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org5282eb5" class="outline-3"&gt;
-&lt;h3 id="org5282eb5"&gt;Date Block&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org5282eb5"&gt;
+&lt;div id="outline-container-orga768b2f" class="outline-3"&gt;
+&lt;h3 id="orga768b2f"&gt;Date Block&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orga768b2f"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;figure, axis = make_figure_and_axis("Date Block", "Count", "Date-Block Counts")
 grid = seaborn.catplot(ax=axis, x=DataKeys.date_block, kind="count", data=x_train)
 &lt;/pre&gt;&lt;/div&gt;
@@ -2016,9 +2108,9 @@ Perhaps not surprisingly, the month of December, when holiday sales spike, is th
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orge521700" class="outline-3"&gt;
-&lt;h3 id="orge521700"&gt;Shop&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orge521700"&gt;
+&lt;div id="outline-container-orgaaae86d" class="outline-3"&gt;
+&lt;h3 id="orgaaae86d"&gt;Shop&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgaaae86d"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;group = x_train.groupby(DataKeys.shop).sum().reset_index().sort_values(DataKeys.target)
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -2034,9 +2126,9 @@ There appears to be seven or eight shops that dominate the sales.
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgfbe0bc4" class="outline-3"&gt;
-&lt;h3 id="orgfbe0bc4"&gt;Item Category&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgfbe0bc4"&gt;
+&lt;div id="outline-container-org66e3953" class="outline-3"&gt;
+&lt;h3 id="org66e3953"&gt;Item Category&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org66e3953"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;group = x_train.groupby(DataKeys.item_category).sum().reset_index()
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -2051,13 +2143,13 @@ Some kind of weirdly coincidental linear relationship between the category ID an
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org4018aae" class="outline-3"&gt;
-&lt;h3 id="org4018aae"&gt;Biggest Over Time&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org4018aae"&gt;
+&lt;div id="outline-container-orga08f673" class="outline-3"&gt;
+&lt;h3 id="orga08f673"&gt;Biggest Over Time&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orga08f673"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgf1535ce" class="outline-4"&gt;
-&lt;h4 id="orgf1535ce"&gt;Category&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-orgf1535ce"&gt;
+&lt;div id="outline-container-orga9f648f" class="outline-4"&gt;
+&lt;h4 id="orga9f648f"&gt;Category&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-orga9f648f"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;category_group = x_train.groupby([DataKeys.date, DataKeys.item_category]).sum().reset_index()
 biggest = category_group.iloc[category_group[DataKeys.target].idxmax()]
 biggest_category = category_group[category_group.item_category_id == biggest.item_category_id]
@@ -2090,242 +2182,4 @@ Percent Decline: 81.3 %
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description><category>competition plotting data</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/some-plots-of-the-data/</guid><pubDate>Wed, 29 Aug 2018 21:19:26 GMT</pubDate></item><item><title>Preprocessing the Kaggle Data</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/preprocessing-the-kaggle-data/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
-&lt;h2&gt;Table of Contents&lt;/h2&gt;
-&lt;div id="text-table-of-contents"&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/preprocessing-the-kaggle-data/#orged6c8f9"&gt;Introduction&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/preprocessing-the-kaggle-data/#orga0a03fe"&gt;Tangle&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/preprocessing-the-kaggle-data/#org669470e"&gt;Imports&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/preprocessing-the-kaggle-data/#org1372e04"&gt;Loading the Data&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/preprocessing-the-kaggle-data/#org05825a1"&gt;Limit the Target Range&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id="outline-container-orged6c8f9" class="outline-2"&gt;
-&lt;h2 id="orged6c8f9"&gt;Introduction&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orged6c8f9"&gt;
-&lt;p&gt;
-This is a post to do some basic pre-processing on the data. It won't do anything fancy (i.e. no Feature Engineering), but will just get the data ready to be used by the models. In particular, the rules say that the test data target will be limited to a range and the features are categorical so we need to transform them for non-tree models.
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-orga0a03fe" class="outline-2"&gt;
-&lt;h2 id="orga0a03fe"&gt;Tangle&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orga0a03fe"&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;pypi&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;imports&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&lt;/span&gt;
-
-&lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;local&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;imports&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&lt;/span&gt;
-
-&lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;clip&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;it&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-org669470e" class="outline-2"&gt;
-&lt;h2 id="org669470e"&gt;Imports&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org669470e"&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;warnings&lt;/span&gt;
-&lt;span class="n"&gt;warnings&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;filterwarnings&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"ignore"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;message&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"numpy.dtype size changed"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="n"&gt;warnings&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;filterwarnings&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"ignore"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;message&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"numpy.ufunc size changed"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id="outline-container-org0eb96df" class="outline-3"&gt;
-&lt;h3 id="org0eb96df"&gt;From pypi&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org0eb96df"&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;matplotlib.pyplot&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;pyplot&lt;/span&gt;
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;numpy&lt;/span&gt;
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;seaborn&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="n"&gt;matplotlib&lt;/span&gt; &lt;span class="n"&gt;inline&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id="outline-container-orgef2cfb6" class="outline-3"&gt;
-&lt;h3 id="orgef2cfb6"&gt;This project&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgef2cfb6"&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;kaggler.helpers.build_training_data&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Pickles&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;kaggler.helpers.helpers&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Helpers&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-org1372e04" class="outline-2"&gt;
-&lt;h2 id="org1372e04"&gt;Loading the Data&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org1372e04"&gt;
-&lt;p&gt;
-This assumes you've run the &lt;code&gt;build_training_data.py&lt;/code&gt; code to get the testing and training data sets. The &lt;code&gt;Helpers&lt;/code&gt; class also expects a specific path, so you have to have the repository set up in &lt;code&gt;~/projects/kaggle-competitions/&lt;/code&gt;.
-&lt;/p&gt;
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;x_train&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Helpers&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;unpickle&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Pickles&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;x_train&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="n"&gt;x_test&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Helpers&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;unpickle&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Pickles&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;x_test&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="n"&gt;y_train&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Helpers&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;unpickle&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Pickles&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;y_train&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="n"&gt;y_test&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Helpers&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;unpickle&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Pickles&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;y_test&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x_train&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x_test&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;y_train&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;y_test&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id="outline-container-org05825a1" class="outline-2"&gt;
-&lt;h2 id="org05825a1"&gt;Limit the Target Range&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org05825a1"&gt;
-&lt;p&gt;
-According to the contest description the true target values are clipped to the &lt;code&gt;[0,20]&lt;/code&gt; range, so it might make sense to clip the target data in our training and testing data to the given range.
-&lt;/p&gt;
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;Helpers&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;print_head&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x_train&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
-
-
-&lt;colgroup&gt;
-&lt;col class="org-right"&gt;
-
-&lt;col class="org-right"&gt;
-
-&lt;col class="org-right"&gt;
-
-&lt;col class="org-right"&gt;
-
-&lt;col class="org-right"&gt;
-
-&lt;col class="org-right"&gt;
-
-&lt;col class="org-right"&gt;
-&lt;/colgroup&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th scope="col" class="org-right"&gt;date_block_num&lt;/th&gt;
-&lt;th scope="col" class="org-right"&gt;shop_id&lt;/th&gt;
-&lt;th scope="col" class="org-right"&gt;item_id&lt;/th&gt;
-&lt;th scope="col" class="org-right"&gt;item_price&lt;/th&gt;
-&lt;th scope="col" class="org-right"&gt;item_category_id&lt;/th&gt;
-&lt;th scope="col" class="org-right"&gt;month&lt;/th&gt;
-&lt;th scope="col" class="org-right"&gt;year&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td class="org-right"&gt;11&lt;/td&gt;
-&lt;td class="org-right"&gt;15&lt;/td&gt;
-&lt;td class="org-right"&gt;1324&lt;/td&gt;
-&lt;td class="org-right"&gt;499&lt;/td&gt;
-&lt;td class="org-right"&gt;55&lt;/td&gt;
-&lt;td class="org-right"&gt;12&lt;/td&gt;
-&lt;td class="org-right"&gt;2013&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-right"&gt;18&lt;/td&gt;
-&lt;td class="org-right"&gt;31&lt;/td&gt;
-&lt;td class="org-right"&gt;19981&lt;/td&gt;
-&lt;td class="org-right"&gt;499&lt;/td&gt;
-&lt;td class="org-right"&gt;43&lt;/td&gt;
-&lt;td class="org-right"&gt;07&lt;/td&gt;
-&lt;td class="org-right"&gt;2014&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-right"&gt;32&lt;/td&gt;
-&lt;td class="org-right"&gt;28&lt;/td&gt;
-&lt;td class="org-right"&gt;7934&lt;/td&gt;
-&lt;td class="org-right"&gt;398&lt;/td&gt;
-&lt;td class="org-right"&gt;7&lt;/td&gt;
-&lt;td class="org-right"&gt;09&lt;/td&gt;
-&lt;td class="org-right"&gt;2015&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-right"&gt;12&lt;/td&gt;
-&lt;td class="org-right"&gt;43&lt;/td&gt;
-&lt;td class="org-right"&gt;13518&lt;/td&gt;
-&lt;td class="org-right"&gt;1499&lt;/td&gt;
-&lt;td class="org-right"&gt;19&lt;/td&gt;
-&lt;td class="org-right"&gt;01&lt;/td&gt;
-&lt;td class="org-right"&gt;2014&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td class="org-right"&gt;28&lt;/td&gt;
-&lt;td class="org-right"&gt;25&lt;/td&gt;
-&lt;td class="org-right"&gt;19927&lt;/td&gt;
-&lt;td class="org-right"&gt;329&lt;/td&gt;
-&lt;td class="org-right"&gt;57&lt;/td&gt;
-&lt;td class="org-right"&gt;05&lt;/td&gt;
-&lt;td class="org-right"&gt;2015&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;y_train&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;describe&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;pre class="example"&gt;
-count    1.287299e+06
-mean     2.264775e+00
-std      8.693074e+00
-min     -2.200000e+01
-25%      1.000000e+00
-50%      1.000000e+00
-75%      2.000000e+00
-max      2.253000e+03
-Name: item_count_month, dtype: float64
-
-&lt;/pre&gt;
-
-&lt;p&gt;
-Looking at the y-train data you can see that it ranges for -22 to 2,253 - so there is actually a huge amount of reduction in the range of the target data, but the median is only 1, so it might be that there are outliers in the data.
-&lt;/p&gt;
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;figure&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pyplot&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;figure&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;figsize&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
-&lt;span class="n"&gt;axe&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;figure&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;gca&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-&lt;span class="n"&gt;seaborn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;kdeplot&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;y_train&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;ax&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;axe&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="n"&gt;axe&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_title&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"Monthly Sales Distribution"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="n"&gt;label&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;axe&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_ylabel&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"Monthly Sales"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="figure"&gt;
-&lt;p&gt;&lt;img src="https://necromuralist.github.io/Kaggle-Competitions/posts/preprocessing-the-kaggle-data/target_distribution.png" alt="target_distribution.png"&gt;
-&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;p&gt;
-It looks like the target is strongly right-skewed. So I guess it makes sense to &lt;a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.clip.html"&gt;clip&lt;/a&gt; it.
-&lt;/p&gt;
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;y_train_clipped&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;numpy&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;clip&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;y_train&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;20&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="n"&gt;y_test_clipped&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;numpy&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;clip&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;y_test&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;20&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;y_train_clipped&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y_test_clipped&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
-    &lt;span class="k"&gt;assert&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;min&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;
-    &lt;span class="k"&gt;assert&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;max&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;20&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;figure&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pyplot&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;figure&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;figsize&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
-&lt;span class="n"&gt;axe&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;figure&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;gca&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-&lt;span class="n"&gt;seaborn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;kdeplot&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;y_train_clipped&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;ax&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;axe&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="n"&gt;axe&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_title&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"Monthly Sales Distribution Clipped"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="n"&gt;label&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;axe&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_ylabel&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"Monthly Sales"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="figure"&gt;
-&lt;p&gt;&lt;img src="https://necromuralist.github.io/Kaggle-Competitions/posts/preprocessing-the-kaggle-data/y_train_clipped.png" alt="y_train_clipped.png"&gt;
-&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;p&gt;
-That actually didn't really fix the distribution, strangely.
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;</description><category>preprocessing data kaggle</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/preprocessing-the-kaggle-data/</guid><pubDate>Sat, 25 Aug 2018 20:05:56 GMT</pubDate></item></channel></rss>
+&lt;/div&gt;</description><category>competition plotting data</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/some-plots-of-the-data/</guid><pubDate>Wed, 29 Aug 2018 21:19:26 GMT</pubDate></item></channel></rss>

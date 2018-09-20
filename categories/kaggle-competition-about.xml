@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about kaggle competition about)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/kaggle-competition-about.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Tue, 04 Sep 2018 01:24:15 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>The Competition</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/the-competition/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about kaggle competition about)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/kaggle-competition-about.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Sat, 15 Sep 2018 17:42:27 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>The Competition</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/the-competition/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
 &lt;h2&gt;Table of Contents&lt;/h2&gt;
 &lt;div id="text-table-of-contents"&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/the-competition/#orgcf9f54b"&gt;What is this about?&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/the-competition/#org33bed42"&gt;What is the data made up of?&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/the-competition/#org4a427b6"&gt;How will you be evaluated?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/the-competition/#org81195f9"&gt;What is this about?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/the-competition/#org03d3b45"&gt;What is the data made up of?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/the-competition/#org119ffbe"&gt;How will you be evaluated?&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgcf9f54b" class="outline-2"&gt;
-&lt;h2 id="orgcf9f54b"&gt;What is this about?&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgcf9f54b"&gt;
+&lt;div id="outline-container-org81195f9" class="outline-2"&gt;
+&lt;h2 id="org81195f9"&gt;What is this about?&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org81195f9"&gt;
 &lt;p&gt;
 This is about the &lt;a href="https://www.kaggle.com/c/competitive-data-science-final-project"&gt;kaggle competition&lt;/a&gt; to predict future sales based on prior sale data. You are given a data set made up of prior sales and asked to predict how much each product will sell over the next month.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org33bed42" class="outline-2"&gt;
-&lt;h2 id="org33bed42"&gt;What is the data made up of?&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org33bed42"&gt;
+&lt;div id="outline-container-org03d3b45" class="outline-2"&gt;
+&lt;h2 id="org03d3b45"&gt;What is the data made up of?&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org03d3b45"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org405beab" class="outline-3"&gt;
-&lt;h3 id="org405beab"&gt;The Source&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org405beab"&gt;
+&lt;div id="outline-container-org8d41311" class="outline-3"&gt;
+&lt;h3 id="org8d41311"&gt;The Source&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org8d41311"&gt;
 &lt;p&gt;
 The data comes from the &lt;a href="http://1c.ru/eng/title.htm"&gt;1C Company&lt;/a&gt;, a Russian company that describes themselves on their website like this.
 &lt;/p&gt;
@@ -46,9 +46,9 @@ At present 8000 dealers from 600 cities cooperate with 1C. About 7500 teams cons
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org49a65fd" class="outline-3"&gt;
-&lt;h3 id="org49a65fd"&gt;Getting it&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org49a65fd"&gt;
+&lt;div id="outline-container-orgd99689f" class="outline-3"&gt;
+&lt;h3 id="orgd99689f"&gt;Getting it&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgd99689f"&gt;
 &lt;p&gt;
 It looks like the data-set is the same one that I used for the Pandas example, but I'll download it anyway to be safe.
 &lt;/p&gt;
@@ -60,9 +60,9 @@ kaggle competitions download competitive-data-science-final-project --path data
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org3580325" class="outline-3"&gt;
-&lt;h3 id="org3580325"&gt;The Description&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org3580325"&gt;
+&lt;div id="outline-container-orge89ca5f" class="outline-3"&gt;
+&lt;h3 id="orge89ca5f"&gt;The Description&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orge89ca5f"&gt;
 &lt;blockquote&gt;
 &lt;p&gt;
 You are provided with daily historical sales data. The task is to forecast the total amount of products sold in every shop for the test set. Note that the list of shops and products slightly changes every month. Creating a robust model that can handle such situations is part of the challenge.
@@ -71,9 +71,9 @@ You are provided with daily historical sales data. The task is to forecast the t
 &lt;/div&gt;
 
 
-&lt;div id="outline-container-orgc417592" class="outline-4"&gt;
-&lt;h4 id="orgc417592"&gt;Files&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-orgc417592"&gt;
+&lt;div id="outline-container-orga2ec1e6" class="outline-4"&gt;
+&lt;h4 id="orga2ec1e6"&gt;Files&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-orga2ec1e6"&gt;
 &lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
 
 
@@ -124,9 +124,9 @@ You are provided with daily historical sales data. The task is to forecast the t
 &lt;/div&gt;
 
 
-&lt;div id="outline-container-org21c0d90" class="outline-4"&gt;
-&lt;h4 id="org21c0d90"&gt;Features&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org21c0d90"&gt;
+&lt;div id="outline-container-org3061314" class="outline-4"&gt;
+&lt;h4 id="org3061314"&gt;Features&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org3061314"&gt;
 &lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
 
 
@@ -203,13 +203,13 @@ You are provided with daily historical sales data. The task is to forecast the t
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org4a427b6" class="outline-2"&gt;
-&lt;h2 id="org4a427b6"&gt;How will you be evaluated?&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org4a427b6"&gt;
+&lt;div id="outline-container-org119ffbe" class="outline-2"&gt;
+&lt;h2 id="org119ffbe"&gt;How will you be evaluated?&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org119ffbe"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org347dc2e" class="outline-3"&gt;
-&lt;h3 id="org347dc2e"&gt;Submission Format&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org347dc2e"&gt;
+&lt;div id="outline-container-org36a60b7" class="outline-3"&gt;
+&lt;h3 id="org36a60b7"&gt;Submission Format&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org36a60b7"&gt;
 &lt;p&gt;
 You will submit a comma-separated file with two columns, the product ID and the total number of sales. It should look like this.
 &lt;/p&gt;
@@ -223,17 +223,17 @@ ID,item_cnt_month
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org7d3bf4f" class="outline-3"&gt;
-&lt;h3 id="org7d3bf4f"&gt;Scoring&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org7d3bf4f"&gt;
+&lt;div id="outline-container-orge74561a" class="outline-3"&gt;
+&lt;h3 id="orge74561a"&gt;Scoring&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orge74561a"&gt;
 &lt;p&gt;
 You will be scored base on the &lt;a href="https://en.wikipedia.org/wiki/Root-mean-square_deviation"&gt;Root Mean Square Error (RMSE)&lt;/a&gt;. The page says that the true target values are clipped to the &lt;code&gt;[0,20]&lt;/code&gt; range and the example given shows &lt;code&gt;0.5&lt;/code&gt; as the &lt;code&gt;item_cnt_month&lt;/code&gt; values, neither of which makes any sense to me at the moment.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org1a56c84" class="outline-3"&gt;
-&lt;h3 id="org1a56c84"&gt;The meaning of the target&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org1a56c84"&gt;
+&lt;div id="outline-container-orgf060c5f" class="outline-3"&gt;
+&lt;h3 id="orgf060c5f"&gt;The meaning of the target&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgf060c5f"&gt;
 &lt;p&gt;
 According to &lt;a href="https://www.kaggle.com/c/competitive-data-science-final-project/discussion/48251"&gt;this thread&lt;/a&gt; you need to &lt;a href="https://docs.scipy.org/doc/numpy-1.13.0/reference/generated/numpy.clip.html"&gt;clip&lt;/a&gt; the predictions back to that range (make anything less than zero a zero and anything more than twenty a twenty).
 &lt;/p&gt;
