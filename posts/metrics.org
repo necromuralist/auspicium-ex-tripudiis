@@ -1,0 +1,39 @@
+#+BEGIN_COMMENT
+.. title: Metrics
+.. slug: metrics
+.. date: 2018-09-17 21:49:35 UTC-07:00
+.. tags: metrics notes
+.. status: private
+.. category: notes
+.. link: 
+.. description: Lecture on metrics.
+.. type: text
+#+END_COMMENT
+#+OPTIONS: ^:{}
+#+TOC: headlines 1
+
+* About Metrics
+** What are metrics?
+   Metrics are numeric values that you are trying to optimize - they are how your model is graded.
+** Why are there so many metrics?
+   Each metric can tell you something different, so what metric you need depends on the problem you are trying to solve. For competitions, it is sometimes possible to do metrics probing just like you can sometimes do leaderboard probing to find peculiarities created by the chosen metric.
+* The Most Common Metrics
+** Regression
+*** Mean Squared Error
+    This is the average of the square of the errors.
+\[
+MSE = \frac{1}{N}
+\]
+*** Root Mean Squared Error
+    This is the square root of the mean squared error.
+    - minimizing the RMSE is also minimizes the MSE
+    - RMSE is more intuitive
+    - They can differ when used by gradient-based models
+*** R-squared
+    - Optimizing r-squared is equivalent to optimizing MSE
+*** Mean Absolute Error
+    This is more common when you are explaining it to a non-statistician. It is also more robust. Mathematically, it isn't something that you can calculate the derivate for.
+*** MAE vs MSE
+    - Outliers: use MAE
+    - Unexpected Values that we should still care about (not true outliers (mistakes), just rare): use MSE
+** Classification
