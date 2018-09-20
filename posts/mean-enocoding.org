@@ -1,0 +1,114 @@
+#+BEGIN_COMMENT
+.. title: Mean Encoding
+.. slug: mean-encoding
+.. date: 2018-09-23 17:56:27 UTC-07:00
+.. tags: notes encoding
+.. category: notes
+.. link: 
+.. description: The Mean Encoding method.
+.. type: text
+#+END_COMMENT
+
+* Mean Encoding
+** Introduction
+  - also called target encoding and likelihood encoding
+  It is a way to encode a categorical feature. Uses the fraction of times the feature is 1 out of all the times the feature is in the data set (for binary classification).
+*** Why does it work?
+  Unlike regular encoding, which has no real meaning to the labels, mean encoding imposes an ordering. This allows you to reduce your loss while using shorter trees.
+*** How do you calculate it?
+  There are multiple ways.
+  - Likelihood = $\frac{count of ones}/{total count}$ = mean(target)
+  - Weight of evidence = $\ln\left(\frac{count of ones}{count of zeros}\right)$
+  - Count = sum(target) = count of ones
+  - Diff = count of ones - count of zeros
+*** When does it fail?
+    If you have lots of feature instances with few cases it will tend to overfit.
+* Regularization
+** Four Types
+   - Cross-validation loop inside the training data
+   - Smoothing
+   - Adding random noise
+   - Sorting and calculating the expanding mean
+** Cross Validation
+   - Usually 4 or 5 folds are enough
+   - Need to watch out for extreme cases like leave-out-one (LOO)
+
+Here's an example of this method using sklearn.
+
+#+BEGIN_SRC python
+y_train = training["target"].values
+folds = StratifiedKFold(y_train, 5, shuffle=True)
+
+for training_index, validation_index in folds:
+    x_train = training.iloc[training_index]
+    x_value = training.iloc[validation_index]
+    # 'columns' is a list of columns to encode
+    for column in columns:
+        means = x_value[column].map(x_train.groupby(column).target.mean())
+        x_value[coulmn + "_mean_target"] = means
+    # train_new is a dataframe copy we made of the training data
+    train_new.iloc[value_index] = x_validation
+
+global_mean = training["target"].mean()
+
+# replace nans with the global mean
+train_new.fillna(global_mean, inplace=True)
+#+END_SRC
+** Smoothing
+   Use a value $\alpha$ to control the amount of regularization. This isn't a regularization method in and of itself, you use it with other methods.
+
+\[
+\frac{mean(targte) \times n_{rows} + \textit{global mean} \times \alpha}{n_{rows} + \alpha}
+\]
+
+** Noise
+   Adding noise degrades the quality of the encoding in the training data. This is usually used with /leave-one-out/ encoding to prevent overfitting. You have to figure out how much noise to add through experimentation.
+** Expanding Mean
+   This introduces the least amount of leakage from the target variable and doesn't require hyper-parameters for you to tune. The downside is that the encoding quality is irregular. There is a built-in implementation in the =CatBoost= library.
+
+Here's a pandas implementation.
+
+#+BEGIN_SRC python
+cumulative_sum = training.groupby(column)["target"].cumsum() - training["target"]
+cumulative_count = training.groupby(column).cumcount()
+train_new[column + "_mean_target"] = cumulative_sum/cumulative_count
+#+END_SRC
+
+** Which one should you use?
+   Cross Validation Loops and Expanding Means are the most practical to use.
+* Generalizations and Extensions
+** Regression and Multiclass
+* Summary
+** Advantages
+    - Compact transformation of categorical variables
+    - Powerful basis for feature engineering
+** Disadvantages
+    - Needs careful validation, it's easy to overfit
+    - Only certain data sets will show a significant improvement from using it
+
+* Quiz
+** One
+   What might be an indicator that mean encoding would be useful?
+   - [ ] a lot of binary variables
+   - [ ] a learning to rank task
+   - [X] categorical variables with lots of levels
+** Two
+   What is the purpose of regularization in mean encoding?
+   - [ ] Regularization allows you to make the feature space more sparse?
+   - [X] Regularization allows us to better utilize mean encoding
+   - [X] regularization reduces target variable leakage during the construction of mean encodings
+** Three
+   What is the correct form of validation when using mean encoding?
+    - [ ] calculate the mean enocding on all training data, regularize, then varidate on a random validation split
+    - [X] split the data into training and validation sets, then estimate the encodings on the training data, then apply them to the validation and validate the model on that split
+    - [ ] Fix the cross-validation split, use that split to calculate mean encodings with cross-validation loop regularization, use the same split to validate the model
+** Four
+   Suppose we have a data frame (=df=) with a categorical variable named =item_id= and a target variable called =target=.
+   We create two different mean encodings:
+
+   1. via df["item_id_encoded1"] = df.groupby("item_id")["target"].transform("mean")
+   2. Via One Hot Encoding =item_id=, fitting a linear regression on the encoding and the calculating =item_id_encoded2= as a prediction from this regression on the same data.
+
+   3. [X] =item_id_encoded1= and =item_id_encoded2= will essentially be the same only if the linear regression was fitted without a regularization
+   4. [ ] =item_id_encoded1= and =item_id_encoded2= will be essentially the same
+   5. [ ] =item_id_encoded1= and =item_id_encoded2= may differ a lot due to rare categories (nope)
