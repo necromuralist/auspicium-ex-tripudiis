@@ -1,0 +1,22 @@
+#+BEGIN_COMMENT
+.. title: Optimizing Metrics
+.. slug: optimizing-metrics
+.. date: 2018-09-22 16:26:49 UTC-07:00
+.. tags: notes metrics
+.. category: notes
+.. link: 
+.. description: Practical ideas for optimizing metrics.
+.. type: text
+#+END_COMMENT
+#+OPTIONS: ^:{}
+#+TOC: headlines 1
+* Mean Squared Error
+  This works, just use it as the optimization metric.
+  Sometimes this will be called /L2/ loss.
+* Mean Absolute Error
+  Once again, this works so just use it.
+  Sometimes this will be called /L1/ loss - it isn't as widely implemented.
+* Mean Squared Probability Error and Mean Absolute Probability Error
+  Some libraries will let you use them as `sample_weights`
+  Some libraries (like sklearn) will require you to re-sample the data ~df.sample(weights=sample_weights)~
+  Once you re-sample the data you can use any model that optimizes MSE or MAE
