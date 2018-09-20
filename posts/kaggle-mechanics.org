@@ -2,18 +2,28 @@
 .. title: Kaggle Mechanics
 .. slug: kaggle-mechanics
 .. date: 2018-08-04 17:18:12 UTC-07:00
-.. tags: basics rules
+.. tags: basics rules notes kaggle
 .. category: notes
 .. link: 
 .. description: The mechanics of a kaggle competition.
 .. type: text
 #+END_COMMENT
-
+#+OPTIONS: ^:{}
+#+TOC: headlines 1
 * The Basics
-** Data
-   Every competition provides data so you can create a model, but there isn't a standardized format. Sometimes it will be CSVz, sometimes excel spreadsheets, sometimes image files, the sources can vary so you should read the data descriptions and adapt what you do to the competition. You aren't always limited to the data that is provided. If you were creating an image recognition model, for instance, it might be okay to include outside images or pre-trained models, it depends on the particulars of the competition.
-** Models
-   This is what you are trying to create - a representation of the population based on the data you are given that will allow you to predict outcomes based on inputs not given in the data. The model needs two main features:
+** What is a kaggle competition?
+   [[https://www.kaggle.com/docs/competitions][Kaggle competitions]] are challenges that let you compete with others to create models to predict something about a given data set.
+*** What are the four main types of competitions?
+    1. *Featured* - These are the main type of kaggle competition, they are sponsored and usually have some kind of commercial orientation to them.
+    2. *Research* - These are competitions that are more experimental in nature. They may not have a prize associated with them but give you an opportunity to work on a problem that doesn't currently have a good solution.
+    3. *Getting Started* - These are problems meant to give you a starting point. There are no prizes and they usually have well-known solutions (in some cases you could probably just look up the data to get the answers) so they are just there to help you learn.
+    4. *Playground* - These are problems that are one step above the /Getting Started/ level. They are there for people to have fun.
+
+** What does the data look like?
+   Every competition provides data so you can create a model, but there isn't a standardized format. Sometimes it will be [[https://en.wikipedia.org/wiki/Comma-separated_values][CSVs]] sometimes it will be excel spreadsheets, sometimes it might be image files. The sources can vary so you should read the data descriptions and adapt what you do to the competition. You aren't always limited to the data that is provided. If you were creating an image recognition model, for instance, it might be okay to include outside images or pre-trained models, it will depend on the particulars of the competition.
+
+** What are you trying to do?
+   You are trying to create a model - a representation of the population based on the data you are given that will allow you to predict outcomes based on inputs not given in the data. The model needs two main features:
    - accuracy
    - reproducibility
 
