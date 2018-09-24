@@ -8,38 +8,37 @@
 .. description: Mean encoding applied to the competition data.
 .. type: text
 #+END_COMMENT
+#+OPTIONS: ^:{}
+#+TOC: headlines 1
 
 * Introduction
 
-In this programming assignment you will be working with `1C` dataset from the final competition. You are asked to encode `item_id` in 4 different ways:
+In this programming assignment you will be working with the /1C/ dataset from the final competition. You are asked to encode the =item_id= in 4 different ways:
  
      1) Via KFold scheme;  
      2) Via Leave-one-out scheme;
      3) Via smoothing scheme;
      4) Via expanding mean scheme.
 
-**You will need to submit** the correlation coefficient between resulting encoding and target variable up to 4 decimal places.
+**You will need to submit** the correlation coefficient between the resulting encoding and the target variable up to 4 decimal places.
 
 * General tips
 
-- Fill NANs in the encoding with `0.3343`.
+- Fill NANs in the encoding with =0.3343=.
 - Some encoding schemes depend on sorting order, so in order to avoid confusion, please use the following code snippet to construct the data frame. This snippet also implements mean encoding without regularization.
 
 #+BEGIN_SRC ipython :session encoding :results none
-import pandas as pd
-import numpy as np
+import pandas
+import numpy
 from itertools import product
-from grader import Grader
+from hse_graders.assignment_3.grader import Grader
 #+END_SRC
 
+* Read In the Data
 
-# # Read data
-
-# In[ ]:
-
-
+#+BEGIN_SRC ipython :session encoding :results none
 sales = pd.read_csv('../readonly/final_project_data/sales_train.csv.gz')
-
+#+END_SRC
 
 # # Aggregate data
 
