@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="Mean encoding applied to the competition data.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mean Encoding The Competition Data | Notes on Kaggle</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="../../rss.xml">
+<link rel="canonical" href="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script><meta name="author" content="Cloistered Monkey">
+<link rel="prev" href="../mean-encoding/" title="Mean Encoding" type="text/html">
+<link rel="next" href="../predicting-the-mean/" title="Predicting the Mean" type="text/html">
+<meta property="og:site_name" content="Notes on Kaggle">
+<meta property="og:title" content="Mean Encoding The Competition Data">
+<meta property="og:url" content="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/">
+<meta property="og:description" content="Mean encoding applied to the competition data.">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2018-09-23T18:50:28-07:00">
+<meta property="article:tag" content="assignment competition encoding">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-default navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://necromuralist.github.io/Kaggle-Competitions/">
+
+                <span id="blog-title">Notes on Kaggle</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="https://necromuralist.github.io/">The Cloistered Monkey</a>
+                </li>
+<li>
+<a href="../../archive.html">Archive</a>
+                </li>
+<li>
+<a href="../../categories/">Tags</a>
+                </li>
+<li>
+<a href="../../rss.xml">RSS feed</a>
+
+                
+            </li>
+</ul>
+<!-- Google custom search --><form method="get" action="https://www.google.com/search" class="navbar-form navbar-right" role="search">
+<div class="form-group">
+<input type="text" name="q" class="form-control" placeholder="Search">
+</div>
+<button type="submit" class="btn btn-primary">
+	<span class="glyphicon glyphicon-search"></span>
+</button>
+<input type="hidden" name="sitesearch" value="https://necromuralist.github.io/Kaggle-Competitions/">
+</form>
+<!-- End of custom search -->
+
+
+            <ul class="nav navbar-nav navbar-right">
+<li>
+    <a href="index.org" id="sourcelink">Source</a>
+    </li>
+
+                
+            </ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+            
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Mean Encoding The Competition Data</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                    Cloistered Monkey
+            </span></p>
+            <p class="dateline"><a href="." rel="bookmark"><time class="published dt-published" datetime="2018-09-23T18:50:28-07:00" itemprop="datePublished" title="2018-09-23 18:50">2018-09-23 18:50</time></a></p>
+            
+        <p class="sourceline"><a href="index.org" class="sourcelink">Source</a></p>
+
+        </div>
+        
+
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div id="outline-container-org8b6abd8" class="outline-2">
+<h2 id="org8b6abd8">Introduction</h2>
+<div class="outline-text-2" id="text-org8b6abd8">
+<p>
+In this programming assignment you will be working with `1C` dataset from the final competition. You are asked to encode `item<sub>id</sub>` in 4 different ways:
+</p>
+
+<ol class="org-ol">
+<li>Via KFold scheme;</li>
+<li>Via Leave-one-out scheme;</li>
+<li>Via smoothing scheme;</li>
+<li>Via expanding mean scheme.</li>
+</ol>
+<p>
+<b><b>You will need to submit</b></b> the correlation coefficient between resulting encoding and target variable up to 4 decimal places.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org32f5d8a" class="outline-2">
+<h2 id="org32f5d8a">General tips</h2>
+<div class="outline-text-2" id="text-org32f5d8a">
+<ul class="org-ul">
+<li>Fill NANs in the encoding with `0.3343`.</li>
+<li>Some encoding schemes depend on sorting order, so in order to avoid confusion, please use the following code snippet to construct the data frame. This snippet also implements mean encoding without regularization.</li>
+</ul>
+<div class="highlight"><pre><span></span>import pandas as pd
+import numpy as np
+from itertools import product
+from grader import Grader
+</pre></div>
+
+
+<p>
+sales = pd.read<sub>csv</sub>('../readonly/final<sub>project</sub><sub>data</sub>/sales<sub>train.csv.gz</sub>')
+</p>
+
+
+<p>
+index<sub>cols</sub> = ['shop<sub>id</sub>', 'item<sub>id</sub>', 'date<sub>block</sub><sub>num</sub>']
+</p>
+
+<p>
+grid = [] 
+for block<sub>num</sub> in sales['date<sub>block</sub><sub>num</sub>'].unique():
+    cur<sub>shops</sub> = sales[sales['date<sub>block</sub><sub>num</sub>']==block<sub>num</sub>]['shop<sub>id</sub>'].unique()
+    cur<sub>items</sub> = sales[sales['date<sub>block</sub><sub>num</sub>']==block<sub>num</sub>]['item<sub>id</sub>'].unique()
+    grid.append(np.array(list(product(*[cur<sub>shops</sub>, cur<sub>items</sub>, [block<sub>num</sub>]])),dtype='int32'))
+</p>
+
+<p>
+#turn the grid into pandas dataframe
+grid = pd.DataFrame(np.vstack(grid), columns = index<sub>cols,dtype</sub>=np.int32)
+</p>
+
+<p>
+#get aggregated values for (shop<sub>id</sub>, item<sub>id</sub>, month)
+gb = sales.groupby(index<sub>cols,as</sub><sub>index</sub>=False).agg({'item<sub>cnt</sub><sub>day</sub>':{'target':'sum'}})
+</p>
+
+<p>
+#fix column names
+gb.columns = [col[0] if col[-1]=='' else col[-1] for col in gb.columns.values]
+#join aggregated data to the grid
+all<sub>data</sub> = pd.merge(grid,gb,how='left',on=index<sub>cols</sub>).fillna(0)
+#sort the data
+all<sub>data.sort</sub><sub>values</sub>(['date<sub>block</sub><sub>num</sub>','shop<sub>id</sub>','item<sub>id</sub>'],inplace=True)
+</p>
+
+
+<p>
+item<sub>id</sub><sub>target</sub><sub>mean</sub> = all<sub>data.groupby</sub>('item<sub>id</sub>').target.mean()
+</p>
+
+<p>
+all<sub>data</sub>['item<sub>target</sub><sub>enc</sub>'] = all<sub>data</sub>['item<sub>id</sub>'].map(item<sub>id</sub><sub>target</sub><sub>mean</sub>)
+</p>
+
+<p>
+all<sub>data</sub>['item<sub>target</sub><sub>enc</sub>'].fillna(0.3343, inplace=True) 
+</p>
+
+<p>
+encoded<sub>feature</sub> = all<sub>data</sub>['item<sub>target</sub><sub>enc</sub>'].values
+print(np.corrcoef(all<sub>data</sub>['target'].values, encoded<sub>feature</sub>)[0][1])
+</p>
+
+
+<p>
+'''
+     Differently to `.target.mean()` function `transform` 
+   will return a dataframe with an index like in `all<sub>data</sub>`.
+   Basically this single line of code is equivalent to the first two lines from of Method 1.
+'''
+all<sub>data</sub>['item<sub>target</sub><sub>enc</sub>'] = all<sub>data.groupby</sub>('item<sub>id</sub>')['target'].transform('mean')
+</p>
+
+<p>
+all<sub>data</sub>['item<sub>target</sub><sub>enc</sub>'].fillna(0.3343, inplace=True) 
+</p>
+
+<p>
+encoded<sub>feature</sub> = all<sub>data</sub>['item<sub>target</sub><sub>enc</sub>'].values
+print(np.corrcoef(all<sub>data</sub>['target'].values, encoded<sub>feature</sub>)[0][1])
+</p>
+
+
+<p>
+grader = Grader()
+</p>
+
+
+<p>
+corr = np.corrcoef(all<sub>data</sub>['target'].values, encoded<sub>feature</sub>)[0][1]
+print(corr)
+grader.submit<sub>tag</sub>('KFold<sub>scheme</sub>', corr)
+</p>
+
+
+<p>
+corr = np.corrcoef(all<sub>data</sub>['target'].values, encoded<sub>feature</sub>)[0][1]
+print(corr)
+grader.submit<sub>tag</sub>('Leave-one-out<sub>scheme</sub>', corr)
+</p>
+
+
+<p>
+corr = np.corrcoef(all<sub>data</sub>['target'].values, encoded<sub>feature</sub>)[0][1]
+print(corr)
+grader.submit<sub>tag</sub>('Smoothing<sub>scheme</sub>', corr)
+</p>
+
+
+<p>
+corr = np.corrcoef(all<sub>data</sub>['target'].values, encoded<sub>feature</sub>)[0][1]
+print(corr)
+grader.submit<sub>tag</sub>('Expanding<sub>mean</sub><sub>scheme</sub>', corr)
+</p>
+
+
+<p>
+STUDENT<sub>EMAIL</sub> = # EMAIL HERE
+STUDENT<sub>TOKEN</sub> = # TOKEN HERE
+grader.status()
+</p>
+
+
+<p>
+grader.submit(STUDENT<sub>EMAIL</sub>, STUDENT<sub>TOKEN</sub>)
+</p>
+</div>
+</div>
+    </div>
+    <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
+<li><a class="tag p-category" href="../../categories/assignment-competition-encoding/" rel="tag">assignment competition encoding</a></li>
+        </ul>
+<ul class="pager hidden-print">
+<li class="previous">
+                <a href="../mean-encoding/" rel="prev" title="Mean Encoding">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../predicting-the-mean/" rel="next" title="Predicting the Mean">Next post</a>
+            </li>
+        </ul></nav></aside></article>
+</div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            Contents © 2018         <a href="mailto:necromuralist@protonmail.com">Cloistered Monkey</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png"></a><br>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+            
+        </footer>
+</div>
+</div>
+
+
+            <script src="../../assets/js/all-nocdn.js"></script><script>$('a.image-reference:not(.islink) img:not(.islink)').parent().colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates -->
+</body>
+</html>

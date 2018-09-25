@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about metrics classification notes)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/metrics-classification-notes.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Tue, 25 Sep 2018 23:01:14 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Classification Metrics</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/classification-metrics/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
+&lt;h2&gt;Table of Contents&lt;/h2&gt;
+&lt;div id="text-table-of-contents"&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/classification-metrics/#org66e8b03"&gt;Accuracy&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/classification-metrics/#orgbbe899b"&gt;Logarithmic Loss&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/classification-metrics/#orgf4c8f06"&gt;Area Under the ROC Curve (AUC)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/classification-metrics/#orgb8ed4d0"&gt;Quadratic Weighted Kappa (Cohen's Kappa)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org66e8b03" class="outline-2"&gt;
+&lt;h2 id="org66e8b03"&gt;Accuracy&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org66e8b03"&gt;
+&lt;p&gt;
+This metric measures how frequently our model is correct.
+&lt;/p&gt;
+
+&lt;p&gt;
+\[
+Accuracy = \frac{1}{N} \sum_{i=1}^N \left[\hat{y}_i = y_i \right]
+\]
+&lt;/p&gt;
+
+&lt;p&gt;
+If you were to make a model that just predicted a constant value, the best value would be the most common one. This points out the fact that a severely imbalanced data set can have a model with high accuracy that isn't actually a particularly good one (it just predicts the most frequent classification all the time).
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgbbe899b" class="outline-2"&gt;
+&lt;h2 id="orgbbe899b"&gt;Logarithmic Loss&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgbbe899b"&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgbec5d6c" class="outline-3"&gt;
+&lt;h3 id="orgbec5d6c"&gt;Binary Version&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgbec5d6c"&gt;
+&lt;p&gt;
+\[
+LogLoss = -\frac{1}{N} \sum_{i=1}^N y_i \log (\hat{y}_i) + (1 - y_i) \log (1 - \hat{y}_i)
+\]
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orga44400f" class="outline-3"&gt;
+&lt;h3 id="orga44400f"&gt;Multiclass Version&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orga44400f"&gt;
+&lt;p&gt;
+\[
+LogLoss = -\frac{1}{N} \sum_{i=1}^N \sum_{i=1}^L y_{il} \log (\hat{y}_{il})
+\]
+&lt;/p&gt;
+
+&lt;p&gt;
+Where &lt;i&gt;L&lt;/i&gt; is the number of classes.
+&lt;/p&gt;
+
+&lt;p&gt;
+When compared to accuracy, accuracy is linear over the amount of error, while logarithmic loss grows exponentially the more error there is, so it more severely penalizes your model the more wrong it is.
+&lt;/p&gt;
+
+&lt;p&gt;
+If you wanted to make a constant prediction, the best constant is to set the constant(s) to the frequencies for each class.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgf4c8f06" class="outline-2"&gt;
+&lt;h2 id="orgf4c8f06"&gt;Area Under the ROC Curve (AUC)&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgf4c8f06"&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;only for binary classification&lt;/li&gt;
+&lt;li&gt;depends only on the ordering of the predictions, not the absolute values&lt;/li&gt;
+&lt;li&gt;can be thought of as the area under the curve or the ordering of pairs&lt;/li&gt;
+&lt;li&gt;The baseline score is 0.5&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgb8ed4d0" class="outline-2"&gt;
+&lt;h2 id="orgb8ed4d0"&gt;Quadratic Weighted Kappa (Cohen's Kappa)&lt;/h2&gt;
+&lt;/div&gt;</description><category>metrics classification notes</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/classification-metrics/</guid><pubDate>Sat, 22 Sep 2018 22:35:29 GMT</pubDate></item></channel></rss>

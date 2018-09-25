@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about notes metrics classification)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/notes-metrics-classification.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Tue, 25 Sep 2018 23:01:14 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Optimizing Classification Metrics</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/optimizing-classification-metrics/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-org5d77a5c" class="outline-2"&gt;
+&lt;h2 id="org5d77a5c"&gt;Introduction&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org5d77a5c"&gt;
+&lt;p&gt;
+The &lt;i&gt;target metric&lt;/i&gt; is what the competition scores you on, but it isn't always the easiest metric to tune your model on. Sometimes you need to pick and &lt;i&gt;optimization metric&lt;/i&gt; to tune your model that isn't exactly the same but works well enough.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org8ac93da" class="outline-2"&gt;
+&lt;h2 id="org8ac93da"&gt;LogLoss&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org8ac93da"&gt;
+&lt;p&gt;
+To optimize log-loss you just have to match it to the right model.
+&lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;Tree Based: XGBoost, LightGBM&lt;/li&gt;
+&lt;li&gt;Linear: sklearn.&amp;lt;something&amp;gt;Regression, sklearn.SGDRegressor, Vowpal Wabbit&lt;/li&gt;
+&lt;li&gt;Neural Nets: PyTorch, Keras, Tensorflow, etc.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;
+Random Forests turn out to do poorly with Log Loss.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgba7a7f0" class="outline-3"&gt;
+&lt;h3 id="orgba7a7f0"&gt;Probability Calibration&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgba7a7f0"&gt;
+&lt;p&gt;
+If you take all the rows with the same score, then the fraction of them that have a class of 1 should match the score (so if they all have a score of 0.8, then 80% of them should be 1 and 20% should be 0). If the fraction is off, then you need to calibrate the probabilities. To do this take your model and then send its outputs to a model that does better with Log Loss. So if you want to use a Random Forest, you would train your model using AUC as the metric then use the predictions to train another model like a neural net and have it use Log Loss as the metric.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org9bddf26" class="outline-4"&gt;
+&lt;h4 id="org9bddf26"&gt;Platt Scaling&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org9bddf26"&gt;
+&lt;p&gt;
+Fit a Logistic Regression to your predictions
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgab1a91a" class="outline-4"&gt;
+&lt;h4 id="orgab1a91a"&gt;Isotonic Regression&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-orgab1a91a"&gt;
+&lt;p&gt;
+Fit an Isotonic Regression to your predictions
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org0bd15b5" class="outline-4"&gt;
+&lt;h4 id="org0bd15b5"&gt;Stacking&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org0bd15b5"&gt;
+&lt;p&gt;
+Fit XGBoost or a neural net to your predictions
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org0205f54" class="outline-2"&gt;
+&lt;h2 id="org0205f54"&gt;Accuracy&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org0205f54"&gt;
+&lt;p&gt;
+Accuracy is a difficult metric to optimize because it isn't differentiable. To optimize the accuracy metric you need to use a different metric (a proxy metric) like log-loss and then tune the threshold.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-orgac0a2ec" class="outline-2"&gt;
+&lt;h2 id="orgac0a2ec"&gt;Area Under the Curve (AUC)&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgac0a2ec"&gt;
+&lt;p&gt;
+Some models work with it so if you can choose one of these models.
+&lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;Tree-Based: XGBoost, LightGBM&lt;/li&gt;
+&lt;li&gt;Linear: (don't use)&lt;/li&gt;
+&lt;li&gt;Neural Nets: PyTorch, Keras, TensorFlow (but not by default)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;
+In practice you can optimize the model to log-loss.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgb1cbdf2" class="outline-2"&gt;
+&lt;h2 id="orgb1cbdf2"&gt;Quadratic Weighted Kappa&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgb1cbdf2"&gt;
+&lt;ol class="org-ol"&gt;
+&lt;li&gt;Optimize on the Mean Squared Error then optimize the thresholds.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgc6df48a" class="outline-2"&gt;
+&lt;h2 id="orgc6df48a"&gt;Other Sources&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgc6df48a"&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org446dd1c" class="outline-3"&gt;
+&lt;h3 id="org446dd1c"&gt;Classification&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org446dd1c"&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;&lt;a href="http://queirozf.com/entries/evaluation-metrics-for-classification-quick-examples-references"&gt;Evaluation Metrics for Classification Problems&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.garysieling.com/blog/sklearn-gini-vs-entropy-criteria"&gt;Descision Trees: &lt;i&gt;Gini&lt;/i&gt; vs &lt;i&gt;Entropy&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.navan.name/roc/"&gt;Understanding ROC Curves&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orge42f6b4" class="outline-3"&gt;
+&lt;h3 id="orge42f6b4"&gt;Ranking&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orge42f6b4"&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;&lt;a href="https://icml.cc/2015/wp-content/uploads/2015/06/icml_ranking.pdf"&gt;Learning to Rank Using Gradient Descent&lt;/a&gt; - source of pairwise AUC optimization&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/MSR-TR-2010-82.pdf"&gt;From RankNet to LambdaRank&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://sourceforge.net/p/lemur/wiki/RankLib/"&gt;RankLib (implementation of the two previous papers&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://wellecks.wordpress.com/2015/01/15/learning-to-rank-overview/"&gt;Learning to Rank Overview&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org9961dce" class="outline-3"&gt;
+&lt;h3 id="org9961dce"&gt;Clustering&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org9961dce"&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;&lt;a href="http://nlp.uned.es/docs/amigo2007a.pdf"&gt;Comparison of clustering metrics&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orge7f8a69" class="outline-2"&gt;
+&lt;h2 id="orge7f8a69"&gt;Practice Quiz&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orge7f8a69"&gt;
+&lt;ol class="org-ol"&gt;
+&lt;li&gt;What would be a logloss value for a binary classification task if we use a constant predictor \(f(x)=0.5\)? Round to two decimal places.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;
+-0.69 (marked as wrong)
+&lt;/p&gt;
+
+&lt;ol class="org-ol"&gt;
+&lt;li&gt;What is the best constant predictor for the Mean Absolute Error?
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;Target 50th percentile, Target median&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+
+&lt;li&gt;The best constant predictor for the Mean Squared Error is:
+
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;Target Mean, average of the target vector&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;The best Constant prediction for the Area Under the Curve is:
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;Any constant will lead to the same AUC value (should also mark target median, target mean, 1, 0.5, Target Mean divided by target variance - since any constant will lead to the same value, they are all the same)&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Suppose the target metric is \(r^2\), what optimization loss should we use for our models?
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;RMSE, MSE&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Calculate the AUC for these predictions:&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
+
+
+&lt;colgroup&gt;
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope="col" class="org-right"&gt;target&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;prediction&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;td class="org-right"&gt;0.39&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;0.52&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;td class="org-right"&gt;0.91&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;td class="org-right"&gt;0.85&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;td class="org-right"&gt;0.49&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;0.02&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;0.44&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# from pypi
+from sklearn.metrics import roc_auc_score
+y_true = [1,0,1,1,1,0,0]
+y_score = [0.39,0.52,0.91,0.85,0.49,0.02,0.44]
+print(roc_auc_score(y_true, y_score))
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;pre class="example"&gt;
+0.75
+
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgea0f831" class="outline-2"&gt;
+&lt;h2 id="orgea0f831"&gt;Quiz&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgea0f831"&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org895a404" class="outline-3"&gt;
+&lt;h3 id="org895a404"&gt;One&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org895a404"&gt;
+&lt;p&gt;
+Suppose we solve a binary classification task and our solution is scored with Log Loss. What predictions are preferable if all the true target values are 0?
+&lt;/p&gt;
+
+&lt;ul class="org-ul"&gt;
+&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; (0.4, 0.5, 0.5, 0.6) - marked wrong&lt;/li&gt;
+&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; (0.5, 0.5, 0.5, 0.5)&lt;/li&gt;
+&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; (0, 0, 0, 1)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;import numpy
+one = numpy.array([0.4, 0.5, 0.5, 0.6])
+two = numpy.array([0.5, 0.5, 0.5, 0.5])
+three = numpy.array([0, 0, 0, 1])
+
+for guess in (one, two, three):
+    print(sum(-numpy.log(1 - guess))/len(guess))
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;pre class="example"&gt;
+0.7033526791900091
+0.6931471805599453
+inf
+/home/hades/.virtualenvs/machine-learning-studies/lib/python3.6/site-packages/ipykernel_launcher.py:7: RuntimeWarning: divide by zero encountered in log
+  import sys
+
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-orge9a01a6" class="outline-3"&gt;
+&lt;h3 id="orge9a01a6"&gt;Two&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orge9a01a6"&gt;
+&lt;p&gt;
+Suppose we solve a regression task and we optimize MSE. If we manage to lower MSE loss on either the training set or the test set, how would this affect the Pearson Correlation coefficient between the target vector and the predictions on the same set.
+&lt;/p&gt;
+
+&lt;p&gt;
+The correlation will also be lowered.
+The correlation will not change.
+&lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; The correlation will become larger. - marked wrong&lt;/li&gt;
+&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; Any behavior is possible.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-org01d3f24" class="outline-3"&gt;
+&lt;h3 id="org01d3f24"&gt;Three&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org01d3f24"&gt;
+&lt;p&gt;
+What would be a best constant prediction for a multi-class classification with four classes? The solution is scored with multi-class Log Loss. The number of objects in each class in the training set is 18, 3, 15, 24.
+&lt;/p&gt;
+
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;Guess one: 0,1,2,3&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;counts = numpy.array([18, 3, 15, 24])
+print(counts/counts.sum())
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;pre class="example"&gt;
+[0.3  0.05 0.25 0.4 ]
+
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-org084b47e" class="outline-3"&gt;
+&lt;h3 id="org084b47e"&gt;Four&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org084b47e"&gt;
+&lt;p&gt;
+What is the best constant predictor for the r-squared metric?
+&lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;one minus the target mean, target mean (0 points)&lt;/li&gt;
+&lt;li&gt;0.5 (0 points)&lt;/li&gt;
+&lt;li&gt;Target Mean (same as the MSE)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org4cf1cec" class="outline-3"&gt;
+&lt;h3 id="org4cf1cec"&gt;Five&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org4cf1cec"&gt;
+&lt;p&gt;
+Select the Correct statements
+&lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; Optimization loss can be the same as the target metric&lt;/li&gt;
+&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; Optimization loss can be different from the target metric&lt;/li&gt;
+&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; Optimization loss is always different from the target metric&lt;/li&gt;
+&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; Optimization loss is always the same as the target metric&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-orgc051290" class="outline-3"&gt;
+&lt;h3 id="orgc051290"&gt;Six&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgc051290"&gt;
+&lt;p&gt;
+Suppose the target metric is &lt;b&gt;M1&lt;/b&gt; and the optimization loss is &lt;b&gt;M2&lt;/b&gt;. We train a model and monitor its quality on a holdout set using the metrics &lt;b&gt;M1&lt;/b&gt; and &lt;b&gt;M2&lt;/b&gt;.
+&lt;/p&gt;
+
+&lt;p&gt;
+Select the correct statement:
+&lt;/p&gt;
+
+&lt;ul class="org-ul"&gt;
+&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; If the best &lt;b&gt;M1&lt;/b&gt; score is attained at iteration &lt;i&gt;N&lt;/i&gt;, then the best &lt;b&gt;M2&lt;/b&gt; score is always attained after the n-th iteration.&lt;/li&gt;
+&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; If the best &lt;b&gt;M1&lt;/b&gt; score is attained at iteration &lt;i&gt;N&lt;/i&gt;, then the best &lt;b&gt;M2&lt;/b&gt; score is always attained before the n-th iteration.&lt;/li&gt;
+&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; If the best &lt;b&gt;M1&lt;/b&gt; score is attained at iteration &lt;i&gt;N&lt;/i&gt;, then the best &lt;b&gt;M2&lt;/b&gt; score is always attained at the n-th iteration.&lt;/li&gt;
+&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; There is no definite relation between the best iterations for the &lt;b&gt;M1&lt;/b&gt; score and the &lt;b&gt;M2&lt;/b&gt; score.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description><category>notes metrics classification</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/optimizing-classification-metrics/</guid><pubDate>Sun, 23 Sep 2018 22:10:09 GMT</pubDate></item></channel></rss>

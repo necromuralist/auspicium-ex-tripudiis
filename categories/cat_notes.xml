@@ -1,11 +1,736 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about notes)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/cat_notes.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Thu, 20 Sep 2018 04:17:50 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Metrics Optimization 2</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/metrics-optimization-2/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-org9a9e527" class="outline-2"&gt;
-&lt;h2 id="org9a9e527"&gt;(R)MSPE, MAPE, and (R)MSLE&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org9a9e527"&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about notes)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/cat_notes.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Tue, 25 Sep 2018 23:01:14 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Mean Encoding</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-org2984a28" class="outline-2"&gt;
+&lt;h2 id="org2984a28"&gt;Mean Encoding&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org2984a28"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org2b0a770" class="outline-3"&gt;
-&lt;h3 id="org2b0a770"&gt;An Off-By-One Example&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org2b0a770"&gt;
+&lt;div id="outline-container-org21b07cd" class="outline-3"&gt;
+&lt;h3 id="org21b07cd"&gt;Introduction&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org21b07cd"&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;also called target encoding and likelihood encoding&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+It is a way to encode a categorical feature. Uses the fraction of times the feature is 1 out of all the times the feature is in the data set (for binary classification).
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org5329564" class="outline-4"&gt;
+&lt;h4 id="org5329564"&gt;Why does it work?&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org5329564"&gt;
+&lt;p&gt;
+Unlike regular encoding, which has no real meaning to the labels, mean encoding imposes an ordering. This allows you to reduce your loss while using shorter trees.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org70581bc" class="outline-4"&gt;
+&lt;h4 id="org70581bc"&gt;How do you calculate it?&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org70581bc"&gt;
+&lt;p&gt;
+There are multiple ways.
+&lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;Likelihood = \(\frac{count of ones}/{total count}\) = mean(target)&lt;/li&gt;
+&lt;li&gt;Weight of evidence = \(\ln\left(\frac{count of ones}{count of zeros}\right)\)&lt;/li&gt;
+&lt;li&gt;Count = sum(target) = count of ones&lt;/li&gt;
+&lt;li&gt;Diff = count of ones - count of zeros&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org711f025" class="outline-4"&gt;
+&lt;h4 id="org711f025"&gt;When does it fail?&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org711f025"&gt;
+&lt;p&gt;
+If you have lots of feature instances with few cases it will tend to overfit.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org902befa" class="outline-2"&gt;
+&lt;h2 id="org902befa"&gt;Regularization&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org902befa"&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org25a468d" class="outline-3"&gt;
+&lt;h3 id="org25a468d"&gt;Four Types&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org25a468d"&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;Cross-validation loop inside the training data&lt;/li&gt;
+&lt;li&gt;Smoothing&lt;/li&gt;
+&lt;li&gt;Adding random noise&lt;/li&gt;
+&lt;li&gt;Sorting and calculating the expanding mean&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgb67e225" class="outline-3"&gt;
+&lt;h3 id="orgb67e225"&gt;Cross Validation&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgb67e225"&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;Usually 4 or 5 folds are enough&lt;/li&gt;
+&lt;li&gt;Need to watch out for extreme cases like leave-out-one (LOO)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;
+Here's an example of this method using sklearn.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;y_train&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;training&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;"target"&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;values&lt;/span&gt;
+&lt;span class="n"&gt;folds&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;StratifiedKFold&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;y_train&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;shuffle&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;training_index&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;validation_index&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;folds&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;x_train&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;training&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;iloc&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;training_index&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+    &lt;span class="n"&gt;x_value&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;training&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;iloc&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;validation_index&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+    &lt;span class="c1"&gt;# 'columns' is a list of columns to encode&lt;/span&gt;
+    &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;column&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;columns&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+	&lt;span class="n"&gt;means&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;x_value&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;column&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;map&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x_train&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;groupby&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;column&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;target&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;mean&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;
+	&lt;span class="n"&gt;x_value&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;coulmn&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="s2"&gt;"_mean_target"&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;means&lt;/span&gt;
+    &lt;span class="c1"&gt;# train_new is a dataframe copy we made of the training data&lt;/span&gt;
+    &lt;span class="n"&gt;train_new&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;iloc&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;value_index&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;x_validation&lt;/span&gt;
+
+&lt;span class="n"&gt;global_mean&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;training&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;"target"&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;mean&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+&lt;span class="c1"&gt;# replace nans with the global mean&lt;/span&gt;
+&lt;span class="n"&gt;train_new&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;fillna&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;global_mean&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;inplace&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgbcf4a6d" class="outline-3"&gt;
+&lt;h3 id="orgbcf4a6d"&gt;Smoothing&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgbcf4a6d"&gt;
+&lt;p&gt;
+Use a value \(\alpha\) to control the amount of regularization. This isn't a regularization method in and of itself, you use it with other methods.
+&lt;/p&gt;
+
+&lt;p&gt;
+\[
+\frac{mean(targte) \times n_{rows} + \textit{global mean} \times \alpha}{n_{rows} + \alpha}
+\]
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-org66d3b01" class="outline-3"&gt;
+&lt;h3 id="org66d3b01"&gt;Noise&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org66d3b01"&gt;
+&lt;p&gt;
+Adding noise degrades the quality of the encoding in the training data. This is usually used with &lt;i&gt;leave-one-out&lt;/i&gt; encoding to prevent overfitting. You have to figure out how much noise to add through experimentation.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org370ffba" class="outline-3"&gt;
+&lt;h3 id="org370ffba"&gt;Expanding Mean&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org370ffba"&gt;
+&lt;p&gt;
+This introduces the least amount of leakage from the target variable and doesn't require hyper-parameters for you to tune. The downside is that the encoding quality is irregular. There is a built-in implementation in the &lt;code&gt;CatBoost&lt;/code&gt; library.
+&lt;/p&gt;
+
+&lt;p&gt;
+Here's a pandas implementation.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;cumulative_sum&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;training&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;groupby&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;column&lt;/span&gt;&lt;span class="p"&gt;)[&lt;/span&gt;&lt;span class="s2"&gt;"target"&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;cumsum&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;training&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;"target"&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="n"&gt;cumulative_count&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;training&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;groupby&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;column&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;cumcount&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="n"&gt;train_new&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;column&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="s2"&gt;"_mean_target"&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;cumulative_sum&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;cumulative_count&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-org7e7bfac" class="outline-3"&gt;
+&lt;h3 id="org7e7bfac"&gt;Which one should you use?&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org7e7bfac"&gt;
+&lt;p&gt;
+Cross Validation Loops and Expanding Means are the most practical to use.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orga8a4fc1" class="outline-2"&gt;
+&lt;h2 id="orga8a4fc1"&gt;Generalizations and Extensions&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orga8a4fc1"&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgeb525c5" class="outline-3"&gt;
+&lt;h3 id="orgeb525c5"&gt;Regression and Multiclass&lt;/h3&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgfe9372f" class="outline-2"&gt;
+&lt;h2 id="orgfe9372f"&gt;Summary&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgfe9372f"&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org1f2861b" class="outline-3"&gt;
+&lt;h3 id="org1f2861b"&gt;Advantages&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org1f2861b"&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;Compact transformation of categorical variables&lt;/li&gt;
+&lt;li&gt;Powerful basis for feature engineering&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org8046592" class="outline-3"&gt;
+&lt;h3 id="org8046592"&gt;Disadvantages&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org8046592"&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;Needs careful validation, it's easy to overfit&lt;/li&gt;
+&lt;li&gt;Only certain data sets will show a significant improvement from using it&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-org37ba163" class="outline-2"&gt;
+&lt;h2 id="org37ba163"&gt;Quiz&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org37ba163"&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgb6fe7ea" class="outline-3"&gt;
+&lt;h3 id="orgb6fe7ea"&gt;One&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgb6fe7ea"&gt;
+&lt;p&gt;
+What might be an indicator that mean encoding would be useful?
+&lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; a lot of binary variables&lt;/li&gt;
+&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; a learning to rank task&lt;/li&gt;
+&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; categorical variables with lots of levels&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org0083d5f" class="outline-3"&gt;
+&lt;h3 id="org0083d5f"&gt;Two&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org0083d5f"&gt;
+&lt;p&gt;
+What is the purpose of regularization in mean encoding?
+&lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; Regularization allows you to make the feature space more sparse?&lt;/li&gt;
+&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; Regularization allows us to better utilize mean encoding&lt;/li&gt;
+&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; regularization reduces target variable leakage during the construction of mean encodings&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org329a4d2" class="outline-3"&gt;
+&lt;h3 id="org329a4d2"&gt;Three&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org329a4d2"&gt;
+&lt;p&gt;
+What is the correct form of validation when using mean encoding?
+&lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; calculate the mean enocding on all training data, regularize, then varidate on a random validation split&lt;/li&gt;
+&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; split the data into training and validation sets, then estimate the encodings on the training data, then apply them to the validation and validate the model on that split&lt;/li&gt;
+&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; Fix the cross-validation split, use that split to calculate mean encodings with cross-validation loop regularization, use the same split to validate the model&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orge2b0093" class="outline-3"&gt;
+&lt;h3 id="orge2b0093"&gt;Four&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orge2b0093"&gt;
+&lt;p&gt;
+Suppose we have a data frame (&lt;code&gt;df&lt;/code&gt;) with a categorical variable named &lt;code&gt;item_id&lt;/code&gt; and a target variable called &lt;code&gt;target&lt;/code&gt;.
+We create two different mean encodings:
+&lt;/p&gt;
+
+&lt;ol class="org-ol"&gt;
+&lt;li&gt;via df["item&lt;sub&gt;id&lt;/sub&gt;&lt;sub&gt;encoded1&lt;/sub&gt;"] = df.groupby("item&lt;sub&gt;id&lt;/sub&gt;")["target"].transform("mean")&lt;/li&gt;
+&lt;li&gt;Via One Hot Encoding &lt;code&gt;item_id&lt;/code&gt;, fitting a linear regression on the encoding and the calculating &lt;code&gt;item_id_encoded2&lt;/code&gt; as a prediction from this regression on the same data.&lt;/li&gt;
+
+&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; &lt;code&gt;item_id_encoded1&lt;/code&gt; and &lt;code&gt;item_id_encoded2&lt;/code&gt; will essentially be the same only if the linear regression was fitted without a regularization&lt;/li&gt;
+&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; &lt;code&gt;item_id_encoded1&lt;/code&gt; and &lt;code&gt;item_id_encoded2&lt;/code&gt; will be essentially the same&lt;/li&gt;
+&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; &lt;code&gt;item_id_encoded1&lt;/code&gt; and &lt;code&gt;item_id_encoded2&lt;/code&gt; may differ a lot due to rare categories (nope)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description><category>notes encoding</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding/</guid><pubDate>Mon, 24 Sep 2018 00:56:27 GMT</pubDate></item><item><title>Optimizing Classification Metrics</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/optimizing-classification-metrics/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-org5d77a5c" class="outline-2"&gt;
+&lt;h2 id="org5d77a5c"&gt;Introduction&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org5d77a5c"&gt;
+&lt;p&gt;
+The &lt;i&gt;target metric&lt;/i&gt; is what the competition scores you on, but it isn't always the easiest metric to tune your model on. Sometimes you need to pick and &lt;i&gt;optimization metric&lt;/i&gt; to tune your model that isn't exactly the same but works well enough.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org8ac93da" class="outline-2"&gt;
+&lt;h2 id="org8ac93da"&gt;LogLoss&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org8ac93da"&gt;
+&lt;p&gt;
+To optimize log-loss you just have to match it to the right model.
+&lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;Tree Based: XGBoost, LightGBM&lt;/li&gt;
+&lt;li&gt;Linear: sklearn.&amp;lt;something&amp;gt;Regression, sklearn.SGDRegressor, Vowpal Wabbit&lt;/li&gt;
+&lt;li&gt;Neural Nets: PyTorch, Keras, Tensorflow, etc.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;
+Random Forests turn out to do poorly with Log Loss.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgba7a7f0" class="outline-3"&gt;
+&lt;h3 id="orgba7a7f0"&gt;Probability Calibration&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgba7a7f0"&gt;
+&lt;p&gt;
+If you take all the rows with the same score, then the fraction of them that have a class of 1 should match the score (so if they all have a score of 0.8, then 80% of them should be 1 and 20% should be 0). If the fraction is off, then you need to calibrate the probabilities. To do this take your model and then send its outputs to a model that does better with Log Loss. So if you want to use a Random Forest, you would train your model using AUC as the metric then use the predictions to train another model like a neural net and have it use Log Loss as the metric.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org9bddf26" class="outline-4"&gt;
+&lt;h4 id="org9bddf26"&gt;Platt Scaling&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org9bddf26"&gt;
+&lt;p&gt;
+Fit a Logistic Regression to your predictions
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgab1a91a" class="outline-4"&gt;
+&lt;h4 id="orgab1a91a"&gt;Isotonic Regression&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-orgab1a91a"&gt;
+&lt;p&gt;
+Fit an Isotonic Regression to your predictions
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org0bd15b5" class="outline-4"&gt;
+&lt;h4 id="org0bd15b5"&gt;Stacking&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org0bd15b5"&gt;
+&lt;p&gt;
+Fit XGBoost or a neural net to your predictions
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org0205f54" class="outline-2"&gt;
+&lt;h2 id="org0205f54"&gt;Accuracy&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org0205f54"&gt;
+&lt;p&gt;
+Accuracy is a difficult metric to optimize because it isn't differentiable. To optimize the accuracy metric you need to use a different metric (a proxy metric) like log-loss and then tune the threshold.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-orgac0a2ec" class="outline-2"&gt;
+&lt;h2 id="orgac0a2ec"&gt;Area Under the Curve (AUC)&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgac0a2ec"&gt;
+&lt;p&gt;
+Some models work with it so if you can choose one of these models.
+&lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;Tree-Based: XGBoost, LightGBM&lt;/li&gt;
+&lt;li&gt;Linear: (don't use)&lt;/li&gt;
+&lt;li&gt;Neural Nets: PyTorch, Keras, TensorFlow (but not by default)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;
+In practice you can optimize the model to log-loss.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgb1cbdf2" class="outline-2"&gt;
+&lt;h2 id="orgb1cbdf2"&gt;Quadratic Weighted Kappa&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgb1cbdf2"&gt;
+&lt;ol class="org-ol"&gt;
+&lt;li&gt;Optimize on the Mean Squared Error then optimize the thresholds.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgc6df48a" class="outline-2"&gt;
+&lt;h2 id="orgc6df48a"&gt;Other Sources&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgc6df48a"&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org446dd1c" class="outline-3"&gt;
+&lt;h3 id="org446dd1c"&gt;Classification&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org446dd1c"&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;&lt;a href="http://queirozf.com/entries/evaluation-metrics-for-classification-quick-examples-references"&gt;Evaluation Metrics for Classification Problems&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.garysieling.com/blog/sklearn-gini-vs-entropy-criteria"&gt;Descision Trees: &lt;i&gt;Gini&lt;/i&gt; vs &lt;i&gt;Entropy&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.navan.name/roc/"&gt;Understanding ROC Curves&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orge42f6b4" class="outline-3"&gt;
+&lt;h3 id="orge42f6b4"&gt;Ranking&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orge42f6b4"&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;&lt;a href="https://icml.cc/2015/wp-content/uploads/2015/06/icml_ranking.pdf"&gt;Learning to Rank Using Gradient Descent&lt;/a&gt; - source of pairwise AUC optimization&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/MSR-TR-2010-82.pdf"&gt;From RankNet to LambdaRank&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://sourceforge.net/p/lemur/wiki/RankLib/"&gt;RankLib (implementation of the two previous papers&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://wellecks.wordpress.com/2015/01/15/learning-to-rank-overview/"&gt;Learning to Rank Overview&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org9961dce" class="outline-3"&gt;
+&lt;h3 id="org9961dce"&gt;Clustering&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org9961dce"&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;&lt;a href="http://nlp.uned.es/docs/amigo2007a.pdf"&gt;Comparison of clustering metrics&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orge7f8a69" class="outline-2"&gt;
+&lt;h2 id="orge7f8a69"&gt;Practice Quiz&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orge7f8a69"&gt;
+&lt;ol class="org-ol"&gt;
+&lt;li&gt;What would be a logloss value for a binary classification task if we use a constant predictor \(f(x)=0.5\)? Round to two decimal places.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;
+-0.69 (marked as wrong)
+&lt;/p&gt;
+
+&lt;ol class="org-ol"&gt;
+&lt;li&gt;What is the best constant predictor for the Mean Absolute Error?
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;Target 50th percentile, Target median&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+
+&lt;li&gt;The best constant predictor for the Mean Squared Error is:
+
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;Target Mean, average of the target vector&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;The best Constant prediction for the Area Under the Curve is:
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;Any constant will lead to the same AUC value (should also mark target median, target mean, 1, 0.5, Target Mean divided by target variance - since any constant will lead to the same value, they are all the same)&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Suppose the target metric is \(r^2\), what optimization loss should we use for our models?
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;RMSE, MSE&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Calculate the AUC for these predictions:&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
+
+
+&lt;colgroup&gt;
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope="col" class="org-right"&gt;target&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;prediction&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;td class="org-right"&gt;0.39&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;0.52&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;td class="org-right"&gt;0.91&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;td class="org-right"&gt;0.85&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;td class="org-right"&gt;0.49&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;0.02&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;0.44&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# from pypi
+from sklearn.metrics import roc_auc_score
+y_true = [1,0,1,1,1,0,0]
+y_score = [0.39,0.52,0.91,0.85,0.49,0.02,0.44]
+print(roc_auc_score(y_true, y_score))
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;pre class="example"&gt;
+0.75
+
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgea0f831" class="outline-2"&gt;
+&lt;h2 id="orgea0f831"&gt;Quiz&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgea0f831"&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org895a404" class="outline-3"&gt;
+&lt;h3 id="org895a404"&gt;One&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org895a404"&gt;
+&lt;p&gt;
+Suppose we solve a binary classification task and our solution is scored with Log Loss. What predictions are preferable if all the true target values are 0?
+&lt;/p&gt;
+
+&lt;ul class="org-ul"&gt;
+&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; (0.4, 0.5, 0.5, 0.6) - marked wrong&lt;/li&gt;
+&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; (0.5, 0.5, 0.5, 0.5)&lt;/li&gt;
+&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; (0, 0, 0, 1)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;import numpy
+one = numpy.array([0.4, 0.5, 0.5, 0.6])
+two = numpy.array([0.5, 0.5, 0.5, 0.5])
+three = numpy.array([0, 0, 0, 1])
+
+for guess in (one, two, three):
+    print(sum(-numpy.log(1 - guess))/len(guess))
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;pre class="example"&gt;
+0.7033526791900091
+0.6931471805599453
+inf
+/home/hades/.virtualenvs/machine-learning-studies/lib/python3.6/site-packages/ipykernel_launcher.py:7: RuntimeWarning: divide by zero encountered in log
+  import sys
+
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-orge9a01a6" class="outline-3"&gt;
+&lt;h3 id="orge9a01a6"&gt;Two&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orge9a01a6"&gt;
+&lt;p&gt;
+Suppose we solve a regression task and we optimize MSE. If we manage to lower MSE loss on either the training set or the test set, how would this affect the Pearson Correlation coefficient between the target vector and the predictions on the same set.
+&lt;/p&gt;
+
+&lt;p&gt;
+The correlation will also be lowered.
+The correlation will not change.
+&lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; The correlation will become larger. - marked wrong&lt;/li&gt;
+&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; Any behavior is possible.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-org01d3f24" class="outline-3"&gt;
+&lt;h3 id="org01d3f24"&gt;Three&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org01d3f24"&gt;
+&lt;p&gt;
+What would be a best constant prediction for a multi-class classification with four classes? The solution is scored with multi-class Log Loss. The number of objects in each class in the training set is 18, 3, 15, 24.
+&lt;/p&gt;
+
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;Guess one: 0,1,2,3&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;counts = numpy.array([18, 3, 15, 24])
+print(counts/counts.sum())
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;pre class="example"&gt;
+[0.3  0.05 0.25 0.4 ]
+
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-org084b47e" class="outline-3"&gt;
+&lt;h3 id="org084b47e"&gt;Four&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org084b47e"&gt;
+&lt;p&gt;
+What is the best constant predictor for the r-squared metric?
+&lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;one minus the target mean, target mean (0 points)&lt;/li&gt;
+&lt;li&gt;0.5 (0 points)&lt;/li&gt;
+&lt;li&gt;Target Mean (same as the MSE)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org4cf1cec" class="outline-3"&gt;
+&lt;h3 id="org4cf1cec"&gt;Five&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org4cf1cec"&gt;
+&lt;p&gt;
+Select the Correct statements
+&lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; Optimization loss can be the same as the target metric&lt;/li&gt;
+&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; Optimization loss can be different from the target metric&lt;/li&gt;
+&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; Optimization loss is always different from the target metric&lt;/li&gt;
+&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; Optimization loss is always the same as the target metric&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-orgc051290" class="outline-3"&gt;
+&lt;h3 id="orgc051290"&gt;Six&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgc051290"&gt;
+&lt;p&gt;
+Suppose the target metric is &lt;b&gt;M1&lt;/b&gt; and the optimization loss is &lt;b&gt;M2&lt;/b&gt;. We train a model and monitor its quality on a holdout set using the metrics &lt;b&gt;M1&lt;/b&gt; and &lt;b&gt;M2&lt;/b&gt;.
+&lt;/p&gt;
+
+&lt;p&gt;
+Select the correct statement:
+&lt;/p&gt;
+
+&lt;ul class="org-ul"&gt;
+&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; If the best &lt;b&gt;M1&lt;/b&gt; score is attained at iteration &lt;i&gt;N&lt;/i&gt;, then the best &lt;b&gt;M2&lt;/b&gt; score is always attained after the n-th iteration.&lt;/li&gt;
+&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; If the best &lt;b&gt;M1&lt;/b&gt; score is attained at iteration &lt;i&gt;N&lt;/i&gt;, then the best &lt;b&gt;M2&lt;/b&gt; score is always attained before the n-th iteration.&lt;/li&gt;
+&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; If the best &lt;b&gt;M1&lt;/b&gt; score is attained at iteration &lt;i&gt;N&lt;/i&gt;, then the best &lt;b&gt;M2&lt;/b&gt; score is always attained at the n-th iteration.&lt;/li&gt;
+&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; There is no definite relation between the best iterations for the &lt;b&gt;M1&lt;/b&gt; score and the &lt;b&gt;M2&lt;/b&gt; score.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description><category>notes metrics classification</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/optimizing-classification-metrics/</guid><pubDate>Sun, 23 Sep 2018 22:10:09 GMT</pubDate></item><item><title>Optimizing Metrics</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/optimizing-metrics/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
+&lt;h2&gt;Table of Contents&lt;/h2&gt;
+&lt;div id="text-table-of-contents"&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/optimizing-metrics/#org0348804"&gt;Mean Squared Error&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/optimizing-metrics/#org514dee0"&gt;Mean Absolute Error&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/optimizing-metrics/#org05013a2"&gt;Mean Squared Probability Error and Mean Absolute Probability Error&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org0348804" class="outline-2"&gt;
+&lt;h2 id="org0348804"&gt;Mean Squared Error&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org0348804"&gt;
+&lt;p&gt;
+This works, just use it as the optimization metric.
+Sometimes this will be called &lt;i&gt;L2&lt;/i&gt; loss.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org514dee0" class="outline-2"&gt;
+&lt;h2 id="org514dee0"&gt;Mean Absolute Error&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org514dee0"&gt;
+&lt;p&gt;
+Once again, this works so just use it.
+Sometimes this will be called &lt;i&gt;L1&lt;/i&gt; loss - it isn't as widely implemented.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org05013a2" class="outline-2"&gt;
+&lt;h2 id="org05013a2"&gt;Mean Squared Probability Error and Mean Absolute Probability Error&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org05013a2"&gt;
+&lt;p&gt;
+Some libraries will let you use them as `sample_weights`
+Some libraries (like sklearn) will require you to re-sample the data &lt;code&gt;df.sample(weights=sample_weights)&lt;/code&gt;
+Once you re-sample the data you can use any model that optimizes MSE or MAE
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description><category>notes metrics</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/optimizing-metrics/</guid><pubDate>Sat, 22 Sep 2018 23:26:49 GMT</pubDate></item><item><title>General Approaches to Metrics Optimization</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/general-approaches-to-metrics-optimization/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-orgb424731" class="outline-2"&gt;
+&lt;h2 id="orgb424731"&gt;What do we mean by &lt;i&gt;loss&lt;/i&gt; and &lt;i&gt;metric&lt;/i&gt;?&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgb424731"&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;the &lt;code&gt;metric&lt;/code&gt; is what we &lt;i&gt;want&lt;/i&gt; to optimize - but we sometimes don't really know how to optimize this, this is just how we evaluate the model in the end&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;loss&lt;/code&gt; is what the model actually optimizes&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org149a4af" class="outline-2"&gt;
+&lt;h2 id="org149a4af"&gt;How do you optimize the target metric?&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org149a4af"&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;In some cases you can just use them (e.g. &lt;i&gt;MSE&lt;/i&gt;, &lt;i&gt;logloss&lt;/i&gt;)&lt;/li&gt;
+&lt;li&gt;In some cases you need to do a preprocessing training step with another metric
+(e.g. &lt;i&gt;MSPE&lt;/i&gt;, &lt;i&gt;MAPE&lt;/i&gt;, &lt;i&gt;RMSLE&lt;/i&gt;)&lt;/li&gt;
+&lt;li&gt;In osme cases you need to train on a different metric and then use post-processing during the prediction step&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orge307b52" class="outline-2"&gt;
+&lt;h2 id="orge307b52"&gt;Early Stopping&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orge307b52"&gt;
+&lt;p&gt;
+To work around these problems, use two metrics &lt;i&gt;m1&lt;/i&gt; and &lt;i&gt;m2&lt;/i&gt; and optimize on metric &lt;i&gt;m1&lt;/i&gt; while monitoring &lt;i&gt;m2&lt;/i&gt;, then stop when &lt;i&gt;m2&lt;/i&gt; is optimal.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description><category>notes metrics</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/general-approaches-to-metrics-optimization/</guid><pubDate>Sat, 22 Sep 2018 23:04:35 GMT</pubDate></item><item><title>Classification Metrics</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/classification-metrics/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
+&lt;h2&gt;Table of Contents&lt;/h2&gt;
+&lt;div id="text-table-of-contents"&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/classification-metrics/#org66e8b03"&gt;Accuracy&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/classification-metrics/#orgbbe899b"&gt;Logarithmic Loss&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/classification-metrics/#orgf4c8f06"&gt;Area Under the ROC Curve (AUC)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/classification-metrics/#orgb8ed4d0"&gt;Quadratic Weighted Kappa (Cohen's Kappa)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org66e8b03" class="outline-2"&gt;
+&lt;h2 id="org66e8b03"&gt;Accuracy&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org66e8b03"&gt;
+&lt;p&gt;
+This metric measures how frequently our model is correct.
+&lt;/p&gt;
+
+&lt;p&gt;
+\[
+Accuracy = \frac{1}{N} \sum_{i=1}^N \left[\hat{y}_i = y_i \right]
+\]
+&lt;/p&gt;
+
+&lt;p&gt;
+If you were to make a model that just predicted a constant value, the best value would be the most common one. This points out the fact that a severely imbalanced data set can have a model with high accuracy that isn't actually a particularly good one (it just predicts the most frequent classification all the time).
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgbbe899b" class="outline-2"&gt;
+&lt;h2 id="orgbbe899b"&gt;Logarithmic Loss&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgbbe899b"&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgbec5d6c" class="outline-3"&gt;
+&lt;h3 id="orgbec5d6c"&gt;Binary Version&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgbec5d6c"&gt;
+&lt;p&gt;
+\[
+LogLoss = -\frac{1}{N} \sum_{i=1}^N y_i \log (\hat{y}_i) + (1 - y_i) \log (1 - \hat{y}_i)
+\]
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orga44400f" class="outline-3"&gt;
+&lt;h3 id="orga44400f"&gt;Multiclass Version&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orga44400f"&gt;
+&lt;p&gt;
+\[
+LogLoss = -\frac{1}{N} \sum_{i=1}^N \sum_{i=1}^L y_{il} \log (\hat{y}_{il})
+\]
+&lt;/p&gt;
+
+&lt;p&gt;
+Where &lt;i&gt;L&lt;/i&gt; is the number of classes.
+&lt;/p&gt;
+
+&lt;p&gt;
+When compared to accuracy, accuracy is linear over the amount of error, while logarithmic loss grows exponentially the more error there is, so it more severely penalizes your model the more wrong it is.
+&lt;/p&gt;
+
+&lt;p&gt;
+If you wanted to make a constant prediction, the best constant is to set the constant(s) to the frequencies for each class.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgf4c8f06" class="outline-2"&gt;
+&lt;h2 id="orgf4c8f06"&gt;Area Under the ROC Curve (AUC)&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgf4c8f06"&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;only for binary classification&lt;/li&gt;
+&lt;li&gt;depends only on the ordering of the predictions, not the absolute values&lt;/li&gt;
+&lt;li&gt;can be thought of as the area under the curve or the ordering of pairs&lt;/li&gt;
+&lt;li&gt;The baseline score is 0.5&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgb8ed4d0" class="outline-2"&gt;
+&lt;h2 id="orgb8ed4d0"&gt;Quadratic Weighted Kappa (Cohen's Kappa)&lt;/h2&gt;
+&lt;/div&gt;</description><category>metrics classification notes</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/classification-metrics/</guid><pubDate>Sat, 22 Sep 2018 22:35:29 GMT</pubDate></item><item><title>Metrics Optimization 2</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/metrics-optimization-2/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-orga06ea0a" class="outline-2"&gt;
+&lt;h2 id="orga06ea0a"&gt;(R)MSPE, MAPE, and (R)MSLE&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orga06ea0a"&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org0125661" class="outline-3"&gt;
+&lt;h3 id="org0125661"&gt;An Off-By-One Example&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org0125661"&gt;
 &lt;p&gt;
 Suppose we are predicting sales for two shops and the two shops have different sales volumes but our predictions for both cases are off by one. In this case our Mean-Squared-Error (MSE) might be the same, but they have a different significance.
 &lt;/p&gt;
@@ -49,9 +774,9 @@ Suppose we are predicting sales for two shops and the two shops have different s
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org7d129ef" class="outline-2"&gt;
-&lt;h2 id="org7d129ef"&gt;Root Mean Squared Percentage Error and Mean Absolute Percentage Error&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org7d129ef"&gt;
+&lt;div id="outline-container-orgc555c3a" class="outline-2"&gt;
+&lt;h2 id="orgc555c3a"&gt;Root Mean Squared Percentage Error and Mean Absolute Percentage Error&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgc555c3a"&gt;
 &lt;p&gt;
 The MSE and Mean-Absolute-Error (MAE) are absolute errors which don't take into account how significant the error is. There are two relative errors,  Mean-Squared-Percentage-Error (MSPE) and Mean-Absolute-Percentage-Error (MAPE) that divide each error term by the actual value to give you a realive error instead of an absolute error.
 &lt;/p&gt;
@@ -73,9 +798,9 @@ The MAPE will be inversely proportional to its target and the MSPE will be inver
 &lt;/p&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org33dedb3" class="outline-3"&gt;
-&lt;h3 id="org33dedb3"&gt;Optimal Constant Predictions&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org33dedb3"&gt;
+&lt;div id="outline-container-orgea5e0a2" class="outline-3"&gt;
+&lt;h3 id="orgea5e0a2"&gt;Optimal Constant Predictions&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgea5e0a2"&gt;
 &lt;p&gt;
 The best constant prediction you can make when using the Mean Squared Error is to predict the mean of the target values. The best prediction you can make for the MSPE is to take a weighted mean of the target values. The best constant prediction you can make for the Mean Absolute Percentage Error is the weighted median.
 &lt;/p&gt;
@@ -83,9 +808,9 @@ The best constant prediction you can make when using the Mean Squared Error is t
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org72d9283" class="outline-2"&gt;
-&lt;h2 id="org72d9283"&gt;Root Mean Squared Logarithmic Error (MSLE)&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org72d9283"&gt;
+&lt;div id="outline-container-orgf9c7416" class="outline-2"&gt;
+&lt;h2 id="orgf9c7416"&gt;Root Mean Squared Logarithmic Error (MSLE)&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgf9c7416"&gt;
 &lt;p&gt;
 \[
 MSLE = \sqrt{\frac{1}{N}\sum_{i=1}^N (\log (y_i + 1) - \log(\hat{y}_i + 1))^2}\\
@@ -147,55 +872,59 @@ These are the best constant predictions you can make for the competition data se
 &lt;h2&gt;Table of Contents&lt;/h2&gt;
 &lt;div id="text-table-of-contents"&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/metrics/#orgd5014ac"&gt;About Metrics&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/metrics/#org4c7b753"&gt;The Most Common Metrics&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/metrics/#org8eb1eb2"&gt;About Metrics&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/metrics/#org2c4a7ae"&gt;The Most Common Metrics&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgd5014ac" class="outline-2"&gt;
-&lt;h2 id="orgd5014ac"&gt;About Metrics&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgd5014ac"&gt;
+&lt;div id="outline-container-org8eb1eb2" class="outline-2"&gt;
+&lt;h2 id="org8eb1eb2"&gt;About Metrics&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org8eb1eb2"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org2b7b99d" class="outline-3"&gt;
-&lt;h3 id="org2b7b99d"&gt;What are metrics?&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org2b7b99d"&gt;
+&lt;div id="outline-container-org9a7fe08" class="outline-3"&gt;
+&lt;h3 id="org9a7fe08"&gt;What are metrics?&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org9a7fe08"&gt;
 &lt;p&gt;
 Metrics are numeric values that you are trying to optimize - they are how your model is graded.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org8688e79" class="outline-3"&gt;
-&lt;h3 id="org8688e79"&gt;Why are there so many metrics?&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org8688e79"&gt;
+&lt;div id="outline-container-org3729adb" class="outline-3"&gt;
+&lt;h3 id="org3729adb"&gt;Why are there so many metrics?&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org3729adb"&gt;
 &lt;p&gt;
 Each metric can tell you something different, so what metric you need depends on the problem you are trying to solve. For competitions, it is sometimes possible to do metrics probing just like you can sometimes do leaderboard probing to find peculiarities created by the chosen metric.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org4c7b753" class="outline-2"&gt;
-&lt;h2 id="org4c7b753"&gt;The Most Common Metrics&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org4c7b753"&gt;
+&lt;div id="outline-container-org2c4a7ae" class="outline-2"&gt;
+&lt;h2 id="org2c4a7ae"&gt;The Most Common Metrics&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org2c4a7ae"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgdb984a1" class="outline-3"&gt;
-&lt;h3 id="orgdb984a1"&gt;Regression&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgdb984a1"&gt;
+&lt;div id="outline-container-org223f524" class="outline-3"&gt;
+&lt;h3 id="org223f524"&gt;Regression&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org223f524"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgc8c1fd7" class="outline-4"&gt;
-&lt;h4 id="orgc8c1fd7"&gt;Mean Squared Error&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-orgc8c1fd7"&gt;
+&lt;div id="outline-container-orged6f90e" class="outline-4"&gt;
+&lt;h4 id="orged6f90e"&gt;Mean Squared Error&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-orged6f90e"&gt;
 &lt;p&gt;
 This is the average of the square of the errors.
 \[
 MSE = \frac{1}{N}
 \]
 &lt;/p&gt;
+
+&lt;p&gt;
+The target mean value is the best constant prediction.
+&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgdad37bb" class="outline-4"&gt;
-&lt;h4 id="orgdad37bb"&gt;Root Mean Squared Error&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-orgdad37bb"&gt;
+&lt;div id="outline-container-orgf77bd33" class="outline-4"&gt;
+&lt;h4 id="orgf77bd33"&gt;Root Mean Squared Error&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-orgf77bd33"&gt;
 &lt;p&gt;
 This is the square root of the mean squared error.
 &lt;/p&gt;
@@ -206,25 +935,29 @@ This is the square root of the mean squared error.
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org2901caa" class="outline-4"&gt;
-&lt;h4 id="org2901caa"&gt;R-squared&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org2901caa"&gt;
+&lt;div id="outline-container-org14f6f0e" class="outline-4"&gt;
+&lt;h4 id="org14f6f0e"&gt;R-squared&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org14f6f0e"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;Optimizing r-squared is equivalent to optimizing MSE&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org3fed0d1" class="outline-4"&gt;
-&lt;h4 id="org3fed0d1"&gt;Mean Absolute Error&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org3fed0d1"&gt;
+&lt;div id="outline-container-org1ffb657" class="outline-4"&gt;
+&lt;h4 id="org1ffb657"&gt;Mean Absolute Error&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org1ffb657"&gt;
 &lt;p&gt;
 This is more common when you are explaining it to a non-statistician. It is also more robust. Mathematically, it isn't something that you can calculate the derivate for.
 &lt;/p&gt;
+
+&lt;p&gt;
+The target median is the best constant prediction.
+&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org3e12f33" class="outline-4"&gt;
-&lt;h4 id="org3e12f33"&gt;MAE vs MSE&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org3e12f33"&gt;
+&lt;div id="outline-container-org40dc3c8" class="outline-4"&gt;
+&lt;h4 id="org40dc3c8"&gt;MAE vs MSE&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org40dc3c8"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;Outliers: use MAE&lt;/li&gt;
 &lt;li&gt;Unexpected Values that we should still care about (not true outliers (mistakes), just rare): use MSE&lt;/li&gt;
@@ -232,28 +965,25 @@ This is more common when you are explaining it to a non-statistician. It is also
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org8bb886e" class="outline-3"&gt;
-&lt;h3 id="org8bb886e"&gt;Classification&lt;/h3&gt;
-&lt;/div&gt;
-&lt;/div&gt;</description><category>metrics notes</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/metrics/</guid><pubDate>Tue, 18 Sep 2018 04:49:35 GMT</pubDate></item><item><title>Data Leaks</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/data-leaks/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-orgb6c4200" class="outline-2"&gt;
-&lt;h2 id="orgb6c4200"&gt;What are data leaks?&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgb6c4200"&gt;
+&lt;/div&gt;</description><category>metrics notes</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/metrics/</guid><pubDate>Tue, 18 Sep 2018 04:49:35 GMT</pubDate></item><item><title>Data Leaks</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/data-leaks/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-org43b6430" class="outline-2"&gt;
+&lt;h2 id="org43b6430"&gt;What are data leaks?&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org43b6430"&gt;
 &lt;p&gt;
 &lt;i&gt;Data Leaks&lt;/i&gt; are unexpected errors that expose extra information that wouldn't be available in production.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgafbb943" class="outline-2"&gt;
-&lt;h2 id="orgafbb943"&gt;Time Series&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgafbb943"&gt;
+&lt;div id="outline-container-org4219295" class="outline-2"&gt;
+&lt;h2 id="org4219295"&gt;Time Series&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org4219295"&gt;
 &lt;p&gt;
 Check if there are points in the training set that are in the future with regard to the test set.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org538834b" class="outline-2"&gt;
-&lt;h2 id="org538834b"&gt;Unexpected Information&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org538834b"&gt;
+&lt;div id="outline-container-org30c219a" class="outline-2"&gt;
+&lt;h2 id="org30c219a"&gt;Unexpected Information&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org30c219a"&gt;
 &lt;p&gt;
 Sometimes what looks like a non-predictive feature might prove to be useful because of the way the data-set was created.
 &lt;/p&gt;
@@ -264,21 +994,21 @@ Sometimes what looks like a non-predictive feature might prove to be useful beca
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org165f78d" class="outline-2"&gt;
-&lt;h2 id="org165f78d"&gt;Leaderboard Probing&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org165f78d"&gt;
+&lt;div id="outline-container-orgbb45b0a" class="outline-2"&gt;
+&lt;h2 id="orgbb45b0a"&gt;Leaderboard Probing&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgbb45b0a"&gt;
 &lt;p&gt;
 This is a method to look for dataleaks based on the leader board.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org33ada27" class="outline-2"&gt;
-&lt;h2 id="org33ada27"&gt;Quiz&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org33ada27"&gt;
+&lt;div id="outline-container-orgd31af32" class="outline-2"&gt;
+&lt;h2 id="orgd31af32"&gt;Quiz&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgd31af32"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org3c7ca32" class="outline-3"&gt;
-&lt;h3 id="org3c7ca32"&gt;One&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org3c7ca32"&gt;
+&lt;div id="outline-container-orgaec9dbc" class="outline-3"&gt;
+&lt;h3 id="orgaec9dbc"&gt;One&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgaec9dbc"&gt;
 &lt;p&gt;
 Suppose that you have a credit scoring task where you have to create a machine learning model that approximates expert evaluation of an individual's creditworthiness. Which of the following can potentially be a data leakage?
 &lt;/p&gt;
@@ -290,9 +1020,9 @@ Suppose that you have a credit scoring task where you have to create a machine l
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org2711f73" class="outline-3"&gt;
-&lt;h3 id="org2711f73"&gt;Two&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org2711f73"&gt;
+&lt;div id="outline-container-orgb297375" class="outline-3"&gt;
+&lt;h3 id="orgb297375"&gt;Two&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgb297375"&gt;
 &lt;p&gt;
 What is the most foolproof way to set up a time-series competition?
 &lt;/p&gt;
@@ -304,9 +1034,9 @@ What is the most foolproof way to set up a time-series competition?
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org37344f4" class="outline-3"&gt;
-&lt;h3 id="org37344f4"&gt;Three&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org37344f4"&gt;
+&lt;div id="outline-container-orgc95fb82" class="outline-3"&gt;
+&lt;h3 id="orgc95fb82"&gt;Three&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgc95fb82"&gt;
 &lt;p&gt;
 Suppose you have a binary feature classification task and it is evaluated by the logloss metric. You know that there are 10,000 entries in the public chunk of the test set and that a constant prediction of 0.3 gets a score of 1.01. The mean of the target variable in the training set is 0.44. What is the mean of the target variable in the public part  of the test data (up to 4 decimal places.)
 &lt;/p&gt;
@@ -326,9 +1056,9 @@ Suppose you have a binary feature classification task and it is evaluated by the
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org7e705bf" class="outline-3"&gt;
-&lt;h3 id="org7e705bf"&gt;Four&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org7e705bf"&gt;
+&lt;div id="outline-container-orgb916fd4" class="outline-3"&gt;
+&lt;h3 id="orgb916fd4"&gt;Four&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgb916fd4"&gt;
 &lt;p&gt;
 Suppose you are solving an image classification task, what is the classification of the logo for this course?
 &lt;/p&gt;
@@ -343,21 +1073,21 @@ Suppose you are solving an image classification task, what is the classification
 &lt;h2&gt;Table of Contents&lt;/h2&gt;
 &lt;div id="text-table-of-contents"&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#orgdaf62d0"&gt;Validation and Overfitting&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org674da7d"&gt;Three Main Methods of Splitting&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#orgb5cdb96"&gt;Stratification&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org388f244"&gt;Data Splitting&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org36f5ea8"&gt;Problems&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org8238b42"&gt;Practice Quiz&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org03ebc6f"&gt;Quiz&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org746ed2d"&gt;Links&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#orga418442"&gt;Validation and Overfitting&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org33fda23"&gt;Three Main Methods of Splitting&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org5c3515b"&gt;Stratification&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org673f5fc"&gt;Data Splitting&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org734139f"&gt;Problems&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#org1b47d0f"&gt;Practice Quiz&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#orgb24a928"&gt;Quiz&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/validation/#orgac73e53"&gt;Links&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgdaf62d0" class="outline-2"&gt;
-&lt;h2 id="orgdaf62d0"&gt;Validation and Overfitting&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgdaf62d0"&gt;
+&lt;div id="outline-container-orga418442" class="outline-2"&gt;
+&lt;h2 id="orga418442"&gt;Validation and Overfitting&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orga418442"&gt;
 &lt;p&gt;
 To prevent your model from overfitting to the training set, you can hold out some of the training set and use it to validate the model after it has been fit to the rest of the training set.
 &lt;/p&gt;
@@ -368,16 +1098,16 @@ To prevent your model from overfitting to the training set, you can hold out som
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org674da7d" class="outline-2"&gt;
-&lt;h2 id="org674da7d"&gt;Three Main Methods of Splitting&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org674da7d"&gt;
+&lt;div id="outline-container-org33fda23" class="outline-2"&gt;
+&lt;h2 id="org33fda23"&gt;Three Main Methods of Splitting&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org33fda23"&gt;
 &lt;p&gt;
 These are methods for splitting your training set into training and validation sets. Once you have a model, re-train it over the entire training set before applying it to the test set.
 &lt;/p&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgdf752cb" class="outline-3"&gt;
-&lt;h3 id="orgdf752cb"&gt;Holdout&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgdf752cb"&gt;
+&lt;div id="outline-container-org9e7efea" class="outline-3"&gt;
+&lt;h3 id="org9e7efea"&gt;Holdout&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org9e7efea"&gt;
 &lt;p&gt;
 This method just splits the data into one training and one validation set.
 &lt;/p&gt;
@@ -388,9 +1118,9 @@ This method just splits the data into one training and one validation set.
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orge7e9228" class="outline-3"&gt;
-&lt;h3 id="orge7e9228"&gt;K-Fold&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orge7e9228"&gt;
+&lt;div id="outline-container-orgf921310" class="outline-3"&gt;
+&lt;h3 id="orgf921310"&gt;K-Fold&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgf921310"&gt;
 &lt;p&gt;
 Make &lt;i&gt;k&lt;/i&gt; splits of the training set, then use each of the validation sets while training on all the data not in the validation set. This differs from doing holdout k-times since we guarantee that the validation sets don't overlap. Uses the average score for the k-folds.
 &lt;/p&gt;
@@ -400,9 +1130,9 @@ Make &lt;i&gt;k&lt;/i&gt; splits of the training set, then use each of the valid
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org0dbec8d" class="outline-3"&gt;
-&lt;h3 id="org0dbec8d"&gt;Leave One Out&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org0dbec8d"&gt;
+&lt;div id="outline-container-orge1b99e9" class="outline-3"&gt;
+&lt;h3 id="orge1b99e9"&gt;Leave One Out&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orge1b99e9"&gt;
 &lt;p&gt;
 This is like k-folds except we always use a validation set of size 1 - so we are iterating over each point in the data set and using it as the training set. This can be useful if the data set is small.
 &lt;/p&gt;
@@ -412,9 +1142,9 @@ This is like k-folds except we always use a validation set of size 1 - so we are
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgb5cdb96" class="outline-2"&gt;
-&lt;h2 id="orgb5cdb96"&gt;Stratification&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgb5cdb96"&gt;
+&lt;div id="outline-container-org5c3515b" class="outline-2"&gt;
+&lt;h2 id="org5c3515b"&gt;Stratification&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org5c3515b"&gt;
 &lt;p&gt;
 Sometimes you need to make sure your validation sets have the same distribution as your set as a whole.
 &lt;/p&gt;
@@ -426,9 +1156,9 @@ Sometimes you need to make sure your validation sets have the same distribution 
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org388f244" class="outline-2"&gt;
-&lt;h2 id="org388f244"&gt;Data Splitting&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org388f244"&gt;
+&lt;div id="outline-container-org673f5fc" class="outline-2"&gt;
+&lt;h2 id="org673f5fc"&gt;Data Splitting&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org673f5fc"&gt;
 &lt;p&gt;
 If you have time-based data, there's two ways to split the training data - randomly within the entire timespan, or put the first part of the data in the training set and put the second part of the data in the validation set. If the test-set is a time that is beyond the training data, then using the time-based split will produce a model that is better for the testing data.
 &lt;/p&gt;
@@ -446,25 +1176,25 @@ The main point of this is that you want to set up your validation set to match t
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org36f5ea8" class="outline-2"&gt;
-&lt;h2 id="org36f5ea8"&gt;Problems&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org36f5ea8"&gt;
+&lt;div id="outline-container-org734139f" class="outline-2"&gt;
+&lt;h2 id="org734139f"&gt;Problems&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org734139f"&gt;
 &lt;p&gt;
 The point of doing the training-validation split is that you think the validation set(s) will approximate the test set. But what if that's not true?
 &lt;/p&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org6727bfa" class="outline-3"&gt;
-&lt;h3 id="org6727bfa"&gt;Causes of score differences&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org6727bfa"&gt;
+&lt;div id="outline-container-orgd1624bd" class="outline-3"&gt;
+&lt;h3 id="orgd1624bd"&gt;Causes of score differences&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgd1624bd"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;Too little data&lt;/li&gt;
 &lt;li&gt;The data is too diverse and inconsistent&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgf901a8f" class="outline-3"&gt;
-&lt;h3 id="orgf901a8f"&gt;Submission Differs from Validation&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgf901a8f"&gt;
+&lt;div id="outline-container-orgbaddcce" class="outline-3"&gt;
+&lt;h3 id="orgbaddcce"&gt;Submission Differs from Validation&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgbaddcce"&gt;
 &lt;ol class="org-ol"&gt;
 &lt;li&gt;Even K-fold validation has variation (check that the standard deviation across folds encompasses the leaderboard values)&lt;/li&gt;
 &lt;li&gt;Too little data on leaderboard (nothing you can do)&lt;/li&gt;
@@ -473,13 +1203,13 @@ The point of doing the training-validation split is that you think the validatio
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org8238b42" class="outline-2"&gt;
-&lt;h2 id="org8238b42"&gt;Practice Quiz&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org8238b42"&gt;
+&lt;div id="outline-container-org1b47d0f" class="outline-2"&gt;
+&lt;h2 id="org1b47d0f"&gt;Practice Quiz&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org1b47d0f"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org352f592" class="outline-3"&gt;
-&lt;h3 id="org352f592"&gt;One&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org352f592"&gt;
+&lt;div id="outline-container-orga854703" class="outline-3"&gt;
+&lt;h3 id="orga854703"&gt;One&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orga854703"&gt;
 &lt;p&gt;
 We did a K-Fold cross validation on a huge dataset and noticed that scores on each fold are roughly the same. Which validation type is of most practical use?
 &lt;/p&gt;
@@ -490,9 +1220,9 @@ We did a K-Fold cross validation on a huge dataset and noticed that scores on ea
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org0326285" class="outline-3"&gt;
-&lt;h3 id="org0326285"&gt;Two&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org0326285"&gt;
+&lt;div id="outline-container-org82cedaf" class="outline-3"&gt;
+&lt;h3 id="org82cedaf"&gt;Two&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org82cedaf"&gt;
 &lt;p&gt;
 We did a K-fold cross validation on a medium sized dataset and noticed that the validation scores varied widely. Which validation type is the most practical to use?
 &lt;/p&gt;
@@ -503,9 +1233,9 @@ We did a K-fold cross validation on a medium sized dataset and noticed that the 
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgc71db56" class="outline-3"&gt;
-&lt;h3 id="orgc71db56"&gt;Three&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgc71db56"&gt;
+&lt;div id="outline-container-orgbbdaac5" class="outline-3"&gt;
+&lt;h3 id="orgbbdaac5"&gt;Three&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgbbdaac5"&gt;
 &lt;p&gt;
 The features we generate depend on the train-test split. True or False?
 &lt;/p&gt;
@@ -515,9 +1245,9 @@ The features we generate depend on the train-test split. True or False?
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgd543efe" class="outline-3"&gt;
-&lt;h3 id="orgd543efe"&gt;Which of these can indicate an expected leaderboard shuffle in a competition?&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgd543efe"&gt;
+&lt;div id="outline-container-org8688967" class="outline-3"&gt;
+&lt;h3 id="org8688967"&gt;Which of these can indicate an expected leaderboard shuffle in a competition?&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org8688967"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; Little training and/or testing data&lt;/li&gt;
 &lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; Most of the competitors have similar scores&lt;/li&gt;
@@ -526,13 +1256,13 @@ The features we generate depend on the train-test split. True or False?
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org03ebc6f" class="outline-2"&gt;
-&lt;h2 id="org03ebc6f"&gt;Quiz&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org03ebc6f"&gt;
+&lt;div id="outline-container-orgb24a928" class="outline-2"&gt;
+&lt;h2 id="orgb24a928"&gt;Quiz&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgb24a928"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org10427ff" class="outline-3"&gt;
-&lt;h3 id="org10427ff"&gt;One&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org10427ff"&gt;
+&lt;div id="outline-container-org95ad1b1" class="outline-3"&gt;
+&lt;h3 id="org95ad1b1"&gt;One&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org95ad1b1"&gt;
 &lt;p&gt;
 Select the true statements.
 &lt;/p&gt;
@@ -545,9 +1275,9 @@ Select the true statements.
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgf19d4e6" class="outline-3"&gt;
-&lt;h3 id="orgf19d4e6"&gt;Two&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgf19d4e6"&gt;
+&lt;div id="outline-container-org418eb40" class="outline-3"&gt;
+&lt;h3 id="org418eb40"&gt;Two&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org418eb40"&gt;
 &lt;p&gt;
 Kaggle usually allows you to submit two final submissions that will be checked against the private leader board. One common practice is to use a model that did the best on the validation scores and another that did best on the public leader board. What is the logic behind using these two models?
 &lt;/p&gt;
@@ -558,9 +1288,9 @@ Kaggle usually allows you to submit two final submissions that will be checked a
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org8c9f4e2" class="outline-3"&gt;
-&lt;h3 id="org8c9f4e2"&gt;Three&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org8c9f4e2"&gt;
+&lt;div id="outline-container-org0cd3526" class="outline-3"&gt;
+&lt;h3 id="org0cd3526"&gt;Three&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org0cd3526"&gt;
 &lt;p&gt;
 Suppose we have a dataset of marketing campaigns. Each campain runs for a few weeks and for each campaign our target is the number of new customers. A row in the dataset looks like this:
 &lt;/p&gt;
@@ -581,9 +1311,9 @@ The dataset contains multiple campaigns where the training set has the dates at 
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org1d64e74" class="outline-3"&gt;
-&lt;h3 id="org1d64e74"&gt;Four&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org1d64e74"&gt;
+&lt;div id="outline-container-orga7a2cd9" class="outline-3"&gt;
+&lt;h3 id="orga7a2cd9"&gt;Four&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orga7a2cd9"&gt;
 &lt;p&gt;
 Which of the following can you usually identify without the leaderboard?
 &lt;/p&gt;
@@ -596,17 +1326,17 @@ Which of the following can you usually identify without the leaderboard?
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org746ed2d" class="outline-2"&gt;
-&lt;h2 id="org746ed2d"&gt;Links&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org746ed2d"&gt;
+&lt;div id="outline-container-orgac73e53" class="outline-2"&gt;
+&lt;h2 id="orgac73e53"&gt;Links&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgac73e53"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;&lt;a href="http://scikit-learn.org/stable/modules/cross_validation.html"&gt;Cross-validation in sklearn&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="http://www.chioka.in/how-to-select-your-final-models-in-a-kaggle-competitio/"&gt;Model Selection for Kaggle&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description><category>notes validation</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/validation/</guid><pubDate>Tue, 04 Sep 2018 15:01:59 GMT</pubDate></item><item><title>Springleaf Competition</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/springleaf-competition/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-orgd3acf9c" class="outline-2"&gt;
-&lt;h2 id="orgd3acf9c"&gt;Introduction&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgd3acf9c"&gt;
+&lt;/div&gt;</description><category>notes validation</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/validation/</guid><pubDate>Tue, 04 Sep 2018 15:01:59 GMT</pubDate></item><item><title>Springleaf Competition</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/springleaf-competition/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-orge357c55" class="outline-2"&gt;
+&lt;h2 id="orge357c55"&gt;Introduction&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orge357c55"&gt;
 &lt;p&gt;
 The data comes from the &lt;a href="https://www.kaggle.com/c/springleaf-marketing-response"&gt;Springleaf Marketing Response&lt;/a&gt; competition. Springleaf makes personal loans and wanted to be able to predict who would respond to their direct mail offers. Submissions are evaluated on the area under the ROC curve between the predicted probability and the target. The submission file should have an ID and the probability that the person would respond.
 &lt;/p&gt;
@@ -618,891 +1348,4 @@ ID,target
 6,0.93333
 &lt;/pre&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description><category>example competition notes</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/springleaf-competition/</guid><pubDate>Tue, 04 Sep 2018 13:35:25 GMT</pubDate></item><item><title>Exploratory Data Analysis</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
-&lt;h2&gt;Table of Contents&lt;/h2&gt;
-&lt;div id="text-table-of-contents"&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/#orga7ca7b0"&gt;Building Your Intuition About the Data&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/#org6ae1a4e"&gt;Exploring Anonymized Data&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/#orga42a7b7"&gt;Visualizations&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/#org70345c8"&gt;Data Set Cleaning&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/#orgf6f6742"&gt;Quiz&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/#orgeedcf2a"&gt;Links&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id="outline-container-orga7ca7b0" class="outline-2"&gt;
-&lt;h2 id="orga7ca7b0"&gt;Building Your Intuition About the Data&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orga7ca7b0"&gt;
-&lt;p&gt;
-The first thing to do is to see if you can build up a mental model of what the data is about.
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-org0a1a14d" class="outline-3"&gt;
-&lt;h3 id="org0a1a14d"&gt;Get Domain Knowledge&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org0a1a14d"&gt;
-&lt;p&gt;
-Find out something about the topic that the data describes.
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-orge4755c2" class="outline-3"&gt;
-&lt;h3 id="orge4755c2"&gt;Check if the Data is intuitive&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orge4755c2"&gt;
-&lt;p&gt;
-See if there are any strange values and see if it makes sense given the data description.
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-org4a6688e" class="outline-3"&gt;
-&lt;h3 id="org4a6688e"&gt;Understand how the data was generated&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org4a6688e"&gt;
-&lt;p&gt;
-Is any of it synthetic? Was the training data generated the same way as the testing data?
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-org6ae1a4e" class="outline-2"&gt;
-&lt;h2 id="org6ae1a4e"&gt;Exploring Anonymized Data&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org6ae1a4e"&gt;
-&lt;p&gt;
-Organizers sometimes encode data so you can't tell what it is.
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-org6c5093d" class="outline-3"&gt;
-&lt;h3 id="org6c5093d"&gt;Try To Decode the Data&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org6c5093d"&gt;
-&lt;p&gt;
-You generally won't be able to figure out what the data is if it's encoded, but sometimes they were created using simple shifting schemes that will let you figure out their original values.
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-org3a18170" class="outline-3"&gt;
-&lt;h3 id="org3a18170"&gt;Explore Individual Features&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org3a18170"&gt;
-&lt;p&gt;
-Even if you don't know what the data is, it's important to know what type of data it is so that you can use the right data preprocessing for your model.
-&lt;/p&gt;
-&lt;ul class="org-ul"&gt;
-&lt;li&gt;&lt;a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.dtypes.html"&gt;df.dtypes&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.info.html"&gt;df.info()&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.Series.value_counts.html"&gt;x.value_counts()&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.isnull.html"&gt;x.isnull()&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-orga42a7b7" class="outline-2"&gt;
-&lt;h2 id="orga42a7b7"&gt;Visualizations&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orga42a7b7"&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-org0a8d1b7" class="outline-3"&gt;
-&lt;h3 id="org0a8d1b7"&gt;Features&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org0a8d1b7"&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-org0324b8b" class="outline-4"&gt;
-&lt;h4 id="org0324b8b"&gt;Histograms&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org0324b8b"&gt;
-&lt;p&gt;
-This is useful for seeing the shape of the data.
-&lt;/p&gt;
-&lt;ul class="org-ul"&gt;
-&lt;li&gt;&lt;code&gt;pyplot.hist(x)&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-orge6ca6ac" class="outline-4"&gt;
-&lt;h4 id="orge6ca6ac"&gt;Index vs Value&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-orge6ca6ac"&gt;
-&lt;p&gt;
-This will show you how well distributed the data is within the data frame. Horizontal lines indicate repeated values and empty bands show areas where none of the data had this value. If you don't have vertical lines then the data was probably shuffled.
-&lt;/p&gt;
-&lt;ul class="org-ul"&gt;
-&lt;li&gt;&lt;code&gt;pyplot.plot(x, '.')&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-org9059dc9" class="outline-4"&gt;
-&lt;h4 id="org9059dc9"&gt;Index vs Value Colored By Class Label&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org9059dc9"&gt;
-&lt;p&gt;
-If you plot the classes with different colors you can see if there are clusters and clear separations between them. (&lt;code&gt;y&lt;/code&gt; in the function call has the target values).
-&lt;/p&gt;
-&lt;ul class="org-ul"&gt;
-&lt;li&gt;&lt;code&gt;pyplot.scatter(range(len(x)), x, c=y)&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-orgf7a10aa" class="outline-4"&gt;
-&lt;h4 id="orgf7a10aa"&gt;Plot Other Things&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-orgf7a10aa"&gt;
-&lt;ul class="org-ul"&gt;
-&lt;li&gt;Row vs Feature&lt;/li&gt;
-&lt;li&gt;Nan-values&lt;/li&gt;
-&lt;li&gt;Value Counts&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-org90bcaff" class="outline-3"&gt;
-&lt;h3 id="org90bcaff"&gt;Relationships&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org90bcaff"&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-org5fbfc32" class="outline-4"&gt;
-&lt;h4 id="org5fbfc32"&gt;Scatter Plots&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org5fbfc32"&gt;
-&lt;/div&gt;
-&lt;ul class="org-ul"&gt;
-&lt;li&gt;&lt;a id="org2ba358a"&gt;&lt;/a&gt;Pairwise Relationships&lt;br&gt;
-&lt;div class="outline-text-5" id="text-org2ba358a"&gt;
-&lt;p&gt;
-To make it eaiser to see relationships, you can plot them in pairs.
-&lt;/p&gt;
-&lt;ul class="org-ul"&gt;
-&lt;li&gt;&lt;code&gt;pyplot.scatter(x1, x2)&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a id="org0c1ba14"&gt;&lt;/a&gt;Compare the Test Set&lt;br&gt;
-&lt;div class="outline-text-5" id="text-org0c1ba14"&gt;
-&lt;p&gt;
-Plot the features and the test-set (using different colors) to see how well your training data matches your test data.
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a id="orgd7983ec"&gt;&lt;/a&gt;Scatter Matrix&lt;br&gt;
-&lt;div class="outline-text-5" id="text-orgd7983ec"&gt;
-&lt;p&gt;
-Pandas has a convenience function that will plot all the pairwise scatter-plots for you.
-&lt;/p&gt;
-&lt;ul class="org-ul"&gt;
-&lt;li&gt;&lt;code&gt;pandas.scatter_matrix(X)&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-orge4c5609" class="outline-4"&gt;
-&lt;h4 id="orge4c5609"&gt;Corellation&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-orge4c5609"&gt;
-&lt;p&gt;
-Plot the corellation matrix to see if there are feature-pairs that are related so you can make a new feature out of them and see if they help.
-&lt;/p&gt;
-&lt;ul class="org-ul"&gt;
-&lt;li&gt;&lt;code&gt;X.corr(), pyplot.matshow()&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;
-A straight correllation matrix might give you a sense of how correllated the features are, but it's more useful to use a clustering algorithm to see if there are groups within the correlation matrix.
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-org0f78f2b" class="outline-4"&gt;
-&lt;h4 id="org0f78f2b"&gt;Plot Statistics&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org0f78f2b"&gt;
-&lt;p&gt;
-Try plotting mean, differences, combination counts, etc. and see if you can create groups out of them.
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-org70345c8" class="outline-2"&gt;
-&lt;h2 id="org70345c8"&gt;Data Set Cleaning&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org70345c8"&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-orgae0f01b" class="outline-3"&gt;
-&lt;h3 id="orgae0f01b"&gt;Duplicated and Constant Features&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgae0f01b"&gt;
-&lt;p&gt;
-Sometimes a feature will have the same value in all the rows. If it's this way in both the training and test sets you can just remove it, but if there are different values in the test set you have to figure out how to handle them.
-&lt;/p&gt;
-&lt;ul class="org-ul"&gt;
-&lt;li&gt;&lt;code&gt;x_train.nunique(axis&lt;/code&gt;"columns") &lt;code&gt;= 1&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;
-Sometimes columns will get duplicated in which case you should drop one of them.
-&lt;/p&gt;
-
-&lt;ul class="org-ul"&gt;
-&lt;li&gt;&lt;code&gt;x_train.T.drop_duplicates()&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;
-This can happen with rows as well, but it can be harder to decide whether this is a mistake or not.
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-org601f9d8" class="outline-3"&gt;
-&lt;h3 id="org601f9d8"&gt;Non-shuffled Data&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org601f9d8"&gt;
-&lt;p&gt;
-If you plot the mean as a horizontal line the data should be evenly distributed around it, if not it might not have been shuffled and there could be an inadvertent pattern in the data. You might not be able to use it, but you should understand all the things about the data that you can find out.
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-orgf6f6742" class="outline-2"&gt;
-&lt;h2 id="orgf6f6742"&gt;Quiz&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgf6f6742"&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-orgfb0f911" class="outline-3"&gt;
-&lt;h3 id="orgfb0f911"&gt;One&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgfb0f911"&gt;
-&lt;p&gt;
-Suppose we are given a data set with features &lt;i&gt;X&lt;/i&gt;, &lt;i&gt;Y&lt;/i&gt;, and &lt;i&gt;Z&lt;/i&gt;. Can you recover &lt;i&gt;z&lt;/i&gt; as a function of &lt;i&gt;x&lt;/i&gt; and &lt;i&gt;y&lt;/i&gt;?
-&lt;/p&gt;
-&lt;ul class="org-ul"&gt;
-&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; Z = X/Y&lt;/li&gt;
-&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; Z = X - Y&lt;/li&gt;
-&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; Z = X + Y&lt;/li&gt;
-&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; Z = XY&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-org2f5a3ba" class="outline-3"&gt;
-&lt;h3 id="org2f5a3ba"&gt;Two&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org2f5a3ba"&gt;
-&lt;p&gt;
-What value do the red dots have?
-0.5 (wrong)
-2 (next try)
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-org3c2f040" class="outline-3"&gt;
-&lt;h3 id="org3c2f040"&gt;Three&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org3c2f040"&gt;
-&lt;p&gt;
-What hypothesis about X can we not reject based on the plots?
-&lt;/p&gt;
-&lt;ul class="org-ul"&gt;
-&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; X is a counter or label encoded categorical feature&lt;/li&gt;
-&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; X can be the temperature (in Celsius) in different cities at different times. (the values are probably out of range)&lt;/li&gt;
-&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; X can take a value of zero (The log plot would have values at 0 but it doesn't)&lt;/li&gt;
-&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; X takes only discrete values (the horizontal lines indicate that there are repeated values with discrete values)&lt;/li&gt;
-&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; 2 &amp;lt;= X &amp;lt; 3 happens more frequently than 3 &amp;lt;= X &amp;lt; 4&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-org4560230" class="outline-3"&gt;
-&lt;h3 id="org4560230"&gt;Four&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org4560230"&gt;
-&lt;ul class="org-ul"&gt;
-&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; Target is completely determined by coordinates (x,y)(x,y)(x,y), i.e. the label of the point is completely determined by point's position (x,y)(x,y)(x,y). Saying the same in other words: if we only had two features (x,y)(x,y)(x,y), we could build a classifier, that is accurate 100% of time.&lt;/li&gt;
-&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; The top right plot is better than the top left in that everything you get from the top left can also be gotten from the top right, but not the other way around.&lt;/li&gt;
-&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; standard deviation for jittering is the largest on the bottom right.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-orgeedcf2a" class="outline-2"&gt;
-&lt;h2 id="orgeedcf2a"&gt;Links&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgeedcf2a"&gt;
-&lt;ul class="org-ul"&gt;
-&lt;li&gt;&lt;a href="http://scikit-learn.org/stable/auto_examples/bicluster/plot_spectral_biclustering.html"&gt;Sorting Correlation Plots&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;</description><category>notes data</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/</guid><pubDate>Tue, 04 Sep 2018 04:24:53 GMT</pubDate></item><item><title>Feature Extraction From Text and Images</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/feature-extraction-from-text-and-images/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
-&lt;h2&gt;Table of Contents&lt;/h2&gt;
-&lt;div id="text-table-of-contents"&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/feature-extraction-from-text-and-images/#org9c16155"&gt;How do you convert text to data?&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/feature-extraction-from-text-and-images/#org5dffe75"&gt;Practice Quiz&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/feature-extraction-from-text-and-images/#org4442b30"&gt;Quiz&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/feature-extraction-from-text-and-images/#org91a564a"&gt;Links&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id="outline-container-org9c16155" class="outline-2"&gt;
-&lt;h2 id="org9c16155"&gt;How do you convert text to data?&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org9c16155"&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-org1e94a7a" class="outline-3"&gt;
-&lt;h3 id="org1e94a7a"&gt;Two Main Methods&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org1e94a7a"&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-orgda76e36" class="outline-4"&gt;
-&lt;h4 id="orgda76e36"&gt;Bag Of Words&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-orgda76e36"&gt;
-&lt;/div&gt;
-&lt;ul class="org-ul"&gt;
-&lt;li&gt;&lt;a id="org9a9fdf5"&gt;&lt;/a&gt;Vectorization&lt;br&gt;
-&lt;div class="outline-text-5" id="text-org9a9fdf5"&gt;
-&lt;p&gt;
-This method counts the number of occurrences of each word in the source. For each word it creates a column and then in the row puts the counts for that instance of data.
-&lt;/p&gt;
-&lt;ul class="org-ul"&gt;
-&lt;li&gt;Sklearn implements this with &lt;a href="http://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.CountVectorizer.html"&gt;CountVectorizer&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a id="org7321050"&gt;&lt;/a&gt;Term Frequency/Inverse Document Frequency (TF/IDF)&lt;br&gt;
-&lt;div class="outline-text-5" id="text-org7321050"&gt;
-&lt;p&gt;
-This method tries to make word counts comparable even if the texts are of different sizes and also to emphasize more important words.
-&lt;/p&gt;
-&lt;ul class="org-ul"&gt;
-&lt;li&gt;Term Frequency: Normalize rows so all values are from 0 to 1 to make texts of different sizes comparable&lt;/li&gt;
-&lt;li&gt;Inverse Document Frequency: Normalize columns to make emphasize more important features&lt;/li&gt;
-&lt;li&gt;Sklearn implements this with &lt;a href="http://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html"&gt;TfidVectorizer&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a id="orga6e7cf6"&gt;&lt;/a&gt;N-Grams&lt;br&gt;
-&lt;div class="outline-text-5" id="text-orga6e7cf6"&gt;
-&lt;p&gt;
-This method that creates a bag of words by grouping them into sub-sequences of words. A 3-gram, for instance, sweeps the text to create sequences of words made up of 3 adjacent words.
-&lt;/p&gt;
-&lt;ul class="org-ul"&gt;
-&lt;li&gt;&lt;a href="http://sklearn.feature_extraction.text.countvectorizer"&gt;Count Vectorizer&lt;/a&gt; is sklearn's implementation&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a id="org8964ede"&gt;&lt;/a&gt;Text Preprocessing&lt;br&gt;
-&lt;div class="outline-text-5" id="text-org8964ede"&gt;
-&lt;ul class="org-ul"&gt;
-&lt;li&gt;lowercase:
-Change all the words to lower-case&lt;/li&gt;
-&lt;li&gt;lemmatization:
-Try to reduce word to a common case (e.g. democratization, democracy, democratic all become democracy)&lt;/li&gt;
-&lt;li&gt;stemming:
-Try to reduce word to a root (e.g. democratization, democracy, democratic all become democ)&lt;/li&gt;
-&lt;li&gt;stopwords:
-Remove common words (e.g. a, and, or, etc.)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a id="orgf4056ec"&gt;&lt;/a&gt;The Bag Of Words Pipeline&lt;br&gt;
-&lt;div class="outline-text-5" id="text-orgf4056ec"&gt;
-&lt;ol class="org-ol"&gt;
-&lt;li&gt;Preprocessing (lowercase, lemmatization, stemming, stopwords)&lt;/li&gt;
-&lt;li&gt;Create n-grams&lt;/li&gt;
-&lt;li&gt;Postprocessing: TF/IDF&lt;/li&gt;
-&lt;/ol&gt;
-&lt;/div&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-org31719ec" class="outline-4"&gt;
-&lt;h4 id="org31719ec"&gt;Embeddings (e.g. Word2Vec)&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org31719ec"&gt;
-&lt;ul class="org-ul"&gt;
-&lt;li&gt;Uses neural-nets&lt;/li&gt;
-&lt;li&gt;much smaller vectors than bag of words&lt;/li&gt;
-&lt;li&gt;But each word gets a vector so many more vectors&lt;/li&gt;
-&lt;li&gt;similar words have similar word-vectors&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-org5dffe75" class="outline-2"&gt;
-&lt;h2 id="org5dffe75"&gt;Practice Quiz&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org5dffe75"&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-org1df0b48" class="outline-3"&gt;
-&lt;h3 id="org1df0b48"&gt;One&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org1df0b48"&gt;
-&lt;p&gt;
-TF-IDF is applied to a matrix where each column represents a word, each row represents a document, and each value shows the number of times a particular word occurred in a particular document. Choose the correct statements.
-&lt;/p&gt;
-&lt;ul class="org-ul"&gt;
-&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; IDF scales features inversely proprotionally to a number of word occurrences over documents&lt;/li&gt;
-&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; IDF scales features proportionally to the frequency of the a word's occurrences&lt;/li&gt;
-&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; TF normalizes sums of the row values to 1&lt;/li&gt;
-&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; TF normalizes sums of the column values to 1&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-org08ecc1c" class="outline-3"&gt;
-&lt;h3 id="org08ecc1c"&gt;Two&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org08ecc1c"&gt;
-&lt;p&gt;
-Which of these methods can be used to preprocess text?
-&lt;/p&gt;
-&lt;ul class="org-ul"&gt;
-&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; stemming&lt;/li&gt;
-&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; Lower-case transformation&lt;/li&gt;
-&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; Lemmatization&lt;/li&gt;
-&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; Stopword removal&lt;/li&gt;
-&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; Levenshteining&lt;/li&gt;
-&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; plumping&lt;/li&gt;
-&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; plumbing&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-org3c0d557" class="outline-3"&gt;
-&lt;h3 id="org3c0d557"&gt;Three&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org3c0d557"&gt;
-&lt;p&gt;
-What is the main purpose of lemmatization and stemming?
-&lt;/p&gt;
-&lt;ul class="org-ul"&gt;
-&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; to remove words which are not useful&lt;/li&gt;
-&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; to remove inflectional forms and sometimes derivationally related forms of a word to a common base form&lt;/li&gt;
-&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; To reduce the significance of common words&lt;/li&gt;
-&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; to induce common word amplification standards to the most useful for machine learning algorithms form&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-orgbfb5d8c" class="outline-3"&gt;
-&lt;h3 id="orgbfb5d8c"&gt;Four&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgbfb5d8c"&gt;
-&lt;p&gt;
-To learn Word2Vec embeddings we need:
-&lt;/p&gt;
-&lt;ul class="org-ul"&gt;
-&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; GloVe embeddings&lt;/li&gt;
-&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; Labels for the documents in the corpora&lt;/li&gt;
-&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; Labels for each word in the documents in the corpora&lt;/li&gt;
-&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; Text corpora&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-org4442b30" class="outline-2"&gt;
-&lt;h2 id="org4442b30"&gt;Quiz&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org4442b30"&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-org4aec9c8" class="outline-3"&gt;
-&lt;h3 id="org4aec9c8"&gt;One&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org4aec9c8"&gt;
-&lt;p&gt;
-Select true statements about n-grams.
-&lt;/p&gt;
-&lt;ul class="org-ul"&gt;
-&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; Levenshteining should always be applied before computing n-grams (there is no such thing as Levenshteining)&lt;/li&gt;
-&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; n-grams always help increase significance of important words (n-grams are about counts, not importance)&lt;/li&gt;
-&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; n-grams features are typically sparse (n-grams count occurrences of words and not every word will be found in every document)&lt;/li&gt;
-&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; n-grams can help utilize local context around each word (n-grams encode sequences of words)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-org54643b5" class="outline-3"&gt;
-&lt;h3 id="org54643b5"&gt;Two&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org54643b5"&gt;
-&lt;p&gt;
-Select the true statements.
-&lt;/p&gt;
-&lt;ul class="org-ul"&gt;
-&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; Bag of words usually produces longer vectors than Word2Vec (The number of features with BOW is equal to the number of unique words, Word2Vec limit is set beforehand)&lt;/li&gt;
-&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; Semantically similar words usually have similar word2vec embeddings&lt;/li&gt;
-&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; You do not need bag of words features in a competition if you have word2vec features (both approaches are useful and can work together)
-&lt;ul class="org-ul"&gt;
-&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; The meaning of each value in the Bag of Words matrix is unknown (The meaning of each value is how many times it occurred)&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-org81e0f32" class="outline-3"&gt;
-&lt;h3 id="org81e0f32"&gt;Three&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org81e0f32"&gt;
-&lt;p&gt;
-Suppose in a new competition we are given a dataset of 2D medical images. We want to extract image descriptors from a hidden layer of a neural network pretrained on the ImageNet dataset. We will then use extracted descriptors to train a simple logistic regression model to classify images from our dataset.
-&lt;/p&gt;
-
-&lt;p&gt;
-We are considering using two networks: ResNet-50 with an ImageNet accuracy of X and VGG-16 with an ImageNet accuracy of Y (X &amp;lt; Y). Select the true statements.
-&lt;/p&gt;
-
-&lt;ul class="org-ul"&gt;
-&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; With one pretrained CNN model you can get only one vector of descriptors for an image&lt;/li&gt;
-&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; Descriptors from ResNet 50 will always be better than the ones from VG-16 in our pipeline&lt;/li&gt;
-&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; It is not clear what descriptors are better on our dataset. We should evaluate both.
-&lt;ul class="org-ul"&gt;
-&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; Descriptors from ResNet-50 and VGG-16 are always very similar in cosine distance&lt;/li&gt;
-&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; For any image, descriptors from the last hidden layer of ResNet-50 are the same as the descriptors from the last hidden layer of VGG-16&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-orgb5fd47f" class="outline-3"&gt;
-&lt;h3 id="orgb5fd47f"&gt;Four&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgb5fd47f"&gt;
-&lt;p&gt;
-Data augmentation can be used at (1) train time and (2) test time
-&lt;/p&gt;
-&lt;ul class="org-ul"&gt;
-&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; True, False&lt;/li&gt;
-&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; False, True&lt;/li&gt;
-&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; True, True&lt;/li&gt;
-&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; False, False&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-org91a564a" class="outline-2"&gt;
-&lt;h2 id="org91a564a"&gt;Links&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org91a564a"&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-org2dea633" class="outline-3"&gt;
-&lt;h3 id="org2dea633"&gt;Text&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org2dea633"&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-org888604f" class="outline-4"&gt;
-&lt;h4 id="org888604f"&gt;Bag Of Words&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org888604f"&gt;
-&lt;ul class="org-ul"&gt;
-&lt;li&gt;&lt;a href="http://scikit-learn.org/stable/modules/feature_extraction.html"&gt;SKlearn on feature extraction&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://andhint.github.io/machine-learning/nlp/Feature-Extraction-From-Text/"&gt;blog post&lt;/a&gt; on extracting features from text&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-org47d387e" class="outline-4"&gt;
-&lt;h4 id="org47d387e"&gt;Word2Vec&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org47d387e"&gt;
-&lt;ul class="org-ul"&gt;
-&lt;li&gt;&lt;a href="https://www.tensorflow.org/tutorials/representation/word2vec"&gt;TensorFlow tutorial&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://rare-technologies.com/word2vec-tutorial/"&gt;Blog post tutorial&lt;/a&gt; by the author of gensim&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://nadbordrozd.github.io/blog/2016/05/20/text-classification-with-word2vec/"&gt;Text Classification post&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://taylorwhitten.github.io/blog/word2vec"&gt;Another introduction&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-orga0fdad3" class="outline-4"&gt;
-&lt;h4 id="orga0fdad3"&gt;Natural Language Processing with Python&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-orga0fdad3"&gt;
-&lt;ul class="org-ul"&gt;
-&lt;li&gt;&lt;a href="http://www.nltk.org/"&gt;nltk&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://textblob.readthedocs.io/en/dev/"&gt;TextBlob&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-orgab0ffa7" class="outline-3"&gt;
-&lt;h3 id="orgab0ffa7"&gt;Images&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgab0ffa7"&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-orgd0cb270" class="outline-4"&gt;
-&lt;h4 id="orgd0cb270"&gt;Pre-trained Models&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-orgd0cb270"&gt;
-&lt;ul class="org-ul"&gt;
-&lt;li&gt;&lt;a href="https://keras.io/applications/"&gt;Keras&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://www.kernix.com/blog/image-classification-with-a-pre-trained-deep-neural-network_p11"&gt;How To use a pre-trained model&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-org7540737" class="outline-4"&gt;
-&lt;h4 id="org7540737"&gt;Fine-Tuning&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org7540737"&gt;
-&lt;ul class="org-ul"&gt;
-&lt;li&gt;&lt;a href="https://www.tensorflow.org/hub/tutorials/image_retraining"&gt;Re-train a tensorflow image classifier&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://flyyufelix.github.io/2016/10/08/fine-tuning-in-keras-part2.html"&gt;Fine-tuning deep learning models in keras&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;</description><category>featureextraction text images notes</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/feature-extraction-from-text-and-images/</guid><pubDate>Mon, 13 Aug 2018 14:17:52 GMT</pubDate></item><item><title>Feature Preprocessing</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/feature-preprocessing/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
-&lt;h2&gt;Table of Contents&lt;/h2&gt;
-&lt;div id="text-table-of-contents"&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/feature-preprocessing/#org8e3a332"&gt;Preprocessing&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/feature-preprocessing/#orgc6c31cb"&gt;Numeric Feature Preprocessing&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/feature-preprocessing/#org31a0d5a"&gt;Categorical And Ordinal Features&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/feature-preprocessing/#orgd4f08b1"&gt;Dates and Times&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/feature-preprocessing/#org07a3cc1"&gt;Coordinates&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/feature-preprocessing/#org83e3295"&gt;Missing Data&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/feature-preprocessing/#orgd8aeba7"&gt;Links&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-org8e3a332" class="outline-2"&gt;
-&lt;h2 id="org8e3a332"&gt;Preprocessing&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org8e3a332"&gt;
-&lt;p&gt;
-In every competition you need to:
-&lt;/p&gt;
-
-&lt;ul class="org-ul"&gt;
-&lt;li&gt;pre-process the data&lt;/li&gt;
-&lt;li&gt;generate new features from the existing ones&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-orgc6c31cb" class="outline-2"&gt;
-&lt;h2 id="orgc6c31cb"&gt;Numeric Feature Preprocessing&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgc6c31cb"&gt;
-&lt;p&gt;
-Some models (e.g. Linear Classification) need you to convert numeric-looking data to categorical data. Tree-based models don't need pre-processing as much as non tree-based models do.
-&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;div id="outline-container-org1b071b2" class="outline-3"&gt;
-&lt;h3 id="org1b071b2"&gt;Scaling&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org1b071b2"&gt;
-&lt;p&gt;
-If features have different value ranges then the model will  treat them differently.
-&lt;/p&gt;
-&lt;ul class="org-ul"&gt;
-&lt;li&gt;&lt;a href="http://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.MinMaxScaler.html"&gt;sklearn.preprocessing.MinMaxScalar&lt;/a&gt;
-Scale by the range of values&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html"&gt;sklearn.preprocessing.StandardScalar&lt;/a&gt;
-Scale the data to have a mean of 0 and a standard deviation of 1&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-org1edcf2d" class="outline-3"&gt;
-&lt;h3 id="org1edcf2d"&gt;Outliers&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org1edcf2d"&gt;
-&lt;ul class="org-ul"&gt;
-&lt;li&gt;Clip (&lt;a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.clip.html"&gt;numpy.clip&lt;/a&gt;)values to get rid of unusual values that mess with the model. (Winsorization)&lt;/li&gt;
-&lt;li&gt;Rank Transform them (&lt;a href="https://docs.scipy.org/doc/scipy-0.16.0/reference/generated/scipy.stats.rankdata.html"&gt;scipy.stats.rankdata&lt;/a&gt;) so that they are ordered and have the same distance between them (they are uniformly distributed)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-org9fded10" class="outline-3"&gt;
-&lt;h3 id="org9fded10"&gt;Transformation&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org9fded10"&gt;
-&lt;p&gt;
-For linear models and neural networks, transforming the data can sometimes help.
-&lt;/p&gt;
-&lt;ul class="org-ul"&gt;
-&lt;li&gt;Log Transform: &lt;a href="https://duckduckgo.com/?q=numpy+log&amp;amp;t=canonical&amp;amp;ia=web"&gt;numpy.log(1 + x)&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Power Less Than 1 Transform: &lt;a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.sqrt.html"&gt;numpy.sqrt(x + 2/3)&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-orga5948c5" class="outline-3"&gt;
-&lt;h3 id="orga5948c5"&gt;Feature Generation&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orga5948c5"&gt;
-&lt;p&gt;
-Sometimes you can convert separate columns to get new ones. This requires exploratory data analysis.
-&lt;/p&gt;
-&lt;ul class="org-ul"&gt;
-&lt;li&gt;Fractional Parts: people perceive numbers with fractions differently so sometime separating out the fractional part makes the model perform better because it is the more important part&lt;/li&gt;
-&lt;li&gt;You can derive new values mathematically (e.g. distance using height and width)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div id="outline-container-org31a0d5a" class="outline-2"&gt;
-&lt;h2 id="org31a0d5a"&gt;Categorical And Ordinal Features&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org31a0d5a"&gt;
-&lt;ul class="org-ul"&gt;
-&lt;li&gt;Ordinal Features have an ordering but even if they are labeled numerically (e.g. 1, 2, 3) they aren't numeric because there is no implication about the distance between them&lt;/li&gt;
-&lt;li&gt;label and frequency encoding are commonly used for tree-based models&lt;/li&gt;
-&lt;li&gt;one-hot encoding is more common for non-tree-based models&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-org24d12b7" class="outline-3"&gt;
-&lt;h3 id="org24d12b7"&gt;Label Encoding&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org24d12b7"&gt;
-&lt;p&gt;
-Some models need numeric values or numeric values that don't have implied ordering so you want to encode them.
-&lt;/p&gt;
-&lt;ul class="org-ul"&gt;
-&lt;li&gt;&lt;a href="http://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.LabelEncoder.html"&gt;sklearn.preprocessing.LabelEncoder&lt;/a&gt;
-Sorts the labels then encodes them as integers&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.factorize.html"&gt;Pandas.factorize&lt;/a&gt;
-Encodes the labels in the order they appear. This makes more sense if there is a meaning to the order in which labels appear.&lt;/li&gt;
-&lt;li&gt;This is more commonly used with tree-based methods.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-org893c37a" class="outline-3"&gt;
-&lt;h3 id="org893c37a"&gt;Frequency Encoding&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org893c37a"&gt;
-&lt;p&gt;
-Encode the values to a fraction of all the labels. Can work with linear models if the frequency is correlated with the target value.
-&lt;/p&gt;
-&lt;ul class="org-ul"&gt;
-&lt;li&gt;&lt;code&gt;titanic.groupby("Embarked").size()/len(titanic)&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;from scipy.stats import rankedata&lt;/code&gt; (&lt;a href="https://docs.scipy.org/doc/scipy-0.16.0/reference/generated/scipy.stats.rankdata.html"&gt;rankedata&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;More common with tree-based methods&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-org52efe19" class="outline-3"&gt;
-&lt;h3 id="org52efe19"&gt;One Hot Encoding&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org52efe19"&gt;
-&lt;p&gt;
-Creates one column for each label and puts a 1 in the column that matches. Works with both linear and tree-based models, but can be inefficient with tree-based models.
-&lt;/p&gt;
-&lt;ul class="org-ul"&gt;
-&lt;li&gt;&lt;a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.get_dummies.html"&gt;pandas.get_dummies&lt;/a&gt; - converts strings into column encodings&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.OneHotEncoder.html"&gt;sklearn.preprocessing.OneHotEncoder&lt;/a&gt; - converts numeric categorical data into column encodings&lt;/li&gt;
-&lt;li&gt;One hot encoding is better for non-tree models.&lt;/li&gt;
-&lt;li&gt;This allows easier feature interactions (encode combined features (e.g. gender and class) rather than encoding them separately) 
-&lt;ul class="org-ul"&gt;
-&lt;li&gt;This is more common with linear models and KNN&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-orgd4f08b1" class="outline-2"&gt;
-&lt;h2 id="orgd4f08b1"&gt;Dates and Times&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgd4f08b1"&gt;
-&lt;p&gt;
-When working with seasonal data, sometimes the relative date-stamps are more important than the actual dates (how close to Christmas?).
-Sometimes you want the time between events.
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-org07a3cc1" class="outline-2"&gt;
-&lt;h2 id="org07a3cc1"&gt;Coordinates&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org07a3cc1"&gt;
-&lt;p&gt;
-Sometimes you want exact coordinates, but most times you want distances to some center.
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-org83e3295" class="outline-2"&gt;
-&lt;h2 id="org83e3295"&gt;Missing Data&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org83e3295"&gt;
-&lt;ul class="org-ul"&gt;
-&lt;li&gt;"missing" data might mean outliers - values that are probably wrong&lt;/li&gt;
-&lt;li&gt;avoid replacing missing values before feature engineering - it can throw off what you do&lt;/li&gt;
-&lt;li&gt;Gradient Boost Trees can handle isNaN, so you don't have to do anything&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-orgf70f97d" class="outline-3"&gt;
-&lt;h3 id="orgf70f97d"&gt;Numeric&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgf70f97d"&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-org4336bdd" class="outline-4"&gt;
-&lt;h4 id="org4336bdd"&gt;Fill NA Approaches&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org4336bdd"&gt;
-&lt;ul class="org-ul"&gt;
-&lt;li&gt;-999, -1, other numbers
-&lt;ul class="org-ul"&gt;
-&lt;li&gt;lets you categorize missing values&lt;/li&gt;
-&lt;li&gt;throws some models off (e.g. linear models and neural networks)&lt;/li&gt;
-&lt;li&gt;one solution is to create a new feature for missing values, but this has now increased the amount of data you need (curse of dimensionality)&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;mean, median, some central tendency
-&lt;ul class="org-ul"&gt;
-&lt;li&gt;This can throw the model off&lt;/li&gt;
-&lt;li&gt;it is sometimes better to ignore missing data&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;recronstructed value&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-orgd8aeba7" class="outline-2"&gt;
-&lt;h2 id="orgd8aeba7"&gt;Links&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgd8aeba7"&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-orgbf88210" class="outline-3"&gt;
-&lt;h3 id="orgbf88210"&gt;Feature Pre-processing&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgbf88210"&gt;
-&lt;ul class="org-ul"&gt;
-&lt;li&gt;&lt;a href="http://scikit-learn.org/stable/modules/preprocessing.html"&gt;SKlearn's Preprocessing Documentation&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://www.coursera.org/learn/machine-learning/lecture/xx3Da/gradient-descent-in-practice-i-feature-scaling"&gt;Andrew Ng on Feature Scaling and its effect on Gradient Descent&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://sebastianraschka.com/Articles/2014_about_feature_scaling.html"&gt;Sebastian Raschka on Feature Scaling&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-orgff37823" class="outline-3"&gt;
-&lt;h3 id="orgff37823"&gt;Feature Engineering&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgff37823"&gt;
-&lt;ul class="org-ul"&gt;
-&lt;li&gt;&lt;a href="https://machinelearningmastery.com/discover-feature-engineering-how-to-engineer-features-and-how-to-get-good-at-it/"&gt;Machine Learning Mastery on Feature Engineering&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://www.quora.com/What-are-some-best-practices-in-Feature-Engineering"&gt;Quora: What are some best practices in Feature Engineering?&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;</description><category>features preprocessing notes</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/feature-preprocessing/</guid><pubDate>Wed, 08 Aug 2018 04:41:10 GMT</pubDate></item><item><title>Machine Learning Recap</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/machine-learning-recap/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-org3fe09a4" class="outline-2"&gt;
-&lt;h2 id="org3fe09a4"&gt;The Main Categories&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org3fe09a4"&gt;
-&lt;p&gt;
-These are the four main categories of supervised machine learning algorithms that you'll encounter in kaggle competitions.
-&lt;/p&gt;
-
-&lt;ul class="org-ul"&gt;
-&lt;li&gt;Linear Models
-&lt;ul class="org-ul"&gt;
-&lt;li&gt;sklearn&lt;/li&gt;
-&lt;li&gt;vowpal rabbit (for really large datasets)&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;Tree-Based Models
-&lt;ul class="org-ul"&gt;
-&lt;li&gt;sklearn&lt;/li&gt;
-&lt;li&gt;xgboost: faster than sklearn&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;k-Nearest Neighbors
-&lt;ul class="org-ul"&gt;
-&lt;li&gt;sklearn&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;Neural Networks&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-org48f724a" class="outline-2"&gt;
-&lt;h2 id="org48f724a"&gt;The No Free Lunch Theorem&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org48f724a"&gt;
-&lt;blockquote&gt;
-&lt;p&gt;
-There is no method which outperforms all others for all tasks.
-&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;
-You cannot assume that an algorithm that did well on one set of data will do well on another. All algorithms have weaknesses, so you have to test multiple algorithms on each data set.
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-org60a669b" class="outline-2"&gt;
-&lt;h2 id="org60a669b"&gt;Summary&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org60a669b"&gt;
-&lt;ul class="org-ul"&gt;
-&lt;li&gt;there is no one algorithm to rule them all&lt;/li&gt;
-&lt;li&gt;Linear models split spaces into two sub-spaces&lt;/li&gt;
-&lt;li&gt;tree-based models spit spaces into boxes&lt;/li&gt;
-&lt;li&gt;kNN relies on measuring the 'closeness' between points&lt;/li&gt;
-&lt;li&gt;Neural Networks provide non-linear decision boundaries&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;
-In general the two most powerful methods are &lt;b&gt;Gradient Boosted Decision Trees&lt;/b&gt; and &lt;b&gt;Neural Networks&lt;/b&gt;, but this won't always be the case.
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;</description><category>basics algorithms notes</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/machine-learning-recap/</guid><pubDate>Sun, 05 Aug 2018 01:13:44 GMT</pubDate></item><item><title>Real-World vs Kaggle</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/real-world-vs-kaggle/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-org22d9484" class="outline-2"&gt;
-&lt;h2 id="org22d9484"&gt;A Real World Pipeline&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org22d9484"&gt;
-&lt;ul class="org-ul"&gt;
-&lt;li&gt;What is the business problem that you are trying to solve?&lt;/li&gt;
-&lt;li&gt;What is the formal version of the problem?&lt;/li&gt;
-&lt;li&gt;How do you collect data?&lt;/li&gt;
-&lt;li&gt;How do you preprocess the data?&lt;/li&gt;
-&lt;li&gt;How do you create the model?
-&lt;ul class="org-ul"&gt;
-&lt;li&gt;what is the appropriate algorithm?&lt;/li&gt;
-&lt;li&gt;what is the correct metric?&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;How do you evaluate the model in a real world situation?&lt;/li&gt;
-&lt;li&gt;How do you deploy the model?
-&lt;ul class="org-ul"&gt;
-&lt;li&gt;How do you monitor its performance?&lt;/li&gt;
-&lt;li&gt;How do you update it over time?&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-orgd4f6943" class="outline-2"&gt;
-&lt;h2 id="orgd4f6943"&gt;A Competition Pipeline&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgd4f6943"&gt;
-&lt;ul class="org-ul"&gt;
-&lt;li&gt;How do you pre-process the data?&lt;/li&gt;
-&lt;li&gt;How do you create the model?&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-org401b68b" class="outline-2"&gt;
-&lt;h2 id="org401b68b"&gt;So, how do you use a competition then?&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org401b68b"&gt;
-&lt;ul class="org-ul"&gt;
-&lt;li&gt;It's good to learn about machine learning&lt;/li&gt;
-&lt;li&gt;It' not just about the algorithms, let the data guide what you do&lt;/li&gt;
-&lt;li&gt;Try to be creative and do things that haven't been done before&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;</description><category>basics kaggle</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/real-world-vs-kaggle/</guid><pubDate>Sun, 05 Aug 2018 01:02:24 GMT</pubDate></item></channel></rss>
+&lt;/div&gt;</description><category>example competition notes</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/springleaf-competition/</guid><pubDate>Tue, 04 Sep 2018 13:35:25 GMT</pubDate></item></channel></rss>

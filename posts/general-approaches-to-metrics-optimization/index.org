@@ -1,0 +1,21 @@
+#+BEGIN_COMMENT
+.. title: General Approaches to Metrics Optimization
+.. slug: general-approaches-to-metrics-optimization
+.. date: 2018-09-22 16:04:35 UTC-07:00
+.. tags: notes metrics
+.. category: notes
+.. link: 
+.. description: Notes on metrics optimization.
+.. type: text
+#+END_COMMENT
+
+* What do we mean by /loss/ and /metric/?
+  - the =metric= is what we /want/ to optimize - but we sometimes don't really know how to optimize this, this is just how we evaluate the model in the end
+  - =loss= is what the model actually optimizes
+* How do you optimize the target metric?
+  - In some cases you can just use them (e.g. /MSE/, /logloss/)
+  - In some cases you need to do a preprocessing training step with another metric
+    (e.g. /MSPE/, /MAPE/, /RMSLE/)
+  - In osme cases you need to train on a different metric and then use post-processing during the prediction step
+* Early Stopping
+  To work around these problems, use two metrics /m1/ and /m2/ and optimize on metric /m1/ while monitoring /m2/, then stop when /m2/ is optimal.

@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="The Mean Encoding method.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mean Encoding | Notes on Kaggle</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="../../rss.xml">
+<link rel="canonical" href="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script><meta name="author" content="Cloistered Monkey">
+<link rel="prev" href="../optimizing-classification-metrics/" title="Optimizing Classification Metrics" type="text/html">
+<link rel="next" href="../mean-encoding-the-competition-data/" title="Mean Encoding The Competition Data" type="text/html">
+<meta property="og:site_name" content="Notes on Kaggle">
+<meta property="og:title" content="Mean Encoding">
+<meta property="og:url" content="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding/">
+<meta property="og:description" content="The Mean Encoding method.">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2018-09-23T17:56:27-07:00">
+<meta property="article:tag" content="notes encoding">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-default navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://necromuralist.github.io/Kaggle-Competitions/">
+
+                <span id="blog-title">Notes on Kaggle</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="https://necromuralist.github.io/">The Cloistered Monkey</a>
+                </li>
+<li>
+<a href="../../archive.html">Archive</a>
+                </li>
+<li>
+<a href="../../categories/">Tags</a>
+                </li>
+<li>
+<a href="../../rss.xml">RSS feed</a>
+
+                
+            </li>
+</ul>
+<!-- Google custom search --><form method="get" action="https://www.google.com/search" class="navbar-form navbar-right" role="search">
+<div class="form-group">
+<input type="text" name="q" class="form-control" placeholder="Search">
+</div>
+<button type="submit" class="btn btn-primary">
+	<span class="glyphicon glyphicon-search"></span>
+</button>
+<input type="hidden" name="sitesearch" value="https://necromuralist.github.io/Kaggle-Competitions/">
+</form>
+<!-- End of custom search -->
+
+
+            <ul class="nav navbar-nav navbar-right">
+<li>
+    <a href="index.org" id="sourcelink">Source</a>
+    </li>
+
+                
+            </ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+            
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Mean Encoding</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                    Cloistered Monkey
+            </span></p>
+            <p class="dateline"><a href="." rel="bookmark"><time class="published dt-published" datetime="2018-09-23T17:56:27-07:00" itemprop="datePublished" title="2018-09-23 17:56">2018-09-23 17:56</time></a></p>
+            
+        <p class="sourceline"><a href="index.org" class="sourcelink">Source</a></p>
+
+        </div>
+        
+
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div id="outline-container-org2984a28" class="outline-2">
+<h2 id="org2984a28">Mean Encoding</h2>
+<div class="outline-text-2" id="text-org2984a28">
+</div>
+<div id="outline-container-org21b07cd" class="outline-3">
+<h3 id="org21b07cd">Introduction</h3>
+<div class="outline-text-3" id="text-org21b07cd">
+<ul class="org-ul">
+<li>also called target encoding and likelihood encoding</li>
+</ul>
+<p>
+It is a way to encode a categorical feature. Uses the fraction of times the feature is 1 out of all the times the feature is in the data set (for binary classification).
+</p>
+</div>
+<div id="outline-container-org5329564" class="outline-4">
+<h4 id="org5329564">Why does it work?</h4>
+<div class="outline-text-4" id="text-org5329564">
+<p>
+Unlike regular encoding, which has no real meaning to the labels, mean encoding imposes an ordering. This allows you to reduce your loss while using shorter trees.
+</p>
+</div>
+</div>
+<div id="outline-container-org70581bc" class="outline-4">
+<h4 id="org70581bc">How do you calculate it?</h4>
+<div class="outline-text-4" id="text-org70581bc">
+<p>
+There are multiple ways.
+</p>
+<ul class="org-ul">
+<li>Likelihood = \(\frac{count of ones}/{total count}\) = mean(target)</li>
+<li>Weight of evidence = \(\ln\left(\frac{count of ones}{count of zeros}\right)\)</li>
+<li>Count = sum(target) = count of ones</li>
+<li>Diff = count of ones - count of zeros</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org711f025" class="outline-4">
+<h4 id="org711f025">When does it fail?</h4>
+<div class="outline-text-4" id="text-org711f025">
+<p>
+If you have lots of feature instances with few cases it will tend to overfit.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-org902befa" class="outline-2">
+<h2 id="org902befa">Regularization</h2>
+<div class="outline-text-2" id="text-org902befa">
+</div>
+<div id="outline-container-org25a468d" class="outline-3">
+<h3 id="org25a468d">Four Types</h3>
+<div class="outline-text-3" id="text-org25a468d">
+<ul class="org-ul">
+<li>Cross-validation loop inside the training data</li>
+<li>Smoothing</li>
+<li>Adding random noise</li>
+<li>Sorting and calculating the expanding mean</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgb67e225" class="outline-3">
+<h3 id="orgb67e225">Cross Validation</h3>
+<div class="outline-text-3" id="text-orgb67e225">
+<ul class="org-ul">
+<li>Usually 4 or 5 folds are enough</li>
+<li>Need to watch out for extreme cases like leave-out-one (LOO)</li>
+</ul>
+<p>
+Here's an example of this method using sklearn.
+</p>
+
+<div class="highlight"><pre><span></span><span class="n">y_train</span> <span class="o">=</span> <span class="n">training</span><span class="p">[</span><span class="s2">"target"</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">folds</span> <span class="o">=</span> <span class="n">StratifiedKFold</span><span class="p">(</span><span class="n">y_train</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">training_index</span><span class="p">,</span> <span class="n">validation_index</span> <span class="ow">in</span> <span class="n">folds</span><span class="p">:</span>
+    <span class="n">x_train</span> <span class="o">=</span> <span class="n">training</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">training_index</span><span class="p">]</span>
+    <span class="n">x_value</span> <span class="o">=</span> <span class="n">training</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">validation_index</span><span class="p">]</span>
+    <span class="c1"># 'columns' is a list of columns to encode</span>
+    <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
+	<span class="n">means</span> <span class="o">=</span> <span class="n">x_value</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">x_train</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">column</span><span class="p">)</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+	<span class="n">x_value</span><span class="p">[</span><span class="n">coulmn</span> <span class="o">+</span> <span class="s2">"_mean_target"</span><span class="p">]</span> <span class="o">=</span> <span class="n">means</span>
+    <span class="c1"># train_new is a dataframe copy we made of the training data</span>
+    <span class="n">train_new</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">value_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">x_validation</span>
+
+<span class="n">global_mean</span> <span class="o">=</span> <span class="n">training</span><span class="p">[</span><span class="s2">"target"</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+<span class="c1"># replace nans with the global mean</span>
+<span class="n">train_new</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">global_mean</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div id="outline-container-orgbcf4a6d" class="outline-3">
+<h3 id="orgbcf4a6d">Smoothing</h3>
+<div class="outline-text-3" id="text-orgbcf4a6d">
+<p>
+Use a value \(\alpha\) to control the amount of regularization. This isn't a regularization method in and of itself, you use it with other methods.
+</p>
+
+<p>
+\[
+\frac{mean(targte) \times n_{rows} + \textit{global mean} \times \alpha}{n_{rows} + \alpha}
+\]
+</p>
+</div>
+</div>
+
+<div id="outline-container-org66d3b01" class="outline-3">
+<h3 id="org66d3b01">Noise</h3>
+<div class="outline-text-3" id="text-org66d3b01">
+<p>
+Adding noise degrades the quality of the encoding in the training data. This is usually used with <i>leave-one-out</i> encoding to prevent overfitting. You have to figure out how much noise to add through experimentation.
+</p>
+</div>
+</div>
+<div id="outline-container-org370ffba" class="outline-3">
+<h3 id="org370ffba">Expanding Mean</h3>
+<div class="outline-text-3" id="text-org370ffba">
+<p>
+This introduces the least amount of leakage from the target variable and doesn't require hyper-parameters for you to tune. The downside is that the encoding quality is irregular. There is a built-in implementation in the <code>CatBoost</code> library.
+</p>
+
+<p>
+Here's a pandas implementation.
+</p>
+
+<div class="highlight"><pre><span></span><span class="n">cumulative_sum</span> <span class="o">=</span> <span class="n">training</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">column</span><span class="p">)[</span><span class="s2">"target"</span><span class="p">]</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span> <span class="o">-</span> <span class="n">training</span><span class="p">[</span><span class="s2">"target"</span><span class="p">]</span>
+<span class="n">cumulative_count</span> <span class="o">=</span> <span class="n">training</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">column</span><span class="p">)</span><span class="o">.</span><span class="n">cumcount</span><span class="p">()</span>
+<span class="n">train_new</span><span class="p">[</span><span class="n">column</span> <span class="o">+</span> <span class="s2">"_mean_target"</span><span class="p">]</span> <span class="o">=</span> <span class="n">cumulative_sum</span><span class="o">/</span><span class="n">cumulative_count</span>
+</pre></div>
+</div>
+</div>
+
+<div id="outline-container-org7e7bfac" class="outline-3">
+<h3 id="org7e7bfac">Which one should you use?</h3>
+<div class="outline-text-3" id="text-org7e7bfac">
+<p>
+Cross Validation Loops and Expanding Means are the most practical to use.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orga8a4fc1" class="outline-2">
+<h2 id="orga8a4fc1">Generalizations and Extensions</h2>
+<div class="outline-text-2" id="text-orga8a4fc1">
+</div>
+<div id="outline-container-orgeb525c5" class="outline-3">
+<h3 id="orgeb525c5">Regression and Multiclass</h3>
+</div>
+</div>
+<div id="outline-container-orgfe9372f" class="outline-2">
+<h2 id="orgfe9372f">Summary</h2>
+<div class="outline-text-2" id="text-orgfe9372f">
+</div>
+<div id="outline-container-org1f2861b" class="outline-3">
+<h3 id="org1f2861b">Advantages</h3>
+<div class="outline-text-3" id="text-org1f2861b">
+<ul class="org-ul">
+<li>Compact transformation of categorical variables</li>
+<li>Powerful basis for feature engineering</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org8046592" class="outline-3">
+<h3 id="org8046592">Disadvantages</h3>
+<div class="outline-text-3" id="text-org8046592">
+<ul class="org-ul">
+<li>Needs careful validation, it's easy to overfit</li>
+<li>Only certain data sets will show a significant improvement from using it</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org37ba163" class="outline-2">
+<h2 id="org37ba163">Quiz</h2>
+<div class="outline-text-2" id="text-org37ba163">
+</div>
+<div id="outline-container-orgb6fe7ea" class="outline-3">
+<h3 id="orgb6fe7ea">One</h3>
+<div class="outline-text-3" id="text-orgb6fe7ea">
+<p>
+What might be an indicator that mean encoding would be useful?
+</p>
+<ul class="org-ul">
+<li class="off">
+<code>[ ]</code> a lot of binary variables</li>
+<li class="off">
+<code>[ ]</code> a learning to rank task</li>
+<li class="on">
+<code>[X]</code> categorical variables with lots of levels</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org0083d5f" class="outline-3">
+<h3 id="org0083d5f">Two</h3>
+<div class="outline-text-3" id="text-org0083d5f">
+<p>
+What is the purpose of regularization in mean encoding?
+</p>
+<ul class="org-ul">
+<li class="off">
+<code>[ ]</code> Regularization allows you to make the feature space more sparse?</li>
+<li class="on">
+<code>[X]</code> Regularization allows us to better utilize mean encoding</li>
+<li class="on">
+<code>[X]</code> regularization reduces target variable leakage during the construction of mean encodings</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org329a4d2" class="outline-3">
+<h3 id="org329a4d2">Three</h3>
+<div class="outline-text-3" id="text-org329a4d2">
+<p>
+What is the correct form of validation when using mean encoding?
+</p>
+<ul class="org-ul">
+<li class="off">
+<code>[ ]</code> calculate the mean enocding on all training data, regularize, then varidate on a random validation split</li>
+<li class="on">
+<code>[X]</code> split the data into training and validation sets, then estimate the encodings on the training data, then apply them to the validation and validate the model on that split</li>
+<li class="off">
+<code>[ ]</code> Fix the cross-validation split, use that split to calculate mean encodings with cross-validation loop regularization, use the same split to validate the model</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orge2b0093" class="outline-3">
+<h3 id="orge2b0093">Four</h3>
+<div class="outline-text-3" id="text-orge2b0093">
+<p>
+Suppose we have a data frame (<code>df</code>) with a categorical variable named <code>item_id</code> and a target variable called <code>target</code>.
+We create two different mean encodings:
+</p>
+
+<ol class="org-ol">
+<li>via df["item<sub>id</sub><sub>encoded1</sub>"] = df.groupby("item<sub>id</sub>")["target"].transform("mean")</li>
+<li>Via One Hot Encoding <code>item_id</code>, fitting a linear regression on the encoding and the calculating <code>item_id_encoded2</code> as a prediction from this regression on the same data.</li>
+
+<li class="on">
+<code>[X]</code> <code>item_id_encoded1</code> and <code>item_id_encoded2</code> will essentially be the same only if the linear regression was fitted without a regularization</li>
+<li class="off">
+<code>[ ]</code> <code>item_id_encoded1</code> and <code>item_id_encoded2</code> will be essentially the same</li>
+<li class="off">
+<code>[ ]</code> <code>item_id_encoded1</code> and <code>item_id_encoded2</code> may differ a lot due to rare categories (nope)</li>
+</ol>
+</div>
+</div>
+</div>
+    </div>
+    <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
+<li><a class="tag p-category" href="../../categories/notes-encoding/" rel="tag">notes encoding</a></li>
+        </ul>
+<ul class="pager hidden-print">
+<li class="previous">
+                <a href="../optimizing-classification-metrics/" rel="prev" title="Optimizing Classification Metrics">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../mean-encoding-the-competition-data/" rel="next" title="Mean Encoding The Competition Data">Next post</a>
+            </li>
+        </ul></nav></aside></article>
+</div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            Contents © 2018         <a href="mailto:necromuralist@protonmail.com">Cloistered Monkey</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png"></a><br>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+            
+        </footer>
+</div>
+</div>
+
+
+            <script src="../../assets/js/all-nocdn.js"></script><script>$('a.image-reference:not(.islink) img:not(.islink)').parent().colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates -->
+</body>
+</html>

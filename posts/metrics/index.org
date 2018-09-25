@@ -24,6 +24,8 @@
 \[
 MSE = \frac{1}{N}
 \]
+
+  The target mean value is the best constant prediction.
 *** Root Mean Squared Error
     This is the square root of the mean squared error.
     - minimizing the RMSE is also minimizes the MSE
@@ -33,7 +35,9 @@ MSE = \frac{1}{N}
     - Optimizing r-squared is equivalent to optimizing MSE
 *** Mean Absolute Error
     This is more common when you are explaining it to a non-statistician. It is also more robust. Mathematically, it isn't something that you can calculate the derivate for.
+
+    The target median is the best constant prediction.
 *** MAE vs MSE
     - Outliers: use MAE
     - Unexpected Values that we should still care about (not true outliers (mistakes), just rare): use MSE
-** Classification
+      

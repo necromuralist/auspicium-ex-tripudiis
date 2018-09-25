@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about notes encoding)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/notes-encoding.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Tue, 25 Sep 2018 23:01:14 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Mean Encoding</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-org2984a28" class="outline-2"&gt;
+&lt;h2 id="org2984a28"&gt;Mean Encoding&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org2984a28"&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org21b07cd" class="outline-3"&gt;
+&lt;h3 id="org21b07cd"&gt;Introduction&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org21b07cd"&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;also called target encoding and likelihood encoding&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+It is a way to encode a categorical feature. Uses the fraction of times the feature is 1 out of all the times the feature is in the data set (for binary classification).
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org5329564" class="outline-4"&gt;
+&lt;h4 id="org5329564"&gt;Why does it work?&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org5329564"&gt;
+&lt;p&gt;
+Unlike regular encoding, which has no real meaning to the labels, mean encoding imposes an ordering. This allows you to reduce your loss while using shorter trees.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org70581bc" class="outline-4"&gt;
+&lt;h4 id="org70581bc"&gt;How do you calculate it?&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org70581bc"&gt;
+&lt;p&gt;
+There are multiple ways.
+&lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;Likelihood = \(\frac{count of ones}/{total count}\) = mean(target)&lt;/li&gt;
+&lt;li&gt;Weight of evidence = \(\ln\left(\frac{count of ones}{count of zeros}\right)\)&lt;/li&gt;
+&lt;li&gt;Count = sum(target) = count of ones&lt;/li&gt;
+&lt;li&gt;Diff = count of ones - count of zeros&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org711f025" class="outline-4"&gt;
+&lt;h4 id="org711f025"&gt;When does it fail?&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org711f025"&gt;
+&lt;p&gt;
+If you have lots of feature instances with few cases it will tend to overfit.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org902befa" class="outline-2"&gt;
+&lt;h2 id="org902befa"&gt;Regularization&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org902befa"&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org25a468d" class="outline-3"&gt;
+&lt;h3 id="org25a468d"&gt;Four Types&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org25a468d"&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;Cross-validation loop inside the training data&lt;/li&gt;
+&lt;li&gt;Smoothing&lt;/li&gt;
+&lt;li&gt;Adding random noise&lt;/li&gt;
+&lt;li&gt;Sorting and calculating the expanding mean&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgb67e225" class="outline-3"&gt;
+&lt;h3 id="orgb67e225"&gt;Cross Validation&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgb67e225"&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;Usually 4 or 5 folds are enough&lt;/li&gt;
+&lt;li&gt;Need to watch out for extreme cases like leave-out-one (LOO)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;
+Here's an example of this method using sklearn.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;y_train&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;training&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;"target"&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;values&lt;/span&gt;
+&lt;span class="n"&gt;folds&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;StratifiedKFold&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;y_train&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;shuffle&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;training_index&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;validation_index&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;folds&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;x_train&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;training&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;iloc&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;training_index&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+    &lt;span class="n"&gt;x_value&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;training&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;iloc&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;validation_index&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+    &lt;span class="c1"&gt;# 'columns' is a list of columns to encode&lt;/span&gt;
+    &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;column&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;columns&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+	&lt;span class="n"&gt;means&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;x_value&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;column&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;map&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x_train&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;groupby&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;column&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;target&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;mean&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;
+	&lt;span class="n"&gt;x_value&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;coulmn&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="s2"&gt;"_mean_target"&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;means&lt;/span&gt;
+    &lt;span class="c1"&gt;# train_new is a dataframe copy we made of the training data&lt;/span&gt;
+    &lt;span class="n"&gt;train_new&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;iloc&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;value_index&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;x_validation&lt;/span&gt;
+
+&lt;span class="n"&gt;global_mean&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;training&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;"target"&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;mean&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+&lt;span class="c1"&gt;# replace nans with the global mean&lt;/span&gt;
+&lt;span class="n"&gt;train_new&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;fillna&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;global_mean&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;inplace&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgbcf4a6d" class="outline-3"&gt;
+&lt;h3 id="orgbcf4a6d"&gt;Smoothing&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgbcf4a6d"&gt;
+&lt;p&gt;
+Use a value \(\alpha\) to control the amount of regularization. This isn't a regularization method in and of itself, you use it with other methods.
+&lt;/p&gt;
+
+&lt;p&gt;
+\[
+\frac{mean(targte) \times n_{rows} + \textit{global mean} \times \alpha}{n_{rows} + \alpha}
+\]
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-org66d3b01" class="outline-3"&gt;
+&lt;h3 id="org66d3b01"&gt;Noise&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org66d3b01"&gt;
+&lt;p&gt;
+Adding noise degrades the quality of the encoding in the training data. This is usually used with &lt;i&gt;leave-one-out&lt;/i&gt; encoding to prevent overfitting. You have to figure out how much noise to add through experimentation.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org370ffba" class="outline-3"&gt;
+&lt;h3 id="org370ffba"&gt;Expanding Mean&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org370ffba"&gt;
+&lt;p&gt;
+This introduces the least amount of leakage from the target variable and doesn't require hyper-parameters for you to tune. The downside is that the encoding quality is irregular. There is a built-in implementation in the &lt;code&gt;CatBoost&lt;/code&gt; library.
+&lt;/p&gt;
+
+&lt;p&gt;
+Here's a pandas implementation.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;cumulative_sum&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;training&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;groupby&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;column&lt;/span&gt;&lt;span class="p"&gt;)[&lt;/span&gt;&lt;span class="s2"&gt;"target"&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;cumsum&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;training&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;"target"&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="n"&gt;cumulative_count&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;training&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;groupby&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;column&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;cumcount&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="n"&gt;train_new&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;column&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="s2"&gt;"_mean_target"&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;cumulative_sum&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;cumulative_count&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-org7e7bfac" class="outline-3"&gt;
+&lt;h3 id="org7e7bfac"&gt;Which one should you use?&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org7e7bfac"&gt;
+&lt;p&gt;
+Cross Validation Loops and Expanding Means are the most practical to use.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orga8a4fc1" class="outline-2"&gt;
+&lt;h2 id="orga8a4fc1"&gt;Generalizations and Extensions&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orga8a4fc1"&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgeb525c5" class="outline-3"&gt;
+&lt;h3 id="orgeb525c5"&gt;Regression and Multiclass&lt;/h3&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgfe9372f" class="outline-2"&gt;
+&lt;h2 id="orgfe9372f"&gt;Summary&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgfe9372f"&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org1f2861b" class="outline-3"&gt;
+&lt;h3 id="org1f2861b"&gt;Advantages&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org1f2861b"&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;Compact transformation of categorical variables&lt;/li&gt;
+&lt;li&gt;Powerful basis for feature engineering&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org8046592" class="outline-3"&gt;
+&lt;h3 id="org8046592"&gt;Disadvantages&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org8046592"&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;Needs careful validation, it's easy to overfit&lt;/li&gt;
+&lt;li&gt;Only certain data sets will show a significant improvement from using it&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-org37ba163" class="outline-2"&gt;
+&lt;h2 id="org37ba163"&gt;Quiz&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org37ba163"&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgb6fe7ea" class="outline-3"&gt;
+&lt;h3 id="orgb6fe7ea"&gt;One&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgb6fe7ea"&gt;
+&lt;p&gt;
+What might be an indicator that mean encoding would be useful?
+&lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; a lot of binary variables&lt;/li&gt;
+&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; a learning to rank task&lt;/li&gt;
+&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; categorical variables with lots of levels&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org0083d5f" class="outline-3"&gt;
+&lt;h3 id="org0083d5f"&gt;Two&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org0083d5f"&gt;
+&lt;p&gt;
+What is the purpose of regularization in mean encoding?
+&lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; Regularization allows you to make the feature space more sparse?&lt;/li&gt;
+&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; Regularization allows us to better utilize mean encoding&lt;/li&gt;
+&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; regularization reduces target variable leakage during the construction of mean encodings&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org329a4d2" class="outline-3"&gt;
+&lt;h3 id="org329a4d2"&gt;Three&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org329a4d2"&gt;
+&lt;p&gt;
+What is the correct form of validation when using mean encoding?
+&lt;/p&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; calculate the mean enocding on all training data, regularize, then varidate on a random validation split&lt;/li&gt;
+&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; split the data into training and validation sets, then estimate the encodings on the training data, then apply them to the validation and validate the model on that split&lt;/li&gt;
+&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; Fix the cross-validation split, use that split to calculate mean encodings with cross-validation loop regularization, use the same split to validate the model&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orge2b0093" class="outline-3"&gt;
+&lt;h3 id="orge2b0093"&gt;Four&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orge2b0093"&gt;
+&lt;p&gt;
+Suppose we have a data frame (&lt;code&gt;df&lt;/code&gt;) with a categorical variable named &lt;code&gt;item_id&lt;/code&gt; and a target variable called &lt;code&gt;target&lt;/code&gt;.
+We create two different mean encodings:
+&lt;/p&gt;
+
+&lt;ol class="org-ol"&gt;
+&lt;li&gt;via df["item&lt;sub&gt;id&lt;/sub&gt;&lt;sub&gt;encoded1&lt;/sub&gt;"] = df.groupby("item&lt;sub&gt;id&lt;/sub&gt;")["target"].transform("mean")&lt;/li&gt;
+&lt;li&gt;Via One Hot Encoding &lt;code&gt;item_id&lt;/code&gt;, fitting a linear regression on the encoding and the calculating &lt;code&gt;item_id_encoded2&lt;/code&gt; as a prediction from this regression on the same data.&lt;/li&gt;
+
+&lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; &lt;code&gt;item_id_encoded1&lt;/code&gt; and &lt;code&gt;item_id_encoded2&lt;/code&gt; will essentially be the same only if the linear regression was fitted without a regularization&lt;/li&gt;
+&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; &lt;code&gt;item_id_encoded1&lt;/code&gt; and &lt;code&gt;item_id_encoded2&lt;/code&gt; will be essentially the same&lt;/li&gt;
+&lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; &lt;code&gt;item_id_encoded1&lt;/code&gt; and &lt;code&gt;item_id_encoded2&lt;/code&gt; may differ a lot due to rare categories (nope)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description><category>notes encoding</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding/</guid><pubDate>Mon, 24 Sep 2018 00:56:27 GMT</pubDate></item></channel></rss>

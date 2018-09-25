@@ -1,0 +1,42 @@
+#+BEGIN_COMMENT
+.. title: Classification Metrics
+.. slug: classification-metrics
+.. date: 2018-09-22 15:35:29 UTC-07:00
+.. tags: metrics classification notes
+.. category: notes
+.. link: 
+.. description: Notes on classification metrics.
+.. type: text
+#+END_COMMENT
+#+OPTIONS: ^:{}
+#+TOC: headlines 1
+* Accuracy
+  This metric measures how frequently our model is correct.
+
+\[
+Accuracy = \frac{1}{N} \sum_{i=1}^N \left[\hat{y}_i = y_i \right]
+\]
+
+If you were to make a model that just predicted a constant value, the best value would be the most common one. This points out the fact that a severely imbalanced data set can have a model with high accuracy that isn't actually a particularly good one (it just predicts the most frequent classification all the time).
+* Logarithmic Loss
+** Binary Version
+\[
+LogLoss = -\frac{1}{N} \sum_{i=1}^N y_i \log (\hat{y}_i) + (1 - y_i) \log (1 - \hat{y}_i)
+\]
+** Multiclass Version
+\[
+LogLoss = -\frac{1}{N} \sum_{i=1}^N \sum_{i=1}^L y_{il} \log (\hat{y}_{il})
+\]
+
+Where /L/ is the number of classes.
+
+When compared to accuracy, accuracy is linear over the amount of error, while logarithmic loss grows exponentially the more error there is, so it more severely penalizes your model the more wrong it is.
+
+If you wanted to make a constant prediction, the best constant is to set the constant(s) to the frequencies for each class.
+* Area Under the ROC Curve (AUC)
+  - only for binary classification
+  - depends only on the ordering of the predictions, not the absolute values
+  - can be thought of as the area under the curve or the ordering of pairs
+  - The baseline score is 0.5
+* Quadratic Weighted Kappa (Cohen's Kappa)
+  

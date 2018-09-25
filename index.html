@@ -14,7 +14,7 @@
 <link rel="canonical" href="https://necromuralist.github.io/Kaggle-Competitions/">
 <link rel="next" href="index-2.html" type="text/html">
 <!--[if lt IE 9]><script src="assets/js/html5.js"></script><![endif]--><script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
-</script><link rel="prefetch" href="posts/metrics-optimization-2/" type="text/html">
+</script><link rel="prefetch" href="posts/predicting-the-mean/" type="text/html">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -82,7 +82,1212 @@
 
     
 <div class="postindex">
-    <article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/metrics-optimization-2/" class="u-url">Metrics Optimization 2</a></h1>
+    <article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/predicting-the-mean/" class="u-url">Predicting the Mean</a></h1>
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                Cloistered Monkey
+            </span></p>
+            <p class="dateline"><a href="posts/predicting-the-mean/" rel="bookmark"><time class="published dt-published" datetime="2018-09-24T16:00:05-07:00" title="2018-09-24 16:00">2018-09-24 16:00</time></a></p>
+        </div>
+    </header><div class="e-content entry-content">
+    <div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="posts/predicting-the-mean/#orgf525677">Introduction</a></li>
+<li><a href="posts/predicting-the-mean/#org1fca1b7">Imports</a></li>
+<li><a href="posts/predicting-the-mean/#org7808973">The Data</a></li>
+<li><a href="posts/predicting-the-mean/#orgd4f53d4">Really Naive</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgf525677" class="outline-2">
+<h2 id="orgf525677">Introduction</h2>
+<div class="outline-text-2" id="text-orgf525677">
+<p>
+Since the competition is going to be scored using the Root Mean Square Error I'll make a baseline prediction by using the mean of the sales figures.
+</p>
+</div>
+</div>
+<div id="outline-container-org1fca1b7" class="outline-2">
+<h2 id="org1fca1b7">Imports</h2>
+<div class="outline-text-2" id="text-org1fca1b7">
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">"ignore"</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">"numpy.dtype size changed"</span><span class="p">)</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">"ignore"</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">"numpy.ufunc size changed"</span><span class="p">)</span>
+</pre></div>
+
+<div class="highlight"><pre><span></span># python standard library
+from pathlib import Path
+
+# from pypi
+from tabulate import tabulate
+import pandas
+
+# this project
+from kaggler.course.data import Data
+from kaggler.helpers.printing import print_table
+</pre></div>
+</div>
+</div>
+
+<div id="outline-container-org7808973" class="outline-2">
+<h2 id="org7808973">The Data</h2>
+<div class="outline-text-2" id="text-org7808973">
+<div class="highlight"><pre><span></span>data = Data()
+training = data.sales_training_data
+</pre></div>
+
+<div class="highlight"><pre><span></span>print_table(training.head())
+</pre></div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-right">date</th>
+<th scope="col" class="org-right">date_block_num</th>
+<th scope="col" class="org-right">shop_id</th>
+<th scope="col" class="org-right">item_id</th>
+<th scope="col" class="org-right">item_price</th>
+<th scope="col" class="org-right">item_cnt_day</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-right">02.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">59</td>
+<td class="org-right">22154</td>
+<td class="org-right">999</td>
+<td class="org-right">1</td>
+</tr>
+<tr>
+<td class="org-right">03.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2552</td>
+<td class="org-right">899</td>
+<td class="org-right">1</td>
+</tr>
+<tr>
+<td class="org-right">05.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2552</td>
+<td class="org-right">899</td>
+<td class="org-right">-1</td>
+</tr>
+<tr>
+<td class="org-right">06.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2554</td>
+<td class="org-right">1709.05</td>
+<td class="org-right">1</td>
+</tr>
+<tr>
+<td class="org-right">15.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2555</td>
+<td class="org-right">1099</td>
+<td class="org-right">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-orgd4f53d4" class="outline-2">
+<h2 id="orgd4f53d4">Really Naive</h2>
+<div class="outline-text-2" id="text-orgd4f53d4">
+<p>
+I was originally just going by average per month for the whole data set but that turns out to be too big, especially since it gets capped at 20. Furthermore, when you look at the test-data it has one ID column but the contest description says that you have to predict shop and item sales for the next month, what is the test-set again?
+</p>
+
+<p>
+Re-reading <a href="https://www.kaggle.com/c/competitive-data-science-final-project/data">the data description</a> I just noticed that it says that the ID in the test set represents a (shop ID, item ID) tuple. Where is this defined?
+</p>
+
+<div class="highlight"><pre><span></span>test = data.test_data
+print_table(test.head())
+</pre></div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-right">ID</th>
+<th scope="col" class="org-right">shop_id</th>
+<th scope="col" class="org-right">item_id</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-right">0</td>
+<td class="org-right">5</td>
+<td class="org-right">5037</td>
+</tr>
+<tr>
+<td class="org-right">1</td>
+<td class="org-right">5</td>
+<td class="org-right">5320</td>
+</tr>
+<tr>
+<td class="org-right">2</td>
+<td class="org-right">5</td>
+<td class="org-right">5233</td>
+</tr>
+<tr>
+<td class="org-right">3</td>
+<td class="org-right">5</td>
+<td class="org-right">5232</td>
+</tr>
+<tr>
+<td class="org-right">4</td>
+<td class="org-right">5</td>
+<td class="org-right">5268</td>
+</tr>
+</tbody>
+</table>
+<p>
+Okay, so it looks like the test-set has the shop and item IDs, but when you make the submission you just dump them. Interesting. So our average needs to be an average for an item in a certain shop for a month.
+</p>
+
+<div class="highlight"><pre><span></span>training["ID"] = list(zip(training.shop_id, training.item_id))
+print_table(training.head())
+</pre></div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-left">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-right">date</th>
+<th scope="col" class="org-right">date_block_num</th>
+<th scope="col" class="org-right">shop_id</th>
+<th scope="col" class="org-right">item_id</th>
+<th scope="col" class="org-right">item_price</th>
+<th scope="col" class="org-right">item_cnt_day</th>
+<th scope="col" class="org-left">ID</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-right">02.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">59</td>
+<td class="org-right">22154</td>
+<td class="org-right">999</td>
+<td class="org-right">1</td>
+<td class="org-left">(59, 22154)</td>
+</tr>
+<tr>
+<td class="org-right">03.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2552</td>
+<td class="org-right">899</td>
+<td class="org-right">1</td>
+<td class="org-left">(25, 2552)</td>
+</tr>
+<tr>
+<td class="org-right">05.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2552</td>
+<td class="org-right">899</td>
+<td class="org-right">-1</td>
+<td class="org-left">(25, 2552)</td>
+</tr>
+<tr>
+<td class="org-right">06.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2554</td>
+<td class="org-right">1709.05</td>
+<td class="org-right">1</td>
+<td class="org-left">(25, 2554)</td>
+</tr>
+<tr>
+<td class="org-right">15.01.2013</td>
+<td class="org-right">0</td>
+<td class="org-right">25</td>
+<td class="org-right">2555</td>
+<td class="org-right">1099</td>
+<td class="org-right">1</td>
+<td class="org-left">(25, 2555)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+    </div>
+    </article><article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/mean-encoding-the-competition-data/" class="u-url">Mean Encoding The Competition Data</a></h1>
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                Cloistered Monkey
+            </span></p>
+            <p class="dateline"><a href="posts/mean-encoding-the-competition-data/" rel="bookmark"><time class="published dt-published" datetime="2018-09-23T18:50:28-07:00" title="2018-09-23 18:50">2018-09-23 18:50</time></a></p>
+        </div>
+    </header><div class="e-content entry-content">
+    <div id="outline-container-org8b6abd8" class="outline-2">
+<h2 id="org8b6abd8">Introduction</h2>
+<div class="outline-text-2" id="text-org8b6abd8">
+<p>
+In this programming assignment you will be working with `1C` dataset from the final competition. You are asked to encode `item<sub>id</sub>` in 4 different ways:
+</p>
+
+<ol class="org-ol">
+<li>Via KFold scheme;</li>
+<li>Via Leave-one-out scheme;</li>
+<li>Via smoothing scheme;</li>
+<li>Via expanding mean scheme.</li>
+</ol>
+<p>
+<b><b>You will need to submit</b></b> the correlation coefficient between resulting encoding and target variable up to 4 decimal places.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org32f5d8a" class="outline-2">
+<h2 id="org32f5d8a">General tips</h2>
+<div class="outline-text-2" id="text-org32f5d8a">
+<ul class="org-ul">
+<li>Fill NANs in the encoding with `0.3343`.</li>
+<li>Some encoding schemes depend on sorting order, so in order to avoid confusion, please use the following code snippet to construct the data frame. This snippet also implements mean encoding without regularization.</li>
+</ul>
+<div class="highlight"><pre><span></span>import pandas as pd
+import numpy as np
+from itertools import product
+from grader import Grader
+</pre></div>
+
+
+<p>
+sales = pd.read<sub>csv</sub>('../readonly/final<sub>project</sub><sub>data</sub>/sales<sub>train.csv.gz</sub>')
+</p>
+
+
+<p>
+index<sub>cols</sub> = ['shop<sub>id</sub>', 'item<sub>id</sub>', 'date<sub>block</sub><sub>num</sub>']
+</p>
+
+<p>
+grid = [] 
+for block<sub>num</sub> in sales['date<sub>block</sub><sub>num</sub>'].unique():
+    cur<sub>shops</sub> = sales[sales['date<sub>block</sub><sub>num</sub>']==block<sub>num</sub>]['shop<sub>id</sub>'].unique()
+    cur<sub>items</sub> = sales[sales['date<sub>block</sub><sub>num</sub>']==block<sub>num</sub>]['item<sub>id</sub>'].unique()
+    grid.append(np.array(list(product(*[cur<sub>shops</sub>, cur<sub>items</sub>, [block<sub>num</sub>]])),dtype='int32'))
+</p>
+
+<p>
+#turn the grid into pandas dataframe
+grid = pd.DataFrame(np.vstack(grid), columns = index<sub>cols,dtype</sub>=np.int32)
+</p>
+
+<p>
+#get aggregated values for (shop<sub>id</sub>, item<sub>id</sub>, month)
+gb = sales.groupby(index<sub>cols,as</sub><sub>index</sub>=False).agg({'item<sub>cnt</sub><sub>day</sub>':{'target':'sum'}})
+</p>
+
+<p>
+#fix column names
+gb.columns = [col[0] if col[-1]=='' else col[-1] for col in gb.columns.values]
+#join aggregated data to the grid
+all<sub>data</sub> = pd.merge(grid,gb,how='left',on=index<sub>cols</sub>).fillna(0)
+#sort the data
+all<sub>data.sort</sub><sub>values</sub>(['date<sub>block</sub><sub>num</sub>','shop<sub>id</sub>','item<sub>id</sub>'],inplace=True)
+</p>
+
+
+<p>
+item<sub>id</sub><sub>target</sub><sub>mean</sub> = all<sub>data.groupby</sub>('item<sub>id</sub>').target.mean()
+</p>
+
+<p>
+all<sub>data</sub>['item<sub>target</sub><sub>enc</sub>'] = all<sub>data</sub>['item<sub>id</sub>'].map(item<sub>id</sub><sub>target</sub><sub>mean</sub>)
+</p>
+
+<p>
+all<sub>data</sub>['item<sub>target</sub><sub>enc</sub>'].fillna(0.3343, inplace=True) 
+</p>
+
+<p>
+encoded<sub>feature</sub> = all<sub>data</sub>['item<sub>target</sub><sub>enc</sub>'].values
+print(np.corrcoef(all<sub>data</sub>['target'].values, encoded<sub>feature</sub>)[0][1])
+</p>
+
+
+<p>
+'''
+     Differently to `.target.mean()` function `transform` 
+   will return a dataframe with an index like in `all<sub>data</sub>`.
+   Basically this single line of code is equivalent to the first two lines from of Method 1.
+'''
+all<sub>data</sub>['item<sub>target</sub><sub>enc</sub>'] = all<sub>data.groupby</sub>('item<sub>id</sub>')['target'].transform('mean')
+</p>
+
+<p>
+all<sub>data</sub>['item<sub>target</sub><sub>enc</sub>'].fillna(0.3343, inplace=True) 
+</p>
+
+<p>
+encoded<sub>feature</sub> = all<sub>data</sub>['item<sub>target</sub><sub>enc</sub>'].values
+print(np.corrcoef(all<sub>data</sub>['target'].values, encoded<sub>feature</sub>)[0][1])
+</p>
+
+
+<p>
+grader = Grader()
+</p>
+
+
+<p>
+corr = np.corrcoef(all<sub>data</sub>['target'].values, encoded<sub>feature</sub>)[0][1]
+print(corr)
+grader.submit<sub>tag</sub>('KFold<sub>scheme</sub>', corr)
+</p>
+
+
+<p>
+corr = np.corrcoef(all<sub>data</sub>['target'].values, encoded<sub>feature</sub>)[0][1]
+print(corr)
+grader.submit<sub>tag</sub>('Leave-one-out<sub>scheme</sub>', corr)
+</p>
+
+
+<p>
+corr = np.corrcoef(all<sub>data</sub>['target'].values, encoded<sub>feature</sub>)[0][1]
+print(corr)
+grader.submit<sub>tag</sub>('Smoothing<sub>scheme</sub>', corr)
+</p>
+
+
+<p>
+corr = np.corrcoef(all<sub>data</sub>['target'].values, encoded<sub>feature</sub>)[0][1]
+print(corr)
+grader.submit<sub>tag</sub>('Expanding<sub>mean</sub><sub>scheme</sub>', corr)
+</p>
+
+
+<p>
+STUDENT<sub>EMAIL</sub> = # EMAIL HERE
+STUDENT<sub>TOKEN</sub> = # TOKEN HERE
+grader.status()
+</p>
+
+
+<p>
+grader.submit(STUDENT<sub>EMAIL</sub>, STUDENT<sub>TOKEN</sub>)
+</p>
+</div>
+</div>
+    </div>
+    </article><article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/mean-encoding/" class="u-url">Mean Encoding</a></h1>
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                Cloistered Monkey
+            </span></p>
+            <p class="dateline"><a href="posts/mean-encoding/" rel="bookmark"><time class="published dt-published" datetime="2018-09-23T17:56:27-07:00" title="2018-09-23 17:56">2018-09-23 17:56</time></a></p>
+        </div>
+    </header><div class="e-content entry-content">
+    <div id="outline-container-org2984a28" class="outline-2">
+<h2 id="org2984a28">Mean Encoding</h2>
+<div class="outline-text-2" id="text-org2984a28">
+</div>
+<div id="outline-container-org21b07cd" class="outline-3">
+<h3 id="org21b07cd">Introduction</h3>
+<div class="outline-text-3" id="text-org21b07cd">
+<ul class="org-ul">
+<li>also called target encoding and likelihood encoding</li>
+</ul>
+<p>
+It is a way to encode a categorical feature. Uses the fraction of times the feature is 1 out of all the times the feature is in the data set (for binary classification).
+</p>
+</div>
+<div id="outline-container-org5329564" class="outline-4">
+<h4 id="org5329564">Why does it work?</h4>
+<div class="outline-text-4" id="text-org5329564">
+<p>
+Unlike regular encoding, which has no real meaning to the labels, mean encoding imposes an ordering. This allows you to reduce your loss while using shorter trees.
+</p>
+</div>
+</div>
+<div id="outline-container-org70581bc" class="outline-4">
+<h4 id="org70581bc">How do you calculate it?</h4>
+<div class="outline-text-4" id="text-org70581bc">
+<p>
+There are multiple ways.
+</p>
+<ul class="org-ul">
+<li>Likelihood = \(\frac{count of ones}/{total count}\) = mean(target)</li>
+<li>Weight of evidence = \(\ln\left(\frac{count of ones}{count of zeros}\right)\)</li>
+<li>Count = sum(target) = count of ones</li>
+<li>Diff = count of ones - count of zeros</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org711f025" class="outline-4">
+<h4 id="org711f025">When does it fail?</h4>
+<div class="outline-text-4" id="text-org711f025">
+<p>
+If you have lots of feature instances with few cases it will tend to overfit.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-org902befa" class="outline-2">
+<h2 id="org902befa">Regularization</h2>
+<div class="outline-text-2" id="text-org902befa">
+</div>
+<div id="outline-container-org25a468d" class="outline-3">
+<h3 id="org25a468d">Four Types</h3>
+<div class="outline-text-3" id="text-org25a468d">
+<ul class="org-ul">
+<li>Cross-validation loop inside the training data</li>
+<li>Smoothing</li>
+<li>Adding random noise</li>
+<li>Sorting and calculating the expanding mean</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgb67e225" class="outline-3">
+<h3 id="orgb67e225">Cross Validation</h3>
+<div class="outline-text-3" id="text-orgb67e225">
+<ul class="org-ul">
+<li>Usually 4 or 5 folds are enough</li>
+<li>Need to watch out for extreme cases like leave-out-one (LOO)</li>
+</ul>
+<p>
+Here's an example of this method using sklearn.
+</p>
+
+<div class="highlight"><pre><span></span><span class="n">y_train</span> <span class="o">=</span> <span class="n">training</span><span class="p">[</span><span class="s2">"target"</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">folds</span> <span class="o">=</span> <span class="n">StratifiedKFold</span><span class="p">(</span><span class="n">y_train</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">training_index</span><span class="p">,</span> <span class="n">validation_index</span> <span class="ow">in</span> <span class="n">folds</span><span class="p">:</span>
+    <span class="n">x_train</span> <span class="o">=</span> <span class="n">training</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">training_index</span><span class="p">]</span>
+    <span class="n">x_value</span> <span class="o">=</span> <span class="n">training</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">validation_index</span><span class="p">]</span>
+    <span class="c1"># 'columns' is a list of columns to encode</span>
+    <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
+	<span class="n">means</span> <span class="o">=</span> <span class="n">x_value</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">x_train</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">column</span><span class="p">)</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+	<span class="n">x_value</span><span class="p">[</span><span class="n">coulmn</span> <span class="o">+</span> <span class="s2">"_mean_target"</span><span class="p">]</span> <span class="o">=</span> <span class="n">means</span>
+    <span class="c1"># train_new is a dataframe copy we made of the training data</span>
+    <span class="n">train_new</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">value_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">x_validation</span>
+
+<span class="n">global_mean</span> <span class="o">=</span> <span class="n">training</span><span class="p">[</span><span class="s2">"target"</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+<span class="c1"># replace nans with the global mean</span>
+<span class="n">train_new</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">global_mean</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div id="outline-container-orgbcf4a6d" class="outline-3">
+<h3 id="orgbcf4a6d">Smoothing</h3>
+<div class="outline-text-3" id="text-orgbcf4a6d">
+<p>
+Use a value \(\alpha\) to control the amount of regularization. This isn't a regularization method in and of itself, you use it with other methods.
+</p>
+
+<p>
+\[
+\frac{mean(targte) \times n_{rows} + \textit{global mean} \times \alpha}{n_{rows} + \alpha}
+\]
+</p>
+</div>
+</div>
+
+<div id="outline-container-org66d3b01" class="outline-3">
+<h3 id="org66d3b01">Noise</h3>
+<div class="outline-text-3" id="text-org66d3b01">
+<p>
+Adding noise degrades the quality of the encoding in the training data. This is usually used with <i>leave-one-out</i> encoding to prevent overfitting. You have to figure out how much noise to add through experimentation.
+</p>
+</div>
+</div>
+<div id="outline-container-org370ffba" class="outline-3">
+<h3 id="org370ffba">Expanding Mean</h3>
+<div class="outline-text-3" id="text-org370ffba">
+<p>
+This introduces the least amount of leakage from the target variable and doesn't require hyper-parameters for you to tune. The downside is that the encoding quality is irregular. There is a built-in implementation in the <code>CatBoost</code> library.
+</p>
+
+<p>
+Here's a pandas implementation.
+</p>
+
+<div class="highlight"><pre><span></span><span class="n">cumulative_sum</span> <span class="o">=</span> <span class="n">training</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">column</span><span class="p">)[</span><span class="s2">"target"</span><span class="p">]</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span> <span class="o">-</span> <span class="n">training</span><span class="p">[</span><span class="s2">"target"</span><span class="p">]</span>
+<span class="n">cumulative_count</span> <span class="o">=</span> <span class="n">training</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">column</span><span class="p">)</span><span class="o">.</span><span class="n">cumcount</span><span class="p">()</span>
+<span class="n">train_new</span><span class="p">[</span><span class="n">column</span> <span class="o">+</span> <span class="s2">"_mean_target"</span><span class="p">]</span> <span class="o">=</span> <span class="n">cumulative_sum</span><span class="o">/</span><span class="n">cumulative_count</span>
+</pre></div>
+</div>
+</div>
+
+<div id="outline-container-org7e7bfac" class="outline-3">
+<h3 id="org7e7bfac">Which one should you use?</h3>
+<div class="outline-text-3" id="text-org7e7bfac">
+<p>
+Cross Validation Loops and Expanding Means are the most practical to use.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orga8a4fc1" class="outline-2">
+<h2 id="orga8a4fc1">Generalizations and Extensions</h2>
+<div class="outline-text-2" id="text-orga8a4fc1">
+</div>
+<div id="outline-container-orgeb525c5" class="outline-3">
+<h3 id="orgeb525c5">Regression and Multiclass</h3>
+</div>
+</div>
+<div id="outline-container-orgfe9372f" class="outline-2">
+<h2 id="orgfe9372f">Summary</h2>
+<div class="outline-text-2" id="text-orgfe9372f">
+</div>
+<div id="outline-container-org1f2861b" class="outline-3">
+<h3 id="org1f2861b">Advantages</h3>
+<div class="outline-text-3" id="text-org1f2861b">
+<ul class="org-ul">
+<li>Compact transformation of categorical variables</li>
+<li>Powerful basis for feature engineering</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org8046592" class="outline-3">
+<h3 id="org8046592">Disadvantages</h3>
+<div class="outline-text-3" id="text-org8046592">
+<ul class="org-ul">
+<li>Needs careful validation, it's easy to overfit</li>
+<li>Only certain data sets will show a significant improvement from using it</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org37ba163" class="outline-2">
+<h2 id="org37ba163">Quiz</h2>
+<div class="outline-text-2" id="text-org37ba163">
+</div>
+<div id="outline-container-orgb6fe7ea" class="outline-3">
+<h3 id="orgb6fe7ea">One</h3>
+<div class="outline-text-3" id="text-orgb6fe7ea">
+<p>
+What might be an indicator that mean encoding would be useful?
+</p>
+<ul class="org-ul">
+<li class="off">
+<code>[ ]</code> a lot of binary variables</li>
+<li class="off">
+<code>[ ]</code> a learning to rank task</li>
+<li class="on">
+<code>[X]</code> categorical variables with lots of levels</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org0083d5f" class="outline-3">
+<h3 id="org0083d5f">Two</h3>
+<div class="outline-text-3" id="text-org0083d5f">
+<p>
+What is the purpose of regularization in mean encoding?
+</p>
+<ul class="org-ul">
+<li class="off">
+<code>[ ]</code> Regularization allows you to make the feature space more sparse?</li>
+<li class="on">
+<code>[X]</code> Regularization allows us to better utilize mean encoding</li>
+<li class="on">
+<code>[X]</code> regularization reduces target variable leakage during the construction of mean encodings</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org329a4d2" class="outline-3">
+<h3 id="org329a4d2">Three</h3>
+<div class="outline-text-3" id="text-org329a4d2">
+<p>
+What is the correct form of validation when using mean encoding?
+</p>
+<ul class="org-ul">
+<li class="off">
+<code>[ ]</code> calculate the mean enocding on all training data, regularize, then varidate on a random validation split</li>
+<li class="on">
+<code>[X]</code> split the data into training and validation sets, then estimate the encodings on the training data, then apply them to the validation and validate the model on that split</li>
+<li class="off">
+<code>[ ]</code> Fix the cross-validation split, use that split to calculate mean encodings with cross-validation loop regularization, use the same split to validate the model</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orge2b0093" class="outline-3">
+<h3 id="orge2b0093">Four</h3>
+<div class="outline-text-3" id="text-orge2b0093">
+<p>
+Suppose we have a data frame (<code>df</code>) with a categorical variable named <code>item_id</code> and a target variable called <code>target</code>.
+We create two different mean encodings:
+</p>
+
+<ol class="org-ol">
+<li>via df["item<sub>id</sub><sub>encoded1</sub>"] = df.groupby("item<sub>id</sub>")["target"].transform("mean")</li>
+<li>Via One Hot Encoding <code>item_id</code>, fitting a linear regression on the encoding and the calculating <code>item_id_encoded2</code> as a prediction from this regression on the same data.</li>
+
+<li class="on">
+<code>[X]</code> <code>item_id_encoded1</code> and <code>item_id_encoded2</code> will essentially be the same only if the linear regression was fitted without a regularization</li>
+<li class="off">
+<code>[ ]</code> <code>item_id_encoded1</code> and <code>item_id_encoded2</code> will be essentially the same</li>
+<li class="off">
+<code>[ ]</code> <code>item_id_encoded1</code> and <code>item_id_encoded2</code> may differ a lot due to rare categories (nope)</li>
+</ol>
+</div>
+</div>
+</div>
+    </div>
+    </article><article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/optimizing-classification-metrics/" class="u-url">Optimizing Classification Metrics</a></h1>
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                Cloistered Monkey
+            </span></p>
+            <p class="dateline"><a href="posts/optimizing-classification-metrics/" rel="bookmark"><time class="published dt-published" datetime="2018-09-23T15:10:09-07:00" title="2018-09-23 15:10">2018-09-23 15:10</time></a></p>
+        </div>
+    </header><div class="e-content entry-content">
+    <div id="outline-container-org5d77a5c" class="outline-2">
+<h2 id="org5d77a5c">Introduction</h2>
+<div class="outline-text-2" id="text-org5d77a5c">
+<p>
+The <i>target metric</i> is what the competition scores you on, but it isn't always the easiest metric to tune your model on. Sometimes you need to pick and <i>optimization metric</i> to tune your model that isn't exactly the same but works well enough.
+</p>
+</div>
+</div>
+<div id="outline-container-org8ac93da" class="outline-2">
+<h2 id="org8ac93da">LogLoss</h2>
+<div class="outline-text-2" id="text-org8ac93da">
+<p>
+To optimize log-loss you just have to match it to the right model.
+</p>
+<ul class="org-ul">
+<li>Tree Based: XGBoost, LightGBM</li>
+<li>Linear: sklearn.&lt;something&gt;Regression, sklearn.SGDRegressor, Vowpal Wabbit</li>
+<li>Neural Nets: PyTorch, Keras, Tensorflow, etc.</li>
+</ul>
+<p>
+Random Forests turn out to do poorly with Log Loss.
+</p>
+</div>
+<div id="outline-container-orgba7a7f0" class="outline-3">
+<h3 id="orgba7a7f0">Probability Calibration</h3>
+<div class="outline-text-3" id="text-orgba7a7f0">
+<p>
+If you take all the rows with the same score, then the fraction of them that have a class of 1 should match the score (so if they all have a score of 0.8, then 80% of them should be 1 and 20% should be 0). If the fraction is off, then you need to calibrate the probabilities. To do this take your model and then send its outputs to a model that does better with Log Loss. So if you want to use a Random Forest, you would train your model using AUC as the metric then use the predictions to train another model like a neural net and have it use Log Loss as the metric.
+</p>
+</div>
+<div id="outline-container-org9bddf26" class="outline-4">
+<h4 id="org9bddf26">Platt Scaling</h4>
+<div class="outline-text-4" id="text-org9bddf26">
+<p>
+Fit a Logistic Regression to your predictions
+</p>
+</div>
+</div>
+<div id="outline-container-orgab1a91a" class="outline-4">
+<h4 id="orgab1a91a">Isotonic Regression</h4>
+<div class="outline-text-4" id="text-orgab1a91a">
+<p>
+Fit an Isotonic Regression to your predictions
+</p>
+</div>
+</div>
+<div id="outline-container-org0bd15b5" class="outline-4">
+<h4 id="org0bd15b5">Stacking</h4>
+<div class="outline-text-4" id="text-org0bd15b5">
+<p>
+Fit XGBoost or a neural net to your predictions
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-org0205f54" class="outline-2">
+<h2 id="org0205f54">Accuracy</h2>
+<div class="outline-text-2" id="text-org0205f54">
+<p>
+Accuracy is a difficult metric to optimize because it isn't differentiable. To optimize the accuracy metric you need to use a different metric (a proxy metric) like log-loss and then tune the threshold.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgac0a2ec" class="outline-2">
+<h2 id="orgac0a2ec">Area Under the Curve (AUC)</h2>
+<div class="outline-text-2" id="text-orgac0a2ec">
+<p>
+Some models work with it so if you can choose one of these models.
+</p>
+<ul class="org-ul">
+<li>Tree-Based: XGBoost, LightGBM</li>
+<li>Linear: (don't use)</li>
+<li>Neural Nets: PyTorch, Keras, TensorFlow (but not by default)</li>
+</ul>
+<p>
+In practice you can optimize the model to log-loss.
+</p>
+</div>
+</div>
+<div id="outline-container-orgb1cbdf2" class="outline-2">
+<h2 id="orgb1cbdf2">Quadratic Weighted Kappa</h2>
+<div class="outline-text-2" id="text-orgb1cbdf2">
+<ol class="org-ol">
+<li>Optimize on the Mean Squared Error then optimize the thresholds.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgc6df48a" class="outline-2">
+<h2 id="orgc6df48a">Other Sources</h2>
+<div class="outline-text-2" id="text-orgc6df48a">
+</div>
+<div id="outline-container-org446dd1c" class="outline-3">
+<h3 id="org446dd1c">Classification</h3>
+<div class="outline-text-3" id="text-org446dd1c">
+<ul class="org-ul">
+<li><a href="http://queirozf.com/entries/evaluation-metrics-for-classification-quick-examples-references">Evaluation Metrics for Classification Problems</a></li>
+<li><a href="https://www.garysieling.com/blog/sklearn-gini-vs-entropy-criteria">Descision Trees: <i>Gini</i> vs <i>Entropy</i></a></li>
+<li><a href="http://www.navan.name/roc/">Understanding ROC Curves</a></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orge42f6b4" class="outline-3">
+<h3 id="orge42f6b4">Ranking</h3>
+<div class="outline-text-3" id="text-orge42f6b4">
+<ul class="org-ul">
+<li>
+<a href="https://icml.cc/2015/wp-content/uploads/2015/06/icml_ranking.pdf">Learning to Rank Using Gradient Descent</a> - source of pairwise AUC optimization</li>
+<li><a href="https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/MSR-TR-2010-82.pdf">From RankNet to LambdaRank</a></li>
+<li>
+<a href="https://sourceforge.net/p/lemur/wiki/RankLib/">RankLib (implementation of the two previous papers</a>)</li>
+<li><a href="https://wellecks.wordpress.com/2015/01/15/learning-to-rank-overview/">Learning to Rank Overview</a></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org9961dce" class="outline-3">
+<h3 id="org9961dce">Clustering</h3>
+<div class="outline-text-3" id="text-org9961dce">
+<ul class="org-ul">
+<li><a href="http://nlp.uned.es/docs/amigo2007a.pdf">Comparison of clustering metrics</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-orge7f8a69" class="outline-2">
+<h2 id="orge7f8a69">Practice Quiz</h2>
+<div class="outline-text-2" id="text-orge7f8a69">
+<ol class="org-ol">
+<li>What would be a logloss value for a binary classification task if we use a constant predictor \(f(x)=0.5\)? Round to two decimal places.</li>
+</ol>
+<p>
+-0.69 (marked as wrong)
+</p>
+
+<ol class="org-ol">
+<li>What is the best constant predictor for the Mean Absolute Error?
+<ul class="org-ul">
+<li>Target 50th percentile, Target median</li>
+</ul>
+</li>
+
+<li>The best constant predictor for the Mean Squared Error is:
+
+<ul class="org-ul">
+<li>Target Mean, average of the target vector</li>
+</ul>
+</li>
+<li>The best Constant prediction for the Area Under the Curve is:
+<ul class="org-ul">
+<li>Any constant will lead to the same AUC value (should also mark target median, target mean, 1, 0.5, Target Mean divided by target variance - since any constant will lead to the same value, they are all the same)</li>
+</ul>
+</li>
+<li>Suppose the target metric is \(r^2\), what optimization loss should we use for our models?
+<ul class="org-ul">
+<li>RMSE, MSE</li>
+</ul>
+</li>
+<li>Calculate the AUC for these predictions:</li>
+</ol>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-right">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-right">target</th>
+<th scope="col" class="org-right">prediction</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-right">1</td>
+<td class="org-right">0.39</td>
+</tr>
+<tr>
+<td class="org-right">0</td>
+<td class="org-right">0.52</td>
+</tr>
+<tr>
+<td class="org-right">1</td>
+<td class="org-right">0.91</td>
+</tr>
+<tr>
+<td class="org-right">1</td>
+<td class="org-right">0.85</td>
+</tr>
+<tr>
+<td class="org-right">1</td>
+<td class="org-right">0.49</td>
+</tr>
+<tr>
+<td class="org-right">0</td>
+<td class="org-right">0.02</td>
+</tr>
+<tr>
+<td class="org-right">0</td>
+<td class="org-right">0.44</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span># from pypi
+from sklearn.metrics import roc_auc_score
+y_true = [1,0,1,1,1,0,0]
+y_score = [0.39,0.52,0.91,0.85,0.49,0.02,0.44]
+print(roc_auc_score(y_true, y_score))
+</pre></div>
+
+<pre class="example">
+0.75
+
+</pre>
+</div>
+</div>
+<div id="outline-container-orgea0f831" class="outline-2">
+<h2 id="orgea0f831">Quiz</h2>
+<div class="outline-text-2" id="text-orgea0f831">
+</div>
+<div id="outline-container-org895a404" class="outline-3">
+<h3 id="org895a404">One</h3>
+<div class="outline-text-3" id="text-org895a404">
+<p>
+Suppose we solve a binary classification task and our solution is scored with Log Loss. What predictions are preferable if all the true target values are 0?
+</p>
+
+<ul class="org-ul">
+<li class="off">
+<code>[ ]</code> (0.4, 0.5, 0.5, 0.6) - marked wrong</li>
+<li class="on">
+<code>[X]</code> (0.5, 0.5, 0.5, 0.5)</li>
+<li class="off">
+<code>[ ]</code> (0, 0, 0, 1)</li>
+</ul>
+<div class="highlight"><pre><span></span>import numpy
+one = numpy.array([0.4, 0.5, 0.5, 0.6])
+two = numpy.array([0.5, 0.5, 0.5, 0.5])
+three = numpy.array([0, 0, 0, 1])
+
+for guess in (one, two, three):
+    print(sum(-numpy.log(1 - guess))/len(guess))
+</pre></div>
+
+<pre class="example">
+0.7033526791900091
+0.6931471805599453
+inf
+/home/hades/.virtualenvs/machine-learning-studies/lib/python3.6/site-packages/ipykernel_launcher.py:7: RuntimeWarning: divide by zero encountered in log
+  import sys
+
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orge9a01a6" class="outline-3">
+<h3 id="orge9a01a6">Two</h3>
+<div class="outline-text-3" id="text-orge9a01a6">
+<p>
+Suppose we solve a regression task and we optimize MSE. If we manage to lower MSE loss on either the training set or the test set, how would this affect the Pearson Correlation coefficient between the target vector and the predictions on the same set.
+</p>
+
+<p>
+The correlation will also be lowered.
+The correlation will not change.
+</p>
+<ul class="org-ul">
+<li class="off">
+<code>[ ]</code> The correlation will become larger. - marked wrong</li>
+<li class="on">
+<code>[X]</code> Any behavior is possible.</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org01d3f24" class="outline-3">
+<h3 id="org01d3f24">Three</h3>
+<div class="outline-text-3" id="text-org01d3f24">
+<p>
+What would be a best constant prediction for a multi-class classification with four classes? The solution is scored with multi-class Log Loss. The number of objects in each class in the training set is 18, 3, 15, 24.
+</p>
+
+<ul class="org-ul">
+<li>Guess one: 0,1,2,3</li>
+</ul>
+<div class="highlight"><pre><span></span>counts = numpy.array([18, 3, 15, 24])
+print(counts/counts.sum())
+</pre></div>
+
+<pre class="example">
+[0.3  0.05 0.25 0.4 ]
+
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org084b47e" class="outline-3">
+<h3 id="org084b47e">Four</h3>
+<div class="outline-text-3" id="text-org084b47e">
+<p>
+What is the best constant predictor for the r-squared metric?
+</p>
+<ul class="org-ul">
+<li>one minus the target mean, target mean (0 points)</li>
+<li>0.5 (0 points)</li>
+<li>Target Mean (same as the MSE)</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org4cf1cec" class="outline-3">
+<h3 id="org4cf1cec">Five</h3>
+<div class="outline-text-3" id="text-org4cf1cec">
+<p>
+Select the Correct statements
+</p>
+<ul class="org-ul">
+<li class="on">
+<code>[X]</code> Optimization loss can be the same as the target metric</li>
+<li class="on">
+<code>[X]</code> Optimization loss can be different from the target metric</li>
+<li class="off">
+<code>[ ]</code> Optimization loss is always different from the target metric</li>
+<li class="off">
+<code>[ ]</code> Optimization loss is always the same as the target metric</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgc051290" class="outline-3">
+<h3 id="orgc051290">Six</h3>
+<div class="outline-text-3" id="text-orgc051290">
+<p>
+Suppose the target metric is <b>M1</b> and the optimization loss is <b>M2</b>. We train a model and monitor its quality on a holdout set using the metrics <b>M1</b> and <b>M2</b>.
+</p>
+
+<p>
+Select the correct statement:
+</p>
+
+<ul class="org-ul">
+<li class="off">
+<code>[ ]</code> If the best <b>M1</b> score is attained at iteration <i>N</i>, then the best <b>M2</b> score is always attained after the n-th iteration.</li>
+<li class="off">
+<code>[ ]</code> If the best <b>M1</b> score is attained at iteration <i>N</i>, then the best <b>M2</b> score is always attained before the n-th iteration.</li>
+<li class="off">
+<code>[ ]</code> If the best <b>M1</b> score is attained at iteration <i>N</i>, then the best <b>M2</b> score is always attained at the n-th iteration.</li>
+<li class="on">
+<code>[X]</code> There is no definite relation between the best iterations for the <b>M1</b> score and the <b>M2</b> score.</li>
+</ul>
+</div>
+</div>
+</div>
+    </div>
+    </article><article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/optimizing-metrics/" class="u-url">Optimizing Metrics</a></h1>
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                Cloistered Monkey
+            </span></p>
+            <p class="dateline"><a href="posts/optimizing-metrics/" rel="bookmark"><time class="published dt-published" datetime="2018-09-22T16:26:49-07:00" title="2018-09-22 16:26">2018-09-22 16:26</time></a></p>
+        </div>
+    </header><div class="e-content entry-content">
+    <div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="posts/optimizing-metrics/#org0348804">Mean Squared Error</a></li>
+<li><a href="posts/optimizing-metrics/#org514dee0">Mean Absolute Error</a></li>
+<li><a href="posts/optimizing-metrics/#org05013a2">Mean Squared Probability Error and Mean Absolute Probability Error</a></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org0348804" class="outline-2">
+<h2 id="org0348804">Mean Squared Error</h2>
+<div class="outline-text-2" id="text-org0348804">
+<p>
+This works, just use it as the optimization metric.
+Sometimes this will be called <i>L2</i> loss.
+</p>
+</div>
+</div>
+<div id="outline-container-org514dee0" class="outline-2">
+<h2 id="org514dee0">Mean Absolute Error</h2>
+<div class="outline-text-2" id="text-org514dee0">
+<p>
+Once again, this works so just use it.
+Sometimes this will be called <i>L1</i> loss - it isn't as widely implemented.
+</p>
+</div>
+</div>
+<div id="outline-container-org05013a2" class="outline-2">
+<h2 id="org05013a2">Mean Squared Probability Error and Mean Absolute Probability Error</h2>
+<div class="outline-text-2" id="text-org05013a2">
+<p>
+Some libraries will let you use them as `sample_weights`
+Some libraries (like sklearn) will require you to re-sample the data <code>df.sample(weights=sample_weights)</code>
+Once you re-sample the data you can use any model that optimizes MSE or MAE
+</p>
+</div>
+</div>
+    </div>
+    </article><article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/general-approaches-to-metrics-optimization/" class="u-url">General Approaches to Metrics Optimization</a></h1>
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                Cloistered Monkey
+            </span></p>
+            <p class="dateline"><a href="posts/general-approaches-to-metrics-optimization/" rel="bookmark"><time class="published dt-published" datetime="2018-09-22T16:04:35-07:00" title="2018-09-22 16:04">2018-09-22 16:04</time></a></p>
+        </div>
+    </header><div class="e-content entry-content">
+    <div id="outline-container-orgb424731" class="outline-2">
+<h2 id="orgb424731">What do we mean by <i>loss</i> and <i>metric</i>?</h2>
+<div class="outline-text-2" id="text-orgb424731">
+<ul class="org-ul">
+<li>the <code>metric</code> is what we <i>want</i> to optimize - but we sometimes don't really know how to optimize this, this is just how we evaluate the model in the end</li>
+<li>
+<code>loss</code> is what the model actually optimizes</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org149a4af" class="outline-2">
+<h2 id="org149a4af">How do you optimize the target metric?</h2>
+<div class="outline-text-2" id="text-org149a4af">
+<ul class="org-ul">
+<li>In some cases you can just use them (e.g. <i>MSE</i>, <i>logloss</i>)</li>
+<li>In some cases you need to do a preprocessing training step with another metric
+(e.g. <i>MSPE</i>, <i>MAPE</i>, <i>RMSLE</i>)</li>
+<li>In osme cases you need to train on a different metric and then use post-processing during the prediction step</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orge307b52" class="outline-2">
+<h2 id="orge307b52">Early Stopping</h2>
+<div class="outline-text-2" id="text-orge307b52">
+<p>
+To work around these problems, use two metrics <i>m1</i> and <i>m2</i> and optimize on metric <i>m1</i> while monitoring <i>m2</i>, then stop when <i>m2</i> is optimal.
+</p>
+</div>
+</div>
+    </div>
+    </article><article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/classification-metrics/" class="u-url">Classification Metrics</a></h1>
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                Cloistered Monkey
+            </span></p>
+            <p class="dateline"><a href="posts/classification-metrics/" rel="bookmark"><time class="published dt-published" datetime="2018-09-22T15:35:29-07:00" title="2018-09-22 15:35">2018-09-22 15:35</time></a></p>
+        </div>
+    </header><div class="e-content entry-content">
+    <div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="posts/classification-metrics/#org66e8b03">Accuracy</a></li>
+<li><a href="posts/classification-metrics/#orgbbe899b">Logarithmic Loss</a></li>
+<li><a href="posts/classification-metrics/#orgf4c8f06">Area Under the ROC Curve (AUC)</a></li>
+<li><a href="posts/classification-metrics/#orgb8ed4d0">Quadratic Weighted Kappa (Cohen's Kappa)</a></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org66e8b03" class="outline-2">
+<h2 id="org66e8b03">Accuracy</h2>
+<div class="outline-text-2" id="text-org66e8b03">
+<p>
+This metric measures how frequently our model is correct.
+</p>
+
+<p>
+\[
+Accuracy = \frac{1}{N} \sum_{i=1}^N \left[\hat{y}_i = y_i \right]
+\]
+</p>
+
+<p>
+If you were to make a model that just predicted a constant value, the best value would be the most common one. This points out the fact that a severely imbalanced data set can have a model with high accuracy that isn't actually a particularly good one (it just predicts the most frequent classification all the time).
+</p>
+</div>
+</div>
+<div id="outline-container-orgbbe899b" class="outline-2">
+<h2 id="orgbbe899b">Logarithmic Loss</h2>
+<div class="outline-text-2" id="text-orgbbe899b">
+</div>
+<div id="outline-container-orgbec5d6c" class="outline-3">
+<h3 id="orgbec5d6c">Binary Version</h3>
+<div class="outline-text-3" id="text-orgbec5d6c">
+<p>
+\[
+LogLoss = -\frac{1}{N} \sum_{i=1}^N y_i \log (\hat{y}_i) + (1 - y_i) \log (1 - \hat{y}_i)
+\]
+</p>
+</div>
+</div>
+<div id="outline-container-orga44400f" class="outline-3">
+<h3 id="orga44400f">Multiclass Version</h3>
+<div class="outline-text-3" id="text-orga44400f">
+<p>
+\[
+LogLoss = -\frac{1}{N} \sum_{i=1}^N \sum_{i=1}^L y_{il} \log (\hat{y}_{il})
+\]
+</p>
+
+<p>
+Where <i>L</i> is the number of classes.
+</p>
+
+<p>
+When compared to accuracy, accuracy is linear over the amount of error, while logarithmic loss grows exponentially the more error there is, so it more severely penalizes your model the more wrong it is.
+</p>
+
+<p>
+If you wanted to make a constant prediction, the best constant is to set the constant(s) to the frequencies for each class.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orgf4c8f06" class="outline-2">
+<h2 id="orgf4c8f06">Area Under the ROC Curve (AUC)</h2>
+<div class="outline-text-2" id="text-orgf4c8f06">
+<ul class="org-ul">
+<li>only for binary classification</li>
+<li>depends only on the ordering of the predictions, not the absolute values</li>
+<li>can be thought of as the area under the curve or the ordering of pairs</li>
+<li>The baseline score is 0.5</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgb8ed4d0" class="outline-2">
+<h2 id="orgb8ed4d0">Quadratic Weighted Kappa (Cohen's Kappa)</h2>
+</div>
+    </div>
+    </article><article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/metrics-optimization-2/" class="u-url">Metrics Optimization 2</a></h1>
         <div class="metadata">
             <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
                 Cloistered Monkey
@@ -90,13 +1295,13 @@
             <p class="dateline"><a href="posts/metrics-optimization-2/" rel="bookmark"><time class="published dt-published" datetime="2018-09-19T08:04:33-07:00" title="2018-09-19 08:04">2018-09-19 08:04</time></a></p>
         </div>
     </header><div class="e-content entry-content">
-    <div id="outline-container-org9a9e527" class="outline-2">
-<h2 id="org9a9e527">(R)MSPE, MAPE, and (R)MSLE</h2>
-<div class="outline-text-2" id="text-org9a9e527">
+    <div id="outline-container-orga06ea0a" class="outline-2">
+<h2 id="orga06ea0a">(R)MSPE, MAPE, and (R)MSLE</h2>
+<div class="outline-text-2" id="text-orga06ea0a">
 </div>
-<div id="outline-container-org2b0a770" class="outline-3">
-<h3 id="org2b0a770">An Off-By-One Example</h3>
-<div class="outline-text-3" id="text-org2b0a770">
+<div id="outline-container-org0125661" class="outline-3">
+<h3 id="org0125661">An Off-By-One Example</h3>
+<div class="outline-text-3" id="text-org0125661">
 <p>
 Suppose we are predicting sales for two shops and the two shops have different sales volumes but our predictions for both cases are off by one. In this case our Mean-Squared-Error (MSE) might be the same, but they have a different significance.
 </p>
@@ -132,9 +1337,9 @@ Suppose we are predicting sales for two shops and the two shops have different s
 </div>
 </div>
 </div>
-<div id="outline-container-org7d129ef" class="outline-2">
-<h2 id="org7d129ef">Root Mean Squared Percentage Error and Mean Absolute Percentage Error</h2>
-<div class="outline-text-2" id="text-org7d129ef">
+<div id="outline-container-orgc555c3a" class="outline-2">
+<h2 id="orgc555c3a">Root Mean Squared Percentage Error and Mean Absolute Percentage Error</h2>
+<div class="outline-text-2" id="text-orgc555c3a">
 <p>
 The MSE and Mean-Absolute-Error (MAE) are absolute errors which don't take into account how significant the error is. There are two relative errors,  Mean-Squared-Percentage-Error (MSPE) and Mean-Absolute-Percentage-Error (MAPE) that divide each error term by the actual value to give you a realive error instead of an absolute error.
 </p>
@@ -156,9 +1361,9 @@ The MAPE will be inversely proportional to its target and the MSPE will be inver
 </p>
 </div>
 
-<div id="outline-container-org33dedb3" class="outline-3">
-<h3 id="org33dedb3">Optimal Constant Predictions</h3>
-<div class="outline-text-3" id="text-org33dedb3">
+<div id="outline-container-orgea5e0a2" class="outline-3">
+<h3 id="orgea5e0a2">Optimal Constant Predictions</h3>
+<div class="outline-text-3" id="text-orgea5e0a2">
 <p>
 The best constant prediction you can make when using the Mean Squared Error is to predict the mean of the target values. The best prediction you can make for the MSPE is to take a weighted mean of the target values. The best constant prediction you can make for the Mean Absolute Percentage Error is the weighted median.
 </p>
@@ -166,9 +1371,9 @@ The best constant prediction you can make when using the Mean Squared Error is t
 </div>
 </div>
 
-<div id="outline-container-org72d9283" class="outline-2">
-<h2 id="org72d9283">Root Mean Squared Logarithmic Error (MSLE)</h2>
-<div class="outline-text-2" id="text-org72d9283">
+<div id="outline-container-orgf9c7416" class="outline-2">
+<h2 id="orgf9c7416">Root Mean Squared Logarithmic Error (MSLE)</h2>
+<div class="outline-text-2" id="text-orgf9c7416">
 <p>
 \[
 MSLE = \sqrt{\frac{1}{N}\sum_{i=1}^N (\log (y_i + 1) - \log(\hat{y}_i + 1))^2}\\
@@ -231,55 +1436,59 @@ These are the best constant predictions you can make for the competition data se
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="posts/metrics/#orgd5014ac">About Metrics</a></li>
-<li><a href="posts/metrics/#org4c7b753">The Most Common Metrics</a></li>
+<li><a href="posts/metrics/#org8eb1eb2">About Metrics</a></li>
+<li><a href="posts/metrics/#org2c4a7ae">The Most Common Metrics</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orgd5014ac" class="outline-2">
-<h2 id="orgd5014ac">About Metrics</h2>
-<div class="outline-text-2" id="text-orgd5014ac">
+<div id="outline-container-org8eb1eb2" class="outline-2">
+<h2 id="org8eb1eb2">About Metrics</h2>
+<div class="outline-text-2" id="text-org8eb1eb2">
 </div>
-<div id="outline-container-org2b7b99d" class="outline-3">
-<h3 id="org2b7b99d">What are metrics?</h3>
-<div class="outline-text-3" id="text-org2b7b99d">
+<div id="outline-container-org9a7fe08" class="outline-3">
+<h3 id="org9a7fe08">What are metrics?</h3>
+<div class="outline-text-3" id="text-org9a7fe08">
 <p>
 Metrics are numeric values that you are trying to optimize - they are how your model is graded.
 </p>
 </div>
 </div>
-<div id="outline-container-org8688e79" class="outline-3">
-<h3 id="org8688e79">Why are there so many metrics?</h3>
-<div class="outline-text-3" id="text-org8688e79">
+<div id="outline-container-org3729adb" class="outline-3">
+<h3 id="org3729adb">Why are there so many metrics?</h3>
+<div class="outline-text-3" id="text-org3729adb">
 <p>
 Each metric can tell you something different, so what metric you need depends on the problem you are trying to solve. For competitions, it is sometimes possible to do metrics probing just like you can sometimes do leaderboard probing to find peculiarities created by the chosen metric.
 </p>
 </div>
 </div>
 </div>
-<div id="outline-container-org4c7b753" class="outline-2">
-<h2 id="org4c7b753">The Most Common Metrics</h2>
-<div class="outline-text-2" id="text-org4c7b753">
+<div id="outline-container-org2c4a7ae" class="outline-2">
+<h2 id="org2c4a7ae">The Most Common Metrics</h2>
+<div class="outline-text-2" id="text-org2c4a7ae">
 </div>
-<div id="outline-container-orgdb984a1" class="outline-3">
-<h3 id="orgdb984a1">Regression</h3>
-<div class="outline-text-3" id="text-orgdb984a1">
+<div id="outline-container-org223f524" class="outline-3">
+<h3 id="org223f524">Regression</h3>
+<div class="outline-text-3" id="text-org223f524">
 </div>
-<div id="outline-container-orgc8c1fd7" class="outline-4">
-<h4 id="orgc8c1fd7">Mean Squared Error</h4>
-<div class="outline-text-4" id="text-orgc8c1fd7">
+<div id="outline-container-orged6f90e" class="outline-4">
+<h4 id="orged6f90e">Mean Squared Error</h4>
+<div class="outline-text-4" id="text-orged6f90e">
 <p>
 This is the average of the square of the errors.
 \[
 MSE = \frac{1}{N}
 \]
 </p>
+
+<p>
+The target mean value is the best constant prediction.
+</p>
 </div>
 </div>
-<div id="outline-container-orgdad37bb" class="outline-4">
-<h4 id="orgdad37bb">Root Mean Squared Error</h4>
-<div class="outline-text-4" id="text-orgdad37bb">
+<div id="outline-container-orgf77bd33" class="outline-4">
+<h4 id="orgf77bd33">Root Mean Squared Error</h4>
+<div class="outline-text-4" id="text-orgf77bd33">
 <p>
 This is the square root of the mean squared error.
 </p>
@@ -290,34 +1499,35 @@ This is the square root of the mean squared error.
 </ul>
 </div>
 </div>
-<div id="outline-container-org2901caa" class="outline-4">
-<h4 id="org2901caa">R-squared</h4>
-<div class="outline-text-4" id="text-org2901caa">
+<div id="outline-container-org14f6f0e" class="outline-4">
+<h4 id="org14f6f0e">R-squared</h4>
+<div class="outline-text-4" id="text-org14f6f0e">
 <ul class="org-ul">
 <li>Optimizing r-squared is equivalent to optimizing MSE</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org3fed0d1" class="outline-4">
-<h4 id="org3fed0d1">Mean Absolute Error</h4>
-<div class="outline-text-4" id="text-org3fed0d1">
+<div id="outline-container-org1ffb657" class="outline-4">
+<h4 id="org1ffb657">Mean Absolute Error</h4>
+<div class="outline-text-4" id="text-org1ffb657">
 <p>
 This is more common when you are explaining it to a non-statistician. It is also more robust. Mathematically, it isn't something that you can calculate the derivate for.
 </p>
+
+<p>
+The target median is the best constant prediction.
+</p>
 </div>
 </div>
-<div id="outline-container-org3e12f33" class="outline-4">
-<h4 id="org3e12f33">MAE vs MSE</h4>
-<div class="outline-text-4" id="text-org3e12f33">
+<div id="outline-container-org40dc3c8" class="outline-4">
+<h4 id="org40dc3c8">MAE vs MSE</h4>
+<div class="outline-text-4" id="text-org40dc3c8">
 <ul class="org-ul">
 <li>Outliers: use MAE</li>
 <li>Unexpected Values that we should still care about (not true outliers (mistakes), just rare): use MSE</li>
 </ul>
 </div>
 </div>
-</div>
-<div id="outline-container-org8bb886e" class="outline-3">
-<h3 id="org8bb886e">Classification</h3>
 </div>
 </div>
     </div>
@@ -333,21 +1543,21 @@ This is more common when you are explaining it to a non-statistician. It is also
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="posts/data-leakages/#org44df1ae">Introduction</a></li>
-<li><a href="posts/data-leakages/#org8df2c16">Imports</a></li>
-<li><a href="posts/data-leakages/#orgd38192b">Helpers</a></li>
-<li><a href="posts/data-leakages/#org360df0c">Load the data</a></li>
-<li><a href="posts/data-leakages/#org73c6492">EDA and Leakage Intuition</a></li>
-<li><a href="posts/data-leakages/#org9108cf7">Building a magic feature</a></li>
-<li><a href="posts/data-leakages/#org5bfd205">Bonus</a></li>
-<li><a href="posts/data-leakages/#org6429bae">What does it all mean then?</a></li>
+<li><a href="posts/data-leakages/#orgbc4af4e">Introduction</a></li>
+<li><a href="posts/data-leakages/#org76330e2">Imports</a></li>
+<li><a href="posts/data-leakages/#orgfe7d7d2">Helpers</a></li>
+<li><a href="posts/data-leakages/#orgc6bca12">Load the data</a></li>
+<li><a href="posts/data-leakages/#orgd5824b1">EDA and Leakage Intuition</a></li>
+<li><a href="posts/data-leakages/#org19fd55d">Building a magic feature</a></li>
+<li><a href="posts/data-leakages/#orge37ace8">Bonus</a></li>
+<li><a href="posts/data-leakages/#org83fd432">What does it all mean then?</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org44df1ae" class="outline-2">
-<h2 id="org44df1ae">Introduction</h2>
-<div class="outline-text-2" id="text-org44df1ae">
+<div id="outline-container-orgbc4af4e" class="outline-2">
+<h2 id="orgbc4af4e">Introduction</h2>
+<div class="outline-text-2" id="text-orgbc4af4e">
 <p>
 In this programming assignment we will illustrate a very severe data leakage, of the sort that can often be found in competitions. The task is to score the pairs of objects, i.e. predict <i>1</i> if two objects belong to the same class and <i>0</i> otherwise. 
 </p>
@@ -358,9 +1568,9 @@ The data in this assignment is taken from a real competition, and  <b>we will no
 </div>
 </div>
 
-<div id="outline-container-org8df2c16" class="outline-2">
-<h2 id="org8df2c16">Imports</h2>
-<div class="outline-text-2" id="text-org8df2c16">
+<div id="outline-container-org76330e2" class="outline-2">
+<h2 id="org76330e2">Imports</h2>
+<div class="outline-text-2" id="text-org76330e2">
 <p>
 During the importing of pandas (or scipy) you get a warning about a potential binary incompatibility. According to <a href="https://stackoverflow.com/questions/40845304/runtimewarning-numpy-dtype-size-changed-may-indicate-binary-incompatibility">Stack Overflow</a> you can safely ignore this, so we'll use <a href="https://docs.python.org/3/library/warnings.html">warnings</a> to suppress the messages, just so it doesn't keep bringing them up everytime I run this notebook.
 </p>
@@ -388,13 +1598,13 @@ During the importing of pandas (or scipy) you get a warning about a potential bi
 </pre></div>
 </div>
 </div>
-<div id="outline-container-orgd38192b" class="outline-2">
-<h2 id="orgd38192b">Helpers</h2>
-<div class="outline-text-2" id="text-orgd38192b">
+<div id="outline-container-orgfe7d7d2" class="outline-2">
+<h2 id="orgfe7d7d2">Helpers</h2>
+<div class="outline-text-2" id="text-orgfe7d7d2">
 </div>
-<div id="outline-container-org3bb9e2a" class="outline-3">
-<h3 id="org3bb9e2a">Paths</h3>
-<div class="outline-text-3" id="text-org3bb9e2a">
+<div id="outline-container-orgf986b4d" class="outline-3">
+<h3 id="orgf986b4d">Paths</h3>
+<div class="outline-text-3" id="text-orgf986b4d">
 <p>
 Since I'm doing this as posts in nikola, but I'm trying to keep all non-post files outside of the <code>posts</code> folder, I'm going to use a class to keep the paths to the output (submission) files straight.
 </p>
@@ -445,9 +1655,9 @@ Since I'm doing this as posts in nikola, but I'm trying to keep all non-post fil
 </pre></div>
 </div>
 </div>
-<div id="outline-container-orgba945b7" class="outline-3">
-<h3 id="orgba945b7">Data</h3>
-<div class="outline-text-3" id="text-orgba945b7">
+<div id="outline-container-orgd46dd53" class="outline-3">
+<h3 id="orgd46dd53">Data</h3>
+<div class="outline-text-3" id="text-orgd46dd53">
 <div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">TestSet</span><span class="p">:</span>
     <span class="sd">"""Loads the test-set data</span>
 
@@ -473,9 +1683,9 @@ Since I'm doing this as posts in nikola, but I'm trying to keep all non-post fil
 </div>
 </div>
 </div>
-<div id="outline-container-org360df0c" class="outline-2">
-<h2 id="org360df0c">Load the data</h2>
-<div class="outline-text-2" id="text-org360df0c">
+<div id="outline-container-orgc6bca12" class="outline-2">
+<h2 id="orgc6bca12">Load the data</h2>
+<div class="outline-text-2" id="text-orgc6bca12">
 <p>
 Let's load the test data. Note that we don't have any training data here, just test data. Moreover, <i>we will not use any features of the test set</i>. All we need to solve this task is the file with the indices for the pairs that we need to compare.
 </p>
@@ -533,9 +1743,9 @@ So this doesn't appear to be a randomized data set. The first half of the Second
 </div>
 </div>
 
-<div id="outline-container-org73c6492" class="outline-2">
-<h2 id="org73c6492">EDA and Leakage Intuition</h2>
-<div class="outline-text-2" id="text-org73c6492">
+<div id="outline-container-orgd5824b1" class="outline-2">
+<h2 id="orgd5824b1">EDA and Leakage Intuition</h2>
+<div class="outline-text-2" id="text-orgd5824b1">
 <p>
 As we already know, the key to discovering data leakages is careful Exploratory Data Analysis (EDA). So let's start our work with some basic data exploration and build an intuition about the leakage.
 </p>
@@ -632,17 +1842,17 @@ Another example - in a <a href="https://www.kaggle.com/c/quora-question-pairs">Q
 </p>
 </div>
 
-<div id="outline-container-org045f69c" class="outline-3">
-<h3 id="org045f69c">Probing the Leaderboard</h3>
-<div class="outline-text-3" id="text-org045f69c">
+<div id="outline-container-org6d1dc6b" class="outline-3">
+<h3 id="org6d1dc6b">Probing the Leaderboard</h3>
+<div class="outline-text-3" id="text-org6d1dc6b">
 <p>
 Finally, let's see what fraction of the ID-pairs have a class of `1`. To do this we just need to submit a constant prediction (all ones) and check the accuracy the grader reports. Create a dataframe with columns `pairId` and `Prediction`, fill it and export it to a `.csv` file. Then submit to the Coursera grader and examine the grader's output to get the fraction of 1s in the test-set.
 </p>
 </div>
 
-<div id="outline-container-org56f6462" class="outline-4">
-<h4 id="org56f6462">All Ones</h4>
-<div class="outline-text-4" id="text-org56f6462">
+<div id="outline-container-orge685ec7" class="outline-4">
+<h4 id="orge685ec7">All Ones</h4>
+<div class="outline-text-4" id="text-orge685ec7">
 <div class="highlight"><pre><span></span><span class="n">paths</span> <span class="o">=</span> <span class="n">Paths</span><span class="p">()</span>
 <span class="n">all_ones</span> <span class="o">=</span> <span class="n">test</span><span class="p">[[</span><span class="s2">"pairId"</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 <span class="n">all_ones</span><span class="p">[</span><span class="s2">"Prediction"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_ones</span><span class="p">)</span>
@@ -678,9 +1888,9 @@ Now think - how we can exploit this fact? What is the leak here? If you get it n
 </div>
 </div>
 
-<div id="outline-container-orgee90c14" class="outline-4">
-<h4 id="orgee90c14">All Zeros</h4>
-<div class="outline-text-4" id="text-orgee90c14">
+<div id="outline-container-org204ab5d" class="outline-4">
+<h4 id="org204ab5d">All Zeros</h4>
+<div class="outline-text-4" id="text-org204ab5d">
 <p>
 Although we're told that this was a binary data set (and you could check it just by printing out the unique values), I sort of flaked and submitted a set where all the pairs were classified as zeros anyway. Here's what happened.
 </p>
@@ -719,17 +1929,17 @@ So it appears we've confirmed that the dataset is binary, with half the outputs 
 </div>
 </div>
 
-<div id="outline-container-org9108cf7" class="outline-2">
-<h2 id="org9108cf7">Building a magic feature</h2>
-<div class="outline-text-2" id="text-org9108cf7">
+<div id="outline-container-org19fd55d" class="outline-2">
+<h2 id="org19fd55d">Building a magic feature</h2>
+<div class="outline-text-2" id="text-org19fd55d">
 <p>
 In this section we will build a magic feature that will solve the problem almost perfectly. The instructions will lead you to the correct solution, but please, try to explain the purpose of the steps we do to yourself – it is very important.
 </p>
 </div>
 
-<div id="outline-container-orgb7808f2" class="outline-3">
-<h3 id="orgb7808f2">Incidence matrix</h3>
-<div class="outline-text-3" id="text-orgb7808f2">
+<div id="outline-container-orgd40cd31" class="outline-3">
+<h3 id="orgd40cd31">Incidence matrix</h3>
+<div class="outline-text-3" id="text-orgd40cd31">
 <p>
 First, we need to build an <a href="https://en.wikipedia.org/wiki/Incidence_matrix">incidence matrix</a>. You can think of pairs `(FirstId, SecondId)` as edges in an undirected graph. 
 </p>
@@ -751,9 +1961,9 @@ For example, you can use this constructor: `scipy.sparse.coo_matrix((data, (i, j
 </p>
 </div>
 
-<div id="outline-container-org564fb4d" class="outline-4">
-<h4 id="org564fb4d">De-duplicating the Data</h4>
-<div class="outline-text-4" id="text-org564fb4d">
+<div id="outline-container-orgc422d86" class="outline-4">
+<h4 id="orgc422d86">De-duplicating the Data</h4>
+<div class="outline-text-4" id="text-orgc422d86">
 <p>
 The test data turns out to have duplicate ID pairs, which will cause our incidence matrix to produce numbers greater than 1 if we leave them in, so we need to remove them (using the <a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.duplicated.html">duplicated</a> method).
 </p>
@@ -806,9 +2016,9 @@ It is more convenient to have the incidence matrix in <a href="https://docs.scip
 </div>
 </div>
 
-<div id="outline-container-org3967cf8" class="outline-3">
-<h3 id="org3967cf8">Now To Build the Magic Feature</h3>
-<div class="outline-text-3" id="text-org3967cf8">
+<div id="outline-container-orgc18d901" class="outline-3">
+<h3 id="orgc18d901">Now To Build the Magic Feature</h3>
+<div class="outline-text-3" id="text-orgc18d901">
 <p>
 Why did we build the incidence matrix? We can think of the rows in this matrix as a representation for the objects. The `i-th` row is a representation for an object with `Id = i`. Then, to measure the similarity between two objects we can measure similarity between their representations. And we will see that these representations are very good.
 </p>
@@ -854,9 +2064,9 @@ That is it! <b><b>We've built our magic feature.</b></b>
 </pre></div>
 </div>
 
-<div id="outline-container-orgb960c50" class="outline-4">
-<h4 id="orgb960c50">From magic feature to binary predictions</h4>
-<div class="outline-text-4" id="text-orgb960c50">
+<div id="outline-container-org73e5d7b" class="outline-4">
+<h4 id="org73e5d7b">From magic feature to binary predictions</h4>
+<div class="outline-text-4" id="text-org73e5d7b">
 <p>
 But how do we convert this feature into binary predictions? We do not have a train set to learn a model, but we have a piece of information about test set: the baseline accuracy score that you got, when submitting constant. And we also have a very strong considerations about the data generative process, so probably we will be fine even without a training set. 
 </p>
@@ -1020,1300 +2230,20 @@ Well done! Your accuracy score is 0.997298
 </div>
 </div>
 
-<div id="outline-container-org5bfd205" class="outline-2">
-<h2 id="org5bfd205">Bonus</h2>
-<div class="outline-text-2" id="text-org5bfd205">
+<div id="outline-container-orge37ace8" class="outline-2">
+<h2 id="orge37ace8">Bonus</h2>
+<div class="outline-text-2" id="text-orge37ace8">
 <p>
 Interestingly, it is not the only leak in this dataset. There is another totally different way to get almost 100% accuracy. Try to find it!
 </p>
 </div>
 </div>
-<div id="outline-container-org6429bae" class="outline-2">
-<h2 id="org6429bae">What does it all mean then?</h2>
-<div class="outline-text-2" id="text-org6429bae">
+<div id="outline-container-org83fd432" class="outline-2">
+<h2 id="org83fd432">What does it all mean then?</h2>
+<div class="outline-text-2" id="text-org83fd432">
 <p>
 From our initial check uploading all the submissions as one (so all the ID-pairs were classified as having IDs from the same class) we saw that half the entries were 1's and half were 0's. Our incidence matrix showed that half the vectors had a similarity of 20 or more, so by predicting that all the pairs whose incidence matrix dot-products were 20 or greater were of the same class, we could predict with greater than 99% accuracy which IDs were from the same class.
 </p>
-</div>
-</div>
-    </div>
-    </article><article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/data-leaks/" class="u-url">Data Leaks</a></h1>
-        <div class="metadata">
-            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
-                Cloistered Monkey
-            </span></p>
-            <p class="dateline"><a href="posts/data-leaks/" rel="bookmark"><time class="published dt-published" datetime="2018-09-08T16:11:07-07:00" title="2018-09-08 16:11">2018-09-08 16:11</time></a></p>
-        </div>
-    </header><div class="e-content entry-content">
-    <div id="outline-container-orgb6c4200" class="outline-2">
-<h2 id="orgb6c4200">What are data leaks?</h2>
-<div class="outline-text-2" id="text-orgb6c4200">
-<p>
-<i>Data Leaks</i> are unexpected errors that expose extra information that wouldn't be available in production.
-</p>
-</div>
-</div>
-<div id="outline-container-orgafbb943" class="outline-2">
-<h2 id="orgafbb943">Time Series</h2>
-<div class="outline-text-2" id="text-orgafbb943">
-<p>
-Check if there are points in the training set that are in the future with regard to the test set.
-</p>
-</div>
-</div>
-<div id="outline-container-org538834b" class="outline-2">
-<h2 id="org538834b">Unexpected Information</h2>
-<div class="outline-text-2" id="text-org538834b">
-<p>
-Sometimes what looks like a non-predictive feature might prove to be useful because of the way the data-set was created.
-</p>
-
-<ul class="org-ul">
-<li>ID</li>
-<li>Row Order</li>
-</ul>
-</div>
-</div>
-<div id="outline-container-org165f78d" class="outline-2">
-<h2 id="org165f78d">Leaderboard Probing</h2>
-<div class="outline-text-2" id="text-org165f78d">
-<p>
-This is a method to look for dataleaks based on the leader board.
-</p>
-</div>
-</div>
-<div id="outline-container-org33ada27" class="outline-2">
-<h2 id="org33ada27">Quiz</h2>
-<div class="outline-text-2" id="text-org33ada27">
-</div>
-<div id="outline-container-org3c7ca32" class="outline-3">
-<h3 id="org3c7ca32">One</h3>
-<div class="outline-text-3" id="text-org3c7ca32">
-<p>
-Suppose that you have a credit scoring task where you have to create a machine learning model that approximates expert evaluation of an individual's creditworthiness. Which of the following can potentially be a data leakage?
-</p>
-
-<ul class="org-ul">
-<li class="on">
-<code>[X]</code> An ID of a data point (row) in the train set corellates with the target variable (the data wasn't shuffled, this information won't work in a real-world scenario)</li>
-<li class="on">
-<code>[X]</code> The first half of the data points in the train set have a score of 0 while the second half has scores &gt; 0. (same as above)</li>
-<li class="off">
-<code>[ ]</code> Among he features you have a <code>company_id</code>, an identifier of a company where this person works. It turns out that this feature is important and adding it to your model improves your score. (this is a normal feature, the fact that it improves your score just means it's an important feature)</li>
-</ul>
-</div>
-</div>
-<div id="outline-container-org2711f73" class="outline-3">
-<h3 id="org2711f73">Two</h3>
-<div class="outline-text-3" id="text-org2711f73">
-<p>
-What is the most foolproof way to set up a time-series competition?
-</p>
-<ul class="org-ul">
-<li class="on">
-<code>[X]</code> Split, train, public and private parts of the data by time. Remove all features except IDs from the test set so that participants will generate all the features based on the past and join them themselves. (you need to remove all features tfrom the test set to guarantee there isn't a data-leakage)</li>
-
-<li class="off">
-<code>[ ]</code> Make a time based split for train/test and a random split for publit/private. (this is vulnerable to leaderboard probing)</li>
-<li class="off">
-<code>[ ]</code> split public and private by time, remove time from the test set. (it is possible to reverse engineer the time-ordering and exploit future-peeking)</li>
-</ul>
-</div>
-</div>
-<div id="outline-container-org37344f4" class="outline-3">
-<h3 id="org37344f4">Three</h3>
-<div class="outline-text-3" id="text-org37344f4">
-<p>
-Suppose you have a binary feature classification task and it is evaluated by the logloss metric. You know that there are 10,000 entries in the public chunk of the test set and that a constant prediction of 0.3 gets a score of 1.01. The mean of the target variable in the training set is 0.44. What is the mean of the target variable in the public part  of the test data (up to 4 decimal places.)
-</p>
-
-<ul class="org-ul">
-<li>0.44 (wrong)</li>
-<li>0.132 (wrong)</li>
-<li>1.33 (wrong)</li>
-<li>0.7712</li>
-</ul>
-<p>
-\[
-\frac{N_1}{N} = \frac{-L - \ln (1-C)}{\ln C - \ln (1 - C)}\\
-= 0.7712\\
-\]
-</p>
-</div>
-</div>
-<div id="outline-container-org7e705bf" class="outline-3">
-<h3 id="org7e705bf">Four</h3>
-<div class="outline-text-3" id="text-org7e705bf">
-<p>
-Suppose you are solving an image classification task, what is the classification of the logo for this course?
-</p>
-<ul class="org-ul">
-<li>Angry robot (wrong - should be a number)</li>
-<li>1 (wrong - check image name)</li>
-<li>3 (the URL for the image had the answer in it)</li>
-</ul>
-</div>
-</div>
-</div>
-    </div>
-    </article><article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/validation/" class="u-url">Validation</a></h1>
-        <div class="metadata">
-            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
-                Cloistered Monkey
-            </span></p>
-            <p class="dateline"><a href="posts/validation/" rel="bookmark"><time class="published dt-published" datetime="2018-09-04T08:01:59-07:00" title="2018-09-04 08:01">2018-09-04 08:01</time></a></p>
-        </div>
-    </header><div class="e-content entry-content">
-    <div id="table-of-contents">
-<h2>Table of Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="posts/validation/#orgdaf62d0">Validation and Overfitting</a></li>
-<li><a href="posts/validation/#org674da7d">Three Main Methods of Splitting</a></li>
-<li><a href="posts/validation/#orgb5cdb96">Stratification</a></li>
-<li><a href="posts/validation/#org388f244">Data Splitting</a></li>
-<li><a href="posts/validation/#org36f5ea8">Problems</a></li>
-<li><a href="posts/validation/#org8238b42">Practice Quiz</a></li>
-<li><a href="posts/validation/#org03ebc6f">Quiz</a></li>
-<li><a href="posts/validation/#org746ed2d">Links</a></li>
-</ul>
-</div>
-</div>
-
-<div id="outline-container-orgdaf62d0" class="outline-2">
-<h2 id="orgdaf62d0">Validation and Overfitting</h2>
-<div class="outline-text-2" id="text-orgdaf62d0">
-<p>
-To prevent your model from overfitting to the training set, you can hold out some of the training set and use it to validate the model after it has been fit to the rest of the training set.
-</p>
-<ul class="org-ul">
-<li>Underfitting: your model isn't complex enough to capture the data</li>
-<li>Overfitting: your model is too complex and it is modelling noise in the data</li>
-<li>In a competition, if your model does well on the validation set but not on the test set, then it probably overfit the data you had</li>
-</ul>
-</div>
-</div>
-<div id="outline-container-org674da7d" class="outline-2">
-<h2 id="org674da7d">Three Main Methods of Splitting</h2>
-<div class="outline-text-2" id="text-org674da7d">
-<p>
-These are methods for splitting your training set into training and validation sets. Once you have a model, re-train it over the entire training set before applying it to the test set.
-</p>
-</div>
-<div id="outline-container-orgdf752cb" class="outline-3">
-<h3 id="orgdf752cb">Holdout</h3>
-<div class="outline-text-3" id="text-orgdf752cb">
-<p>
-This method just splits the data into one training and one validation set.
-</p>
-
-<ul class="org-ul">
-<li><a href="http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.ShuffleSplit.html">sklearn.model_selection.ShuffleSplit</a></li>
-<li><code>ngroups=1</code></li>
-</ul>
-</div>
-</div>
-<div id="outline-container-orge7e9228" class="outline-3">
-<h3 id="orge7e9228">K-Fold</h3>
-<div class="outline-text-3" id="text-orge7e9228">
-<p>
-Make <i>k</i> splits of the training set, then use each of the validation sets while training on all the data not in the validation set. This differs from doing holdout k-times since we guarantee that the validation sets don't overlap. Uses the average score for the k-folds.
-</p>
-
-<ul class="org-ul">
-<li><a href="http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.KFold.html">sklearn.model_selection.KFold</a></li>
-</ul>
-</div>
-</div>
-<div id="outline-container-org0dbec8d" class="outline-3">
-<h3 id="org0dbec8d">Leave One Out</h3>
-<div class="outline-text-3" id="text-org0dbec8d">
-<p>
-This is like k-folds except we always use a validation set of size 1 - so we are iterating over each point in the data set and using it as the training set. This can be useful if the data set is small.
-</p>
-<ul class="org-ul">
-<li><a href="http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.LeaveOneOut.html">sklearn.model_selection.LeaveOneOut</a></li>
-</ul>
-</div>
-</div>
-</div>
-<div id="outline-container-orgb5cdb96" class="outline-2">
-<h2 id="orgb5cdb96">Stratification</h2>
-<div class="outline-text-2" id="text-orgb5cdb96">
-<p>
-Sometimes you need to make sure your validation sets have the same distribution as your set as a whole.
-</p>
-<ul class="org-ul">
-<li>small datasets</li>
-<li>unbalanced datasects</li>
-<li>multiclass classification</li>
-<li><a href="http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.StratifiedShuffleSplit.html">StratifieShuffleSplit</a></li>
-</ul>
-</div>
-</div>
-<div id="outline-container-org388f244" class="outline-2">
-<h2 id="org388f244">Data Splitting</h2>
-<div class="outline-text-2" id="text-org388f244">
-<p>
-If you have time-based data, there's two ways to split the training data - randomly within the entire timespan, or put the first part of the data in the training set and put the second part of the data in the validation set. If the test-set is a time that is beyond the training data, then using the time-based split will produce a model that is better for the testing data.
-</p>
-<ol class="org-ol">
-<li>Row-wise split
-This is the most common case, where rows are randomly chosen from the training data. This assumes the rows are independent.</li>
-<li>Time-wise split
-This is the case where you are predicting future values of a time-series. In this case, the further back in time a row is, the less like the future value it is.</li>
-<li>By-ID
-In this case several rows map to one ID, and the ID maps to a target. For example, you might have several x-rays for one patient that map to one diagnosis.</li>
-</ol>
-<p>
-The main point of this is that you want to set up your validation set to match the way the train-test sets were split.
-</p>
-</div>
-</div>
-<div id="outline-container-org36f5ea8" class="outline-2">
-<h2 id="org36f5ea8">Problems</h2>
-<div class="outline-text-2" id="text-org36f5ea8">
-<p>
-The point of doing the training-validation split is that you think the validation set(s) will approximate the test set. But what if that's not true?
-</p>
-</div>
-<div id="outline-container-org6727bfa" class="outline-3">
-<h3 id="org6727bfa">Causes of score differences</h3>
-<div class="outline-text-3" id="text-org6727bfa">
-<ul class="org-ul">
-<li>Too little data</li>
-<li>The data is too diverse and inconsistent</li>
-</ul>
-</div>
-</div>
-<div id="outline-container-orgf901a8f" class="outline-3">
-<h3 id="orgf901a8f">Submission Differs from Validation</h3>
-<div class="outline-text-3" id="text-orgf901a8f">
-<ol class="org-ol">
-<li>Even K-fold validation has variation (check that the standard deviation across folds encompasses the leaderboard values)</li>
-<li>Too little data on leaderboard (nothing you can do)</li>
-<li>Train and test are from different distributions</li>
-</ol>
-</div>
-</div>
-</div>
-<div id="outline-container-org8238b42" class="outline-2">
-<h2 id="org8238b42">Practice Quiz</h2>
-<div class="outline-text-2" id="text-org8238b42">
-</div>
-<div id="outline-container-org352f592" class="outline-3">
-<h3 id="org352f592">One</h3>
-<div class="outline-text-3" id="text-org352f592">
-<p>
-We did a K-Fold cross validation on a huge dataset and noticed that scores on each fold are roughly the same. Which validation type is of most practical use?
-</p>
-<ul class="org-ul">
-<li class="off">
-<code>[ ]</code> K-Fold</li>
-<li class="on">
-<code>[X]</code> Holdout</li>
-<li class="off">
-<code>[ ]</code> Leave one out</li>
-</ul>
-</div>
-</div>
-<div id="outline-container-org0326285" class="outline-3">
-<h3 id="org0326285">Two</h3>
-<div class="outline-text-3" id="text-org0326285">
-<p>
-We did a K-fold cross validation on a medium sized dataset and noticed that the validation scores varied widely. Which validation type is the most practical to use?
-</p>
-<ul class="org-ul">
-<li class="off">
-<code>[ ]</code> Leave One Out</li>
-<li class="on">
-<code>[X]</code> K Fold</li>
-<li class="off">
-<code>[ ]</code> Houldout</li>
-</ul>
-</div>
-</div>
-<div id="outline-container-orgc71db56" class="outline-3">
-<h3 id="orgc71db56">Three</h3>
-<div class="outline-text-3" id="text-orgc71db56">
-<p>
-The features we generate depend on the train-test split. True or False?
-</p>
-<ul class="org-ul">
-<li class="on">
-<code>[X]</code> True</li>
-<li class="off">
-<code>[ ]</code> False</li>
-</ul>
-</div>
-</div>
-<div id="outline-container-orgd543efe" class="outline-3">
-<h3 id="orgd543efe">Which of these can indicate an expected leaderboard shuffle in a competition?</h3>
-<div class="outline-text-3" id="text-orgd543efe">
-<ul class="org-ul">
-<li class="on">
-<code>[X]</code> Little training and/or testing data</li>
-<li class="on">
-<code>[X]</code> Most of the competitors have similar scores</li>
-<li class="on">
-<code>[X]</code> Different public/private data or target distributions</li>
-</ul>
-</div>
-</div>
-</div>
-<div id="outline-container-org03ebc6f" class="outline-2">
-<h2 id="org03ebc6f">Quiz</h2>
-<div class="outline-text-2" id="text-org03ebc6f">
-</div>
-<div id="outline-container-org10427ff" class="outline-3">
-<h3 id="org10427ff">One</h3>
-<div class="outline-text-3" id="text-org10427ff">
-<p>
-Select the true statements.
-</p>
-<ul class="org-ul">
-<li class="off">
-<code>[ ]</code> A performance increase on a fixed cross-validation split guarantees a performance increase on any cross-validation split. (You might be overfitting. You should change the splits to check for overfitting.)</li>
-<li class="on">
-<code>[X]</code> The logic behind the validation split should mimic the logic behind the train-test split (this is the main rule for making a reliable validation)</li>
-<li class="on">
-<code>[X]</code> Underfitting refers to not capturing enough patterns in the data</li>
-<li class="on">
-<code>[X]</code> We use validation to estimate the quality of our model (this is the main purpose of validation)</li>
-<li class="off">
-<code>[ ]</code> The model that does on the validation set is guaranteed to do the best on the test set. (The test and validation sets might have different distributions, in which case the validation won't predict the test set score)</li>
-</ul>
-</div>
-</div>
-<div id="outline-container-orgf19d4e6" class="outline-3">
-<h3 id="orgf19d4e6">Two</h3>
-<div class="outline-text-3" id="text-orgf19d4e6">
-<p>
-Kaggle usually allows you to submit two final submissions that will be checked against the private leader board. One common practice is to use a model that did the best on the validation scores and another that did best on the public leader board. What is the logic behind using these two models?
-</p>
-<ul class="org-ul">
-<li class="off">
-<code>[ ]</code> People rarely overfit the public leaderboard. You almost always have a lot of test data and it is hard to overfit.</li>
-<li class="off">
-<code>[ ]</code> Validation is rarely valid in competitions. You must account for the case where validation worked and where it didn't.</li>
-<li class="on">
-<code>[X]</code> The test set may have a different distribution than the target data. If this is true, then the model that did better on the public leaderboard will do better. If not, then the model that did better in validation will do better.</li>
-</ul>
-</div>
-</div>
-<div id="outline-container-org8c9f4e2" class="outline-3">
-<h3 id="org8c9f4e2">Three</h3>
-<div class="outline-text-3" id="text-org8c9f4e2">
-<p>
-Suppose we have a dataset of marketing campaigns. Each campain runs for a few weeks and for each campaign our target is the number of new customers. A row in the dataset looks like this:
-</p>
-
-<p>
-<i>Campaign ID, Date, {some features},Number of New Customers</i>
-</p>
-
-<p>
-The dataset contains multiple campaigns where the training set has the dates at the start of each campaign and the test set has the dates at the end of each campaign. Which train/test split should you use?
-</p>
-
-<ul class="org-ul">
-<li class="off">
-<code>[ ]</code> Random Split</li>
-<li class="on">
-<code>[X]</code> Combined Split (Each train and test set are divided by a date and the date might be for different campaigns, so it is a combination of campaign ID and date)</li>
-<li class="off">
-<code>[ ]</code> ID-based split (wrong)</li>
-<li class="off">
-<code>[ ]</code> Time-based split (wrong)</li>
-</ul>
-</div>
-</div>
-<div id="outline-container-org1d64e74" class="outline-3">
-<h3 id="org1d64e74">Four</h3>
-<div class="outline-text-3" id="text-org1d64e74">
-<p>
-Which of the following can you usually identify without the leaderboard?
-</p>
-<ul class="org-ul">
-<li class="on">
-<code>[X]</code> Different scores/optimal parameters between different folds (this is determined during validation)</li>
-<li class="off">
-<code>[ ]</code> Train and test target data are from different distributions (You would need the test target values to figure this out, which you won't have)</li>
-<li class="on">
-<code>[X]</code> The public leaderboard score will be unreliable because there is too little data (you can check this by making the size of the folds match the size of the public test set and see the variability)</li>
-<li class="on">
-<code>[X]</code> The train and test data are from different distributions (you can often figure this out during Exploratory Data Analysis)</li>
-</ul>
-</div>
-</div>
-</div>
-<div id="outline-container-org746ed2d" class="outline-2">
-<h2 id="org746ed2d">Links</h2>
-<div class="outline-text-2" id="text-org746ed2d">
-<ul class="org-ul">
-<li><a href="http://scikit-learn.org/stable/modules/cross_validation.html">Cross-validation in sklearn</a></li>
-<li><a href="http://www.chioka.in/how-to-select-your-final-models-in-a-kaggle-competitio/">Model Selection for Kaggle</a></li>
-</ul>
-</div>
-</div>
-    </div>
-    </article><article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/springleaf-competition/" class="u-url">Springleaf Competition</a></h1>
-        <div class="metadata">
-            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
-                Cloistered Monkey
-            </span></p>
-            <p class="dateline"><a href="posts/springleaf-competition/" rel="bookmark"><time class="published dt-published" datetime="2018-09-04T06:35:25-07:00" title="2018-09-04 06:35">2018-09-04 06:35</time></a></p>
-        </div>
-    </header><div class="e-content entry-content">
-    <div id="outline-container-orgd3acf9c" class="outline-2">
-<h2 id="orgd3acf9c">Introduction</h2>
-<div class="outline-text-2" id="text-orgd3acf9c">
-<p>
-The data comes from the <a href="https://www.kaggle.com/c/springleaf-marketing-response">Springleaf Marketing Response</a> competition. Springleaf makes personal loans and wanted to be able to predict who would respond to their direct mail offers. Submissions are evaluated on the area under the ROC curve between the predicted probability and the target. The submission file should have an ID and the probability that the person would respond.
-</p>
-
-<pre class="example">
-ID,target
-1,0.35
-3,0.01
-6,0.93333
-</pre>
-</div>
-</div>
-    </div>
-    </article><article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/exploratory-data-analysis/" class="u-url">Exploratory Data Analysis</a></h1>
-        <div class="metadata">
-            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
-                Cloistered Monkey
-            </span></p>
-            <p class="dateline"><a href="posts/exploratory-data-analysis/" rel="bookmark"><time class="published dt-published" datetime="2018-09-03T21:24:53-07:00" title="2018-09-03 21:24">2018-09-03 21:24</time></a></p>
-        </div>
-    </header><div class="e-content entry-content">
-    <div id="table-of-contents">
-<h2>Table of Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="posts/exploratory-data-analysis/#orga7ca7b0">Building Your Intuition About the Data</a></li>
-<li><a href="posts/exploratory-data-analysis/#org6ae1a4e">Exploring Anonymized Data</a></li>
-<li><a href="posts/exploratory-data-analysis/#orga42a7b7">Visualizations</a></li>
-<li><a href="posts/exploratory-data-analysis/#org70345c8">Data Set Cleaning</a></li>
-<li><a href="posts/exploratory-data-analysis/#orgf6f6742">Quiz</a></li>
-<li><a href="posts/exploratory-data-analysis/#orgeedcf2a">Links</a></li>
-</ul>
-</div>
-</div>
-
-<div id="outline-container-orga7ca7b0" class="outline-2">
-<h2 id="orga7ca7b0">Building Your Intuition About the Data</h2>
-<div class="outline-text-2" id="text-orga7ca7b0">
-<p>
-The first thing to do is to see if you can build up a mental model of what the data is about.
-</p>
-</div>
-<div id="outline-container-org0a1a14d" class="outline-3">
-<h3 id="org0a1a14d">Get Domain Knowledge</h3>
-<div class="outline-text-3" id="text-org0a1a14d">
-<p>
-Find out something about the topic that the data describes.
-</p>
-</div>
-</div>
-<div id="outline-container-orge4755c2" class="outline-3">
-<h3 id="orge4755c2">Check if the Data is intuitive</h3>
-<div class="outline-text-3" id="text-orge4755c2">
-<p>
-See if there are any strange values and see if it makes sense given the data description.
-</p>
-</div>
-</div>
-<div id="outline-container-org4a6688e" class="outline-3">
-<h3 id="org4a6688e">Understand how the data was generated</h3>
-<div class="outline-text-3" id="text-org4a6688e">
-<p>
-Is any of it synthetic? Was the training data generated the same way as the testing data?
-</p>
-</div>
-</div>
-</div>
-<div id="outline-container-org6ae1a4e" class="outline-2">
-<h2 id="org6ae1a4e">Exploring Anonymized Data</h2>
-<div class="outline-text-2" id="text-org6ae1a4e">
-<p>
-Organizers sometimes encode data so you can't tell what it is.
-</p>
-</div>
-<div id="outline-container-org6c5093d" class="outline-3">
-<h3 id="org6c5093d">Try To Decode the Data</h3>
-<div class="outline-text-3" id="text-org6c5093d">
-<p>
-You generally won't be able to figure out what the data is if it's encoded, but sometimes they were created using simple shifting schemes that will let you figure out their original values.
-</p>
-</div>
-</div>
-<div id="outline-container-org3a18170" class="outline-3">
-<h3 id="org3a18170">Explore Individual Features</h3>
-<div class="outline-text-3" id="text-org3a18170">
-<p>
-Even if you don't know what the data is, it's important to know what type of data it is so that you can use the right data preprocessing for your model.
-</p>
-<ul class="org-ul">
-<li><a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.dtypes.html">df.dtypes</a></li>
-<li><a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.info.html">df.info()</a></li>
-<li><a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.Series.value_counts.html">x.value_counts()</a></li>
-<li><a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.isnull.html">x.isnull()</a></li>
-</ul>
-</div>
-</div>
-</div>
-<div id="outline-container-orga42a7b7" class="outline-2">
-<h2 id="orga42a7b7">Visualizations</h2>
-<div class="outline-text-2" id="text-orga42a7b7">
-</div>
-<div id="outline-container-org0a8d1b7" class="outline-3">
-<h3 id="org0a8d1b7">Features</h3>
-<div class="outline-text-3" id="text-org0a8d1b7">
-</div>
-<div id="outline-container-org0324b8b" class="outline-4">
-<h4 id="org0324b8b">Histograms</h4>
-<div class="outline-text-4" id="text-org0324b8b">
-<p>
-This is useful for seeing the shape of the data.
-</p>
-<ul class="org-ul">
-<li><code>pyplot.hist(x)</code></li>
-</ul>
-</div>
-</div>
-<div id="outline-container-orge6ca6ac" class="outline-4">
-<h4 id="orge6ca6ac">Index vs Value</h4>
-<div class="outline-text-4" id="text-orge6ca6ac">
-<p>
-This will show you how well distributed the data is within the data frame. Horizontal lines indicate repeated values and empty bands show areas where none of the data had this value. If you don't have vertical lines then the data was probably shuffled.
-</p>
-<ul class="org-ul">
-<li><code>pyplot.plot(x, '.')</code></li>
-</ul>
-</div>
-</div>
-<div id="outline-container-org9059dc9" class="outline-4">
-<h4 id="org9059dc9">Index vs Value Colored By Class Label</h4>
-<div class="outline-text-4" id="text-org9059dc9">
-<p>
-If you plot the classes with different colors you can see if there are clusters and clear separations between them. (<code>y</code> in the function call has the target values).
-</p>
-<ul class="org-ul">
-<li><code>pyplot.scatter(range(len(x)), x, c=y)</code></li>
-</ul>
-</div>
-</div>
-<div id="outline-container-orgf7a10aa" class="outline-4">
-<h4 id="orgf7a10aa">Plot Other Things</h4>
-<div class="outline-text-4" id="text-orgf7a10aa">
-<ul class="org-ul">
-<li>Row vs Feature</li>
-<li>Nan-values</li>
-<li>Value Counts</li>
-</ul>
-</div>
-</div>
-</div>
-<div id="outline-container-org90bcaff" class="outline-3">
-<h3 id="org90bcaff">Relationships</h3>
-<div class="outline-text-3" id="text-org90bcaff">
-</div>
-<div id="outline-container-org5fbfc32" class="outline-4">
-<h4 id="org5fbfc32">Scatter Plots</h4>
-<div class="outline-text-4" id="text-org5fbfc32">
-</div>
-<ul class="org-ul">
-<li>
-<a id="org2ba358a"></a>Pairwise Relationships<br><div class="outline-text-5" id="text-org2ba358a">
-<p>
-To make it eaiser to see relationships, you can plot them in pairs.
-</p>
-<ul class="org-ul">
-<li><code>pyplot.scatter(x1, x2)</code></li>
-</ul>
-</div>
-</li>
-<li>
-<a id="org0c1ba14"></a>Compare the Test Set<br><div class="outline-text-5" id="text-org0c1ba14">
-<p>
-Plot the features and the test-set (using different colors) to see how well your training data matches your test data.
-</p>
-</div>
-</li>
-<li>
-<a id="orgd7983ec"></a>Scatter Matrix<br><div class="outline-text-5" id="text-orgd7983ec">
-<p>
-Pandas has a convenience function that will plot all the pairwise scatter-plots for you.
-</p>
-<ul class="org-ul">
-<li><code>pandas.scatter_matrix(X)</code></li>
-</ul>
-</div>
-</li>
-</ul>
-</div>
-<div id="outline-container-orge4c5609" class="outline-4">
-<h4 id="orge4c5609">Corellation</h4>
-<div class="outline-text-4" id="text-orge4c5609">
-<p>
-Plot the corellation matrix to see if there are feature-pairs that are related so you can make a new feature out of them and see if they help.
-</p>
-<ul class="org-ul">
-<li><code>X.corr(), pyplot.matshow()</code></li>
-</ul>
-<p>
-A straight correllation matrix might give you a sense of how correllated the features are, but it's more useful to use a clustering algorithm to see if there are groups within the correlation matrix.
-</p>
-</div>
-</div>
-<div id="outline-container-org0f78f2b" class="outline-4">
-<h4 id="org0f78f2b">Plot Statistics</h4>
-<div class="outline-text-4" id="text-org0f78f2b">
-<p>
-Try plotting mean, differences, combination counts, etc. and see if you can create groups out of them.
-</p>
-</div>
-</div>
-</div>
-</div>
-<div id="outline-container-org70345c8" class="outline-2">
-<h2 id="org70345c8">Data Set Cleaning</h2>
-<div class="outline-text-2" id="text-org70345c8">
-</div>
-<div id="outline-container-orgae0f01b" class="outline-3">
-<h3 id="orgae0f01b">Duplicated and Constant Features</h3>
-<div class="outline-text-3" id="text-orgae0f01b">
-<p>
-Sometimes a feature will have the same value in all the rows. If it's this way in both the training and test sets you can just remove it, but if there are different values in the test set you have to figure out how to handle them.
-</p>
-<ul class="org-ul">
-<li>
-<code>x_train.nunique(axis</code>"columns") <code>= 1</code>
-</li>
-</ul>
-<p>
-Sometimes columns will get duplicated in which case you should drop one of them.
-</p>
-
-<ul class="org-ul">
-<li><code>x_train.T.drop_duplicates()</code></li>
-</ul>
-<p>
-This can happen with rows as well, but it can be harder to decide whether this is a mistake or not.
-</p>
-</div>
-</div>
-<div id="outline-container-org601f9d8" class="outline-3">
-<h3 id="org601f9d8">Non-shuffled Data</h3>
-<div class="outline-text-3" id="text-org601f9d8">
-<p>
-If you plot the mean as a horizontal line the data should be evenly distributed around it, if not it might not have been shuffled and there could be an inadvertent pattern in the data. You might not be able to use it, but you should understand all the things about the data that you can find out.
-</p>
-</div>
-</div>
-</div>
-<div id="outline-container-orgf6f6742" class="outline-2">
-<h2 id="orgf6f6742">Quiz</h2>
-<div class="outline-text-2" id="text-orgf6f6742">
-</div>
-<div id="outline-container-orgfb0f911" class="outline-3">
-<h3 id="orgfb0f911">One</h3>
-<div class="outline-text-3" id="text-orgfb0f911">
-<p>
-Suppose we are given a data set with features <i>X</i>, <i>Y</i>, and <i>Z</i>. Can you recover <i>z</i> as a function of <i>x</i> and <i>y</i>?
-</p>
-<ul class="org-ul">
-<li class="on">
-<code>[X]</code> Z = X/Y</li>
-<li class="off">
-<code>[ ]</code> Z = X - Y</li>
-<li class="off">
-<code>[ ]</code> Z = X + Y</li>
-<li class="off">
-<code>[ ]</code> Z = XY</li>
-</ul>
-</div>
-</div>
-<div id="outline-container-org2f5a3ba" class="outline-3">
-<h3 id="org2f5a3ba">Two</h3>
-<div class="outline-text-3" id="text-org2f5a3ba">
-<p>
-What value do the red dots have?
-0.5 (wrong)
-2 (next try)
-</p>
-</div>
-</div>
-<div id="outline-container-org3c2f040" class="outline-3">
-<h3 id="org3c2f040">Three</h3>
-<div class="outline-text-3" id="text-org3c2f040">
-<p>
-What hypothesis about X can we not reject based on the plots?
-</p>
-<ul class="org-ul">
-<li class="on">
-<code>[X]</code> X is a counter or label encoded categorical feature</li>
-<li class="off">
-<code>[ ]</code> X can be the temperature (in Celsius) in different cities at different times. (the values are probably out of range)</li>
-<li class="off">
-<code>[ ]</code> X can take a value of zero (The log plot would have values at 0 but it doesn't)</li>
-<li class="on">
-<code>[X]</code> X takes only discrete values (the horizontal lines indicate that there are repeated values with discrete values)</li>
-<li class="on">
-<code>[X]</code> 2 &lt;= X &lt; 3 happens more frequently than 3 &lt;= X &lt; 4</li>
-</ul>
-</div>
-</div>
-<div id="outline-container-org4560230" class="outline-3">
-<h3 id="org4560230">Four</h3>
-<div class="outline-text-3" id="text-org4560230">
-<ul class="org-ul">
-<li class="off">
-<code>[ ]</code> Target is completely determined by coordinates (x,y)(x,y)(x,y), i.e. the label of the point is completely determined by point's position (x,y)(x,y)(x,y). Saying the same in other words: if we only had two features (x,y)(x,y)(x,y), we could build a classifier, that is accurate 100% of time.</li>
-<li class="on">
-<code>[X]</code> The top right plot is better than the top left in that everything you get from the top left can also be gotten from the top right, but not the other way around.</li>
-<li class="on">
-<code>[X]</code> standard deviation for jittering is the largest on the bottom right.</li>
-</ul>
-</div>
-</div>
-</div>
-<div id="outline-container-orgeedcf2a" class="outline-2">
-<h2 id="orgeedcf2a">Links</h2>
-<div class="outline-text-2" id="text-orgeedcf2a">
-<ul class="org-ul">
-<li><a href="http://scikit-learn.org/stable/auto_examples/bicluster/plot_spectral_biclustering.html">Sorting Correlation Plots</a></li>
-</ul>
-</div>
-</div>
-    </div>
-    </article><article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/references/" class="u-url">References</a></h1>
-        <div class="metadata">
-            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
-                Cloistered Monkey
-            </span></p>
-            <p class="dateline"><a href="posts/references/" rel="bookmark"><time class="published dt-published" datetime="2018-09-01T12:16:46-07:00" title="2018-09-01 12:16">2018-09-01 12:16</time></a></p>
-        </div>
-    </header><div class="e-content entry-content">
-    <div id="outline-container-orgcc0d050" class="outline-2">
-<h2 id="orgcc0d050">Bibliography</h2>
-<div class="outline-text-2" id="text-orgcc0d050">
-<ul class="org-ul">
-<li>[B1] 1. Albon C. Machine learning with Python cookbook: practical solutions from preprocessing to deep learning. First edition. Beijing Boston Farnham: O’Reilly; 2018. 349 p.</li>
-</ul>
-</div>
-</div>
-    </div>
-    </article><article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/the-target/" class="u-url">The Target</a></h1>
-        <div class="metadata">
-            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
-                Cloistered Monkey
-            </span></p>
-            <p class="dateline"><a href="posts/the-target/" rel="bookmark"><time class="published dt-published" datetime="2018-08-31T13:29:42-07:00" title="2018-08-31 13:29">2018-08-31 13:29</time></a></p>
-        </div>
-    </header><div class="e-content entry-content">
-    <div id="table-of-contents">
-<h2>Table of Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="posts/the-target/#org0c11099">Introduction</a></li>
-<li><a href="posts/the-target/#orgda919d6">Imports</a></li>
-<li><a href="posts/the-target/#org75b6a9b">The Data</a></li>
-<li><a href="posts/the-target/#org6274f29">Dates</a></li>
-</ul>
-</div>
-</div>
-
-<div id="outline-container-org0c11099" class="outline-2">
-<h2 id="org0c11099">Introduction</h2>
-<div class="outline-text-2" id="text-org0c11099">
-<p>
-This is some stuff about what we are trying to predict. I realized that the description of the competition says that we are trying to predict the number of items sold per shop for the next month after the data, but I never said what that month is, so I'm making this just to put it somewhere.
-</p>
-</div>
-</div>
-<div id="outline-container-orgda919d6" class="outline-2">
-<h2 id="orgda919d6">Imports</h2>
-<div class="outline-text-2" id="text-orgda919d6">
-<div class="highlight"><pre><span></span>import warnings
-warnings.filterwarnings("ignore", message="numpy.dtype size changed")
-warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
-</pre></div>
-</div>
-
-<div id="outline-container-orgea5ae6d" class="outline-3">
-<h3 id="orgea5ae6d">From pypi</h3>
-<div class="outline-text-3" id="text-orgea5ae6d">
-<div class="highlight"><pre><span></span>import pandas
-import matplotlib.pyplot as pyplot
-import seaborn
-</pre></div>
-</div>
-</div>
-
-<div id="outline-container-org25322bc" class="outline-3">
-<h3 id="org25322bc">This project</h3>
-<div class="outline-text-3" id="text-org25322bc">
-<div class="highlight"><pre><span></span>from kaggler.helpers.build_training_data import Pickles
-from kaggler.helpers.helpers import (
-    DataKeys,
-    Helpers,
-    )
-</pre></div>
-</div>
-</div>
-
-<div id="outline-container-orge225aa1" class="outline-3">
-<h3 id="orge225aa1">Setting up the plotting</h3>
-<div class="outline-text-3" id="text-orge225aa1">
-<div class="highlight"><pre><span></span>% matplotlib inline
-seaborn.set_style("whitegrid")
-</pre></div>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org75b6a9b" class="outline-2">
-<h2 id="org75b6a9b">The Data</h2>
-<div class="outline-text-2" id="text-org75b6a9b">
-<div class="highlight"><pre><span></span>x_train = Helpers.unpickle(Pickles.x_train)
-y_train = Helpers.unpickle(Pickles.y_train)
-x_test = Helpers.unpickle(Pickles.x_test)
-</pre></div>
-
-<p>
-Although it seem unlikely, it's possible that there are months in either the test or training set that aren't shared, so I'm going to concatenate them.
-</p>
-
-<div class="highlight"><pre><span></span>concatenated = pandas.concat([x_train, x_test], axis="rows")
-assert concatenated.shape == (len(x_train) + len(x_test), len(x_train.columns))
-</pre></div>
-</div>
-</div>
-
-<div id="outline-container-org6274f29" class="outline-2">
-<h2 id="org6274f29">Dates</h2>
-<div class="outline-text-2" id="text-org6274f29">
-<p>
-Unfortunately I got rid of the days, which are required by the <a href="https://pandas.pydata.org/pandas-docs/stable/timeseries.html">to_datetime</a> function provided by pandas, so I'm going to construct a new date column with a day of 1 for each date.
-</p>
-
-<div class="highlight"><pre><span></span>DataKeys.date = "Date"
-DataKeys.datetime = "Date Time"
-concatenated[DataKeys.date] = "01-" + concatenated.month + '-' + concatenated.year
-concatenated[DataKeys.datetime] = pandas.to_datetime(
-    concatenated[DataKeys.date], format="%d-%m-%Y")
-Helpers.print_head(concatenated)
-</pre></div>
-
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-<colgroup>
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-<col class="org-left">
-</colgroup>
-<thead><tr>
-<th scope="col" class="org-right">date_block_num</th>
-<th scope="col" class="org-right">shop_id</th>
-<th scope="col" class="org-right">item_id</th>
-<th scope="col" class="org-right">item_price</th>
-<th scope="col" class="org-right">item_category_id</th>
-<th scope="col" class="org-right">month</th>
-<th scope="col" class="org-right">year</th>
-<th scope="col" class="org-right">Date</th>
-<th scope="col" class="org-left">Date Time</th>
-</tr></thead>
-<tbody>
-<tr>
-<td class="org-right">11</td>
-<td class="org-right">15</td>
-<td class="org-right">1324</td>
-<td class="org-right">499</td>
-<td class="org-right">55</td>
-<td class="org-right">12</td>
-<td class="org-right">2013</td>
-<td class="org-right">01-12-2013</td>
-<td class="org-left">2013-12-01 00:00:00</td>
-</tr>
-<tr>
-<td class="org-right">18</td>
-<td class="org-right">31</td>
-<td class="org-right">19981</td>
-<td class="org-right">499</td>
-<td class="org-right">43</td>
-<td class="org-right">07</td>
-<td class="org-right">2014</td>
-<td class="org-right">01-07-2014</td>
-<td class="org-left">2014-07-01 00:00:00</td>
-</tr>
-<tr>
-<td class="org-right">32</td>
-<td class="org-right">28</td>
-<td class="org-right">7934</td>
-<td class="org-right">398</td>
-<td class="org-right">7</td>
-<td class="org-right">09</td>
-<td class="org-right">2015</td>
-<td class="org-right">01-09-2015</td>
-<td class="org-left">2015-09-01 00:00:00</td>
-</tr>
-<tr>
-<td class="org-right">12</td>
-<td class="org-right">43</td>
-<td class="org-right">13518</td>
-<td class="org-right">1499</td>
-<td class="org-right">19</td>
-<td class="org-right">01</td>
-<td class="org-right">2014</td>
-<td class="org-right">01-01-2014</td>
-<td class="org-left">2014-01-01 00:00:00</td>
-</tr>
-<tr>
-<td class="org-right">28</td>
-<td class="org-right">25</td>
-<td class="org-right">19927</td>
-<td class="org-right">329</td>
-<td class="org-right">57</td>
-<td class="org-right">05</td>
-<td class="org-right">2015</td>
-<td class="org-right">01-05-2015</td>
-<td class="org-left">2015-05-01 00:00:00</td>
-</tr>
-</tbody>
-</table>
-<div class="highlight"><pre><span></span>print(concatenated[DataKeys.datetime].max())
-</pre></div>
-
-<p>
-So the last month in the data-set is October 2015, and we want to predict what the counts will be for November 2015.
-</p>
-</div>
-</div>
-    </div>
-    </article><article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/some-plots-of-the-data/" class="u-url">Some Plots of the Data</a></h1>
-        <div class="metadata">
-            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
-                Cloistered Monkey
-            </span></p>
-            <p class="dateline"><a href="posts/some-plots-of-the-data/" rel="bookmark"><time class="published dt-published" datetime="2018-08-29T14:19:26-07:00" title="2018-08-29 14:19">2018-08-29 14:19</time></a></p>
-        </div>
-    </header><div class="e-content entry-content">
-    <div id="table-of-contents">
-<h2>Table of Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="posts/some-plots-of-the-data/#org1d5cc58">Imports</a></li>
-<li><a href="posts/some-plots-of-the-data/#orgfe84b29">Build the data</a></li>
-<li><a href="posts/some-plots-of-the-data/#orgbd3eb87">More Helpers</a></li>
-<li><a href="posts/some-plots-of-the-data/#orgfbd0b95">Features vs Target</a></li>
-</ul>
-</div>
-</div>
-
-<div id="outline-container-org1d5cc58" class="outline-2">
-<h2 id="org1d5cc58">Imports</h2>
-<div class="outline-text-2" id="text-org1d5cc58">
-<div class="highlight"><pre><span></span>import warnings
-warnings.filterwarnings("ignore", message="numpy.dtype size changed")
-warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
-</pre></div>
-</div>
-
-<div id="outline-container-orge9cf811" class="outline-3">
-<h3 id="orge9cf811">From pypi</h3>
-<div class="outline-text-3" id="text-orge9cf811">
-<div class="highlight"><pre><span></span>import matplotlib.pyplot as pyplot
-import numpy
-import seaborn
-</pre></div>
-
-<div class="highlight"><pre><span></span>%matplotlib inline
-seaborn.set_style("whitegrid")
-</pre></div>
-</div>
-</div>
-
-<div id="outline-container-org3cb160a" class="outline-3">
-<h3 id="org3cb160a">This project</h3>
-<div class="outline-text-3" id="text-org3cb160a">
-<div class="highlight"><pre><span></span>from kaggler.helpers.build_training_data import Pickles
-from kaggler.helpers.helpers import (
-    DataKeys,
-    Helpers,
-    )
-</pre></div>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgfe84b29" class="outline-2">
-<h2 id="orgfe84b29">Build the data</h2>
-<div class="outline-text-2" id="text-orgfe84b29">
-<div class="highlight"><pre><span></span>x_train = Helpers.unpickle(Pickles.x_train)
-y_train = Helpers.unpickle(Pickles.y_train)
-DataKeys.target = "Month Count"
-x_train[DataKeys.target] = y_train.values
-Helpers.print_head(x_train)
-</pre></div>
-
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-<colgroup>
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-</colgroup>
-<thead><tr>
-<th scope="col" class="org-right">date_block_num</th>
-<th scope="col" class="org-right">shop_id</th>
-<th scope="col" class="org-right">item_id</th>
-<th scope="col" class="org-right">item_price</th>
-<th scope="col" class="org-right">item_category_id</th>
-<th scope="col" class="org-right">month</th>
-<th scope="col" class="org-right">year</th>
-<th scope="col" class="org-right">Month Count</th>
-</tr></thead>
-<tbody>
-<tr>
-<td class="org-right">11</td>
-<td class="org-right">15</td>
-<td class="org-right">1324</td>
-<td class="org-right">499</td>
-<td class="org-right">55</td>
-<td class="org-right">12</td>
-<td class="org-right">2013</td>
-<td class="org-right">1</td>
-</tr>
-<tr>
-<td class="org-right">18</td>
-<td class="org-right">31</td>
-<td class="org-right">19981</td>
-<td class="org-right">499</td>
-<td class="org-right">43</td>
-<td class="org-right">07</td>
-<td class="org-right">2014</td>
-<td class="org-right">2</td>
-</tr>
-<tr>
-<td class="org-right">32</td>
-<td class="org-right">28</td>
-<td class="org-right">7934</td>
-<td class="org-right">398</td>
-<td class="org-right">7</td>
-<td class="org-right">09</td>
-<td class="org-right">2015</td>
-<td class="org-right">1</td>
-</tr>
-<tr>
-<td class="org-right">12</td>
-<td class="org-right">43</td>
-<td class="org-right">13518</td>
-<td class="org-right">1499</td>
-<td class="org-right">19</td>
-<td class="org-right">01</td>
-<td class="org-right">2014</td>
-<td class="org-right">1</td>
-</tr>
-<tr>
-<td class="org-right">28</td>
-<td class="org-right">25</td>
-<td class="org-right">19927</td>
-<td class="org-right">329</td>
-<td class="org-right">57</td>
-<td class="org-right">05</td>
-<td class="org-right">2015</td>
-<td class="org-right">2</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div id="outline-container-orgbd3eb87" class="outline-2">
-<h2 id="orgbd3eb87">More Helpers</h2>
-<div class="outline-text-2" id="text-orgbd3eb87">
-<div class="highlight"><pre><span></span>def make_figure_and_axis(x_label, y_label, title, figsize=(10, 8)):
-    """make a matplotlib figure
-
-    Args:
-     x_label (str): label for the x-axis
-     y_label (str): label for the y-axis
-     title (str): title for the plot
-     figsize: tuple of width, height
-    Returns:
-     tuple: figure, axis
-    """
-    figure = pyplot.figure(figsize=figsize)
-    axe = figure.gca()
-    axe.set_xlabel(x_label)
-    axe.set_ylabel(y_label)
-    axe.set_title(title)
-    return figure, axe
-</pre></div>
-</div>
-</div>
-<div id="outline-container-orgfbd0b95" class="outline-2">
-<h2 id="orgfbd0b95">Features vs Target</h2>
-<div class="outline-text-2" id="text-orgfbd0b95">
-</div>
-<div id="outline-container-orga768b2f" class="outline-3">
-<h3 id="orga768b2f">Date Block</h3>
-<div class="outline-text-3" id="text-orga768b2f">
-<div class="highlight"><pre><span></span>figure, axis = make_figure_and_axis("Date Block", "Count", "Date-Block Counts")
-grid = seaborn.catplot(ax=axis, x=DataKeys.date_block, kind="count", data=x_train)
-</pre></div>
-
-<p>
-The counts represent the number of shop-product pairs per-month, which isn't really what we want. We want the count per-product per month. As an intermediary step, why don't we look at the total count as it changes over time.
-</p>
-
-<div class="highlight"><pre><span></span>date_group = x_train.groupby(DataKeys.date_block)
-summed = date_group.sum()
-summed = summed.reset_index()
-figure, axis = make_figure_and_axis("Date Block", "Monthly Count",
-				    "Total Items Sold Per Month")
-grid = seaborn.relplot(x=DataKeys.date_block, y=DataKeys.target, ax=axis,
-		       data=summed, kind="line")
-</pre></div>
-
-<p>
-This seems to indicate that sales are going down overall over time. Those spikes are interesting, maybe the months would be interesting. First we need to re-join the month and year together so the sorting of the x-axis will work okay.
-</p>
-
-<div class="highlight"><pre><span></span>DataKeys.date = "Date"
-x_train[DataKeys.date] = x_train.year + "-" + x_train.month
-month_grouped = x_train.groupby(DataKeys.date)
-month_summed = month_grouped.sum().reset_index()
-</pre></div>
-
-<div class="highlight"><pre><span></span>top_two = month_summed.sort_values(DataKeys.target, ascending=False)[:2]
-figure, axis = make_figure_and_axis("Month", "Count", "Items Sold Per Month",
-				    figsize=(12,10))
-
-pyplot.xticks(rotation=45, ha="right")
-grid = seaborn.relplot(x=DataKeys.date, y=DataKeys.target, data=month_summed,
-		       ax=axis, kind="line")
-axis.axvline(top_two.index[0], color='r')
-line = axis.axvline(top_two.index[1], color='r')
-</pre></div>
-
-<div class="highlight"><pre><span></span>Helpers.print_table(top_two[[DataKeys.date, DataKeys.target]])
-</pre></div>
-
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-<colgroup>
-<col class="org-right">
-<col class="org-right">
-<col class="org-right">
-</colgroup>
-<thead><tr>
-<th scope="col" class="org-right"> </th>
-<th scope="col" class="org-right">Date</th>
-<th scope="col" class="org-right">Month Count</th>
-</tr></thead>
-<tbody>
-<tr>
-<td class="org-right">11</td>
-<td class="org-right">2013-12</td>
-<td class="org-right">147909</td>
-</tr>
-<tr>
-<td class="org-right">23</td>
-<td class="org-right">2014-12</td>
-<td class="org-right">134785</td>
-</tr>
-</tbody>
-</table>
-<p>
-Perhaps not surprisingly, the month of December, when holiday sales spike, is the month with the most sales.
-</p>
-</div>
-</div>
-<div id="outline-container-orgaaae86d" class="outline-3">
-<h3 id="orgaaae86d">Shop</h3>
-<div class="outline-text-3" id="text-orgaaae86d">
-<div class="highlight"><pre><span></span>group = x_train.groupby(DataKeys.shop).sum().reset_index().sort_values(DataKeys.target)
-</pre></div>
-
-
-<div class="highlight"><pre><span></span>figure, axis = make_figure_and_axis("Shop", "Count", "Shop Sales For Total Time")
-grid = seaborn.relplot(x=DataKeys.shop, y=DataKeys.target, data=group,
-		       ax=axis)
-</pre></div>
-
-<p>
-There appears to be seven or eight shops that dominate the sales.
-</p>
-</div>
-</div>
-
-<div id="outline-container-org66e3953" class="outline-3">
-<h3 id="org66e3953">Item Category</h3>
-<div class="outline-text-3" id="text-org66e3953">
-<div class="highlight"><pre><span></span>group = x_train.groupby(DataKeys.item_category).sum().reset_index()
-</pre></div>
-
-<div class="highlight"><pre><span></span>figure, axis = make_figure_and_axis("Category", "Count", "Category Sales For Total Time")
-grid = seaborn.relplot(x=DataKeys.item_category, y=DataKeys.target, data=group,
-		       ax=axis)
-</pre></div>
-
-<p>
-Some kind of weirdly coincidental linear relationship between the category ID and the total sales. 
-</p>
-</div>
-</div>
-
-<div id="outline-container-orga08f673" class="outline-3">
-<h3 id="orga08f673">Biggest Over Time</h3>
-<div class="outline-text-3" id="text-orga08f673">
-</div>
-<div id="outline-container-orga9f648f" class="outline-4">
-<h4 id="orga9f648f">Category</h4>
-<div class="outline-text-4" id="text-orga9f648f">
-<div class="highlight"><pre><span></span>category_group = x_train.groupby([DataKeys.date, DataKeys.item_category]).sum().reset_index()
-biggest = category_group.iloc[category_group[DataKeys.target].idxmax()]
-biggest_category = category_group[category_group.item_category_id == biggest.item_category_id]
-figure, axis = make_figure_and_axis("Month", "Count", "Category {} Sales For Total Time".format(biggest[DataKeys.item_category]))
-pyplot.xticks(rotation=45, ha="right")
-grid = seaborn.relplot(x=DataKeys.date, y=DataKeys.target, data=biggest_category,
-		       ax=axis, kind="line")
-</pre></div>
-
-<p>
-Even the most popular item declines over time.
-</p>
-
-<div class="highlight"><pre><span></span>big = biggest_category[DataKeys.target]
-big_max = big.max()
-big_min = big.min()
-difference = big_max - big_min
-print("Max: {}".format(big_max))
-print("Min: {}".format(big_min))
-print("Difference: {}".format(difference))
-print("Percent Decline: {:.1f} %".format(100 * (difference/big_max)))
-</pre></div>
-
-<p>
-Max: 28987.0
-Min: 5413.0
-Difference: 23574.0
-Percent Decline: 81.3 %
-</p>
-</div>
-</div>
 </div>
 </div>
     </div>
