@@ -294,8 +294,6 @@ print("={}=".format(date_expression))
 =(?P<day>\d{2})\.(?P<month>\d{2})\.(?P<year>\d{4})=
 
 
-
-
 Here's what =dates= looks like.
 
 #+BEGIN_SRC python :session training :results output raw :exports both
