@@ -1,0 +1,90 @@
+#+BEGIN_COMMENT
+.. title: Predicting the Mean
+.. slug: predicting-the-mean
+.. date: 2018-09-24 16:00:05 UTC-07:00
+.. tags: submission baselining competition
+.. category: competition
+.. link: 
+.. description: Predicting the Mean for all values.
+.. type: text
+#+END_COMMENT
+#+OPTIONS: ^:{}
+#+TOC: headlines 1
+
+* Introduction
+  Since the competition is going to be scored using the Root Mean Square Error I'll make a baseline prediction by using the mean of the sales figures.
+* Imports
+
+#+BEGIN_SRC python :session baseline :results none
+import warnings
+warnings.filterwarnings("ignore", message="numpy.dtype size changed")
+warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
+#+END_SRC
+
+#+BEGIN_SRC ipython :session baseline :results none
+# python standard library
+from pathlib import Path
+
+# from pypi
+from tabulate import tabulate
+import pandas
+
+# this project
+from kaggler.course.data import Data
+from kaggler.helpers.printing import print_table
+#+END_SRC
+
+* The Data
+
+#+BEGIN_SRC ipython :session baseline :results none
+data = Data()
+training = data.sales_training_data
+#+END_SRC
+
+#+BEGIN_SRC ipython :session baseline :results output raw :exports both
+print_table(training.head())
+#+END_SRC
+
+#+RESULTS:
+|       date | date_block_num | shop_id | item_id | item_price | item_cnt_day |
+|------------+----------------+---------+---------+------------+--------------|
+| 02.01.2013 |              0 |      59 |   22154 |        999 |            1 |
+| 03.01.2013 |              0 |      25 |    2552 |        899 |            1 |
+| 05.01.2013 |              0 |      25 |    2552 |        899 |           -1 |
+| 06.01.2013 |              0 |      25 |    2554 |    1709.05 |            1 |
+| 15.01.2013 |              0 |      25 |    2555 |       1099 |            1 |
+
+* Really Naive
+  I was originally just going by average per month for the whole data set but that turns out to be too big, especially since it gets capped at 20. Furthermore, when you look at the test-data it has one ID column but the contest description says that you have to predict shop and item sales for the next month, what is the test-set again?
+
+Re-reading [[https://www.kaggle.com/c/competitive-data-science-final-project/data][the data description]] I just noticed that it says that the ID in the test set represents a (shop ID, item ID) tuple. Where is this defined?
+
+#+BEGIN_SRC ipython :session baseline :results output raw :exports both
+test = data.test_data
+print_table(test.head())
+#+END_SRC
+
+#+RESULTS:
+| ID | shop_id | item_id |
+|----+---------+---------|
+|  0 |       5 |    5037 |
+|  1 |       5 |    5320 |
+|  2 |       5 |    5233 |
+|  3 |       5 |    5232 |
+|  4 |       5 |    5268 |
+
+Okay, so it looks like the test-set has the shop and item IDs, but when you make the submission you just dump them. Interesting. So our average needs to be an average for an item in a certain shop for a month.
+
+#+BEGIN_SRC ipython :session baseline :results output raw :exports both
+training["ID"] = list(zip(training.shop_id, training.item_id))
+print_table(training.head())
+#+END_SRC
+
+#+RESULTS:
+|       date | date_block_num | shop_id | item_id | item_price | item_cnt_day | ID          |
+|------------+----------------+---------+---------+------------+--------------+-------------|
+| 02.01.2013 |              0 |      59 |   22154 |        999 |            1 | (59, 22154) |
+| 03.01.2013 |              0 |      25 |    2552 |        899 |            1 | (25, 2552)  |
+| 05.01.2013 |              0 |      25 |    2552 |        899 |           -1 | (25, 2552)  |
+| 06.01.2013 |              0 |      25 |    2554 |    1709.05 |            1 | (25, 2554)  |
+| 15.01.2013 |              0 |      25 |    2555 |       1099 |            1 | (25, 2555)  |
