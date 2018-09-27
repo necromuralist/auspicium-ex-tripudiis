@@ -108,20 +108,20 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org87fc028">Introduction</a></li>
-<li><a href="#org63f6b0f">General tips</a></li>
-<li><a href="#orgd9abb4b">Read In the Data</a></li>
-<li><a href="#org02fc65c">Aggregate data</a></li>
-<li><a href="#org3f25deb">Mean encodings without regularization</a></li>
-<li><a href="#orgcdaa0bf">Method 2</a></li>
-<li><a href="#orgb7c5dbc">1. KFold scheme</a></li>
+<li><a href="#org8a23b36">Introduction</a></li>
+<li><a href="#org2661788">General tips</a></li>
+<li><a href="#orga40acc0">Read In the Data</a></li>
+<li><a href="#orgb4827ea">Aggregate data</a></li>
+<li><a href="#org01099f4">Mean encodings without regularization</a></li>
+<li><a href="#org939b1a8">Method 2</a></li>
+<li><a href="#orgbd81024">1. KFold scheme</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org87fc028" class="outline-2">
-<h2 id="org87fc028">Introduction</h2>
-<div class="outline-text-2" id="text-org87fc028">
+<div id="outline-container-org8a23b36" class="outline-2">
+<h2 id="org8a23b36">Introduction</h2>
+<div class="outline-text-2" id="text-org8a23b36">
 <p>
 In this programming assignment you will be working with the <i>1C</i> dataset from the final competition. You are asked to encode the <code>item_id</code> in 4 different ways:
 </p>
@@ -138,9 +138,9 @@ In this programming assignment you will be working with the <i>1C</i> dataset fr
 </div>
 </div>
 
-<div id="outline-container-org63f6b0f" class="outline-2">
-<h2 id="org63f6b0f">General tips</h2>
-<div class="outline-text-2" id="text-org63f6b0f">
+<div id="outline-container-org2661788" class="outline-2">
+<h2 id="org2661788">General tips</h2>
+<div class="outline-text-2" id="text-org2661788">
 <ul class="org-ul">
 <li>Fill NANs in the encoding with <code>0.3343</code>.</li>
 <li>Some encoding schemes depend on sorting order, so in order to avoid confusion, please use the following code snippet to construct the data frame. This snippet also implements mean encoding without regularization.</li>
@@ -161,17 +161,17 @@ from kaggler.course.data import Data
 </div>
 </div>
 
-<div id="outline-container-orgd9abb4b" class="outline-2">
-<h2 id="orgd9abb4b">Read In the Data</h2>
-<div class="outline-text-2" id="text-orgd9abb4b">
+<div id="outline-container-orga40acc0" class="outline-2">
+<h2 id="orga40acc0">Read In the Data</h2>
+<div class="outline-text-2" id="text-orga40acc0">
 <div class="highlight"><pre><span></span>sales = Data().sales_training_data
 </pre></div>
 </div>
 </div>
 
-<div id="outline-container-org02fc65c" class="outline-2">
-<h2 id="org02fc65c">Aggregate data</h2>
-<div class="outline-text-2" id="text-org02fc65c">
+<div id="outline-container-orgb4827ea" class="outline-2">
+<h2 id="orgb4827ea">Aggregate data</h2>
+<div class="outline-text-2" id="text-orgb4827ea">
 <p>
 Since the competition task is to make a monthly prediction, we need to aggregate the data to montly level before doing any encodings. The following code-cell serves just that purpose.
 </p>
@@ -228,9 +228,9 @@ Sort the data.
 </div>
 </div>
 
-<div id="outline-container-org3f25deb" class="outline-2">
-<h2 id="org3f25deb">Mean encodings without regularization</h2>
-<div class="outline-text-2" id="text-org3f25deb">
+<div id="outline-container-org01099f4" class="outline-2">
+<h2 id="org01099f4">Mean encodings without regularization</h2>
+<div class="outline-text-2" id="text-org01099f4">
 <p>
 Now that we have done the techinical work, we are ready to actually <b>mean encode</b> the desired <code>item_id</code> variable. 
 </p>
@@ -240,9 +240,9 @@ Here are two ways to implement mean encoding features <b>without</b> any regular
 </p>
 </div>
 
-<div id="outline-container-orgc0f72a9" class="outline-3">
-<h3 id="orgc0f72a9">Method 1:  Calculate a mapping: {item_id: target_mean}</h3>
-<div class="outline-text-3" id="text-orgc0f72a9">
+<div id="outline-container-org29096c0" class="outline-3">
+<h3 id="org29096c0">Method 1:  Calculate a mapping: {item_id: target_mean}</h3>
+<div class="outline-text-3" id="text-org29096c0">
 <div class="highlight"><pre><span></span>item_id_target_mean = all_data.groupby('item_id').target.mean()
 </pre></div>
 
@@ -255,17 +255,17 @@ In our non-regularized case we just <b>map</b> the computed means to the <code>i
 </div>
 </div>
 
-<div id="outline-container-org7666e42" class="outline-3">
-<h3 id="org7666e42">Fill NaNs</h3>
-<div class="outline-text-3" id="text-org7666e42">
+<div id="outline-container-orgab3291f" class="outline-3">
+<h3 id="orgab3291f">Fill NaNs</h3>
+<div class="outline-text-3" id="text-orgab3291f">
 <div class="highlight"><pre><span></span>all_data['item_target_enc'].fillna(0.3343, inplace=True) 
 </pre></div>
 </div>
 </div>
 
-<div id="outline-container-org4790f2f" class="outline-3">
-<h3 id="org4790f2f">Print correlation</h3>
-<div class="outline-text-3" id="text-org4790f2f">
+<div id="outline-container-orga241e6a" class="outline-3">
+<h3 id="orga241e6a">Print correlation</h3>
+<div class="outline-text-3" id="text-orga241e6a">
 <div class="highlight"><pre><span></span>encoded_feature = all_data['item_target_enc'].values
 print(numpy.corrcoef(all_data['target'].values, encoded_feature)[0][1])
 </pre></div>
@@ -277,9 +277,9 @@ print(numpy.corrcoef(all_data['target'].values, encoded_feature)[0][1])
 </div>
 </div>
 
-<div id="outline-container-orgcdaa0bf" class="outline-2">
-<h2 id="orgcdaa0bf">Method 2</h2>
-<div class="outline-text-2" id="text-orgcdaa0bf">
+<div id="outline-container-org939b1a8" class="outline-2">
+<h2 id="org939b1a8">Method 2</h2>
+<div class="outline-text-2" id="text-org939b1a8">
 <p>
 Unlike the  <code>.target.mean()</code> function, <code>transform</code> will return a dataframe with an index like in <code>all_data</code>.
 Basically this single line of code is equivalent to the first two lines from of Method 1.
@@ -289,17 +289,17 @@ Basically this single line of code is equivalent to the first two lines from of 
 </pre></div>
 </div>
 
-<div id="outline-container-orgbbba154" class="outline-3">
-<h3 id="orgbbba154">Fill NaNs</h3>
-<div class="outline-text-3" id="text-orgbbba154">
+<div id="outline-container-org97e2052" class="outline-3">
+<h3 id="org97e2052">Fill NaNs</h3>
+<div class="outline-text-3" id="text-org97e2052">
 <div class="highlight"><pre><span></span>all_data['item_target_enc'].fillna(0.3343, inplace=True) 
 </pre></div>
 </div>
 </div>
 
-<div id="outline-container-orgccb2255" class="outline-3">
-<h3 id="orgccb2255">Print correlation</h3>
-<div class="outline-text-3" id="text-orgccb2255">
+<div id="outline-container-org7436eae" class="outline-3">
+<h3 id="org7436eae">Print correlation</h3>
+<div class="outline-text-3" id="text-org7436eae">
 <div class="highlight"><pre><span></span>encoded_feature = all_data['item_target_enc'].values
 print(numpy.corrcoef(all_data['target'].values, encoded_feature)[0][1])
 </pre></div>
@@ -319,9 +319,9 @@ See the printed value? It is the correlation coefficient between the target vari
 </div>
 </div>
 
-<div id="outline-container-orgb7c5dbc" class="outline-2">
-<h2 id="orgb7c5dbc">1. KFold scheme</h2>
-<div class="outline-text-2" id="text-orgb7c5dbc">
+<div id="outline-container-orgbd81024" class="outline-2">
+<h2 id="orgbd81024">1. KFold scheme</h2>
+<div class="outline-text-2" id="text-orgbd81024">
 <p>
 This is Explained starting at 41 seconds into the <a href="https://www.coursera.org/learn/competitive-data-science/lecture/LGYQ2/regularization">Regularization lecture</a>.
 </p>

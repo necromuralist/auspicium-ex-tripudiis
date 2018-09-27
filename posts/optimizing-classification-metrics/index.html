@@ -104,17 +104,17 @@
         
 
     </header><div class="e-content entry-content" itemprop="articleBody text">
-    <div id="outline-container-org9dc917b" class="outline-2">
-<h2 id="org9dc917b">Introduction</h2>
-<div class="outline-text-2" id="text-org9dc917b">
+    <div id="outline-container-org5d77a5c" class="outline-2">
+<h2 id="org5d77a5c">Introduction</h2>
+<div class="outline-text-2" id="text-org5d77a5c">
 <p>
 The <i>target metric</i> is what the competition scores you on, but it isn't always the easiest metric to tune your model on. Sometimes you need to pick and <i>optimization metric</i> to tune your model that isn't exactly the same but works well enough.
 </p>
 </div>
 </div>
-<div id="outline-container-orgb733e2f" class="outline-2">
-<h2 id="orgb733e2f">LogLoss</h2>
-<div class="outline-text-2" id="text-orgb733e2f">
+<div id="outline-container-org8ac93da" class="outline-2">
+<h2 id="org8ac93da">LogLoss</h2>
+<div class="outline-text-2" id="text-org8ac93da">
 <p>
 To optimize log-loss you just have to match it to the right model.
 </p>
@@ -127,32 +127,32 @@ To optimize log-loss you just have to match it to the right model.
 Random Forests turn out to do poorly with Log Loss.
 </p>
 </div>
-<div id="outline-container-org89db9fa" class="outline-3">
-<h3 id="org89db9fa">Probability Calibration</h3>
-<div class="outline-text-3" id="text-org89db9fa">
+<div id="outline-container-orgba7a7f0" class="outline-3">
+<h3 id="orgba7a7f0">Probability Calibration</h3>
+<div class="outline-text-3" id="text-orgba7a7f0">
 <p>
 If you take all the rows with the same score, then the fraction of them that have a class of 1 should match the score (so if they all have a score of 0.8, then 80% of them should be 1 and 20% should be 0). If the fraction is off, then you need to calibrate the probabilities. To do this take your model and then send its outputs to a model that does better with Log Loss. So if you want to use a Random Forest, you would train your model using AUC as the metric then use the predictions to train another model like a neural net and have it use Log Loss as the metric.
 </p>
 </div>
-<div id="outline-container-org336306c" class="outline-4">
-<h4 id="org336306c">Platt Scaling</h4>
-<div class="outline-text-4" id="text-org336306c">
+<div id="outline-container-org9bddf26" class="outline-4">
+<h4 id="org9bddf26">Platt Scaling</h4>
+<div class="outline-text-4" id="text-org9bddf26">
 <p>
 Fit a Logistic Regression to your predictions
 </p>
 </div>
 </div>
-<div id="outline-container-org636f8a8" class="outline-4">
-<h4 id="org636f8a8">Isotonic Regression</h4>
-<div class="outline-text-4" id="text-org636f8a8">
+<div id="outline-container-orgab1a91a" class="outline-4">
+<h4 id="orgab1a91a">Isotonic Regression</h4>
+<div class="outline-text-4" id="text-orgab1a91a">
 <p>
 Fit an Isotonic Regression to your predictions
 </p>
 </div>
 </div>
-<div id="outline-container-orgf6afab3" class="outline-4">
-<h4 id="orgf6afab3">Stacking</h4>
-<div class="outline-text-4" id="text-orgf6afab3">
+<div id="outline-container-org0bd15b5" class="outline-4">
+<h4 id="org0bd15b5">Stacking</h4>
+<div class="outline-text-4" id="text-org0bd15b5">
 <p>
 Fit XGBoost or a neural net to your predictions
 </p>
@@ -160,18 +160,18 @@ Fit XGBoost or a neural net to your predictions
 </div>
 </div>
 </div>
-<div id="outline-container-orgb75ed53" class="outline-2">
-<h2 id="orgb75ed53">Accuracy</h2>
-<div class="outline-text-2" id="text-orgb75ed53">
+<div id="outline-container-org0205f54" class="outline-2">
+<h2 id="org0205f54">Accuracy</h2>
+<div class="outline-text-2" id="text-org0205f54">
 <p>
 Accuracy is a difficult metric to optimize because it isn't differentiable. To optimize the accuracy metric you need to use a different metric (a proxy metric) like log-loss and then tune the threshold.
 </p>
 </div>
 </div>
 
-<div id="outline-container-org87b89a4" class="outline-2">
-<h2 id="org87b89a4">Area Under the Curve (AUC)</h2>
-<div class="outline-text-2" id="text-org87b89a4">
+<div id="outline-container-orgac0a2ec" class="outline-2">
+<h2 id="orgac0a2ec">Area Under the Curve (AUC)</h2>
+<div class="outline-text-2" id="text-orgac0a2ec">
 <p>
 Some models work with it so if you can choose one of these models.
 </p>
@@ -185,21 +185,21 @@ In practice you can optimize the model to log-loss.
 </p>
 </div>
 </div>
-<div id="outline-container-orgb8d2c5a" class="outline-2">
-<h2 id="orgb8d2c5a">Quadratic Weighted Kappa</h2>
-<div class="outline-text-2" id="text-orgb8d2c5a">
+<div id="outline-container-orgb1cbdf2" class="outline-2">
+<h2 id="orgb1cbdf2">Quadratic Weighted Kappa</h2>
+<div class="outline-text-2" id="text-orgb1cbdf2">
 <ol class="org-ol">
 <li>Optimize on the Mean Squared Error then optimize the thresholds.</li>
 </ol>
 </div>
 </div>
-<div id="outline-container-org324445f" class="outline-2">
-<h2 id="org324445f">Other Sources</h2>
-<div class="outline-text-2" id="text-org324445f">
+<div id="outline-container-orgc6df48a" class="outline-2">
+<h2 id="orgc6df48a">Other Sources</h2>
+<div class="outline-text-2" id="text-orgc6df48a">
 </div>
-<div id="outline-container-orged729be" class="outline-3">
-<h3 id="orged729be">Classification</h3>
-<div class="outline-text-3" id="text-orged729be">
+<div id="outline-container-org446dd1c" class="outline-3">
+<h3 id="org446dd1c">Classification</h3>
+<div class="outline-text-3" id="text-org446dd1c">
 <ul class="org-ul">
 <li><a href="http://queirozf.com/entries/evaluation-metrics-for-classification-quick-examples-references">Evaluation Metrics for Classification Problems</a></li>
 <li><a href="https://www.garysieling.com/blog/sklearn-gini-vs-entropy-criteria">Descision Trees: <i>Gini</i> vs <i>Entropy</i></a></li>
@@ -207,9 +207,9 @@ In practice you can optimize the model to log-loss.
 </ul>
 </div>
 </div>
-<div id="outline-container-org91978e5" class="outline-3">
-<h3 id="org91978e5">Ranking</h3>
-<div class="outline-text-3" id="text-org91978e5">
+<div id="outline-container-orge42f6b4" class="outline-3">
+<h3 id="orge42f6b4">Ranking</h3>
+<div class="outline-text-3" id="text-orge42f6b4">
 <ul class="org-ul">
 <li>
 <a href="https://icml.cc/2015/wp-content/uploads/2015/06/icml_ranking.pdf">Learning to Rank Using Gradient Descent</a> - source of pairwise AUC optimization</li>
@@ -220,18 +220,18 @@ In practice you can optimize the model to log-loss.
 </ul>
 </div>
 </div>
-<div id="outline-container-org82e5d75" class="outline-3">
-<h3 id="org82e5d75">Clustering</h3>
-<div class="outline-text-3" id="text-org82e5d75">
+<div id="outline-container-org9961dce" class="outline-3">
+<h3 id="org9961dce">Clustering</h3>
+<div class="outline-text-3" id="text-org9961dce">
 <ul class="org-ul">
 <li><a href="http://nlp.uned.es/docs/amigo2007a.pdf">Comparison of clustering metrics</a></li>
 </ul>
 </div>
 </div>
 </div>
-<div id="outline-container-orgce36bdf" class="outline-2">
-<h2 id="orgce36bdf">Practice Quiz</h2>
-<div class="outline-text-2" id="text-orgce36bdf">
+<div id="outline-container-orge7f8a69" class="outline-2">
+<h2 id="orge7f8a69">Practice Quiz</h2>
+<div class="outline-text-2" id="text-orge7f8a69">
 <ol class="org-ol">
 <li>What would be a logloss value for a binary classification task if we use a constant predictor \(f(x)=0.5\)? Round to two decimal places.</li>
 </ol>
@@ -317,13 +317,13 @@ print(roc_auc_score(y_true, y_score))
 </pre>
 </div>
 </div>
-<div id="outline-container-org8885982" class="outline-2">
-<h2 id="org8885982">Quiz</h2>
-<div class="outline-text-2" id="text-org8885982">
+<div id="outline-container-orgea0f831" class="outline-2">
+<h2 id="orgea0f831">Quiz</h2>
+<div class="outline-text-2" id="text-orgea0f831">
 </div>
-<div id="outline-container-org24e1008" class="outline-3">
-<h3 id="org24e1008">One</h3>
-<div class="outline-text-3" id="text-org24e1008">
+<div id="outline-container-org895a404" class="outline-3">
+<h3 id="org895a404">One</h3>
+<div class="outline-text-3" id="text-org895a404">
 <p>
 Suppose we solve a binary classification task and our solution is scored with Log Loss. What predictions are preferable if all the true target values are 0?
 </p>
@@ -356,9 +356,9 @@ inf
 </div>
 </div>
 
-<div id="outline-container-org7f5bef6" class="outline-3">
-<h3 id="org7f5bef6">Two</h3>
-<div class="outline-text-3" id="text-org7f5bef6">
+<div id="outline-container-orge9a01a6" class="outline-3">
+<h3 id="orge9a01a6">Two</h3>
+<div class="outline-text-3" id="text-orge9a01a6">
 <p>
 Suppose we solve a regression task and we optimize MSE. If we manage to lower MSE loss on either the training set or the test set, how would this affect the Pearson Correlation coefficient between the target vector and the predictions on the same set.
 </p>
@@ -376,9 +376,9 @@ The correlation will not change.
 </div>
 </div>
 
-<div id="outline-container-orgb4de534" class="outline-3">
-<h3 id="orgb4de534">Three</h3>
-<div class="outline-text-3" id="text-orgb4de534">
+<div id="outline-container-org01d3f24" class="outline-3">
+<h3 id="org01d3f24">Three</h3>
+<div class="outline-text-3" id="text-org01d3f24">
 <p>
 What would be a best constant prediction for a multi-class classification with four classes? The solution is scored with multi-class Log Loss. The number of objects in each class in the training set is 18, 3, 15, 24.
 </p>
@@ -397,9 +397,9 @@ print(counts/counts.sum())
 </div>
 </div>
 
-<div id="outline-container-orged3cab1" class="outline-3">
-<h3 id="orged3cab1">Four</h3>
-<div class="outline-text-3" id="text-orged3cab1">
+<div id="outline-container-org084b47e" class="outline-3">
+<h3 id="org084b47e">Four</h3>
+<div class="outline-text-3" id="text-org084b47e">
 <p>
 What is the best constant predictor for the r-squared metric?
 </p>
@@ -410,9 +410,9 @@ What is the best constant predictor for the r-squared metric?
 </ul>
 </div>
 </div>
-<div id="outline-container-org3852398" class="outline-3">
-<h3 id="org3852398">Five</h3>
-<div class="outline-text-3" id="text-org3852398">
+<div id="outline-container-org4cf1cec" class="outline-3">
+<h3 id="org4cf1cec">Five</h3>
+<div class="outline-text-3" id="text-org4cf1cec">
 <p>
 Select the Correct statements
 </p>
@@ -429,9 +429,9 @@ Select the Correct statements
 </div>
 </div>
 
-<div id="outline-container-orgfea6e6f" class="outline-3">
-<h3 id="orgfea6e6f">Six</h3>
-<div class="outline-text-3" id="text-orgfea6e6f">
+<div id="outline-container-orgc051290" class="outline-3">
+<h3 id="orgc051290">Six</h3>
+<div class="outline-text-3" id="text-orgc051290">
 <p>
 Suppose the target metric is <b>M1</b> and the optimization loss is <b>M2</b>. We train a model and monitor its quality on a holdout set using the metrics <b>M1</b> and <b>M2</b>.
 </p>

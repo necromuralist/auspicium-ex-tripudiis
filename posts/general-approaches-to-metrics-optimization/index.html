@@ -104,9 +104,9 @@
         
 
     </header><div class="e-content entry-content" itemprop="articleBody text">
-    <div id="outline-container-orgb3d5141" class="outline-2">
-<h2 id="orgb3d5141">What do we mean by <i>loss</i> and <i>metric</i>?</h2>
-<div class="outline-text-2" id="text-orgb3d5141">
+    <div id="outline-container-orgb424731" class="outline-2">
+<h2 id="orgb424731">What do we mean by <i>loss</i> and <i>metric</i>?</h2>
+<div class="outline-text-2" id="text-orgb424731">
 <ul class="org-ul">
 <li>the <code>metric</code> is what we <i>want</i> to optimize - but we sometimes don't really know how to optimize this, this is just how we evaluate the model in the end</li>
 <li>
@@ -114,9 +114,9 @@
 </ul>
 </div>
 </div>
-<div id="outline-container-org3cbfad2" class="outline-2">
-<h2 id="org3cbfad2">How do you optimize the target metric?</h2>
-<div class="outline-text-2" id="text-org3cbfad2">
+<div id="outline-container-org149a4af" class="outline-2">
+<h2 id="org149a4af">How do you optimize the target metric?</h2>
+<div class="outline-text-2" id="text-org149a4af">
 <ul class="org-ul">
 <li>In some cases you can just use them (e.g. <i>MSE</i>, <i>logloss</i>)</li>
 <li>In some cases you need to do a preprocessing training step with another metric
@@ -125,9 +125,9 @@
 </ul>
 </div>
 </div>
-<div id="outline-container-org9202920" class="outline-2">
-<h2 id="org9202920">Early Stopping</h2>
-<div class="outline-text-2" id="text-org9202920">
+<div id="outline-container-orge307b52" class="outline-2">
+<h2 id="orge307b52">Early Stopping</h2>
+<div class="outline-text-2" id="text-orge307b52">
 <p>
 To work around these problems, use two metrics <i>m1</i> and <i>m2</i> and optimize on metric <i>m1</i> while monitoring <i>m2</i>, then stop when <i>m2</i> is optimal.
 </p>

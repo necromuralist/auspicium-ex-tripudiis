@@ -104,13 +104,26 @@
         
 
     </header><div class="e-content entry-content" itemprop="articleBody text">
-    <div id="outline-container-org4cc9eab" class="outline-2">
-<h2 id="org4cc9eab">Mean Encoding</h2>
-<div class="outline-text-2" id="text-org4cc9eab">
+    <div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgadd2c85">Mean Encoding</a></li>
+<li><a href="#org77a5a30">Regularization</a></li>
+<li><a href="#org9760b17">Generalizations and Extensions</a></li>
+<li><a href="#orgab891d5">Summary</a></li>
+<li><a href="#org3615e64">Quiz</a></li>
+</ul>
 </div>
-<div id="outline-container-org3e0ad37" class="outline-3">
-<h3 id="org3e0ad37">Introduction</h3>
-<div class="outline-text-3" id="text-org3e0ad37">
+</div>
+
+<div id="outline-container-orgadd2c85" class="outline-2">
+<h2 id="orgadd2c85">Mean Encoding</h2>
+<div class="outline-text-2" id="text-orgadd2c85">
+</div>
+<div id="outline-container-org21cce8e" class="outline-3">
+<h3 id="org21cce8e">Introduction</h3>
+<div class="outline-text-3" id="text-org21cce8e">
 <ul class="org-ul">
 <li>also called target encoding and likelihood encoding</li>
 </ul>
@@ -118,17 +131,17 @@
 It is a way to encode a categorical feature. Uses the fraction of times the feature is 1 out of all the times the feature is in the data set (for binary classification).
 </p>
 </div>
-<div id="outline-container-org3ee9e19" class="outline-4">
-<h4 id="org3ee9e19">Why does it work?</h4>
-<div class="outline-text-4" id="text-org3ee9e19">
+<div id="outline-container-org9ff4331" class="outline-4">
+<h4 id="org9ff4331">Why does it work?</h4>
+<div class="outline-text-4" id="text-org9ff4331">
 <p>
 Unlike regular encoding, which has no real meaning to the labels, mean encoding imposes an ordering. This allows you to reduce your loss while using shorter trees.
 </p>
 </div>
 </div>
-<div id="outline-container-org5b844a5" class="outline-4">
-<h4 id="org5b844a5">How do you calculate it?</h4>
-<div class="outline-text-4" id="text-org5b844a5">
+<div id="outline-container-orgcf95709" class="outline-4">
+<h4 id="orgcf95709">How do you calculate it?</h4>
+<div class="outline-text-4" id="text-orgcf95709">
 <p>
 There are multiple ways.
 </p>
@@ -140,9 +153,9 @@ There are multiple ways.
 </ul>
 </div>
 </div>
-<div id="outline-container-org3be6aa5" class="outline-4">
-<h4 id="org3be6aa5">When does it fail?</h4>
-<div class="outline-text-4" id="text-org3be6aa5">
+<div id="outline-container-orge68ab58" class="outline-4">
+<h4 id="orge68ab58">When does it fail?</h4>
+<div class="outline-text-4" id="text-orge68ab58">
 <p>
 If you have lots of feature instances with few cases it will tend to overfit.
 </p>
@@ -150,13 +163,13 @@ If you have lots of feature instances with few cases it will tend to overfit.
 </div>
 </div>
 </div>
-<div id="outline-container-org352fd35" class="outline-2">
-<h2 id="org352fd35">Regularization</h2>
-<div class="outline-text-2" id="text-org352fd35">
+<div id="outline-container-org77a5a30" class="outline-2">
+<h2 id="org77a5a30">Regularization</h2>
+<div class="outline-text-2" id="text-org77a5a30">
 </div>
-<div id="outline-container-orgc818674" class="outline-3">
-<h3 id="orgc818674">Four Types</h3>
-<div class="outline-text-3" id="text-orgc818674">
+<div id="outline-container-orgccf5d20" class="outline-3">
+<h3 id="orgccf5d20">Four Types</h3>
+<div class="outline-text-3" id="text-orgccf5d20">
 <ul class="org-ul">
 <li>Cross-validation loop inside the training data</li>
 <li>Smoothing</li>
@@ -165,9 +178,9 @@ If you have lots of feature instances with few cases it will tend to overfit.
 </ul>
 </div>
 </div>
-<div id="outline-container-orgb07e97c" class="outline-3">
-<h3 id="orgb07e97c">Cross Validation</h3>
-<div class="outline-text-3" id="text-orgb07e97c">
+<div id="outline-container-orgf7a2f67" class="outline-3">
+<h3 id="orgf7a2f67">Cross Validation</h3>
+<div class="outline-text-3" id="text-orgf7a2f67">
 <ul class="org-ul">
 <li>Usually 4 or 5 folds are enough</li>
 <li>Need to watch out for extreme cases like leave-out-one (LOO)</li>
@@ -196,9 +209,9 @@ Here's an example of this method using sklearn.
 </pre></div>
 </div>
 </div>
-<div id="outline-container-org4d61d88" class="outline-3">
-<h3 id="org4d61d88">Smoothing</h3>
-<div class="outline-text-3" id="text-org4d61d88">
+<div id="outline-container-org3e5a46c" class="outline-3">
+<h3 id="org3e5a46c">Smoothing</h3>
+<div class="outline-text-3" id="text-org3e5a46c">
 <p>
 Use a value \(\alpha\) to control the amount of regularization. This isn't a regularization method in and of itself, you use it with other methods.
 </p>
@@ -211,17 +224,17 @@ Use a value \(\alpha\) to control the amount of regularization. This isn't a reg
 </div>
 </div>
 
-<div id="outline-container-orgb968ebe" class="outline-3">
-<h3 id="orgb968ebe">Noise</h3>
-<div class="outline-text-3" id="text-orgb968ebe">
+<div id="outline-container-orgfb0c27c" class="outline-3">
+<h3 id="orgfb0c27c">Noise</h3>
+<div class="outline-text-3" id="text-orgfb0c27c">
 <p>
 Adding noise degrades the quality of the encoding in the training data. This is usually used with <i>leave-one-out</i> encoding to prevent overfitting. You have to figure out how much noise to add through experimentation.
 </p>
 </div>
 </div>
-<div id="outline-container-org3540a36" class="outline-3">
-<h3 id="org3540a36">Expanding Mean</h3>
-<div class="outline-text-3" id="text-org3540a36">
+<div id="outline-container-org9c8c5b1" class="outline-3">
+<h3 id="org9c8c5b1">Expanding Mean</h3>
+<div class="outline-text-3" id="text-org9c8c5b1">
 <p>
 This introduces the least amount of leakage from the target variable and doesn't require hyper-parameters for you to tune. The downside is that the encoding quality is irregular. There is a built-in implementation in the <code>CatBoost</code> library.
 </p>
@@ -237,39 +250,39 @@ Here's a pandas implementation.
 </div>
 </div>
 
-<div id="outline-container-org3dfa2ea" class="outline-3">
-<h3 id="org3dfa2ea">Which one should you use?</h3>
-<div class="outline-text-3" id="text-org3dfa2ea">
+<div id="outline-container-org9d59436" class="outline-3">
+<h3 id="org9d59436">Which one should you use?</h3>
+<div class="outline-text-3" id="text-org9d59436">
 <p>
 Cross Validation Loops and Expanding Means are the most practical to use.
 </p>
 </div>
 </div>
 </div>
-<div id="outline-container-org282ecdb" class="outline-2">
-<h2 id="org282ecdb">Generalizations and Extensions</h2>
-<div class="outline-text-2" id="text-org282ecdb">
+<div id="outline-container-org9760b17" class="outline-2">
+<h2 id="org9760b17">Generalizations and Extensions</h2>
+<div class="outline-text-2" id="text-org9760b17">
 </div>
-<div id="outline-container-orgca49111" class="outline-3">
-<h3 id="orgca49111">Regression and Multiclass</h3>
+<div id="outline-container-orge5087d2" class="outline-3">
+<h3 id="orge5087d2">Regression and Multiclass</h3>
 </div>
 </div>
-<div id="outline-container-orgdd2ab5b" class="outline-2">
-<h2 id="orgdd2ab5b">Summary</h2>
-<div class="outline-text-2" id="text-orgdd2ab5b">
+<div id="outline-container-orgab891d5" class="outline-2">
+<h2 id="orgab891d5">Summary</h2>
+<div class="outline-text-2" id="text-orgab891d5">
 </div>
-<div id="outline-container-org2798f81" class="outline-3">
-<h3 id="org2798f81">Advantages</h3>
-<div class="outline-text-3" id="text-org2798f81">
+<div id="outline-container-org38ec195" class="outline-3">
+<h3 id="org38ec195">Advantages</h3>
+<div class="outline-text-3" id="text-org38ec195">
 <ul class="org-ul">
 <li>Compact transformation of categorical variables</li>
 <li>Powerful basis for feature engineering</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orgae3a24b" class="outline-3">
-<h3 id="orgae3a24b">Disadvantages</h3>
-<div class="outline-text-3" id="text-orgae3a24b">
+<div id="outline-container-orga2b327f" class="outline-3">
+<h3 id="orga2b327f">Disadvantages</h3>
+<div class="outline-text-3" id="text-orga2b327f">
 <ul class="org-ul">
 <li>Needs careful validation, it's easy to overfit</li>
 <li>Only certain data sets will show a significant improvement from using it</li>
@@ -278,13 +291,13 @@ Cross Validation Loops and Expanding Means are the most practical to use.
 </div>
 </div>
 
-<div id="outline-container-orgfdb8cbd" class="outline-2">
-<h2 id="orgfdb8cbd">Quiz</h2>
-<div class="outline-text-2" id="text-orgfdb8cbd">
+<div id="outline-container-org3615e64" class="outline-2">
+<h2 id="org3615e64">Quiz</h2>
+<div class="outline-text-2" id="text-org3615e64">
 </div>
-<div id="outline-container-org2cc30be" class="outline-3">
-<h3 id="org2cc30be">One</h3>
-<div class="outline-text-3" id="text-org2cc30be">
+<div id="outline-container-orga93abd3" class="outline-3">
+<h3 id="orga93abd3">One</h3>
+<div class="outline-text-3" id="text-orga93abd3">
 <p>
 What might be an indicator that mean encoding would be useful?
 </p>
@@ -298,9 +311,9 @@ What might be an indicator that mean encoding would be useful?
 </ul>
 </div>
 </div>
-<div id="outline-container-org0a6194a" class="outline-3">
-<h3 id="org0a6194a">Two</h3>
-<div class="outline-text-3" id="text-org0a6194a">
+<div id="outline-container-org6ded060" class="outline-3">
+<h3 id="org6ded060">Two</h3>
+<div class="outline-text-3" id="text-org6ded060">
 <p>
 What is the purpose of regularization in mean encoding?
 </p>
@@ -314,9 +327,9 @@ What is the purpose of regularization in mean encoding?
 </ul>
 </div>
 </div>
-<div id="outline-container-org1c747b8" class="outline-3">
-<h3 id="org1c747b8">Three</h3>
-<div class="outline-text-3" id="text-org1c747b8">
+<div id="outline-container-orgd2ab262" class="outline-3">
+<h3 id="orgd2ab262">Three</h3>
+<div class="outline-text-3" id="text-orgd2ab262">
 <p>
 What is the correct form of validation when using mean encoding?
 </p>
@@ -330,16 +343,16 @@ What is the correct form of validation when using mean encoding?
 </ul>
 </div>
 </div>
-<div id="outline-container-org6aa27d3" class="outline-3">
-<h3 id="org6aa27d3">Four</h3>
-<div class="outline-text-3" id="text-org6aa27d3">
+<div id="outline-container-org52cfcf2" class="outline-3">
+<h3 id="org52cfcf2">Four</h3>
+<div class="outline-text-3" id="text-org52cfcf2">
 <p>
 Suppose we have a data frame (<code>df</code>) with a categorical variable named <code>item_id</code> and a target variable called <code>target</code>.
 We create two different mean encodings:
 </p>
 
 <ol class="org-ol">
-<li>via df["item<sub>id</sub><sub>encoded1</sub>"] = df.groupby("item<sub>id</sub>")["target"].transform("mean")</li>
+<li>via df["item_id_encoded1"] = df.groupby("item_id")["target"].transform("mean")</li>
 <li>Via One Hot Encoding <code>item_id</code>, fitting a linear regression on the encoding and the calculating <code>item_id_encoded2</code> as a prediction from this regression on the same data.</li>
 
 <li class="on">

@@ -1,46 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about metrics notes)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/metrics-notes.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Tue, 25 Sep 2018 21:43:47 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Metrics</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/metrics/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about metrics notes)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/metrics-notes.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Tue, 25 Sep 2018 23:01:14 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Metrics</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/metrics/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
 &lt;h2&gt;Table of Contents&lt;/h2&gt;
 &lt;div id="text-table-of-contents"&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/metrics/#orga4dac78"&gt;About Metrics&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/metrics/#org1c58ab3"&gt;The Most Common Metrics&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/metrics/#org8eb1eb2"&gt;About Metrics&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/metrics/#org2c4a7ae"&gt;The Most Common Metrics&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orga4dac78" class="outline-2"&gt;
-&lt;h2 id="orga4dac78"&gt;About Metrics&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orga4dac78"&gt;
+&lt;div id="outline-container-org8eb1eb2" class="outline-2"&gt;
+&lt;h2 id="org8eb1eb2"&gt;About Metrics&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org8eb1eb2"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org3f23f45" class="outline-3"&gt;
-&lt;h3 id="org3f23f45"&gt;What are metrics?&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org3f23f45"&gt;
+&lt;div id="outline-container-org9a7fe08" class="outline-3"&gt;
+&lt;h3 id="org9a7fe08"&gt;What are metrics?&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org9a7fe08"&gt;
 &lt;p&gt;
 Metrics are numeric values that you are trying to optimize - they are how your model is graded.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orge0acf78" class="outline-3"&gt;
-&lt;h3 id="orge0acf78"&gt;Why are there so many metrics?&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orge0acf78"&gt;
+&lt;div id="outline-container-org3729adb" class="outline-3"&gt;
+&lt;h3 id="org3729adb"&gt;Why are there so many metrics?&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org3729adb"&gt;
 &lt;p&gt;
 Each metric can tell you something different, so what metric you need depends on the problem you are trying to solve. For competitions, it is sometimes possible to do metrics probing just like you can sometimes do leaderboard probing to find peculiarities created by the chosen metric.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org1c58ab3" class="outline-2"&gt;
-&lt;h2 id="org1c58ab3"&gt;The Most Common Metrics&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org1c58ab3"&gt;
+&lt;div id="outline-container-org2c4a7ae" class="outline-2"&gt;
+&lt;h2 id="org2c4a7ae"&gt;The Most Common Metrics&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org2c4a7ae"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgd104bd3" class="outline-3"&gt;
-&lt;h3 id="orgd104bd3"&gt;Regression&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgd104bd3"&gt;
+&lt;div id="outline-container-org223f524" class="outline-3"&gt;
+&lt;h3 id="org223f524"&gt;Regression&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org223f524"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgdb9a946" class="outline-4"&gt;
-&lt;h4 id="orgdb9a946"&gt;Mean Squared Error&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-orgdb9a946"&gt;
+&lt;div id="outline-container-orged6f90e" class="outline-4"&gt;
+&lt;h4 id="orged6f90e"&gt;Mean Squared Error&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-orged6f90e"&gt;
 &lt;p&gt;
 This is the average of the square of the errors.
 \[
@@ -53,9 +53,9 @@ The target mean value is the best constant prediction.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org5248025" class="outline-4"&gt;
-&lt;h4 id="org5248025"&gt;Root Mean Squared Error&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org5248025"&gt;
+&lt;div id="outline-container-orgf77bd33" class="outline-4"&gt;
+&lt;h4 id="orgf77bd33"&gt;Root Mean Squared Error&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-orgf77bd33"&gt;
 &lt;p&gt;
 This is the square root of the mean squared error.
 &lt;/p&gt;
@@ -66,17 +66,17 @@ This is the square root of the mean squared error.
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgf96fba4" class="outline-4"&gt;
-&lt;h4 id="orgf96fba4"&gt;R-squared&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-orgf96fba4"&gt;
+&lt;div id="outline-container-org14f6f0e" class="outline-4"&gt;
+&lt;h4 id="org14f6f0e"&gt;R-squared&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org14f6f0e"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;Optimizing r-squared is equivalent to optimizing MSE&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orge8653a1" class="outline-4"&gt;
-&lt;h4 id="orge8653a1"&gt;Mean Absolute Error&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-orge8653a1"&gt;
+&lt;div id="outline-container-org1ffb657" class="outline-4"&gt;
+&lt;h4 id="org1ffb657"&gt;Mean Absolute Error&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org1ffb657"&gt;
 &lt;p&gt;
 This is more common when you are explaining it to a non-statistician. It is also more robust. Mathematically, it isn't something that you can calculate the derivate for.
 &lt;/p&gt;
@@ -86,9 +86,9 @@ The target median is the best constant prediction.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org6b02d49" class="outline-4"&gt;
-&lt;h4 id="org6b02d49"&gt;MAE vs MSE&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org6b02d49"&gt;
+&lt;div id="outline-container-org40dc3c8" class="outline-4"&gt;
+&lt;h4 id="org40dc3c8"&gt;MAE vs MSE&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org40dc3c8"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;Outliers: use MAE&lt;/li&gt;
 &lt;li&gt;Unexpected Values that we should still care about (not true outliers (mistakes), just rare): use MSE&lt;/li&gt;

@@ -104,13 +104,13 @@
         
 
     </header><div class="e-content entry-content" itemprop="articleBody text">
-    <div id="outline-container-org19e5026" class="outline-2">
-<h2 id="org19e5026">(R)MSPE, MAPE, and (R)MSLE</h2>
-<div class="outline-text-2" id="text-org19e5026">
+    <div id="outline-container-orga06ea0a" class="outline-2">
+<h2 id="orga06ea0a">(R)MSPE, MAPE, and (R)MSLE</h2>
+<div class="outline-text-2" id="text-orga06ea0a">
 </div>
-<div id="outline-container-org1cf2c17" class="outline-3">
-<h3 id="org1cf2c17">An Off-By-One Example</h3>
-<div class="outline-text-3" id="text-org1cf2c17">
+<div id="outline-container-org0125661" class="outline-3">
+<h3 id="org0125661">An Off-By-One Example</h3>
+<div class="outline-text-3" id="text-org0125661">
 <p>
 Suppose we are predicting sales for two shops and the two shops have different sales volumes but our predictions for both cases are off by one. In this case our Mean-Squared-Error (MSE) might be the same, but they have a different significance.
 </p>
@@ -146,9 +146,9 @@ Suppose we are predicting sales for two shops and the two shops have different s
 </div>
 </div>
 </div>
-<div id="outline-container-orgc785c87" class="outline-2">
-<h2 id="orgc785c87">Root Mean Squared Percentage Error and Mean Absolute Percentage Error</h2>
-<div class="outline-text-2" id="text-orgc785c87">
+<div id="outline-container-orgc555c3a" class="outline-2">
+<h2 id="orgc555c3a">Root Mean Squared Percentage Error and Mean Absolute Percentage Error</h2>
+<div class="outline-text-2" id="text-orgc555c3a">
 <p>
 The MSE and Mean-Absolute-Error (MAE) are absolute errors which don't take into account how significant the error is. There are two relative errors,  Mean-Squared-Percentage-Error (MSPE) and Mean-Absolute-Percentage-Error (MAPE) that divide each error term by the actual value to give you a realive error instead of an absolute error.
 </p>
@@ -170,9 +170,9 @@ The MAPE will be inversely proportional to its target and the MSPE will be inver
 </p>
 </div>
 
-<div id="outline-container-orgdaad713" class="outline-3">
-<h3 id="orgdaad713">Optimal Constant Predictions</h3>
-<div class="outline-text-3" id="text-orgdaad713">
+<div id="outline-container-orgea5e0a2" class="outline-3">
+<h3 id="orgea5e0a2">Optimal Constant Predictions</h3>
+<div class="outline-text-3" id="text-orgea5e0a2">
 <p>
 The best constant prediction you can make when using the Mean Squared Error is to predict the mean of the target values. The best prediction you can make for the MSPE is to take a weighted mean of the target values. The best constant prediction you can make for the Mean Absolute Percentage Error is the weighted median.
 </p>
@@ -180,9 +180,9 @@ The best constant prediction you can make when using the Mean Squared Error is t
 </div>
 </div>
 
-<div id="outline-container-org35ea739" class="outline-2">
-<h2 id="org35ea739">Root Mean Squared Logarithmic Error (MSLE)</h2>
-<div class="outline-text-2" id="text-org35ea739">
+<div id="outline-container-orgf9c7416" class="outline-2">
+<h2 id="orgf9c7416">Root Mean Squared Logarithmic Error (MSLE)</h2>
+<div class="outline-text-2" id="text-orgf9c7416">
 <p>
 \[
 MSLE = \sqrt{\frac{1}{N}\sum_{i=1}^N (\log (y_i + 1) - \log(\hat{y}_i + 1))^2}\\
