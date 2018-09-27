@@ -1,9 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about assignment)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/cat_assignment.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Tue, 25 Sep 2018 23:01:14 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Mean Encoding The Competition Data</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-org8b6abd8" class="outline-2"&gt;
-&lt;h2 id="org8b6abd8"&gt;Introduction&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org8b6abd8"&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about assignment)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/cat_assignment.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Thu, 27 Sep 2018 02:22:31 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Mean Encoding The Competition Data</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
+&lt;h2&gt;Table of Contents&lt;/h2&gt;
+&lt;div id="text-table-of-contents"&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/#org87fc028"&gt;Introduction&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/#org63f6b0f"&gt;General tips&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/#orgd9abb4b"&gt;Read In the Data&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/#org02fc65c"&gt;Aggregate data&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/#org3f25deb"&gt;Mean encodings without regularization&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/#orgcdaa0bf"&gt;Method 2&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/#orgb7c5dbc"&gt;1. KFold scheme&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-org87fc028" class="outline-2"&gt;
+&lt;h2 id="org87fc028"&gt;Introduction&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org87fc028"&gt;
 &lt;p&gt;
-In this programming assignment you will be working with `1C` dataset from the final competition. You are asked to encode `item&lt;sub&gt;id&lt;/sub&gt;` in 4 different ways:
+In this programming assignment you will be working with the &lt;i&gt;1C&lt;/i&gt; dataset from the final competition. You are asked to encode the &lt;code&gt;item_id&lt;/code&gt; in 4 different ways:
 &lt;/p&gt;
 
 &lt;ol class="org-ol"&gt;
@@ -14,163 +29,272 @@ In this programming assignment you will be working with `1C` dataset from the fi
 &lt;/ol&gt;
 
 &lt;p&gt;
-&lt;b&gt;&lt;b&gt;You will need to submit&lt;/b&gt;&lt;/b&gt; the correlation coefficient between resulting encoding and target variable up to 4 decimal places.
+&lt;b&gt;&lt;b&gt;You will need to submit&lt;/b&gt;&lt;/b&gt; the correlation coefficient between the resulting encoding and the target variable up to 4 decimal places.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org32f5d8a" class="outline-2"&gt;
-&lt;h2 id="org32f5d8a"&gt;General tips&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org32f5d8a"&gt;
+&lt;div id="outline-container-org63f6b0f" class="outline-2"&gt;
+&lt;h2 id="org63f6b0f"&gt;General tips&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org63f6b0f"&gt;
 &lt;ul class="org-ul"&gt;
-&lt;li&gt;Fill NANs in the encoding with `0.3343`.&lt;/li&gt;
+&lt;li&gt;Fill NANs in the encoding with &lt;code&gt;0.3343&lt;/code&gt;.&lt;/li&gt;
 &lt;li&gt;Some encoding schemes depend on sorting order, so in order to avoid confusion, please use the following code snippet to construct the data frame. This snippet also implements mean encoding without regularization.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;import pandas as pd
-import numpy as np
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# python standard library
 from itertools import product
-from grader import Grader
+
+# pypi
+import pandas
+import numpy
+
+# this course (github)
+from hse_graders.assignment_3.grader import Grader
+
+# this project
+from kaggler.course.data import Data
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-orgd9abb4b" class="outline-2"&gt;
+&lt;h2 id="orgd9abb4b"&gt;Read In the Data&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgd9abb4b"&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sales = Data().sales_training_data
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-org02fc65c" class="outline-2"&gt;
+&lt;h2 id="org02fc65c"&gt;Aggregate data&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org02fc65c"&gt;
+&lt;p&gt;
+Since the competition task is to make a monthly prediction, we need to aggregate the data to montly level before doing any encodings. The following code-cell serves just that purpose.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;index_cols = ['shop_id', 'item_id', 'date_block_num']
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;
+For every month we create a grid from all shops/items combinations from that month.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;grid = [] 
+for block_num in sales['date_block_num'].unique():
+    cur_shops = sales[sales['date_block_num']==block_num]['shop_id'].unique()
+    cur_items = sales[sales['date_block_num']==block_num]['item_id'].unique()
+    grid.append(numpy.array(list(product(*[cur_shops, cur_items, [block_num]])),dtype='int32'))
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;
+Now turn the grid into a pandas dataframe.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;grid = pandas.DataFrame(numpy.vstack(grid), columns = index_cols,dtype=numpy.int32)
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;
-sales = pd.read&lt;sub&gt;csv&lt;/sub&gt;('../readonly/final&lt;sub&gt;project&lt;/sub&gt;&lt;sub&gt;data&lt;/sub&gt;/sales&lt;sub&gt;train.csv.gz&lt;/sub&gt;')
+Get the aggregated values for (&lt;code&gt;shop_id&lt;/code&gt;, &lt;code&gt;item_id&lt;/code&gt;, and &lt;code&gt;month&lt;/code&gt;).
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;grouped = sales.groupby(index_cols, as_index=False).agg({'item_cnt_day':{'target':'sum'}})
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;
+Fix the column names.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;grouped.columns = [column[0] if column[-1]=='' else column[-1] for column in grouped.columns.values]
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;
+Join the aggregated data to the grid.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;all_data = pandas.merge(grid, grouped, how='left', on=index_cols).fillna(0)
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;
+Sort the data.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;all_data.sort_values(['date_block_num','shop_id','item_id'], inplace=True)
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-org3f25deb" class="outline-2"&gt;
+&lt;h2 id="org3f25deb"&gt;Mean encodings without regularization&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org3f25deb"&gt;
+&lt;p&gt;
+Now that we have done the techinical work, we are ready to actually &lt;b&gt;mean encode&lt;/b&gt; the desired &lt;code&gt;item_id&lt;/code&gt; variable. 
+&lt;/p&gt;
+
+&lt;p&gt;
+Here are two ways to implement mean encoding features &lt;b&gt;without&lt;/b&gt; any regularization. You can use this code as a starting point to implement regularized techniques. 
+&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-orgc0f72a9" class="outline-3"&gt;
+&lt;h3 id="orgc0f72a9"&gt;Method 1:  Calculate a mapping: {item_id: target_mean}&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgc0f72a9"&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;item_id_target_mean = all_data.groupby('item_id').target.mean()
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;
+In our non-regularized case we just &lt;b&gt;map&lt;/b&gt; the computed means to the &lt;code&gt;item_id&lt;/code&gt;'s.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;all_data['item_target_enc'] = all_data['item_id'].map(item_id_target_mean)
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-org7666e42" class="outline-3"&gt;
+&lt;h3 id="org7666e42"&gt;Fill NaNs&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org7666e42"&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;all_data['item_target_enc'].fillna(0.3343, inplace=True) 
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-org4790f2f" class="outline-3"&gt;
+&lt;h3 id="org4790f2f"&gt;Print correlation&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org4790f2f"&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;encoded_feature = all_data['item_target_enc'].values
+print(numpy.corrcoef(all_data['target'].values, encoded_feature)[0][1])
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;
+0.48303869886216977
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-orgcdaa0bf" class="outline-2"&gt;
+&lt;h2 id="orgcdaa0bf"&gt;Method 2&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgcdaa0bf"&gt;
+&lt;p&gt;
+Unlike the  &lt;code&gt;.target.mean()&lt;/code&gt; function, &lt;code&gt;transform&lt;/code&gt; will return a dataframe with an index like in &lt;code&gt;all_data&lt;/code&gt;.
+Basically this single line of code is equivalent to the first two lines from of Method 1.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;all_data['item_target_enc'] = all_data.groupby('item_id')['target'].transform('mean')
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-orgbbba154" class="outline-3"&gt;
+&lt;h3 id="orgbbba154"&gt;Fill NaNs&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgbbba154"&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;all_data['item_target_enc'].fillna(0.3343, inplace=True) 
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-orgccb2255" class="outline-3"&gt;
+&lt;h3 id="orgccb2255"&gt;Print correlation&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgccb2255"&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;encoded_feature = all_data['item_target_enc'].values
+print(numpy.corrcoef(all_data['target'].values, encoded_feature)[0][1])
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;
+0.48303869886216977
 &lt;/p&gt;
 
 
 &lt;p&gt;
-index&lt;sub&gt;cols&lt;/sub&gt; = ['shop&lt;sub&gt;id&lt;/sub&gt;', 'item&lt;sub&gt;id&lt;/sub&gt;', 'date&lt;sub&gt;block&lt;/sub&gt;&lt;sub&gt;num&lt;/sub&gt;']
+See the printed value? It is the correlation coefficient between the target variable and your new encoded feature. You need to &lt;b&gt;&lt;b&gt;compute the correlation coefficient&lt;/b&gt;&lt;/b&gt; between the encodings that you will implement and &lt;b&gt;&lt;b&gt;submit those to coursera&lt;/b&gt;&lt;/b&gt;.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;grader = Grader()
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-orgb7c5dbc" class="outline-2"&gt;
+&lt;h2 id="orgb7c5dbc"&gt;1. KFold scheme&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgb7c5dbc"&gt;
+&lt;p&gt;
+This is Explained starting at 41 seconds into the &lt;a href="https://www.coursera.org/learn/competitive-data-science/lecture/LGYQ2/regularization"&gt;Regularization lecture&lt;/a&gt;.
 &lt;/p&gt;
 
 &lt;p&gt;
-grid = [] 
-for block&lt;sub&gt;num&lt;/sub&gt; in sales['date&lt;sub&gt;block&lt;/sub&gt;&lt;sub&gt;num&lt;/sub&gt;'].unique():
-    cur&lt;sub&gt;shops&lt;/sub&gt; = sales[sales['date&lt;sub&gt;block&lt;/sub&gt;&lt;sub&gt;num&lt;/sub&gt;']==block&lt;sub&gt;num&lt;/sub&gt;]['shop&lt;sub&gt;id&lt;/sub&gt;'].unique()
-    cur&lt;sub&gt;items&lt;/sub&gt; = sales[sales['date&lt;sub&gt;block&lt;/sub&gt;&lt;sub&gt;num&lt;/sub&gt;']==block&lt;sub&gt;num&lt;/sub&gt;]['item&lt;sub&gt;id&lt;/sub&gt;'].unique()
-    grid.append(np.array(list(product(*[cur&lt;sub&gt;shops&lt;/sub&gt;, cur&lt;sub&gt;items&lt;/sub&gt;, [block&lt;sub&gt;num&lt;/sub&gt;]])),dtype='int32'))
+First implement the KFold scheme with five folds. Use KFold(5) from sklearn.model_selection. 
 &lt;/p&gt;
 
-&lt;p&gt;
-#turn the grid into pandas dataframe
-grid = pd.DataFrame(np.vstack(grid), columns = index&lt;sub&gt;cols,dtype&lt;/sub&gt;=np.int32)
-&lt;/p&gt;
+&lt;ol class="org-ol"&gt;
+&lt;li&gt;Split your data in 5 folds with &lt;a href="http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.KFold.html"&gt;sklearn.model_selection.KFold&lt;/a&gt; with &lt;code&gt;shuffle=False&lt;/code&gt; (the default).&lt;/li&gt;
+&lt;li&gt;Iterate through folds: use all but the current fold to calculate mean target for each level `item_id`, and  fill the current fold.&lt;/li&gt;
+&lt;/ol&gt;
 
 &lt;p&gt;
-#get aggregated values for (shop&lt;sub&gt;id&lt;/sub&gt;, item&lt;sub&gt;id&lt;/sub&gt;, month)
-gb = sales.groupby(index&lt;sub&gt;cols,as&lt;/sub&gt;&lt;sub&gt;index&lt;/sub&gt;=False).agg({'item&lt;sub&gt;cnt&lt;/sub&gt;&lt;sub&gt;day&lt;/sub&gt;':{'target':'sum'}})
-&lt;/p&gt;
-
-&lt;p&gt;
-#fix column names
-gb.columns = [col[0] if col[-1]=='' else col[-1] for col in gb.columns.values]
-#join aggregated data to the grid
-all&lt;sub&gt;data&lt;/sub&gt; = pd.merge(grid,gb,how='left',on=index&lt;sub&gt;cols&lt;/sub&gt;).fillna(0)
-#sort the data
-all&lt;sub&gt;data.sort&lt;/sub&gt;&lt;sub&gt;values&lt;/sub&gt;(['date&lt;sub&gt;block&lt;/sub&gt;&lt;sub&gt;num&lt;/sub&gt;','shop&lt;sub&gt;id&lt;/sub&gt;','item&lt;sub&gt;id&lt;/sub&gt;'],inplace=True)
-&lt;/p&gt;
-
-
-&lt;p&gt;
-item&lt;sub&gt;id&lt;/sub&gt;&lt;sub&gt;target&lt;/sub&gt;&lt;sub&gt;mean&lt;/sub&gt; = all&lt;sub&gt;data.groupby&lt;/sub&gt;('item&lt;sub&gt;id&lt;/sub&gt;').target.mean()
-&lt;/p&gt;
-
-&lt;p&gt;
-all&lt;sub&gt;data&lt;/sub&gt;['item&lt;sub&gt;target&lt;/sub&gt;&lt;sub&gt;enc&lt;/sub&gt;'] = all&lt;sub&gt;data&lt;/sub&gt;['item&lt;sub&gt;id&lt;/sub&gt;'].map(item&lt;sub&gt;id&lt;/sub&gt;&lt;sub&gt;target&lt;/sub&gt;&lt;sub&gt;mean&lt;/sub&gt;)
-&lt;/p&gt;
-
-&lt;p&gt;
-all&lt;sub&gt;data&lt;/sub&gt;['item&lt;sub&gt;target&lt;/sub&gt;&lt;sub&gt;enc&lt;/sub&gt;'].fillna(0.3343, inplace=True) 
-&lt;/p&gt;
-
-&lt;p&gt;
-encoded&lt;sub&gt;feature&lt;/sub&gt; = all&lt;sub&gt;data&lt;/sub&gt;['item&lt;sub&gt;target&lt;/sub&gt;&lt;sub&gt;enc&lt;/sub&gt;'].values
-print(np.corrcoef(all&lt;sub&gt;data&lt;/sub&gt;['target'].values, encoded&lt;sub&gt;feature&lt;/sub&gt;)[0][1])
+See the &lt;b&gt;&lt;b&gt;Method 1&lt;/b&gt;&lt;/b&gt; from the example implementation. In particular learn what `map` and pd.Series.map functions do. They are pretty handy in many situations.
 &lt;/p&gt;
 
 
 &lt;p&gt;
-'''
-     Differently to `.target.mean()` function `transform` 
-   will return a dataframe with an index like in `all&lt;sub&gt;data&lt;/sub&gt;`.
-   Basically this single line of code is equivalent to the first two lines from of Method 1.
-'''
-all&lt;sub&gt;data&lt;/sub&gt;['item&lt;sub&gt;target&lt;/sub&gt;&lt;sub&gt;enc&lt;/sub&gt;'] = all&lt;sub&gt;data.groupby&lt;/sub&gt;('item&lt;sub&gt;id&lt;/sub&gt;')['target'].transform('mean')
-&lt;/p&gt;
-
-&lt;p&gt;
-all&lt;sub&gt;data&lt;/sub&gt;['item&lt;sub&gt;target&lt;/sub&gt;&lt;sub&gt;enc&lt;/sub&gt;'].fillna(0.3343, inplace=True) 
-&lt;/p&gt;
-
-&lt;p&gt;
-encoded&lt;sub&gt;feature&lt;/sub&gt; = all&lt;sub&gt;data&lt;/sub&gt;['item&lt;sub&gt;target&lt;/sub&gt;&lt;sub&gt;enc&lt;/sub&gt;'].values
-print(np.corrcoef(all&lt;sub&gt;data&lt;/sub&gt;['target'].values, encoded&lt;sub&gt;feature&lt;/sub&gt;)[0][1])
-&lt;/p&gt;
-
-
-&lt;p&gt;
-grader = Grader()
-&lt;/p&gt;
-
-
-&lt;p&gt;
-corr = np.corrcoef(all&lt;sub&gt;data&lt;/sub&gt;['target'].values, encoded&lt;sub&gt;feature&lt;/sub&gt;)[0][1]
+corr = np.corrcoef(all_data['target'].values, encoded_feature)[0][1]
 print(corr)
-grader.submit&lt;sub&gt;tag&lt;/sub&gt;('KFold&lt;sub&gt;scheme&lt;/sub&gt;', corr)
+grader.submit_tag('KFold_scheme', corr)
 &lt;/p&gt;
 
 
 &lt;p&gt;
-corr = np.corrcoef(all&lt;sub&gt;data&lt;/sub&gt;['target'].values, encoded&lt;sub&gt;feature&lt;/sub&gt;)[0][1]
+corr = np.corrcoef(all_data['target'].values, encoded_feature)[0][1]
 print(corr)
-grader.submit&lt;sub&gt;tag&lt;/sub&gt;('Leave-one-out&lt;sub&gt;scheme&lt;/sub&gt;', corr)
+grader.submit_tag('Leave-one-out_scheme', corr)
 &lt;/p&gt;
 
 
 &lt;p&gt;
-corr = np.corrcoef(all&lt;sub&gt;data&lt;/sub&gt;['target'].values, encoded&lt;sub&gt;feature&lt;/sub&gt;)[0][1]
+corr = np.corrcoef(all_data['target'].values, encoded_feature)[0][1]
 print(corr)
-grader.submit&lt;sub&gt;tag&lt;/sub&gt;('Smoothing&lt;sub&gt;scheme&lt;/sub&gt;', corr)
+grader.submit_tag('Smoothing_scheme', corr)
 &lt;/p&gt;
 
 
 &lt;p&gt;
-corr = np.corrcoef(all&lt;sub&gt;data&lt;/sub&gt;['target'].values, encoded&lt;sub&gt;feature&lt;/sub&gt;)[0][1]
+corr = np.corrcoef(all_data['target'].values, encoded_feature)[0][1]
 print(corr)
-grader.submit&lt;sub&gt;tag&lt;/sub&gt;('Expanding&lt;sub&gt;mean&lt;/sub&gt;&lt;sub&gt;scheme&lt;/sub&gt;', corr)
+grader.submit_tag('Expanding_mean_scheme', corr)
 &lt;/p&gt;
 
 
 &lt;p&gt;
-STUDENT&lt;sub&gt;EMAIL&lt;/sub&gt; = # EMAIL HERE
-STUDENT&lt;sub&gt;TOKEN&lt;/sub&gt; = # TOKEN HERE
+STUDENT_EMAIL = # EMAIL HERE
+STUDENT_TOKEN = # TOKEN HERE
 grader.status()
 &lt;/p&gt;
 
 
 &lt;p&gt;
-grader.submit(STUDENT&lt;sub&gt;EMAIL&lt;/sub&gt;, STUDENT&lt;sub&gt;TOKEN&lt;/sub&gt;)
+grader.submit(STUDENT_EMAIL, STUDENT_TOKEN)
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;</description><category>assignment competition encoding</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/</guid><pubDate>Mon, 24 Sep 2018 01:50:28 GMT</pubDate></item><item><title>Data Leakages</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
 &lt;h2&gt;Table of Contents&lt;/h2&gt;
 &lt;div id="text-table-of-contents"&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#orgbc4af4e"&gt;Introduction&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#org76330e2"&gt;Imports&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#orgfe7d7d2"&gt;Helpers&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#orgc6bca12"&gt;Load the data&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#orgd5824b1"&gt;EDA and Leakage Intuition&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#org19fd55d"&gt;Building a magic feature&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#orge37ace8"&gt;Bonus&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#org83fd432"&gt;What does it all mean then?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#org8db2b91"&gt;Introduction&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#orgfbf2705"&gt;Imports&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#org322bdd6"&gt;Helpers&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#org17f7c97"&gt;Load the data&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#org386dd7a"&gt;EDA and Leakage Intuition&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#org3b1b5b9"&gt;Building a magic feature&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#orgdf0e4e8"&gt;Bonus&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#org4c6f2ee"&gt;What does it all mean then?&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgbc4af4e" class="outline-2"&gt;
-&lt;h2 id="orgbc4af4e"&gt;Introduction&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgbc4af4e"&gt;
+&lt;div id="outline-container-org8db2b91" class="outline-2"&gt;
+&lt;h2 id="org8db2b91"&gt;Introduction&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org8db2b91"&gt;
 &lt;p&gt;
 In this programming assignment we will illustrate a very severe data leakage, of the sort that can often be found in competitions. The task is to score the pairs of objects, i.e. predict &lt;i&gt;1&lt;/i&gt; if two objects belong to the same class and &lt;i&gt;0&lt;/i&gt; otherwise. 
 &lt;/p&gt;
@@ -181,9 +305,9 @@ The data in this assignment is taken from a real competition, and  &lt;b&gt;we w
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org76330e2" class="outline-2"&gt;
-&lt;h2 id="org76330e2"&gt;Imports&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org76330e2"&gt;
+&lt;div id="outline-container-orgfbf2705" class="outline-2"&gt;
+&lt;h2 id="orgfbf2705"&gt;Imports&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgfbf2705"&gt;
 &lt;p&gt;
 During the importing of pandas (or scipy) you get a warning about a potential binary incompatibility. According to &lt;a href="https://stackoverflow.com/questions/40845304/runtimewarning-numpy-dtype-size-changed-may-indicate-binary-incompatibility"&gt;Stack Overflow&lt;/a&gt; you can safely ignore this, so we'll use &lt;a href="https://docs.python.org/3/library/warnings.html"&gt;warnings&lt;/a&gt; to suppress the messages, just so it doesn't keep bringing them up everytime I run this notebook.
 &lt;/p&gt;
@@ -211,13 +335,13 @@ During the importing of pandas (or scipy) you get a warning about a potential bi
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgfe7d7d2" class="outline-2"&gt;
-&lt;h2 id="orgfe7d7d2"&gt;Helpers&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgfe7d7d2"&gt;
+&lt;div id="outline-container-org322bdd6" class="outline-2"&gt;
+&lt;h2 id="org322bdd6"&gt;Helpers&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org322bdd6"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgf986b4d" class="outline-3"&gt;
-&lt;h3 id="orgf986b4d"&gt;Paths&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgf986b4d"&gt;
+&lt;div id="outline-container-orgbd43ef5" class="outline-3"&gt;
+&lt;h3 id="orgbd43ef5"&gt;Paths&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgbd43ef5"&gt;
 &lt;p&gt;
 Since I'm doing this as posts in nikola, but I'm trying to keep all non-post files outside of the &lt;code&gt;posts&lt;/code&gt; folder, I'm going to use a class to keep the paths to the output (submission) files straight.
 &lt;/p&gt;
@@ -268,9 +392,9 @@ Since I'm doing this as posts in nikola, but I'm trying to keep all non-post fil
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgd46dd53" class="outline-3"&gt;
-&lt;h3 id="orgd46dd53"&gt;Data&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgd46dd53"&gt;
+&lt;div id="outline-container-orgc38f5eb" class="outline-3"&gt;
+&lt;h3 id="orgc38f5eb"&gt;Data&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgc38f5eb"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;TestSet&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
     &lt;span class="sd"&gt;"""Loads the test-set data&lt;/span&gt;
 
@@ -296,9 +420,9 @@ Since I'm doing this as posts in nikola, but I'm trying to keep all non-post fil
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgc6bca12" class="outline-2"&gt;
-&lt;h2 id="orgc6bca12"&gt;Load the data&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgc6bca12"&gt;
+&lt;div id="outline-container-org17f7c97" class="outline-2"&gt;
+&lt;h2 id="org17f7c97"&gt;Load the data&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org17f7c97"&gt;
 &lt;p&gt;
 Let's load the test data. Note that we don't have any training data here, just test data. Moreover, &lt;i&gt;we will not use any features of the test set&lt;/i&gt;. All we need to solve this task is the file with the indices for the pairs that we need to compare.
 &lt;/p&gt;
@@ -357,9 +481,9 @@ So this doesn't appear to be a randomized data set. The first half of the Second
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgd5824b1" class="outline-2"&gt;
-&lt;h2 id="orgd5824b1"&gt;EDA and Leakage Intuition&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgd5824b1"&gt;
+&lt;div id="outline-container-org386dd7a" class="outline-2"&gt;
+&lt;h2 id="org386dd7a"&gt;EDA and Leakage Intuition&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org386dd7a"&gt;
 &lt;p&gt;
 As we already know, the key to discovering data leakages is careful Exploratory Data Analysis (EDA). So let's start our work with some basic data exploration and build an intuition about the leakage.
 &lt;/p&gt;
@@ -464,17 +588,17 @@ Another example - in a &lt;a href="https://www.kaggle.com/c/quora-question-pairs
 &lt;/p&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org6d1dc6b" class="outline-3"&gt;
-&lt;h3 id="org6d1dc6b"&gt;Probing the Leaderboard&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org6d1dc6b"&gt;
+&lt;div id="outline-container-org5bd754c" class="outline-3"&gt;
+&lt;h3 id="org5bd754c"&gt;Probing the Leaderboard&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org5bd754c"&gt;
 &lt;p&gt;
 Finally, let's see what fraction of the ID-pairs have a class of `1`. To do this we just need to submit a constant prediction (all ones) and check the accuracy the grader reports. Create a dataframe with columns `pairId` and `Prediction`, fill it and export it to a `.csv` file. Then submit to the Coursera grader and examine the grader's output to get the fraction of 1s in the test-set.
 &lt;/p&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orge685ec7" class="outline-4"&gt;
-&lt;h4 id="orge685ec7"&gt;All Ones&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-orge685ec7"&gt;
+&lt;div id="outline-container-orgb9976b2" class="outline-4"&gt;
+&lt;h4 id="orgb9976b2"&gt;All Ones&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-orgb9976b2"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;paths&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Paths&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;span class="n"&gt;all_ones&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="p"&gt;[[&lt;/span&gt;&lt;span class="s2"&gt;"pairId"&lt;/span&gt;&lt;span class="p"&gt;]]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;copy&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;span class="n"&gt;all_ones&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;"Prediction"&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;all_ones&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
@@ -510,9 +634,9 @@ Now think - how we can exploit this fact? What is the leak here? If you get it n
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org204ab5d" class="outline-4"&gt;
-&lt;h4 id="org204ab5d"&gt;All Zeros&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org204ab5d"&gt;
+&lt;div id="outline-container-org1da1a3a" class="outline-4"&gt;
+&lt;h4 id="org1da1a3a"&gt;All Zeros&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org1da1a3a"&gt;
 &lt;p&gt;
 Although we're told that this was a binary data set (and you could check it just by printing out the unique values), I sort of flaked and submitted a set where all the pairs were classified as zeros anyway. Here's what happened.
 &lt;/p&gt;
@@ -551,17 +675,17 @@ So it appears we've confirmed that the dataset is binary, with half the outputs 
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org19fd55d" class="outline-2"&gt;
-&lt;h2 id="org19fd55d"&gt;Building a magic feature&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org19fd55d"&gt;
+&lt;div id="outline-container-org3b1b5b9" class="outline-2"&gt;
+&lt;h2 id="org3b1b5b9"&gt;Building a magic feature&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org3b1b5b9"&gt;
 &lt;p&gt;
 In this section we will build a magic feature that will solve the problem almost perfectly. The instructions will lead you to the correct solution, but please, try to explain the purpose of the steps we do to yourself – it is very important.
 &lt;/p&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgd40cd31" class="outline-3"&gt;
-&lt;h3 id="orgd40cd31"&gt;Incidence matrix&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgd40cd31"&gt;
+&lt;div id="outline-container-orgcd2a109" class="outline-3"&gt;
+&lt;h3 id="orgcd2a109"&gt;Incidence matrix&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgcd2a109"&gt;
 &lt;p&gt;
 First, we need to build an &lt;a href="https://en.wikipedia.org/wiki/Incidence_matrix"&gt;incidence matrix&lt;/a&gt;. You can think of pairs `(FirstId, SecondId)` as edges in an undirected graph. 
 &lt;/p&gt;
@@ -583,9 +707,9 @@ For example, you can use this constructor: `scipy.sparse.coo_matrix((data, (i, j
 &lt;/p&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgc422d86" class="outline-4"&gt;
-&lt;h4 id="orgc422d86"&gt;De-duplicating the Data&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-orgc422d86"&gt;
+&lt;div id="outline-container-orgb1cd2bf" class="outline-4"&gt;
+&lt;h4 id="orgb1cd2bf"&gt;De-duplicating the Data&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-orgb1cd2bf"&gt;
 &lt;p&gt;
 The test data turns out to have duplicate ID pairs, which will cause our incidence matrix to produce numbers greater than 1 if we leave them in, so we need to remove them (using the &lt;a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.duplicated.html"&gt;duplicated&lt;/a&gt; method).
 &lt;/p&gt;
@@ -638,9 +762,9 @@ It is more convenient to have the incidence matrix in &lt;a href="https://docs.s
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgc18d901" class="outline-3"&gt;
-&lt;h3 id="orgc18d901"&gt;Now To Build the Magic Feature&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgc18d901"&gt;
+&lt;div id="outline-container-org2d7ea5a" class="outline-3"&gt;
+&lt;h3 id="org2d7ea5a"&gt;Now To Build the Magic Feature&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org2d7ea5a"&gt;
 &lt;p&gt;
 Why did we build the incidence matrix? We can think of the rows in this matrix as a representation for the objects. The `i-th` row is a representation for an object with `Id = i`. Then, to measure the similarity between two objects we can measure similarity between their representations. And we will see that these representations are very good.
 &lt;/p&gt;
@@ -686,9 +810,9 @@ That is it! &lt;b&gt;&lt;b&gt;We've built our magic feature.&lt;/b&gt;&lt;/b&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org73e5d7b" class="outline-4"&gt;
-&lt;h4 id="org73e5d7b"&gt;From magic feature to binary predictions&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org73e5d7b"&gt;
+&lt;div id="outline-container-org493a4a6" class="outline-4"&gt;
+&lt;h4 id="org493a4a6"&gt;From magic feature to binary predictions&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org493a4a6"&gt;
 &lt;p&gt;
 But how do we convert this feature into binary predictions? We do not have a train set to learn a model, but we have a piece of information about test set: the baseline accuracy score that you got, when submitting constant. And we also have a very strong considerations about the data generative process, so probably we will be fine even without a training set. 
 &lt;/p&gt;
@@ -876,17 +1000,17 @@ Well done! Your accuracy score is 0.997298
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orge37ace8" class="outline-2"&gt;
-&lt;h2 id="orge37ace8"&gt;Bonus&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orge37ace8"&gt;
+&lt;div id="outline-container-orgdf0e4e8" class="outline-2"&gt;
+&lt;h2 id="orgdf0e4e8"&gt;Bonus&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgdf0e4e8"&gt;
 &lt;p&gt;
 Interestingly, it is not the only leak in this dataset. There is another totally different way to get almost 100% accuracy. Try to find it!
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org83fd432" class="outline-2"&gt;
-&lt;h2 id="org83fd432"&gt;What does it all mean then?&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org83fd432"&gt;
+&lt;div id="outline-container-org4c6f2ee" class="outline-2"&gt;
+&lt;h2 id="org4c6f2ee"&gt;What does it all mean then?&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org4c6f2ee"&gt;
 &lt;p&gt;
 From our initial check uploading all the submissions as one (so all the ID-pairs were classified as having IDs from the same class) we saw that half the entries were 1's and half were 0's. Our incidence matrix showed that half the vectors had a similarity of 20 or more, so by predicting that all the pairs whose incidence matrix dot-products were 20 or greater were of the same class, we could predict with greater than 99% accuracy which IDs were from the same class.
 &lt;/p&gt;

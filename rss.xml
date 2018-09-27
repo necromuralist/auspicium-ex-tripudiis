@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description>Notes on studying kaggle.</description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Tue, 25 Sep 2018 23:01:14 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Predicting the Mean</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/predicting-the-mean/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
+<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description>Notes on studying kaggle.</description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Thu, 27 Sep 2018 02:22:31 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Predicting the Mean</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/predicting-the-mean/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
 &lt;h2&gt;Table of Contents&lt;/h2&gt;
 &lt;div id="text-table-of-contents"&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/predicting-the-mean/#orgf525677"&gt;Introduction&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/predicting-the-mean/#org1fca1b7"&gt;Imports&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/predicting-the-mean/#org7808973"&gt;The Data&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/predicting-the-mean/#orgd4f53d4"&gt;Really Naive&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/predicting-the-mean/#org6cc2d0a"&gt;Introduction&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/predicting-the-mean/#org3232f35"&gt;Imports&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/predicting-the-mean/#org84a4c52"&gt;The Data&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/predicting-the-mean/#org1ab5732"&gt;Really Naive&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgf525677" class="outline-2"&gt;
-&lt;h2 id="orgf525677"&gt;Introduction&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgf525677"&gt;
+&lt;div id="outline-container-org6cc2d0a" class="outline-2"&gt;
+&lt;h2 id="org6cc2d0a"&gt;Introduction&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org6cc2d0a"&gt;
 &lt;p&gt;
 Since the competition is going to be scored using the Root Mean Square Error I'll make a baseline prediction by using the mean of the sales figures.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org1fca1b7" class="outline-2"&gt;
-&lt;h2 id="org1fca1b7"&gt;Imports&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org1fca1b7"&gt;
+&lt;div id="outline-container-org3232f35" class="outline-2"&gt;
+&lt;h2 id="org3232f35"&gt;Imports&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org3232f35"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;warnings&lt;/span&gt;
 &lt;span class="n"&gt;warnings&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;filterwarnings&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"ignore"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;message&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"numpy.dtype size changed"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;warnings&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;filterwarnings&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"ignore"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;message&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"numpy.ufunc size changed"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
@@ -41,9 +41,9 @@ from kaggler.helpers.printing import print_table
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org7808973" class="outline-2"&gt;
-&lt;h2 id="org7808973"&gt;The Data&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org7808973"&gt;
+&lt;div id="outline-container-org84a4c52" class="outline-2"&gt;
+&lt;h2 id="org84a4c52"&gt;The Data&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org84a4c52"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;data = Data()
 training = data.sales_training_data
 &lt;/pre&gt;&lt;/div&gt;
@@ -127,9 +127,9 @@ training = data.sales_training_data
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgd4f53d4" class="outline-2"&gt;
-&lt;h2 id="orgd4f53d4"&gt;Really Naive&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgd4f53d4"&gt;
+&lt;div id="outline-container-org1ab5732" class="outline-2"&gt;
+&lt;h2 id="org1ab5732"&gt;Really Naive&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org1ab5732"&gt;
 &lt;p&gt;
 I was originally just going by average per month for the whole data set but that turns out to be too big, especially since it gets capped at 20. Furthermore, when you look at the test-data it has one ID column but the contest description says that you have to predict shop and item sales for the next month, what is the test-set again?
 &lt;/p&gt;
@@ -282,11 +282,26 @@ print_table(training.head())
 &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description><category>submission baselining competition</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/predicting-the-mean/</guid><pubDate>Mon, 24 Sep 2018 23:00:05 GMT</pubDate></item><item><title>Mean Encoding The Competition Data</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-org8b6abd8" class="outline-2"&gt;
-&lt;h2 id="org8b6abd8"&gt;Introduction&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org8b6abd8"&gt;
+&lt;/div&gt;</description><category>submission baselining competition</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/predicting-the-mean/</guid><pubDate>Mon, 24 Sep 2018 23:00:05 GMT</pubDate></item><item><title>Mean Encoding The Competition Data</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
+&lt;h2&gt;Table of Contents&lt;/h2&gt;
+&lt;div id="text-table-of-contents"&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/#org87fc028"&gt;Introduction&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/#org63f6b0f"&gt;General tips&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/#orgd9abb4b"&gt;Read In the Data&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/#org02fc65c"&gt;Aggregate data&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/#org3f25deb"&gt;Mean encodings without regularization&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/#orgcdaa0bf"&gt;Method 2&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/#orgb7c5dbc"&gt;1. KFold scheme&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-org87fc028" class="outline-2"&gt;
+&lt;h2 id="org87fc028"&gt;Introduction&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org87fc028"&gt;
 &lt;p&gt;
-In this programming assignment you will be working with `1C` dataset from the final competition. You are asked to encode `item&lt;sub&gt;id&lt;/sub&gt;` in 4 different ways:
+In this programming assignment you will be working with the &lt;i&gt;1C&lt;/i&gt; dataset from the final competition. You are asked to encode the &lt;code&gt;item_id&lt;/code&gt; in 4 different ways:
 &lt;/p&gt;
 
 &lt;ol class="org-ol"&gt;
@@ -297,151 +312,260 @@ In this programming assignment you will be working with `1C` dataset from the fi
 &lt;/ol&gt;
 
 &lt;p&gt;
-&lt;b&gt;&lt;b&gt;You will need to submit&lt;/b&gt;&lt;/b&gt; the correlation coefficient between resulting encoding and target variable up to 4 decimal places.
+&lt;b&gt;&lt;b&gt;You will need to submit&lt;/b&gt;&lt;/b&gt; the correlation coefficient between the resulting encoding and the target variable up to 4 decimal places.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org32f5d8a" class="outline-2"&gt;
-&lt;h2 id="org32f5d8a"&gt;General tips&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org32f5d8a"&gt;
+&lt;div id="outline-container-org63f6b0f" class="outline-2"&gt;
+&lt;h2 id="org63f6b0f"&gt;General tips&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org63f6b0f"&gt;
 &lt;ul class="org-ul"&gt;
-&lt;li&gt;Fill NANs in the encoding with `0.3343`.&lt;/li&gt;
+&lt;li&gt;Fill NANs in the encoding with &lt;code&gt;0.3343&lt;/code&gt;.&lt;/li&gt;
 &lt;li&gt;Some encoding schemes depend on sorting order, so in order to avoid confusion, please use the following code snippet to construct the data frame. This snippet also implements mean encoding without regularization.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;import pandas as pd
-import numpy as np
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# python standard library
 from itertools import product
-from grader import Grader
+
+# pypi
+import pandas
+import numpy
+
+# this course (github)
+from hse_graders.assignment_3.grader import Grader
+
+# this project
+from kaggler.course.data import Data
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-orgd9abb4b" class="outline-2"&gt;
+&lt;h2 id="orgd9abb4b"&gt;Read In the Data&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgd9abb4b"&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sales = Data().sales_training_data
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-org02fc65c" class="outline-2"&gt;
+&lt;h2 id="org02fc65c"&gt;Aggregate data&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org02fc65c"&gt;
+&lt;p&gt;
+Since the competition task is to make a monthly prediction, we need to aggregate the data to montly level before doing any encodings. The following code-cell serves just that purpose.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;index_cols = ['shop_id', 'item_id', 'date_block_num']
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;
+For every month we create a grid from all shops/items combinations from that month.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;grid = [] 
+for block_num in sales['date_block_num'].unique():
+    cur_shops = sales[sales['date_block_num']==block_num]['shop_id'].unique()
+    cur_items = sales[sales['date_block_num']==block_num]['item_id'].unique()
+    grid.append(numpy.array(list(product(*[cur_shops, cur_items, [block_num]])),dtype='int32'))
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;
+Now turn the grid into a pandas dataframe.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;grid = pandas.DataFrame(numpy.vstack(grid), columns = index_cols,dtype=numpy.int32)
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;
-sales = pd.read&lt;sub&gt;csv&lt;/sub&gt;('../readonly/final&lt;sub&gt;project&lt;/sub&gt;&lt;sub&gt;data&lt;/sub&gt;/sales&lt;sub&gt;train.csv.gz&lt;/sub&gt;')
+Get the aggregated values for (&lt;code&gt;shop_id&lt;/code&gt;, &lt;code&gt;item_id&lt;/code&gt;, and &lt;code&gt;month&lt;/code&gt;).
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;grouped = sales.groupby(index_cols, as_index=False).agg({'item_cnt_day':{'target':'sum'}})
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;
+Fix the column names.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;grouped.columns = [column[0] if column[-1]=='' else column[-1] for column in grouped.columns.values]
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;
+Join the aggregated data to the grid.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;all_data = pandas.merge(grid, grouped, how='left', on=index_cols).fillna(0)
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;
+Sort the data.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;all_data.sort_values(['date_block_num','shop_id','item_id'], inplace=True)
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-org3f25deb" class="outline-2"&gt;
+&lt;h2 id="org3f25deb"&gt;Mean encodings without regularization&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org3f25deb"&gt;
+&lt;p&gt;
+Now that we have done the techinical work, we are ready to actually &lt;b&gt;mean encode&lt;/b&gt; the desired &lt;code&gt;item_id&lt;/code&gt; variable. 
+&lt;/p&gt;
+
+&lt;p&gt;
+Here are two ways to implement mean encoding features &lt;b&gt;without&lt;/b&gt; any regularization. You can use this code as a starting point to implement regularized techniques. 
+&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-orgc0f72a9" class="outline-3"&gt;
+&lt;h3 id="orgc0f72a9"&gt;Method 1:  Calculate a mapping: {item_id: target_mean}&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgc0f72a9"&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;item_id_target_mean = all_data.groupby('item_id').target.mean()
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;
+In our non-regularized case we just &lt;b&gt;map&lt;/b&gt; the computed means to the &lt;code&gt;item_id&lt;/code&gt;'s.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;all_data['item_target_enc'] = all_data['item_id'].map(item_id_target_mean)
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-org7666e42" class="outline-3"&gt;
+&lt;h3 id="org7666e42"&gt;Fill NaNs&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org7666e42"&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;all_data['item_target_enc'].fillna(0.3343, inplace=True) 
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-org4790f2f" class="outline-3"&gt;
+&lt;h3 id="org4790f2f"&gt;Print correlation&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org4790f2f"&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;encoded_feature = all_data['item_target_enc'].values
+print(numpy.corrcoef(all_data['target'].values, encoded_feature)[0][1])
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;
+0.48303869886216977
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-orgcdaa0bf" class="outline-2"&gt;
+&lt;h2 id="orgcdaa0bf"&gt;Method 2&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgcdaa0bf"&gt;
+&lt;p&gt;
+Unlike the  &lt;code&gt;.target.mean()&lt;/code&gt; function, &lt;code&gt;transform&lt;/code&gt; will return a dataframe with an index like in &lt;code&gt;all_data&lt;/code&gt;.
+Basically this single line of code is equivalent to the first two lines from of Method 1.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;all_data['item_target_enc'] = all_data.groupby('item_id')['target'].transform('mean')
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-orgbbba154" class="outline-3"&gt;
+&lt;h3 id="orgbbba154"&gt;Fill NaNs&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgbbba154"&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;all_data['item_target_enc'].fillna(0.3343, inplace=True) 
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-orgccb2255" class="outline-3"&gt;
+&lt;h3 id="orgccb2255"&gt;Print correlation&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgccb2255"&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;encoded_feature = all_data['item_target_enc'].values
+print(numpy.corrcoef(all_data['target'].values, encoded_feature)[0][1])
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;
+0.48303869886216977
 &lt;/p&gt;
 
 
 &lt;p&gt;
-index&lt;sub&gt;cols&lt;/sub&gt; = ['shop&lt;sub&gt;id&lt;/sub&gt;', 'item&lt;sub&gt;id&lt;/sub&gt;', 'date&lt;sub&gt;block&lt;/sub&gt;&lt;sub&gt;num&lt;/sub&gt;']
+See the printed value? It is the correlation coefficient between the target variable and your new encoded feature. You need to &lt;b&gt;&lt;b&gt;compute the correlation coefficient&lt;/b&gt;&lt;/b&gt; between the encodings that you will implement and &lt;b&gt;&lt;b&gt;submit those to coursera&lt;/b&gt;&lt;/b&gt;.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;grader = Grader()
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-orgb7c5dbc" class="outline-2"&gt;
+&lt;h2 id="orgb7c5dbc"&gt;1. KFold scheme&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgb7c5dbc"&gt;
+&lt;p&gt;
+This is Explained starting at 41 seconds into the &lt;a href="https://www.coursera.org/learn/competitive-data-science/lecture/LGYQ2/regularization"&gt;Regularization lecture&lt;/a&gt;.
 &lt;/p&gt;
 
 &lt;p&gt;
-grid = [] 
-for block&lt;sub&gt;num&lt;/sub&gt; in sales['date&lt;sub&gt;block&lt;/sub&gt;&lt;sub&gt;num&lt;/sub&gt;'].unique():
-    cur&lt;sub&gt;shops&lt;/sub&gt; = sales[sales['date&lt;sub&gt;block&lt;/sub&gt;&lt;sub&gt;num&lt;/sub&gt;']==block&lt;sub&gt;num&lt;/sub&gt;]['shop&lt;sub&gt;id&lt;/sub&gt;'].unique()
-    cur&lt;sub&gt;items&lt;/sub&gt; = sales[sales['date&lt;sub&gt;block&lt;/sub&gt;&lt;sub&gt;num&lt;/sub&gt;']==block&lt;sub&gt;num&lt;/sub&gt;]['item&lt;sub&gt;id&lt;/sub&gt;'].unique()
-    grid.append(np.array(list(product(*[cur&lt;sub&gt;shops&lt;/sub&gt;, cur&lt;sub&gt;items&lt;/sub&gt;, [block&lt;sub&gt;num&lt;/sub&gt;]])),dtype='int32'))
+First implement the KFold scheme with five folds. Use KFold(5) from sklearn.model_selection. 
 &lt;/p&gt;
 
-&lt;p&gt;
-#turn the grid into pandas dataframe
-grid = pd.DataFrame(np.vstack(grid), columns = index&lt;sub&gt;cols,dtype&lt;/sub&gt;=np.int32)
-&lt;/p&gt;
+&lt;ol class="org-ol"&gt;
+&lt;li&gt;Split your data in 5 folds with &lt;a href="http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.KFold.html"&gt;sklearn.model_selection.KFold&lt;/a&gt; with &lt;code&gt;shuffle=False&lt;/code&gt; (the default).&lt;/li&gt;
+&lt;li&gt;Iterate through folds: use all but the current fold to calculate mean target for each level `item_id`, and  fill the current fold.&lt;/li&gt;
+&lt;/ol&gt;
 
 &lt;p&gt;
-#get aggregated values for (shop&lt;sub&gt;id&lt;/sub&gt;, item&lt;sub&gt;id&lt;/sub&gt;, month)
-gb = sales.groupby(index&lt;sub&gt;cols,as&lt;/sub&gt;&lt;sub&gt;index&lt;/sub&gt;=False).agg({'item&lt;sub&gt;cnt&lt;/sub&gt;&lt;sub&gt;day&lt;/sub&gt;':{'target':'sum'}})
-&lt;/p&gt;
-
-&lt;p&gt;
-#fix column names
-gb.columns = [col[0] if col[-1]=='' else col[-1] for col in gb.columns.values]
-#join aggregated data to the grid
-all&lt;sub&gt;data&lt;/sub&gt; = pd.merge(grid,gb,how='left',on=index&lt;sub&gt;cols&lt;/sub&gt;).fillna(0)
-#sort the data
-all&lt;sub&gt;data.sort&lt;/sub&gt;&lt;sub&gt;values&lt;/sub&gt;(['date&lt;sub&gt;block&lt;/sub&gt;&lt;sub&gt;num&lt;/sub&gt;','shop&lt;sub&gt;id&lt;/sub&gt;','item&lt;sub&gt;id&lt;/sub&gt;'],inplace=True)
-&lt;/p&gt;
-
-
-&lt;p&gt;
-item&lt;sub&gt;id&lt;/sub&gt;&lt;sub&gt;target&lt;/sub&gt;&lt;sub&gt;mean&lt;/sub&gt; = all&lt;sub&gt;data.groupby&lt;/sub&gt;('item&lt;sub&gt;id&lt;/sub&gt;').target.mean()
-&lt;/p&gt;
-
-&lt;p&gt;
-all&lt;sub&gt;data&lt;/sub&gt;['item&lt;sub&gt;target&lt;/sub&gt;&lt;sub&gt;enc&lt;/sub&gt;'] = all&lt;sub&gt;data&lt;/sub&gt;['item&lt;sub&gt;id&lt;/sub&gt;'].map(item&lt;sub&gt;id&lt;/sub&gt;&lt;sub&gt;target&lt;/sub&gt;&lt;sub&gt;mean&lt;/sub&gt;)
-&lt;/p&gt;
-
-&lt;p&gt;
-all&lt;sub&gt;data&lt;/sub&gt;['item&lt;sub&gt;target&lt;/sub&gt;&lt;sub&gt;enc&lt;/sub&gt;'].fillna(0.3343, inplace=True) 
-&lt;/p&gt;
-
-&lt;p&gt;
-encoded&lt;sub&gt;feature&lt;/sub&gt; = all&lt;sub&gt;data&lt;/sub&gt;['item&lt;sub&gt;target&lt;/sub&gt;&lt;sub&gt;enc&lt;/sub&gt;'].values
-print(np.corrcoef(all&lt;sub&gt;data&lt;/sub&gt;['target'].values, encoded&lt;sub&gt;feature&lt;/sub&gt;)[0][1])
+See the &lt;b&gt;&lt;b&gt;Method 1&lt;/b&gt;&lt;/b&gt; from the example implementation. In particular learn what `map` and pd.Series.map functions do. They are pretty handy in many situations.
 &lt;/p&gt;
 
 
 &lt;p&gt;
-'''
-     Differently to `.target.mean()` function `transform` 
-   will return a dataframe with an index like in `all&lt;sub&gt;data&lt;/sub&gt;`.
-   Basically this single line of code is equivalent to the first two lines from of Method 1.
-'''
-all&lt;sub&gt;data&lt;/sub&gt;['item&lt;sub&gt;target&lt;/sub&gt;&lt;sub&gt;enc&lt;/sub&gt;'] = all&lt;sub&gt;data.groupby&lt;/sub&gt;('item&lt;sub&gt;id&lt;/sub&gt;')['target'].transform('mean')
-&lt;/p&gt;
-
-&lt;p&gt;
-all&lt;sub&gt;data&lt;/sub&gt;['item&lt;sub&gt;target&lt;/sub&gt;&lt;sub&gt;enc&lt;/sub&gt;'].fillna(0.3343, inplace=True) 
-&lt;/p&gt;
-
-&lt;p&gt;
-encoded&lt;sub&gt;feature&lt;/sub&gt; = all&lt;sub&gt;data&lt;/sub&gt;['item&lt;sub&gt;target&lt;/sub&gt;&lt;sub&gt;enc&lt;/sub&gt;'].values
-print(np.corrcoef(all&lt;sub&gt;data&lt;/sub&gt;['target'].values, encoded&lt;sub&gt;feature&lt;/sub&gt;)[0][1])
-&lt;/p&gt;
-
-
-&lt;p&gt;
-grader = Grader()
-&lt;/p&gt;
-
-
-&lt;p&gt;
-corr = np.corrcoef(all&lt;sub&gt;data&lt;/sub&gt;['target'].values, encoded&lt;sub&gt;feature&lt;/sub&gt;)[0][1]
+corr = np.corrcoef(all_data['target'].values, encoded_feature)[0][1]
 print(corr)
-grader.submit&lt;sub&gt;tag&lt;/sub&gt;('KFold&lt;sub&gt;scheme&lt;/sub&gt;', corr)
+grader.submit_tag('KFold_scheme', corr)
 &lt;/p&gt;
 
 
 &lt;p&gt;
-corr = np.corrcoef(all&lt;sub&gt;data&lt;/sub&gt;['target'].values, encoded&lt;sub&gt;feature&lt;/sub&gt;)[0][1]
+corr = np.corrcoef(all_data['target'].values, encoded_feature)[0][1]
 print(corr)
-grader.submit&lt;sub&gt;tag&lt;/sub&gt;('Leave-one-out&lt;sub&gt;scheme&lt;/sub&gt;', corr)
+grader.submit_tag('Leave-one-out_scheme', corr)
 &lt;/p&gt;
 
 
 &lt;p&gt;
-corr = np.corrcoef(all&lt;sub&gt;data&lt;/sub&gt;['target'].values, encoded&lt;sub&gt;feature&lt;/sub&gt;)[0][1]
+corr = np.corrcoef(all_data['target'].values, encoded_feature)[0][1]
 print(corr)
-grader.submit&lt;sub&gt;tag&lt;/sub&gt;('Smoothing&lt;sub&gt;scheme&lt;/sub&gt;', corr)
+grader.submit_tag('Smoothing_scheme', corr)
 &lt;/p&gt;
 
 
 &lt;p&gt;
-corr = np.corrcoef(all&lt;sub&gt;data&lt;/sub&gt;['target'].values, encoded&lt;sub&gt;feature&lt;/sub&gt;)[0][1]
+corr = np.corrcoef(all_data['target'].values, encoded_feature)[0][1]
 print(corr)
-grader.submit&lt;sub&gt;tag&lt;/sub&gt;('Expanding&lt;sub&gt;mean&lt;/sub&gt;&lt;sub&gt;scheme&lt;/sub&gt;', corr)
+grader.submit_tag('Expanding_mean_scheme', corr)
 &lt;/p&gt;
 
 
 &lt;p&gt;
-STUDENT&lt;sub&gt;EMAIL&lt;/sub&gt; = # EMAIL HERE
-STUDENT&lt;sub&gt;TOKEN&lt;/sub&gt; = # TOKEN HERE
+STUDENT_EMAIL = # EMAIL HERE
+STUDENT_TOKEN = # TOKEN HERE
 grader.status()
 &lt;/p&gt;
 
 
 &lt;p&gt;
-grader.submit(STUDENT&lt;sub&gt;EMAIL&lt;/sub&gt;, STUDENT&lt;sub&gt;TOKEN&lt;/sub&gt;)
+grader.submit(STUDENT_EMAIL, STUDENT_TOKEN)
 &lt;/p&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description><category>assignment competition encoding</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/</guid><pubDate>Mon, 24 Sep 2018 01:50:28 GMT</pubDate></item><item><title>Mean Encoding</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-org2984a28" class="outline-2"&gt;
-&lt;h2 id="org2984a28"&gt;Mean Encoding&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org2984a28"&gt;
+&lt;/div&gt;</description><category>assignment competition encoding</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/</guid><pubDate>Mon, 24 Sep 2018 01:50:28 GMT</pubDate></item><item><title>Mean Encoding</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-org4cc9eab" class="outline-2"&gt;
+&lt;h2 id="org4cc9eab"&gt;Mean Encoding&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org4cc9eab"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org21b07cd" class="outline-3"&gt;
-&lt;h3 id="org21b07cd"&gt;Introduction&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org21b07cd"&gt;
+&lt;div id="outline-container-org3e0ad37" class="outline-3"&gt;
+&lt;h3 id="org3e0ad37"&gt;Introduction&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org3e0ad37"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;also called target encoding and likelihood encoding&lt;/li&gt;
 &lt;/ul&gt;
@@ -449,17 +573,17 @@ grader.submit(STUDENT&lt;sub&gt;EMAIL&lt;/sub&gt;, STUDENT&lt;sub&gt;TOKEN&lt;/s
 It is a way to encode a categorical feature. Uses the fraction of times the feature is 1 out of all the times the feature is in the data set (for binary classification).
 &lt;/p&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org5329564" class="outline-4"&gt;
-&lt;h4 id="org5329564"&gt;Why does it work?&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org5329564"&gt;
+&lt;div id="outline-container-org3ee9e19" class="outline-4"&gt;
+&lt;h4 id="org3ee9e19"&gt;Why does it work?&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org3ee9e19"&gt;
 &lt;p&gt;
 Unlike regular encoding, which has no real meaning to the labels, mean encoding imposes an ordering. This allows you to reduce your loss while using shorter trees.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org70581bc" class="outline-4"&gt;
-&lt;h4 id="org70581bc"&gt;How do you calculate it?&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org70581bc"&gt;
+&lt;div id="outline-container-org5b844a5" class="outline-4"&gt;
+&lt;h4 id="org5b844a5"&gt;How do you calculate it?&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org5b844a5"&gt;
 &lt;p&gt;
 There are multiple ways.
 &lt;/p&gt;
@@ -471,9 +595,9 @@ There are multiple ways.
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org711f025" class="outline-4"&gt;
-&lt;h4 id="org711f025"&gt;When does it fail?&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org711f025"&gt;
+&lt;div id="outline-container-org3be6aa5" class="outline-4"&gt;
+&lt;h4 id="org3be6aa5"&gt;When does it fail?&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org3be6aa5"&gt;
 &lt;p&gt;
 If you have lots of feature instances with few cases it will tend to overfit.
 &lt;/p&gt;
@@ -481,13 +605,13 @@ If you have lots of feature instances with few cases it will tend to overfit.
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org902befa" class="outline-2"&gt;
-&lt;h2 id="org902befa"&gt;Regularization&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org902befa"&gt;
+&lt;div id="outline-container-org352fd35" class="outline-2"&gt;
+&lt;h2 id="org352fd35"&gt;Regularization&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org352fd35"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org25a468d" class="outline-3"&gt;
-&lt;h3 id="org25a468d"&gt;Four Types&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org25a468d"&gt;
+&lt;div id="outline-container-orgc818674" class="outline-3"&gt;
+&lt;h3 id="orgc818674"&gt;Four Types&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgc818674"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;Cross-validation loop inside the training data&lt;/li&gt;
 &lt;li&gt;Smoothing&lt;/li&gt;
@@ -496,9 +620,9 @@ If you have lots of feature instances with few cases it will tend to overfit.
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgb67e225" class="outline-3"&gt;
-&lt;h3 id="orgb67e225"&gt;Cross Validation&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgb67e225"&gt;
+&lt;div id="outline-container-orgb07e97c" class="outline-3"&gt;
+&lt;h3 id="orgb07e97c"&gt;Cross Validation&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgb07e97c"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;Usually 4 or 5 folds are enough&lt;/li&gt;
 &lt;li&gt;Need to watch out for extreme cases like leave-out-one (LOO)&lt;/li&gt;
@@ -528,9 +652,9 @@ Here's an example of this method using sklearn.
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgbcf4a6d" class="outline-3"&gt;
-&lt;h3 id="orgbcf4a6d"&gt;Smoothing&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgbcf4a6d"&gt;
+&lt;div id="outline-container-org4d61d88" class="outline-3"&gt;
+&lt;h3 id="org4d61d88"&gt;Smoothing&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org4d61d88"&gt;
 &lt;p&gt;
 Use a value \(\alpha\) to control the amount of regularization. This isn't a regularization method in and of itself, you use it with other methods.
 &lt;/p&gt;
@@ -543,17 +667,17 @@ Use a value \(\alpha\) to control the amount of regularization. This isn't a reg
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org66d3b01" class="outline-3"&gt;
-&lt;h3 id="org66d3b01"&gt;Noise&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org66d3b01"&gt;
+&lt;div id="outline-container-orgb968ebe" class="outline-3"&gt;
+&lt;h3 id="orgb968ebe"&gt;Noise&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgb968ebe"&gt;
 &lt;p&gt;
 Adding noise degrades the quality of the encoding in the training data. This is usually used with &lt;i&gt;leave-one-out&lt;/i&gt; encoding to prevent overfitting. You have to figure out how much noise to add through experimentation.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org370ffba" class="outline-3"&gt;
-&lt;h3 id="org370ffba"&gt;Expanding Mean&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org370ffba"&gt;
+&lt;div id="outline-container-org3540a36" class="outline-3"&gt;
+&lt;h3 id="org3540a36"&gt;Expanding Mean&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org3540a36"&gt;
 &lt;p&gt;
 This introduces the least amount of leakage from the target variable and doesn't require hyper-parameters for you to tune. The downside is that the encoding quality is irregular. There is a built-in implementation in the &lt;code&gt;CatBoost&lt;/code&gt; library.
 &lt;/p&gt;
@@ -569,39 +693,39 @@ Here's a pandas implementation.
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org7e7bfac" class="outline-3"&gt;
-&lt;h3 id="org7e7bfac"&gt;Which one should you use?&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org7e7bfac"&gt;
+&lt;div id="outline-container-org3dfa2ea" class="outline-3"&gt;
+&lt;h3 id="org3dfa2ea"&gt;Which one should you use?&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org3dfa2ea"&gt;
 &lt;p&gt;
 Cross Validation Loops and Expanding Means are the most practical to use.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orga8a4fc1" class="outline-2"&gt;
-&lt;h2 id="orga8a4fc1"&gt;Generalizations and Extensions&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orga8a4fc1"&gt;
+&lt;div id="outline-container-org282ecdb" class="outline-2"&gt;
+&lt;h2 id="org282ecdb"&gt;Generalizations and Extensions&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org282ecdb"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgeb525c5" class="outline-3"&gt;
-&lt;h3 id="orgeb525c5"&gt;Regression and Multiclass&lt;/h3&gt;
+&lt;div id="outline-container-orgca49111" class="outline-3"&gt;
+&lt;h3 id="orgca49111"&gt;Regression and Multiclass&lt;/h3&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgfe9372f" class="outline-2"&gt;
-&lt;h2 id="orgfe9372f"&gt;Summary&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgfe9372f"&gt;
+&lt;div id="outline-container-orgdd2ab5b" class="outline-2"&gt;
+&lt;h2 id="orgdd2ab5b"&gt;Summary&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgdd2ab5b"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org1f2861b" class="outline-3"&gt;
-&lt;h3 id="org1f2861b"&gt;Advantages&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org1f2861b"&gt;
+&lt;div id="outline-container-org2798f81" class="outline-3"&gt;
+&lt;h3 id="org2798f81"&gt;Advantages&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org2798f81"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;Compact transformation of categorical variables&lt;/li&gt;
 &lt;li&gt;Powerful basis for feature engineering&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org8046592" class="outline-3"&gt;
-&lt;h3 id="org8046592"&gt;Disadvantages&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org8046592"&gt;
+&lt;div id="outline-container-orgae3a24b" class="outline-3"&gt;
+&lt;h3 id="orgae3a24b"&gt;Disadvantages&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgae3a24b"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;Needs careful validation, it's easy to overfit&lt;/li&gt;
 &lt;li&gt;Only certain data sets will show a significant improvement from using it&lt;/li&gt;
@@ -610,13 +734,13 @@ Cross Validation Loops and Expanding Means are the most practical to use.
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org37ba163" class="outline-2"&gt;
-&lt;h2 id="org37ba163"&gt;Quiz&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org37ba163"&gt;
+&lt;div id="outline-container-orgfdb8cbd" class="outline-2"&gt;
+&lt;h2 id="orgfdb8cbd"&gt;Quiz&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgfdb8cbd"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgb6fe7ea" class="outline-3"&gt;
-&lt;h3 id="orgb6fe7ea"&gt;One&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgb6fe7ea"&gt;
+&lt;div id="outline-container-org2cc30be" class="outline-3"&gt;
+&lt;h3 id="org2cc30be"&gt;One&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org2cc30be"&gt;
 &lt;p&gt;
 What might be an indicator that mean encoding would be useful?
 &lt;/p&gt;
@@ -627,9 +751,9 @@ What might be an indicator that mean encoding would be useful?
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org0083d5f" class="outline-3"&gt;
-&lt;h3 id="org0083d5f"&gt;Two&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org0083d5f"&gt;
+&lt;div id="outline-container-org0a6194a" class="outline-3"&gt;
+&lt;h3 id="org0a6194a"&gt;Two&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org0a6194a"&gt;
 &lt;p&gt;
 What is the purpose of regularization in mean encoding?
 &lt;/p&gt;
@@ -640,9 +764,9 @@ What is the purpose of regularization in mean encoding?
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org329a4d2" class="outline-3"&gt;
-&lt;h3 id="org329a4d2"&gt;Three&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org329a4d2"&gt;
+&lt;div id="outline-container-org1c747b8" class="outline-3"&gt;
+&lt;h3 id="org1c747b8"&gt;Three&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org1c747b8"&gt;
 &lt;p&gt;
 What is the correct form of validation when using mean encoding?
 &lt;/p&gt;
@@ -653,9 +777,9 @@ What is the correct form of validation when using mean encoding?
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orge2b0093" class="outline-3"&gt;
-&lt;h3 id="orge2b0093"&gt;Four&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orge2b0093"&gt;
+&lt;div id="outline-container-org6aa27d3" class="outline-3"&gt;
+&lt;h3 id="org6aa27d3"&gt;Four&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org6aa27d3"&gt;
 &lt;p&gt;
 Suppose we have a data frame (&lt;code&gt;df&lt;/code&gt;) with a categorical variable named &lt;code&gt;item_id&lt;/code&gt; and a target variable called &lt;code&gt;target&lt;/code&gt;.
 We create two different mean encodings:
@@ -671,17 +795,17 @@ We create two different mean encodings:
 &lt;/ol&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description><category>notes encoding</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding/</guid><pubDate>Mon, 24 Sep 2018 00:56:27 GMT</pubDate></item><item><title>Optimizing Classification Metrics</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/optimizing-classification-metrics/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-org5d77a5c" class="outline-2"&gt;
-&lt;h2 id="org5d77a5c"&gt;Introduction&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org5d77a5c"&gt;
+&lt;/div&gt;</description><category>notes encoding</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding/</guid><pubDate>Mon, 24 Sep 2018 00:56:27 GMT</pubDate></item><item><title>Optimizing Classification Metrics</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/optimizing-classification-metrics/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-org9dc917b" class="outline-2"&gt;
+&lt;h2 id="org9dc917b"&gt;Introduction&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org9dc917b"&gt;
 &lt;p&gt;
 The &lt;i&gt;target metric&lt;/i&gt; is what the competition scores you on, but it isn't always the easiest metric to tune your model on. Sometimes you need to pick and &lt;i&gt;optimization metric&lt;/i&gt; to tune your model that isn't exactly the same but works well enough.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org8ac93da" class="outline-2"&gt;
-&lt;h2 id="org8ac93da"&gt;LogLoss&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org8ac93da"&gt;
+&lt;div id="outline-container-orgb733e2f" class="outline-2"&gt;
+&lt;h2 id="orgb733e2f"&gt;LogLoss&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgb733e2f"&gt;
 &lt;p&gt;
 To optimize log-loss you just have to match it to the right model.
 &lt;/p&gt;
@@ -695,32 +819,32 @@ To optimize log-loss you just have to match it to the right model.
 Random Forests turn out to do poorly with Log Loss.
 &lt;/p&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgba7a7f0" class="outline-3"&gt;
-&lt;h3 id="orgba7a7f0"&gt;Probability Calibration&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgba7a7f0"&gt;
+&lt;div id="outline-container-org89db9fa" class="outline-3"&gt;
+&lt;h3 id="org89db9fa"&gt;Probability Calibration&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org89db9fa"&gt;
 &lt;p&gt;
 If you take all the rows with the same score, then the fraction of them that have a class of 1 should match the score (so if they all have a score of 0.8, then 80% of them should be 1 and 20% should be 0). If the fraction is off, then you need to calibrate the probabilities. To do this take your model and then send its outputs to a model that does better with Log Loss. So if you want to use a Random Forest, you would train your model using AUC as the metric then use the predictions to train another model like a neural net and have it use Log Loss as the metric.
 &lt;/p&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org9bddf26" class="outline-4"&gt;
-&lt;h4 id="org9bddf26"&gt;Platt Scaling&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org9bddf26"&gt;
+&lt;div id="outline-container-org336306c" class="outline-4"&gt;
+&lt;h4 id="org336306c"&gt;Platt Scaling&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org336306c"&gt;
 &lt;p&gt;
 Fit a Logistic Regression to your predictions
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgab1a91a" class="outline-4"&gt;
-&lt;h4 id="orgab1a91a"&gt;Isotonic Regression&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-orgab1a91a"&gt;
+&lt;div id="outline-container-org636f8a8" class="outline-4"&gt;
+&lt;h4 id="org636f8a8"&gt;Isotonic Regression&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org636f8a8"&gt;
 &lt;p&gt;
 Fit an Isotonic Regression to your predictions
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org0bd15b5" class="outline-4"&gt;
-&lt;h4 id="org0bd15b5"&gt;Stacking&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org0bd15b5"&gt;
+&lt;div id="outline-container-orgf6afab3" class="outline-4"&gt;
+&lt;h4 id="orgf6afab3"&gt;Stacking&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-orgf6afab3"&gt;
 &lt;p&gt;
 Fit XGBoost or a neural net to your predictions
 &lt;/p&gt;
@@ -728,18 +852,18 @@ Fit XGBoost or a neural net to your predictions
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org0205f54" class="outline-2"&gt;
-&lt;h2 id="org0205f54"&gt;Accuracy&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org0205f54"&gt;
+&lt;div id="outline-container-orgb75ed53" class="outline-2"&gt;
+&lt;h2 id="orgb75ed53"&gt;Accuracy&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgb75ed53"&gt;
 &lt;p&gt;
 Accuracy is a difficult metric to optimize because it isn't differentiable. To optimize the accuracy metric you need to use a different metric (a proxy metric) like log-loss and then tune the threshold.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgac0a2ec" class="outline-2"&gt;
-&lt;h2 id="orgac0a2ec"&gt;Area Under the Curve (AUC)&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgac0a2ec"&gt;
+&lt;div id="outline-container-org87b89a4" class="outline-2"&gt;
+&lt;h2 id="org87b89a4"&gt;Area Under the Curve (AUC)&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org87b89a4"&gt;
 &lt;p&gt;
 Some models work with it so if you can choose one of these models.
 &lt;/p&gt;
@@ -754,21 +878,21 @@ In practice you can optimize the model to log-loss.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgb1cbdf2" class="outline-2"&gt;
-&lt;h2 id="orgb1cbdf2"&gt;Quadratic Weighted Kappa&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgb1cbdf2"&gt;
+&lt;div id="outline-container-orgb8d2c5a" class="outline-2"&gt;
+&lt;h2 id="orgb8d2c5a"&gt;Quadratic Weighted Kappa&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgb8d2c5a"&gt;
 &lt;ol class="org-ol"&gt;
 &lt;li&gt;Optimize on the Mean Squared Error then optimize the thresholds.&lt;/li&gt;
 &lt;/ol&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgc6df48a" class="outline-2"&gt;
-&lt;h2 id="orgc6df48a"&gt;Other Sources&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgc6df48a"&gt;
+&lt;div id="outline-container-org324445f" class="outline-2"&gt;
+&lt;h2 id="org324445f"&gt;Other Sources&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org324445f"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org446dd1c" class="outline-3"&gt;
-&lt;h3 id="org446dd1c"&gt;Classification&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org446dd1c"&gt;
+&lt;div id="outline-container-orged729be" class="outline-3"&gt;
+&lt;h3 id="orged729be"&gt;Classification&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orged729be"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;&lt;a href="http://queirozf.com/entries/evaluation-metrics-for-classification-quick-examples-references"&gt;Evaluation Metrics for Classification Problems&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://www.garysieling.com/blog/sklearn-gini-vs-entropy-criteria"&gt;Descision Trees: &lt;i&gt;Gini&lt;/i&gt; vs &lt;i&gt;Entropy&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
@@ -776,9 +900,9 @@ In practice you can optimize the model to log-loss.
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orge42f6b4" class="outline-3"&gt;
-&lt;h3 id="orge42f6b4"&gt;Ranking&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orge42f6b4"&gt;
+&lt;div id="outline-container-org91978e5" class="outline-3"&gt;
+&lt;h3 id="org91978e5"&gt;Ranking&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org91978e5"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;&lt;a href="https://icml.cc/2015/wp-content/uploads/2015/06/icml_ranking.pdf"&gt;Learning to Rank Using Gradient Descent&lt;/a&gt; - source of pairwise AUC optimization&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/MSR-TR-2010-82.pdf"&gt;From RankNet to LambdaRank&lt;/a&gt;&lt;/li&gt;
@@ -787,18 +911,18 @@ In practice you can optimize the model to log-loss.
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org9961dce" class="outline-3"&gt;
-&lt;h3 id="org9961dce"&gt;Clustering&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org9961dce"&gt;
+&lt;div id="outline-container-org82e5d75" class="outline-3"&gt;
+&lt;h3 id="org82e5d75"&gt;Clustering&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org82e5d75"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;&lt;a href="http://nlp.uned.es/docs/amigo2007a.pdf"&gt;Comparison of clustering metrics&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orge7f8a69" class="outline-2"&gt;
-&lt;h2 id="orge7f8a69"&gt;Practice Quiz&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orge7f8a69"&gt;
+&lt;div id="outline-container-orgce36bdf" class="outline-2"&gt;
+&lt;h2 id="orgce36bdf"&gt;Practice Quiz&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgce36bdf"&gt;
 &lt;ol class="org-ol"&gt;
 &lt;li&gt;What would be a logloss value for a binary classification task if we use a constant predictor \(f(x)=0.5\)? Round to two decimal places.&lt;/li&gt;
 &lt;/ol&gt;
@@ -893,13 +1017,13 @@ print(roc_auc_score(y_true, y_score))
 &lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgea0f831" class="outline-2"&gt;
-&lt;h2 id="orgea0f831"&gt;Quiz&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgea0f831"&gt;
+&lt;div id="outline-container-org8885982" class="outline-2"&gt;
+&lt;h2 id="org8885982"&gt;Quiz&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org8885982"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org895a404" class="outline-3"&gt;
-&lt;h3 id="org895a404"&gt;One&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org895a404"&gt;
+&lt;div id="outline-container-org24e1008" class="outline-3"&gt;
+&lt;h3 id="org24e1008"&gt;One&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org24e1008"&gt;
 &lt;p&gt;
 Suppose we solve a binary classification task and our solution is scored with Log Loss. What predictions are preferable if all the true target values are 0?
 &lt;/p&gt;
@@ -930,9 +1054,9 @@ inf
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orge9a01a6" class="outline-3"&gt;
-&lt;h3 id="orge9a01a6"&gt;Two&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orge9a01a6"&gt;
+&lt;div id="outline-container-org7f5bef6" class="outline-3"&gt;
+&lt;h3 id="org7f5bef6"&gt;Two&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org7f5bef6"&gt;
 &lt;p&gt;
 Suppose we solve a regression task and we optimize MSE. If we manage to lower MSE loss on either the training set or the test set, how would this affect the Pearson Correlation coefficient between the target vector and the predictions on the same set.
 &lt;/p&gt;
@@ -948,9 +1072,9 @@ The correlation will not change.
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org01d3f24" class="outline-3"&gt;
-&lt;h3 id="org01d3f24"&gt;Three&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org01d3f24"&gt;
+&lt;div id="outline-container-orgb4de534" class="outline-3"&gt;
+&lt;h3 id="orgb4de534"&gt;Three&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgb4de534"&gt;
 &lt;p&gt;
 What would be a best constant prediction for a multi-class classification with four classes? The solution is scored with multi-class Log Loss. The number of objects in each class in the training set is 18, 3, 15, 24.
 &lt;/p&gt;
@@ -970,9 +1094,9 @@ print(counts/counts.sum())
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org084b47e" class="outline-3"&gt;
-&lt;h3 id="org084b47e"&gt;Four&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org084b47e"&gt;
+&lt;div id="outline-container-orged3cab1" class="outline-3"&gt;
+&lt;h3 id="orged3cab1"&gt;Four&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orged3cab1"&gt;
 &lt;p&gt;
 What is the best constant predictor for the r-squared metric?
 &lt;/p&gt;
@@ -983,9 +1107,9 @@ What is the best constant predictor for the r-squared metric?
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org4cf1cec" class="outline-3"&gt;
-&lt;h3 id="org4cf1cec"&gt;Five&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org4cf1cec"&gt;
+&lt;div id="outline-container-org3852398" class="outline-3"&gt;
+&lt;h3 id="org3852398"&gt;Five&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org3852398"&gt;
 &lt;p&gt;
 Select the Correct statements
 &lt;/p&gt;
@@ -998,9 +1122,9 @@ Select the Correct statements
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgc051290" class="outline-3"&gt;
-&lt;h3 id="orgc051290"&gt;Six&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgc051290"&gt;
+&lt;div id="outline-container-orgfea6e6f" class="outline-3"&gt;
+&lt;h3 id="orgfea6e6f"&gt;Six&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgfea6e6f"&gt;
 &lt;p&gt;
 Suppose the target metric is &lt;b&gt;M1&lt;/b&gt; and the optimization loss is &lt;b&gt;M2&lt;/b&gt;. We train a model and monitor its quality on a holdout set using the metrics &lt;b&gt;M1&lt;/b&gt; and &lt;b&gt;M2&lt;/b&gt;.
 &lt;/p&gt;
@@ -1021,51 +1145,51 @@ Select the correct statement:
 &lt;h2&gt;Table of Contents&lt;/h2&gt;
 &lt;div id="text-table-of-contents"&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/optimizing-metrics/#org0348804"&gt;Mean Squared Error&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/optimizing-metrics/#org514dee0"&gt;Mean Absolute Error&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/optimizing-metrics/#org05013a2"&gt;Mean Squared Probability Error and Mean Absolute Probability Error&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/optimizing-metrics/#orge68c5a4"&gt;Mean Squared Error&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/optimizing-metrics/#org6ac307e"&gt;Mean Absolute Error&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/optimizing-metrics/#org47aa5a2"&gt;Mean Squared Probability Error and Mean Absolute Probability Error&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org0348804" class="outline-2"&gt;
-&lt;h2 id="org0348804"&gt;Mean Squared Error&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org0348804"&gt;
+&lt;div id="outline-container-orge68c5a4" class="outline-2"&gt;
+&lt;h2 id="orge68c5a4"&gt;Mean Squared Error&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orge68c5a4"&gt;
 &lt;p&gt;
 This works, just use it as the optimization metric.
 Sometimes this will be called &lt;i&gt;L2&lt;/i&gt; loss.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org514dee0" class="outline-2"&gt;
-&lt;h2 id="org514dee0"&gt;Mean Absolute Error&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org514dee0"&gt;
+&lt;div id="outline-container-org6ac307e" class="outline-2"&gt;
+&lt;h2 id="org6ac307e"&gt;Mean Absolute Error&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org6ac307e"&gt;
 &lt;p&gt;
 Once again, this works so just use it.
 Sometimes this will be called &lt;i&gt;L1&lt;/i&gt; loss - it isn't as widely implemented.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org05013a2" class="outline-2"&gt;
-&lt;h2 id="org05013a2"&gt;Mean Squared Probability Error and Mean Absolute Probability Error&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org05013a2"&gt;
+&lt;div id="outline-container-org47aa5a2" class="outline-2"&gt;
+&lt;h2 id="org47aa5a2"&gt;Mean Squared Probability Error and Mean Absolute Probability Error&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org47aa5a2"&gt;
 &lt;p&gt;
 Some libraries will let you use them as `sample_weights`
 Some libraries (like sklearn) will require you to re-sample the data &lt;code&gt;df.sample(weights=sample_weights)&lt;/code&gt;
 Once you re-sample the data you can use any model that optimizes MSE or MAE
 &lt;/p&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description><category>notes metrics</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/optimizing-metrics/</guid><pubDate>Sat, 22 Sep 2018 23:26:49 GMT</pubDate></item><item><title>General Approaches to Metrics Optimization</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/general-approaches-to-metrics-optimization/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-orgb424731" class="outline-2"&gt;
-&lt;h2 id="orgb424731"&gt;What do we mean by &lt;i&gt;loss&lt;/i&gt; and &lt;i&gt;metric&lt;/i&gt;?&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgb424731"&gt;
+&lt;/div&gt;</description><category>notes metrics</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/optimizing-metrics/</guid><pubDate>Sat, 22 Sep 2018 23:26:49 GMT</pubDate></item><item><title>General Approaches to Metrics Optimization</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/general-approaches-to-metrics-optimization/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-orgb3d5141" class="outline-2"&gt;
+&lt;h2 id="orgb3d5141"&gt;What do we mean by &lt;i&gt;loss&lt;/i&gt; and &lt;i&gt;metric&lt;/i&gt;?&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgb3d5141"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;the &lt;code&gt;metric&lt;/code&gt; is what we &lt;i&gt;want&lt;/i&gt; to optimize - but we sometimes don't really know how to optimize this, this is just how we evaluate the model in the end&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;loss&lt;/code&gt; is what the model actually optimizes&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org149a4af" class="outline-2"&gt;
-&lt;h2 id="org149a4af"&gt;How do you optimize the target metric?&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org149a4af"&gt;
+&lt;div id="outline-container-org3cbfad2" class="outline-2"&gt;
+&lt;h2 id="org3cbfad2"&gt;How do you optimize the target metric?&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org3cbfad2"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;In some cases you can just use them (e.g. &lt;i&gt;MSE&lt;/i&gt;, &lt;i&gt;logloss&lt;/i&gt;)&lt;/li&gt;
 &lt;li&gt;In some cases you need to do a preprocessing training step with another metric
@@ -1074,9 +1198,9 @@ Once you re-sample the data you can use any model that optimizes MSE or MAE
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orge307b52" class="outline-2"&gt;
-&lt;h2 id="orge307b52"&gt;Early Stopping&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orge307b52"&gt;
+&lt;div id="outline-container-org9202920" class="outline-2"&gt;
+&lt;h2 id="org9202920"&gt;Early Stopping&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org9202920"&gt;
 &lt;p&gt;
 To work around these problems, use two metrics &lt;i&gt;m1&lt;/i&gt; and &lt;i&gt;m2&lt;/i&gt; and optimize on metric &lt;i&gt;m1&lt;/i&gt; while monitoring &lt;i&gt;m2&lt;/i&gt;, then stop when &lt;i&gt;m2&lt;/i&gt; is optimal.
 &lt;/p&gt;
@@ -1085,16 +1209,16 @@ To work around these problems, use two metrics &lt;i&gt;m1&lt;/i&gt; and &lt;i&g
 &lt;h2&gt;Table of Contents&lt;/h2&gt;
 &lt;div id="text-table-of-contents"&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/classification-metrics/#org66e8b03"&gt;Accuracy&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/classification-metrics/#orgbbe899b"&gt;Logarithmic Loss&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/classification-metrics/#orgf4c8f06"&gt;Area Under the ROC Curve (AUC)&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/classification-metrics/#orgb8ed4d0"&gt;Quadratic Weighted Kappa (Cohen's Kappa)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/classification-metrics/#orge7d1869"&gt;Accuracy&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/classification-metrics/#orgd89e10e"&gt;Logarithmic Loss&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/classification-metrics/#org2facf85"&gt;Area Under the ROC Curve (AUC)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/classification-metrics/#orgbb68eb5"&gt;Quadratic Weighted Kappa (Cohen's Kappa)&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org66e8b03" class="outline-2"&gt;
-&lt;h2 id="org66e8b03"&gt;Accuracy&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org66e8b03"&gt;
+&lt;div id="outline-container-orge7d1869" class="outline-2"&gt;
+&lt;h2 id="orge7d1869"&gt;Accuracy&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orge7d1869"&gt;
 &lt;p&gt;
 This metric measures how frequently our model is correct.
 &lt;/p&gt;
@@ -1110,13 +1234,13 @@ If you were to make a model that just predicted a constant value, the best value
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgbbe899b" class="outline-2"&gt;
-&lt;h2 id="orgbbe899b"&gt;Logarithmic Loss&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgbbe899b"&gt;
+&lt;div id="outline-container-orgd89e10e" class="outline-2"&gt;
+&lt;h2 id="orgd89e10e"&gt;Logarithmic Loss&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgd89e10e"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgbec5d6c" class="outline-3"&gt;
-&lt;h3 id="orgbec5d6c"&gt;Binary Version&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgbec5d6c"&gt;
+&lt;div id="outline-container-orgf72ee7b" class="outline-3"&gt;
+&lt;h3 id="orgf72ee7b"&gt;Binary Version&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgf72ee7b"&gt;
 &lt;p&gt;
 \[
 LogLoss = -\frac{1}{N} \sum_{i=1}^N y_i \log (\hat{y}_i) + (1 - y_i) \log (1 - \hat{y}_i)
@@ -1124,9 +1248,9 @@ LogLoss = -\frac{1}{N} \sum_{i=1}^N y_i \log (\hat{y}_i) + (1 - y_i) \log (1 - \
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orga44400f" class="outline-3"&gt;
-&lt;h3 id="orga44400f"&gt;Multiclass Version&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orga44400f"&gt;
+&lt;div id="outline-container-orga7bced8" class="outline-3"&gt;
+&lt;h3 id="orga7bced8"&gt;Multiclass Version&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orga7bced8"&gt;
 &lt;p&gt;
 \[
 LogLoss = -\frac{1}{N} \sum_{i=1}^N \sum_{i=1}^L y_{il} \log (\hat{y}_{il})
@@ -1147,9 +1271,9 @@ If you wanted to make a constant prediction, the best constant is to set the con
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgf4c8f06" class="outline-2"&gt;
-&lt;h2 id="orgf4c8f06"&gt;Area Under the ROC Curve (AUC)&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgf4c8f06"&gt;
+&lt;div id="outline-container-org2facf85" class="outline-2"&gt;
+&lt;h2 id="org2facf85"&gt;Area Under the ROC Curve (AUC)&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org2facf85"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;only for binary classification&lt;/li&gt;
 &lt;li&gt;depends only on the ordering of the predictions, not the absolute values&lt;/li&gt;
@@ -1158,15 +1282,15 @@ If you wanted to make a constant prediction, the best constant is to set the con
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgb8ed4d0" class="outline-2"&gt;
-&lt;h2 id="orgb8ed4d0"&gt;Quadratic Weighted Kappa (Cohen's Kappa)&lt;/h2&gt;
-&lt;/div&gt;</description><category>metrics classification notes</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/classification-metrics/</guid><pubDate>Sat, 22 Sep 2018 22:35:29 GMT</pubDate></item><item><title>Metrics Optimization 2</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/metrics-optimization-2/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-orga06ea0a" class="outline-2"&gt;
-&lt;h2 id="orga06ea0a"&gt;(R)MSPE, MAPE, and (R)MSLE&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orga06ea0a"&gt;
+&lt;div id="outline-container-orgbb68eb5" class="outline-2"&gt;
+&lt;h2 id="orgbb68eb5"&gt;Quadratic Weighted Kappa (Cohen's Kappa)&lt;/h2&gt;
+&lt;/div&gt;</description><category>metrics classification notes</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/classification-metrics/</guid><pubDate>Sat, 22 Sep 2018 22:35:29 GMT</pubDate></item><item><title>Metrics Optimization 2</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/metrics-optimization-2/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-org19e5026" class="outline-2"&gt;
+&lt;h2 id="org19e5026"&gt;(R)MSPE, MAPE, and (R)MSLE&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org19e5026"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org0125661" class="outline-3"&gt;
-&lt;h3 id="org0125661"&gt;An Off-By-One Example&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org0125661"&gt;
+&lt;div id="outline-container-org1cf2c17" class="outline-3"&gt;
+&lt;h3 id="org1cf2c17"&gt;An Off-By-One Example&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org1cf2c17"&gt;
 &lt;p&gt;
 Suppose we are predicting sales for two shops and the two shops have different sales volumes but our predictions for both cases are off by one. In this case our Mean-Squared-Error (MSE) might be the same, but they have a different significance.
 &lt;/p&gt;
@@ -1210,9 +1334,9 @@ Suppose we are predicting sales for two shops and the two shops have different s
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgc555c3a" class="outline-2"&gt;
-&lt;h2 id="orgc555c3a"&gt;Root Mean Squared Percentage Error and Mean Absolute Percentage Error&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgc555c3a"&gt;
+&lt;div id="outline-container-orgc785c87" class="outline-2"&gt;
+&lt;h2 id="orgc785c87"&gt;Root Mean Squared Percentage Error and Mean Absolute Percentage Error&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgc785c87"&gt;
 &lt;p&gt;
 The MSE and Mean-Absolute-Error (MAE) are absolute errors which don't take into account how significant the error is. There are two relative errors,  Mean-Squared-Percentage-Error (MSPE) and Mean-Absolute-Percentage-Error (MAPE) that divide each error term by the actual value to give you a realive error instead of an absolute error.
 &lt;/p&gt;
@@ -1234,9 +1358,9 @@ The MAPE will be inversely proportional to its target and the MSPE will be inver
 &lt;/p&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgea5e0a2" class="outline-3"&gt;
-&lt;h3 id="orgea5e0a2"&gt;Optimal Constant Predictions&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgea5e0a2"&gt;
+&lt;div id="outline-container-orgdaad713" class="outline-3"&gt;
+&lt;h3 id="orgdaad713"&gt;Optimal Constant Predictions&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgdaad713"&gt;
 &lt;p&gt;
 The best constant prediction you can make when using the Mean Squared Error is to predict the mean of the target values. The best prediction you can make for the MSPE is to take a weighted mean of the target values. The best constant prediction you can make for the Mean Absolute Percentage Error is the weighted median.
 &lt;/p&gt;
@@ -1244,9 +1368,9 @@ The best constant prediction you can make when using the Mean Squared Error is t
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgf9c7416" class="outline-2"&gt;
-&lt;h2 id="orgf9c7416"&gt;Root Mean Squared Logarithmic Error (MSLE)&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgf9c7416"&gt;
+&lt;div id="outline-container-org35ea739" class="outline-2"&gt;
+&lt;h2 id="org35ea739"&gt;Root Mean Squared Logarithmic Error (MSLE)&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org35ea739"&gt;
 &lt;p&gt;
 \[
 MSLE = \sqrt{\frac{1}{N}\sum_{i=1}^N (\log (y_i + 1) - \log(\hat{y}_i + 1))^2}\\
@@ -1308,44 +1432,44 @@ These are the best constant predictions you can make for the competition data se
 &lt;h2&gt;Table of Contents&lt;/h2&gt;
 &lt;div id="text-table-of-contents"&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/metrics/#org8eb1eb2"&gt;About Metrics&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/metrics/#org2c4a7ae"&gt;The Most Common Metrics&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/metrics/#orga4dac78"&gt;About Metrics&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/metrics/#org1c58ab3"&gt;The Most Common Metrics&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org8eb1eb2" class="outline-2"&gt;
-&lt;h2 id="org8eb1eb2"&gt;About Metrics&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org8eb1eb2"&gt;
+&lt;div id="outline-container-orga4dac78" class="outline-2"&gt;
+&lt;h2 id="orga4dac78"&gt;About Metrics&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orga4dac78"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org9a7fe08" class="outline-3"&gt;
-&lt;h3 id="org9a7fe08"&gt;What are metrics?&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org9a7fe08"&gt;
+&lt;div id="outline-container-org3f23f45" class="outline-3"&gt;
+&lt;h3 id="org3f23f45"&gt;What are metrics?&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org3f23f45"&gt;
 &lt;p&gt;
 Metrics are numeric values that you are trying to optimize - they are how your model is graded.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org3729adb" class="outline-3"&gt;
-&lt;h3 id="org3729adb"&gt;Why are there so many metrics?&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org3729adb"&gt;
+&lt;div id="outline-container-orge0acf78" class="outline-3"&gt;
+&lt;h3 id="orge0acf78"&gt;Why are there so many metrics?&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orge0acf78"&gt;
 &lt;p&gt;
 Each metric can tell you something different, so what metric you need depends on the problem you are trying to solve. For competitions, it is sometimes possible to do metrics probing just like you can sometimes do leaderboard probing to find peculiarities created by the chosen metric.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org2c4a7ae" class="outline-2"&gt;
-&lt;h2 id="org2c4a7ae"&gt;The Most Common Metrics&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org2c4a7ae"&gt;
+&lt;div id="outline-container-org1c58ab3" class="outline-2"&gt;
+&lt;h2 id="org1c58ab3"&gt;The Most Common Metrics&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org1c58ab3"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org223f524" class="outline-3"&gt;
-&lt;h3 id="org223f524"&gt;Regression&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org223f524"&gt;
+&lt;div id="outline-container-orgd104bd3" class="outline-3"&gt;
+&lt;h3 id="orgd104bd3"&gt;Regression&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgd104bd3"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orged6f90e" class="outline-4"&gt;
-&lt;h4 id="orged6f90e"&gt;Mean Squared Error&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-orged6f90e"&gt;
+&lt;div id="outline-container-orgdb9a946" class="outline-4"&gt;
+&lt;h4 id="orgdb9a946"&gt;Mean Squared Error&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-orgdb9a946"&gt;
 &lt;p&gt;
 This is the average of the square of the errors.
 \[
@@ -1358,9 +1482,9 @@ The target mean value is the best constant prediction.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgf77bd33" class="outline-4"&gt;
-&lt;h4 id="orgf77bd33"&gt;Root Mean Squared Error&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-orgf77bd33"&gt;
+&lt;div id="outline-container-org5248025" class="outline-4"&gt;
+&lt;h4 id="org5248025"&gt;Root Mean Squared Error&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org5248025"&gt;
 &lt;p&gt;
 This is the square root of the mean squared error.
 &lt;/p&gt;
@@ -1371,17 +1495,17 @@ This is the square root of the mean squared error.
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org14f6f0e" class="outline-4"&gt;
-&lt;h4 id="org14f6f0e"&gt;R-squared&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org14f6f0e"&gt;
+&lt;div id="outline-container-orgf96fba4" class="outline-4"&gt;
+&lt;h4 id="orgf96fba4"&gt;R-squared&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-orgf96fba4"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;Optimizing r-squared is equivalent to optimizing MSE&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org1ffb657" class="outline-4"&gt;
-&lt;h4 id="org1ffb657"&gt;Mean Absolute Error&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org1ffb657"&gt;
+&lt;div id="outline-container-orge8653a1" class="outline-4"&gt;
+&lt;h4 id="orge8653a1"&gt;Mean Absolute Error&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-orge8653a1"&gt;
 &lt;p&gt;
 This is more common when you are explaining it to a non-statistician. It is also more robust. Mathematically, it isn't something that you can calculate the derivate for.
 &lt;/p&gt;
@@ -1391,9 +1515,9 @@ The target median is the best constant prediction.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org40dc3c8" class="outline-4"&gt;
-&lt;h4 id="org40dc3c8"&gt;MAE vs MSE&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org40dc3c8"&gt;
+&lt;div id="outline-container-org6b02d49" class="outline-4"&gt;
+&lt;h4 id="org6b02d49"&gt;MAE vs MSE&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org6b02d49"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;Outliers: use MAE&lt;/li&gt;
 &lt;li&gt;Unexpected Values that we should still care about (not true outliers (mistakes), just rare): use MSE&lt;/li&gt;
@@ -1405,21 +1529,21 @@ The target median is the best constant prediction.
 &lt;h2&gt;Table of Contents&lt;/h2&gt;
 &lt;div id="text-table-of-contents"&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#orgbc4af4e"&gt;Introduction&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#org76330e2"&gt;Imports&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#orgfe7d7d2"&gt;Helpers&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#orgc6bca12"&gt;Load the data&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#orgd5824b1"&gt;EDA and Leakage Intuition&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#org19fd55d"&gt;Building a magic feature&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#orge37ace8"&gt;Bonus&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#org83fd432"&gt;What does it all mean then?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#org8db2b91"&gt;Introduction&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#orgfbf2705"&gt;Imports&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#org322bdd6"&gt;Helpers&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#org17f7c97"&gt;Load the data&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#org386dd7a"&gt;EDA and Leakage Intuition&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#org3b1b5b9"&gt;Building a magic feature&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#orgdf0e4e8"&gt;Bonus&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/data-leakages/#org4c6f2ee"&gt;What does it all mean then?&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgbc4af4e" class="outline-2"&gt;
-&lt;h2 id="orgbc4af4e"&gt;Introduction&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgbc4af4e"&gt;
+&lt;div id="outline-container-org8db2b91" class="outline-2"&gt;
+&lt;h2 id="org8db2b91"&gt;Introduction&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org8db2b91"&gt;
 &lt;p&gt;
 In this programming assignment we will illustrate a very severe data leakage, of the sort that can often be found in competitions. The task is to score the pairs of objects, i.e. predict &lt;i&gt;1&lt;/i&gt; if two objects belong to the same class and &lt;i&gt;0&lt;/i&gt; otherwise. 
 &lt;/p&gt;
@@ -1430,9 +1554,9 @@ The data in this assignment is taken from a real competition, and  &lt;b&gt;we w
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org76330e2" class="outline-2"&gt;
-&lt;h2 id="org76330e2"&gt;Imports&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org76330e2"&gt;
+&lt;div id="outline-container-orgfbf2705" class="outline-2"&gt;
+&lt;h2 id="orgfbf2705"&gt;Imports&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgfbf2705"&gt;
 &lt;p&gt;
 During the importing of pandas (or scipy) you get a warning about a potential binary incompatibility. According to &lt;a href="https://stackoverflow.com/questions/40845304/runtimewarning-numpy-dtype-size-changed-may-indicate-binary-incompatibility"&gt;Stack Overflow&lt;/a&gt; you can safely ignore this, so we'll use &lt;a href="https://docs.python.org/3/library/warnings.html"&gt;warnings&lt;/a&gt; to suppress the messages, just so it doesn't keep bringing them up everytime I run this notebook.
 &lt;/p&gt;
@@ -1460,13 +1584,13 @@ During the importing of pandas (or scipy) you get a warning about a potential bi
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgfe7d7d2" class="outline-2"&gt;
-&lt;h2 id="orgfe7d7d2"&gt;Helpers&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgfe7d7d2"&gt;
+&lt;div id="outline-container-org322bdd6" class="outline-2"&gt;
+&lt;h2 id="org322bdd6"&gt;Helpers&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org322bdd6"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgf986b4d" class="outline-3"&gt;
-&lt;h3 id="orgf986b4d"&gt;Paths&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgf986b4d"&gt;
+&lt;div id="outline-container-orgbd43ef5" class="outline-3"&gt;
+&lt;h3 id="orgbd43ef5"&gt;Paths&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgbd43ef5"&gt;
 &lt;p&gt;
 Since I'm doing this as posts in nikola, but I'm trying to keep all non-post files outside of the &lt;code&gt;posts&lt;/code&gt; folder, I'm going to use a class to keep the paths to the output (submission) files straight.
 &lt;/p&gt;
@@ -1517,9 +1641,9 @@ Since I'm doing this as posts in nikola, but I'm trying to keep all non-post fil
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgd46dd53" class="outline-3"&gt;
-&lt;h3 id="orgd46dd53"&gt;Data&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgd46dd53"&gt;
+&lt;div id="outline-container-orgc38f5eb" class="outline-3"&gt;
+&lt;h3 id="orgc38f5eb"&gt;Data&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgc38f5eb"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;TestSet&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
     &lt;span class="sd"&gt;"""Loads the test-set data&lt;/span&gt;
 
@@ -1545,9 +1669,9 @@ Since I'm doing this as posts in nikola, but I'm trying to keep all non-post fil
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgc6bca12" class="outline-2"&gt;
-&lt;h2 id="orgc6bca12"&gt;Load the data&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgc6bca12"&gt;
+&lt;div id="outline-container-org17f7c97" class="outline-2"&gt;
+&lt;h2 id="org17f7c97"&gt;Load the data&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org17f7c97"&gt;
 &lt;p&gt;
 Let's load the test data. Note that we don't have any training data here, just test data. Moreover, &lt;i&gt;we will not use any features of the test set&lt;/i&gt;. All we need to solve this task is the file with the indices for the pairs that we need to compare.
 &lt;/p&gt;
@@ -1606,9 +1730,9 @@ So this doesn't appear to be a randomized data set. The first half of the Second
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgd5824b1" class="outline-2"&gt;
-&lt;h2 id="orgd5824b1"&gt;EDA and Leakage Intuition&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgd5824b1"&gt;
+&lt;div id="outline-container-org386dd7a" class="outline-2"&gt;
+&lt;h2 id="org386dd7a"&gt;EDA and Leakage Intuition&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org386dd7a"&gt;
 &lt;p&gt;
 As we already know, the key to discovering data leakages is careful Exploratory Data Analysis (EDA). So let's start our work with some basic data exploration and build an intuition about the leakage.
 &lt;/p&gt;
@@ -1713,17 +1837,17 @@ Another example - in a &lt;a href="https://www.kaggle.com/c/quora-question-pairs
 &lt;/p&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org6d1dc6b" class="outline-3"&gt;
-&lt;h3 id="org6d1dc6b"&gt;Probing the Leaderboard&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org6d1dc6b"&gt;
+&lt;div id="outline-container-org5bd754c" class="outline-3"&gt;
+&lt;h3 id="org5bd754c"&gt;Probing the Leaderboard&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org5bd754c"&gt;
 &lt;p&gt;
 Finally, let's see what fraction of the ID-pairs have a class of `1`. To do this we just need to submit a constant prediction (all ones) and check the accuracy the grader reports. Create a dataframe with columns `pairId` and `Prediction`, fill it and export it to a `.csv` file. Then submit to the Coursera grader and examine the grader's output to get the fraction of 1s in the test-set.
 &lt;/p&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orge685ec7" class="outline-4"&gt;
-&lt;h4 id="orge685ec7"&gt;All Ones&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-orge685ec7"&gt;
+&lt;div id="outline-container-orgb9976b2" class="outline-4"&gt;
+&lt;h4 id="orgb9976b2"&gt;All Ones&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-orgb9976b2"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;paths&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Paths&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;span class="n"&gt;all_ones&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="p"&gt;[[&lt;/span&gt;&lt;span class="s2"&gt;"pairId"&lt;/span&gt;&lt;span class="p"&gt;]]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;copy&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;span class="n"&gt;all_ones&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;"Prediction"&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;all_ones&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
@@ -1759,9 +1883,9 @@ Now think - how we can exploit this fact? What is the leak here? If you get it n
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org204ab5d" class="outline-4"&gt;
-&lt;h4 id="org204ab5d"&gt;All Zeros&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org204ab5d"&gt;
+&lt;div id="outline-container-org1da1a3a" class="outline-4"&gt;
+&lt;h4 id="org1da1a3a"&gt;All Zeros&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org1da1a3a"&gt;
 &lt;p&gt;
 Although we're told that this was a binary data set (and you could check it just by printing out the unique values), I sort of flaked and submitted a set where all the pairs were classified as zeros anyway. Here's what happened.
 &lt;/p&gt;
@@ -1800,17 +1924,17 @@ So it appears we've confirmed that the dataset is binary, with half the outputs 
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org19fd55d" class="outline-2"&gt;
-&lt;h2 id="org19fd55d"&gt;Building a magic feature&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org19fd55d"&gt;
+&lt;div id="outline-container-org3b1b5b9" class="outline-2"&gt;
+&lt;h2 id="org3b1b5b9"&gt;Building a magic feature&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org3b1b5b9"&gt;
 &lt;p&gt;
 In this section we will build a magic feature that will solve the problem almost perfectly. The instructions will lead you to the correct solution, but please, try to explain the purpose of the steps we do to yourself – it is very important.
 &lt;/p&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgd40cd31" class="outline-3"&gt;
-&lt;h3 id="orgd40cd31"&gt;Incidence matrix&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgd40cd31"&gt;
+&lt;div id="outline-container-orgcd2a109" class="outline-3"&gt;
+&lt;h3 id="orgcd2a109"&gt;Incidence matrix&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgcd2a109"&gt;
 &lt;p&gt;
 First, we need to build an &lt;a href="https://en.wikipedia.org/wiki/Incidence_matrix"&gt;incidence matrix&lt;/a&gt;. You can think of pairs `(FirstId, SecondId)` as edges in an undirected graph. 
 &lt;/p&gt;
@@ -1832,9 +1956,9 @@ For example, you can use this constructor: `scipy.sparse.coo_matrix((data, (i, j
 &lt;/p&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgc422d86" class="outline-4"&gt;
-&lt;h4 id="orgc422d86"&gt;De-duplicating the Data&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-orgc422d86"&gt;
+&lt;div id="outline-container-orgb1cd2bf" class="outline-4"&gt;
+&lt;h4 id="orgb1cd2bf"&gt;De-duplicating the Data&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-orgb1cd2bf"&gt;
 &lt;p&gt;
 The test data turns out to have duplicate ID pairs, which will cause our incidence matrix to produce numbers greater than 1 if we leave them in, so we need to remove them (using the &lt;a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.duplicated.html"&gt;duplicated&lt;/a&gt; method).
 &lt;/p&gt;
@@ -1887,9 +2011,9 @@ It is more convenient to have the incidence matrix in &lt;a href="https://docs.s
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgc18d901" class="outline-3"&gt;
-&lt;h3 id="orgc18d901"&gt;Now To Build the Magic Feature&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgc18d901"&gt;
+&lt;div id="outline-container-org2d7ea5a" class="outline-3"&gt;
+&lt;h3 id="org2d7ea5a"&gt;Now To Build the Magic Feature&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org2d7ea5a"&gt;
 &lt;p&gt;
 Why did we build the incidence matrix? We can think of the rows in this matrix as a representation for the objects. The `i-th` row is a representation for an object with `Id = i`. Then, to measure the similarity between two objects we can measure similarity between their representations. And we will see that these representations are very good.
 &lt;/p&gt;
@@ -1935,9 +2059,9 @@ That is it! &lt;b&gt;&lt;b&gt;We've built our magic feature.&lt;/b&gt;&lt;/b&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org73e5d7b" class="outline-4"&gt;
-&lt;h4 id="org73e5d7b"&gt;From magic feature to binary predictions&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org73e5d7b"&gt;
+&lt;div id="outline-container-org493a4a6" class="outline-4"&gt;
+&lt;h4 id="org493a4a6"&gt;From magic feature to binary predictions&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org493a4a6"&gt;
 &lt;p&gt;
 But how do we convert this feature into binary predictions? We do not have a train set to learn a model, but we have a piece of information about test set: the baseline accuracy score that you got, when submitting constant. And we also have a very strong considerations about the data generative process, so probably we will be fine even without a training set. 
 &lt;/p&gt;
@@ -2125,17 +2249,17 @@ Well done! Your accuracy score is 0.997298
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orge37ace8" class="outline-2"&gt;
-&lt;h2 id="orge37ace8"&gt;Bonus&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orge37ace8"&gt;
+&lt;div id="outline-container-orgdf0e4e8" class="outline-2"&gt;
+&lt;h2 id="orgdf0e4e8"&gt;Bonus&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgdf0e4e8"&gt;
 &lt;p&gt;
 Interestingly, it is not the only leak in this dataset. There is another totally different way to get almost 100% accuracy. Try to find it!
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org83fd432" class="outline-2"&gt;
-&lt;h2 id="org83fd432"&gt;What does it all mean then?&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org83fd432"&gt;
+&lt;div id="outline-container-org4c6f2ee" class="outline-2"&gt;
+&lt;h2 id="org4c6f2ee"&gt;What does it all mean then?&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org4c6f2ee"&gt;
 &lt;p&gt;
 From our initial check uploading all the submissions as one (so all the ID-pairs were classified as having IDs from the same class) we saw that half the entries were 1's and half were 0's. Our incidence matrix showed that half the vectors had a similarity of 20 or more, so by predicting that all the pairs whose incidence matrix dot-products were 20 or greater were of the same class, we could predict with greater than 99% accuracy which IDs were from the same class.
 &lt;/p&gt;

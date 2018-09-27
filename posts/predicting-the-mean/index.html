@@ -107,25 +107,25 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgf525677">Introduction</a></li>
-<li><a href="#org1fca1b7">Imports</a></li>
-<li><a href="#org7808973">The Data</a></li>
-<li><a href="#orgd4f53d4">Really Naive</a></li>
+<li><a href="#org6cc2d0a">Introduction</a></li>
+<li><a href="#org3232f35">Imports</a></li>
+<li><a href="#org84a4c52">The Data</a></li>
+<li><a href="#org1ab5732">Really Naive</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orgf525677" class="outline-2">
-<h2 id="orgf525677">Introduction</h2>
-<div class="outline-text-2" id="text-orgf525677">
+<div id="outline-container-org6cc2d0a" class="outline-2">
+<h2 id="org6cc2d0a">Introduction</h2>
+<div class="outline-text-2" id="text-org6cc2d0a">
 <p>
 Since the competition is going to be scored using the Root Mean Square Error I'll make a baseline prediction by using the mean of the sales figures.
 </p>
 </div>
 </div>
-<div id="outline-container-org1fca1b7" class="outline-2">
-<h2 id="org1fca1b7">Imports</h2>
-<div class="outline-text-2" id="text-org1fca1b7">
+<div id="outline-container-org3232f35" class="outline-2">
+<h2 id="org3232f35">Imports</h2>
+<div class="outline-text-2" id="text-org3232f35">
 <div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">warnings</span>
 <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">"ignore"</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">"numpy.dtype size changed"</span><span class="p">)</span>
 <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">"ignore"</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">"numpy.ufunc size changed"</span><span class="p">)</span>
@@ -145,9 +145,9 @@ from kaggler.helpers.printing import print_table
 </div>
 </div>
 
-<div id="outline-container-org7808973" class="outline-2">
-<h2 id="org7808973">The Data</h2>
-<div class="outline-text-2" id="text-org7808973">
+<div id="outline-container-org84a4c52" class="outline-2">
+<h2 id="org84a4c52">The Data</h2>
+<div class="outline-text-2" id="text-org84a4c52">
 <div class="highlight"><pre><span></span>data = Data()
 training = data.sales_training_data
 </pre></div>
@@ -218,9 +218,9 @@ training = data.sales_training_data
 </div>
 </div>
 
-<div id="outline-container-orgd4f53d4" class="outline-2">
-<h2 id="orgd4f53d4">Really Naive</h2>
-<div class="outline-text-2" id="text-orgd4f53d4">
+<div id="outline-container-org1ab5732" class="outline-2">
+<h2 id="org1ab5732">Really Naive</h2>
+<div class="outline-text-2" id="text-org1ab5732">
 <p>
 I was originally just going by average per month for the whole data set but that turns out to be too big, especially since it gets capped at 20. Furthermore, when you look at the test-data it has one ID column but the contest description says that you have to predict shop and item sales for the next month, what is the test-set again?
 </p>

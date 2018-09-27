@@ -108,21 +108,21 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orga418442">Validation and Overfitting</a></li>
-<li><a href="#org33fda23">Three Main Methods of Splitting</a></li>
-<li><a href="#org5c3515b">Stratification</a></li>
-<li><a href="#org673f5fc">Data Splitting</a></li>
-<li><a href="#org734139f">Problems</a></li>
-<li><a href="#org1b47d0f">Practice Quiz</a></li>
-<li><a href="#orgb24a928">Quiz</a></li>
-<li><a href="#orgac73e53">Links</a></li>
+<li><a href="#org22f02cf">Validation and Overfitting</a></li>
+<li><a href="#org053f296">Three Main Methods of Splitting</a></li>
+<li><a href="#org93d900d">Stratification</a></li>
+<li><a href="#org069e155">Data Splitting</a></li>
+<li><a href="#orgc0e900d">Problems</a></li>
+<li><a href="#org4c3fbf9">Practice Quiz</a></li>
+<li><a href="#orgd762960">Quiz</a></li>
+<li><a href="#org81acef0">Links</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orga418442" class="outline-2">
-<h2 id="orga418442">Validation and Overfitting</h2>
-<div class="outline-text-2" id="text-orga418442">
+<div id="outline-container-org22f02cf" class="outline-2">
+<h2 id="org22f02cf">Validation and Overfitting</h2>
+<div class="outline-text-2" id="text-org22f02cf">
 <p>
 To prevent your model from overfitting to the training set, you can hold out some of the training set and use it to validate the model after it has been fit to the rest of the training set.
 </p>
@@ -133,16 +133,16 @@ To prevent your model from overfitting to the training set, you can hold out som
 </ul>
 </div>
 </div>
-<div id="outline-container-org33fda23" class="outline-2">
-<h2 id="org33fda23">Three Main Methods of Splitting</h2>
-<div class="outline-text-2" id="text-org33fda23">
+<div id="outline-container-org053f296" class="outline-2">
+<h2 id="org053f296">Three Main Methods of Splitting</h2>
+<div class="outline-text-2" id="text-org053f296">
 <p>
 These are methods for splitting your training set into training and validation sets. Once you have a model, re-train it over the entire training set before applying it to the test set.
 </p>
 </div>
-<div id="outline-container-org9e7efea" class="outline-3">
-<h3 id="org9e7efea">Holdout</h3>
-<div class="outline-text-3" id="text-org9e7efea">
+<div id="outline-container-orge858c0c" class="outline-3">
+<h3 id="orge858c0c">Holdout</h3>
+<div class="outline-text-3" id="text-orge858c0c">
 <p>
 This method just splits the data into one training and one validation set.
 </p>
@@ -153,9 +153,9 @@ This method just splits the data into one training and one validation set.
 </ul>
 </div>
 </div>
-<div id="outline-container-orgf921310" class="outline-3">
-<h3 id="orgf921310">K-Fold</h3>
-<div class="outline-text-3" id="text-orgf921310">
+<div id="outline-container-orgd2d4371" class="outline-3">
+<h3 id="orgd2d4371">K-Fold</h3>
+<div class="outline-text-3" id="text-orgd2d4371">
 <p>
 Make <i>k</i> splits of the training set, then use each of the validation sets while training on all the data not in the validation set. This differs from doing holdout k-times since we guarantee that the validation sets don't overlap. Uses the average score for the k-folds.
 </p>
@@ -165,9 +165,9 @@ Make <i>k</i> splits of the training set, then use each of the validation sets w
 </ul>
 </div>
 </div>
-<div id="outline-container-orge1b99e9" class="outline-3">
-<h3 id="orge1b99e9">Leave One Out</h3>
-<div class="outline-text-3" id="text-orge1b99e9">
+<div id="outline-container-org36c6407" class="outline-3">
+<h3 id="org36c6407">Leave One Out</h3>
+<div class="outline-text-3" id="text-org36c6407">
 <p>
 This is like k-folds except we always use a validation set of size 1 - so we are iterating over each point in the data set and using it as the training set. This can be useful if the data set is small.
 </p>
@@ -177,9 +177,9 @@ This is like k-folds except we always use a validation set of size 1 - so we are
 </div>
 </div>
 </div>
-<div id="outline-container-org5c3515b" class="outline-2">
-<h2 id="org5c3515b">Stratification</h2>
-<div class="outline-text-2" id="text-org5c3515b">
+<div id="outline-container-org93d900d" class="outline-2">
+<h2 id="org93d900d">Stratification</h2>
+<div class="outline-text-2" id="text-org93d900d">
 <p>
 Sometimes you need to make sure your validation sets have the same distribution as your set as a whole.
 </p>
@@ -191,9 +191,9 @@ Sometimes you need to make sure your validation sets have the same distribution 
 </ul>
 </div>
 </div>
-<div id="outline-container-org673f5fc" class="outline-2">
-<h2 id="org673f5fc">Data Splitting</h2>
-<div class="outline-text-2" id="text-org673f5fc">
+<div id="outline-container-org069e155" class="outline-2">
+<h2 id="org069e155">Data Splitting</h2>
+<div class="outline-text-2" id="text-org069e155">
 <p>
 If you have time-based data, there's two ways to split the training data - randomly within the entire timespan, or put the first part of the data in the training set and put the second part of the data in the validation set. If the test-set is a time that is beyond the training data, then using the time-based split will produce a model that is better for the testing data.
 </p>
@@ -210,25 +210,25 @@ The main point of this is that you want to set up your validation set to match t
 </p>
 </div>
 </div>
-<div id="outline-container-org734139f" class="outline-2">
-<h2 id="org734139f">Problems</h2>
-<div class="outline-text-2" id="text-org734139f">
+<div id="outline-container-orgc0e900d" class="outline-2">
+<h2 id="orgc0e900d">Problems</h2>
+<div class="outline-text-2" id="text-orgc0e900d">
 <p>
 The point of doing the training-validation split is that you think the validation set(s) will approximate the test set. But what if that's not true?
 </p>
 </div>
-<div id="outline-container-orgd1624bd" class="outline-3">
-<h3 id="orgd1624bd">Causes of score differences</h3>
-<div class="outline-text-3" id="text-orgd1624bd">
+<div id="outline-container-orgedb54c7" class="outline-3">
+<h3 id="orgedb54c7">Causes of score differences</h3>
+<div class="outline-text-3" id="text-orgedb54c7">
 <ul class="org-ul">
 <li>Too little data</li>
 <li>The data is too diverse and inconsistent</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orgbaddcce" class="outline-3">
-<h3 id="orgbaddcce">Submission Differs from Validation</h3>
-<div class="outline-text-3" id="text-orgbaddcce">
+<div id="outline-container-org6dcbb3d" class="outline-3">
+<h3 id="org6dcbb3d">Submission Differs from Validation</h3>
+<div class="outline-text-3" id="text-org6dcbb3d">
 <ol class="org-ol">
 <li>Even K-fold validation has variation (check that the standard deviation across folds encompasses the leaderboard values)</li>
 <li>Too little data on leaderboard (nothing you can do)</li>
@@ -237,13 +237,13 @@ The point of doing the training-validation split is that you think the validatio
 </div>
 </div>
 </div>
-<div id="outline-container-org1b47d0f" class="outline-2">
-<h2 id="org1b47d0f">Practice Quiz</h2>
-<div class="outline-text-2" id="text-org1b47d0f">
+<div id="outline-container-org4c3fbf9" class="outline-2">
+<h2 id="org4c3fbf9">Practice Quiz</h2>
+<div class="outline-text-2" id="text-org4c3fbf9">
 </div>
-<div id="outline-container-orga854703" class="outline-3">
-<h3 id="orga854703">One</h3>
-<div class="outline-text-3" id="text-orga854703">
+<div id="outline-container-org96b8ead" class="outline-3">
+<h3 id="org96b8ead">One</h3>
+<div class="outline-text-3" id="text-org96b8ead">
 <p>
 We did a K-Fold cross validation on a huge dataset and noticed that scores on each fold are roughly the same. Which validation type is of most practical use?
 </p>
@@ -257,9 +257,9 @@ We did a K-Fold cross validation on a huge dataset and noticed that scores on ea
 </ul>
 </div>
 </div>
-<div id="outline-container-org82cedaf" class="outline-3">
-<h3 id="org82cedaf">Two</h3>
-<div class="outline-text-3" id="text-org82cedaf">
+<div id="outline-container-org3b5030d" class="outline-3">
+<h3 id="org3b5030d">Two</h3>
+<div class="outline-text-3" id="text-org3b5030d">
 <p>
 We did a K-fold cross validation on a medium sized dataset and noticed that the validation scores varied widely. Which validation type is the most practical to use?
 </p>
@@ -273,9 +273,9 @@ We did a K-fold cross validation on a medium sized dataset and noticed that the 
 </ul>
 </div>
 </div>
-<div id="outline-container-orgbbdaac5" class="outline-3">
-<h3 id="orgbbdaac5">Three</h3>
-<div class="outline-text-3" id="text-orgbbdaac5">
+<div id="outline-container-orga16d003" class="outline-3">
+<h3 id="orga16d003">Three</h3>
+<div class="outline-text-3" id="text-orga16d003">
 <p>
 The features we generate depend on the train-test split. True or False?
 </p>
@@ -287,9 +287,9 @@ The features we generate depend on the train-test split. True or False?
 </ul>
 </div>
 </div>
-<div id="outline-container-org8688967" class="outline-3">
-<h3 id="org8688967">Which of these can indicate an expected leaderboard shuffle in a competition?</h3>
-<div class="outline-text-3" id="text-org8688967">
+<div id="outline-container-orgbf8dc24" class="outline-3">
+<h3 id="orgbf8dc24">Which of these can indicate an expected leaderboard shuffle in a competition?</h3>
+<div class="outline-text-3" id="text-orgbf8dc24">
 <ul class="org-ul">
 <li class="on">
 <code>[X]</code> Little training and/or testing data</li>
@@ -301,13 +301,13 @@ The features we generate depend on the train-test split. True or False?
 </div>
 </div>
 </div>
-<div id="outline-container-orgb24a928" class="outline-2">
-<h2 id="orgb24a928">Quiz</h2>
-<div class="outline-text-2" id="text-orgb24a928">
+<div id="outline-container-orgd762960" class="outline-2">
+<h2 id="orgd762960">Quiz</h2>
+<div class="outline-text-2" id="text-orgd762960">
 </div>
-<div id="outline-container-org95ad1b1" class="outline-3">
-<h3 id="org95ad1b1">One</h3>
-<div class="outline-text-3" id="text-org95ad1b1">
+<div id="outline-container-org0f99d6e" class="outline-3">
+<h3 id="org0f99d6e">One</h3>
+<div class="outline-text-3" id="text-org0f99d6e">
 <p>
 Select the true statements.
 </p>
@@ -325,9 +325,9 @@ Select the true statements.
 </ul>
 </div>
 </div>
-<div id="outline-container-org418eb40" class="outline-3">
-<h3 id="org418eb40">Two</h3>
-<div class="outline-text-3" id="text-org418eb40">
+<div id="outline-container-orgd32fb63" class="outline-3">
+<h3 id="orgd32fb63">Two</h3>
+<div class="outline-text-3" id="text-orgd32fb63">
 <p>
 Kaggle usually allows you to submit two final submissions that will be checked against the private leader board. One common practice is to use a model that did the best on the validation scores and another that did best on the public leader board. What is the logic behind using these two models?
 </p>
@@ -341,9 +341,9 @@ Kaggle usually allows you to submit two final submissions that will be checked a
 </ul>
 </div>
 </div>
-<div id="outline-container-org0cd3526" class="outline-3">
-<h3 id="org0cd3526">Three</h3>
-<div class="outline-text-3" id="text-org0cd3526">
+<div id="outline-container-orgfe98d1d" class="outline-3">
+<h3 id="orgfe98d1d">Three</h3>
+<div class="outline-text-3" id="text-orgfe98d1d">
 <p>
 Suppose we have a dataset of marketing campaigns. Each campain runs for a few weeks and for each campaign our target is the number of new customers. A row in the dataset looks like this:
 </p>
@@ -368,9 +368,9 @@ The dataset contains multiple campaigns where the training set has the dates at 
 </ul>
 </div>
 </div>
-<div id="outline-container-orga7a2cd9" class="outline-3">
-<h3 id="orga7a2cd9">Four</h3>
-<div class="outline-text-3" id="text-orga7a2cd9">
+<div id="outline-container-orgc3bf35f" class="outline-3">
+<h3 id="orgc3bf35f">Four</h3>
+<div class="outline-text-3" id="text-orgc3bf35f">
 <p>
 Which of the following can you usually identify without the leaderboard?
 </p>
@@ -387,9 +387,9 @@ Which of the following can you usually identify without the leaderboard?
 </div>
 </div>
 </div>
-<div id="outline-container-orgac73e53" class="outline-2">
-<h2 id="orgac73e53">Links</h2>
-<div class="outline-text-2" id="text-orgac73e53">
+<div id="outline-container-org81acef0" class="outline-2">
+<h2 id="org81acef0">Links</h2>
+<div class="outline-text-2" id="text-org81acef0">
 <ul class="org-ul">
 <li><a href="http://scikit-learn.org/stable/modules/cross_validation.html">Cross-validation in sklearn</a></li>
 <li><a href="http://www.chioka.in/how-to-select-your-final-models-in-a-kaggle-competitio/">Model Selection for Kaggle</a></li>

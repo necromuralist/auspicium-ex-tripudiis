@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about submission baselining competition)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/submission-baselining-competition.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Tue, 25 Sep 2018 23:01:14 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Predicting the Mean</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/predicting-the-mean/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about submission baselining competition)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/submission-baselining-competition.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Thu, 27 Sep 2018 02:22:31 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Predicting the Mean</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/predicting-the-mean/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
 &lt;h2&gt;Table of Contents&lt;/h2&gt;
 &lt;div id="text-table-of-contents"&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/predicting-the-mean/#orgf525677"&gt;Introduction&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/predicting-the-mean/#org1fca1b7"&gt;Imports&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/predicting-the-mean/#org7808973"&gt;The Data&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/predicting-the-mean/#orgd4f53d4"&gt;Really Naive&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/predicting-the-mean/#org6cc2d0a"&gt;Introduction&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/predicting-the-mean/#org3232f35"&gt;Imports&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/predicting-the-mean/#org84a4c52"&gt;The Data&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/predicting-the-mean/#org1ab5732"&gt;Really Naive&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgf525677" class="outline-2"&gt;
-&lt;h2 id="orgf525677"&gt;Introduction&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgf525677"&gt;
+&lt;div id="outline-container-org6cc2d0a" class="outline-2"&gt;
+&lt;h2 id="org6cc2d0a"&gt;Introduction&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org6cc2d0a"&gt;
 &lt;p&gt;
 Since the competition is going to be scored using the Root Mean Square Error I'll make a baseline prediction by using the mean of the sales figures.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org1fca1b7" class="outline-2"&gt;
-&lt;h2 id="org1fca1b7"&gt;Imports&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org1fca1b7"&gt;
+&lt;div id="outline-container-org3232f35" class="outline-2"&gt;
+&lt;h2 id="org3232f35"&gt;Imports&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org3232f35"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;warnings&lt;/span&gt;
 &lt;span class="n"&gt;warnings&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;filterwarnings&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"ignore"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;message&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"numpy.dtype size changed"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;warnings&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;filterwarnings&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"ignore"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;message&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"numpy.ufunc size changed"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
@@ -41,9 +41,9 @@ from kaggler.helpers.printing import print_table
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org7808973" class="outline-2"&gt;
-&lt;h2 id="org7808973"&gt;The Data&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org7808973"&gt;
+&lt;div id="outline-container-org84a4c52" class="outline-2"&gt;
+&lt;h2 id="org84a4c52"&gt;The Data&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org84a4c52"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;data = Data()
 training = data.sales_training_data
 &lt;/pre&gt;&lt;/div&gt;
@@ -127,9 +127,9 @@ training = data.sales_training_data
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgd4f53d4" class="outline-2"&gt;
-&lt;h2 id="orgd4f53d4"&gt;Really Naive&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgd4f53d4"&gt;
+&lt;div id="outline-container-org1ab5732" class="outline-2"&gt;
+&lt;h2 id="org1ab5732"&gt;Really Naive&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org1ab5732"&gt;
 &lt;p&gt;
 I was originally just going by average per month for the whole data set but that turns out to be too big, especially since it gets capped at 20. Furthermore, when you look at the test-data it has one ID column but the contest description says that you have to predict shop and item sales for the next month, what is the test-set again?
 &lt;/p&gt;

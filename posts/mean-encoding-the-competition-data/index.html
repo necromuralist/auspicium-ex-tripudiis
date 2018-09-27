@@ -104,11 +104,26 @@
         
 
     </header><div class="e-content entry-content" itemprop="articleBody text">
-    <div id="outline-container-org8b6abd8" class="outline-2">
-<h2 id="org8b6abd8">Introduction</h2>
-<div class="outline-text-2" id="text-org8b6abd8">
+    <div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org87fc028">Introduction</a></li>
+<li><a href="#org63f6b0f">General tips</a></li>
+<li><a href="#orgd9abb4b">Read In the Data</a></li>
+<li><a href="#org02fc65c">Aggregate data</a></li>
+<li><a href="#org3f25deb">Mean encodings without regularization</a></li>
+<li><a href="#orgcdaa0bf">Method 2</a></li>
+<li><a href="#orgb7c5dbc">1. KFold scheme</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org87fc028" class="outline-2">
+<h2 id="org87fc028">Introduction</h2>
+<div class="outline-text-2" id="text-org87fc028">
 <p>
-In this programming assignment you will be working with `1C` dataset from the final competition. You are asked to encode `item<sub>id</sub>` in 4 different ways:
+In this programming assignment you will be working with the <i>1C</i> dataset from the final competition. You are asked to encode the <code>item_id</code> in 4 different ways:
 </p>
 
 <ol class="org-ol">
@@ -118,141 +133,249 @@ In this programming assignment you will be working with `1C` dataset from the fi
 <li>Via expanding mean scheme.</li>
 </ol>
 <p>
-<b><b>You will need to submit</b></b> the correlation coefficient between resulting encoding and target variable up to 4 decimal places.
+<b><b>You will need to submit</b></b> the correlation coefficient between the resulting encoding and the target variable up to 4 decimal places.
 </p>
 </div>
 </div>
 
-<div id="outline-container-org32f5d8a" class="outline-2">
-<h2 id="org32f5d8a">General tips</h2>
-<div class="outline-text-2" id="text-org32f5d8a">
+<div id="outline-container-org63f6b0f" class="outline-2">
+<h2 id="org63f6b0f">General tips</h2>
+<div class="outline-text-2" id="text-org63f6b0f">
 <ul class="org-ul">
-<li>Fill NANs in the encoding with `0.3343`.</li>
+<li>Fill NANs in the encoding with <code>0.3343</code>.</li>
 <li>Some encoding schemes depend on sorting order, so in order to avoid confusion, please use the following code snippet to construct the data frame. This snippet also implements mean encoding without regularization.</li>
 </ul>
-<div class="highlight"><pre><span></span>import pandas as pd
-import numpy as np
+<div class="highlight"><pre><span></span># python standard library
 from itertools import product
-from grader import Grader
+
+# pypi
+import pandas
+import numpy
+
+# this course (github)
+from hse_graders.assignment_3.grader import Grader
+
+# this project
+from kaggler.course.data import Data
+</pre></div>
+</div>
+</div>
+
+<div id="outline-container-orgd9abb4b" class="outline-2">
+<h2 id="orgd9abb4b">Read In the Data</h2>
+<div class="outline-text-2" id="text-orgd9abb4b">
+<div class="highlight"><pre><span></span>sales = Data().sales_training_data
+</pre></div>
+</div>
+</div>
+
+<div id="outline-container-org02fc65c" class="outline-2">
+<h2 id="org02fc65c">Aggregate data</h2>
+<div class="outline-text-2" id="text-org02fc65c">
+<p>
+Since the competition task is to make a monthly prediction, we need to aggregate the data to montly level before doing any encodings. The following code-cell serves just that purpose.
+</p>
+
+<div class="highlight"><pre><span></span>index_cols = ['shop_id', 'item_id', 'date_block_num']
+</pre></div>
+
+<p>
+For every month we create a grid from all shops/items combinations from that month.
+</p>
+
+<div class="highlight"><pre><span></span>grid = [] 
+for block_num in sales['date_block_num'].unique():
+    cur_shops = sales[sales['date_block_num']==block_num]['shop_id'].unique()
+    cur_items = sales[sales['date_block_num']==block_num]['item_id'].unique()
+    grid.append(numpy.array(list(product(*[cur_shops, cur_items, [block_num]])),dtype='int32'))
+</pre></div>
+
+<p>
+Now turn the grid into a pandas dataframe.
+</p>
+
+<div class="highlight"><pre><span></span>grid = pandas.DataFrame(numpy.vstack(grid), columns = index_cols,dtype=numpy.int32)
 </pre></div>
 
 
 <p>
-sales = pd.read<sub>csv</sub>('../readonly/final<sub>project</sub><sub>data</sub>/sales<sub>train.csv.gz</sub>')
+Get the aggregated values for (<code>shop_id</code>, <code>item_id</code>, and <code>month</code>).
+</p>
+
+<div class="highlight"><pre><span></span>grouped = sales.groupby(index_cols, as_index=False).agg({'item_cnt_day':{'target':'sum'}})
+</pre></div>
+
+<p>
+Fix the column names.
+</p>
+
+<div class="highlight"><pre><span></span>grouped.columns = [column[0] if column[-1]=='' else column[-1] for column in grouped.columns.values]
+</pre></div>
+
+<p>
+Join the aggregated data to the grid.
+</p>
+
+<div class="highlight"><pre><span></span>all_data = pandas.merge(grid, grouped, how='left', on=index_cols).fillna(0)
+</pre></div>
+
+<p>
+Sort the data.
+</p>
+
+<div class="highlight"><pre><span></span>all_data.sort_values(['date_block_num','shop_id','item_id'], inplace=True)
+</pre></div>
+</div>
+</div>
+
+<div id="outline-container-org3f25deb" class="outline-2">
+<h2 id="org3f25deb">Mean encodings without regularization</h2>
+<div class="outline-text-2" id="text-org3f25deb">
+<p>
+Now that we have done the techinical work, we are ready to actually <b>mean encode</b> the desired <code>item_id</code> variable. 
+</p>
+
+<p>
+Here are two ways to implement mean encoding features <b>without</b> any regularization. You can use this code as a starting point to implement regularized techniques. 
+</p>
+</div>
+
+<div id="outline-container-orgc0f72a9" class="outline-3">
+<h3 id="orgc0f72a9">Method 1:  Calculate a mapping: {item_id: target_mean}</h3>
+<div class="outline-text-3" id="text-orgc0f72a9">
+<div class="highlight"><pre><span></span>item_id_target_mean = all_data.groupby('item_id').target.mean()
+</pre></div>
+
+<p>
+In our non-regularized case we just <b>map</b> the computed means to the <code>item_id</code>'s.
+</p>
+
+<div class="highlight"><pre><span></span>all_data['item_target_enc'] = all_data['item_id'].map(item_id_target_mean)
+</pre></div>
+</div>
+</div>
+
+<div id="outline-container-org7666e42" class="outline-3">
+<h3 id="org7666e42">Fill NaNs</h3>
+<div class="outline-text-3" id="text-org7666e42">
+<div class="highlight"><pre><span></span>all_data['item_target_enc'].fillna(0.3343, inplace=True) 
+</pre></div>
+</div>
+</div>
+
+<div id="outline-container-org4790f2f" class="outline-3">
+<h3 id="org4790f2f">Print correlation</h3>
+<div class="outline-text-3" id="text-org4790f2f">
+<div class="highlight"><pre><span></span>encoded_feature = all_data['item_target_enc'].values
+print(numpy.corrcoef(all_data['target'].values, encoded_feature)[0][1])
+</pre></div>
+
+<p>
+0.48303869886216977
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgcdaa0bf" class="outline-2">
+<h2 id="orgcdaa0bf">Method 2</h2>
+<div class="outline-text-2" id="text-orgcdaa0bf">
+<p>
+Unlike the  <code>.target.mean()</code> function, <code>transform</code> will return a dataframe with an index like in <code>all_data</code>.
+Basically this single line of code is equivalent to the first two lines from of Method 1.
+</p>
+
+<div class="highlight"><pre><span></span>all_data['item_target_enc'] = all_data.groupby('item_id')['target'].transform('mean')
+</pre></div>
+</div>
+
+<div id="outline-container-orgbbba154" class="outline-3">
+<h3 id="orgbbba154">Fill NaNs</h3>
+<div class="outline-text-3" id="text-orgbbba154">
+<div class="highlight"><pre><span></span>all_data['item_target_enc'].fillna(0.3343, inplace=True) 
+</pre></div>
+</div>
+</div>
+
+<div id="outline-container-orgccb2255" class="outline-3">
+<h3 id="orgccb2255">Print correlation</h3>
+<div class="outline-text-3" id="text-orgccb2255">
+<div class="highlight"><pre><span></span>encoded_feature = all_data['item_target_enc'].values
+print(numpy.corrcoef(all_data['target'].values, encoded_feature)[0][1])
+</pre></div>
+
+<p>
+0.48303869886216977
 </p>
 
 
 <p>
-index<sub>cols</sub> = ['shop<sub>id</sub>', 'item<sub>id</sub>', 'date<sub>block</sub><sub>num</sub>']
+See the printed value? It is the correlation coefficient between the target variable and your new encoded feature. You need to <b><b>compute the correlation coefficient</b></b> between the encodings that you will implement and <b><b>submit those to coursera</b></b>.
+</p>
+
+<div class="highlight"><pre><span></span>grader = Grader()
+</pre></div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgb7c5dbc" class="outline-2">
+<h2 id="orgb7c5dbc">1. KFold scheme</h2>
+<div class="outline-text-2" id="text-orgb7c5dbc">
+<p>
+This is Explained starting at 41 seconds into the <a href="https://www.coursera.org/learn/competitive-data-science/lecture/LGYQ2/regularization">Regularization lecture</a>.
 </p>
 
 <p>
-grid = [] 
-for block<sub>num</sub> in sales['date<sub>block</sub><sub>num</sub>'].unique():
-    cur<sub>shops</sub> = sales[sales['date<sub>block</sub><sub>num</sub>']==block<sub>num</sub>]['shop<sub>id</sub>'].unique()
-    cur<sub>items</sub> = sales[sales['date<sub>block</sub><sub>num</sub>']==block<sub>num</sub>]['item<sub>id</sub>'].unique()
-    grid.append(np.array(list(product(*[cur<sub>shops</sub>, cur<sub>items</sub>, [block<sub>num</sub>]])),dtype='int32'))
+First implement the KFold scheme with five folds. Use KFold(5) from sklearn.model_selection. 
 </p>
 
+<ol class="org-ol">
+<li>Split your data in 5 folds with <a href="http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.KFold.html">sklearn.model_selection.KFold</a> with <code>shuffle=False</code> (the default).</li>
+<li>Iterate through folds: use all but the current fold to calculate mean target for each level `item_id`, and  fill the current fold.</li>
+</ol>
 <p>
-#turn the grid into pandas dataframe
-grid = pd.DataFrame(np.vstack(grid), columns = index<sub>cols,dtype</sub>=np.int32)
-</p>
-
-<p>
-#get aggregated values for (shop<sub>id</sub>, item<sub>id</sub>, month)
-gb = sales.groupby(index<sub>cols,as</sub><sub>index</sub>=False).agg({'item<sub>cnt</sub><sub>day</sub>':{'target':'sum'}})
-</p>
-
-<p>
-#fix column names
-gb.columns = [col[0] if col[-1]=='' else col[-1] for col in gb.columns.values]
-#join aggregated data to the grid
-all<sub>data</sub> = pd.merge(grid,gb,how='left',on=index<sub>cols</sub>).fillna(0)
-#sort the data
-all<sub>data.sort</sub><sub>values</sub>(['date<sub>block</sub><sub>num</sub>','shop<sub>id</sub>','item<sub>id</sub>'],inplace=True)
-</p>
-
-
-<p>
-item<sub>id</sub><sub>target</sub><sub>mean</sub> = all<sub>data.groupby</sub>('item<sub>id</sub>').target.mean()
-</p>
-
-<p>
-all<sub>data</sub>['item<sub>target</sub><sub>enc</sub>'] = all<sub>data</sub>['item<sub>id</sub>'].map(item<sub>id</sub><sub>target</sub><sub>mean</sub>)
-</p>
-
-<p>
-all<sub>data</sub>['item<sub>target</sub><sub>enc</sub>'].fillna(0.3343, inplace=True) 
-</p>
-
-<p>
-encoded<sub>feature</sub> = all<sub>data</sub>['item<sub>target</sub><sub>enc</sub>'].values
-print(np.corrcoef(all<sub>data</sub>['target'].values, encoded<sub>feature</sub>)[0][1])
+See the <b><b>Method 1</b></b> from the example implementation. In particular learn what `map` and pd.Series.map functions do. They are pretty handy in many situations.
 </p>
 
 
 <p>
-'''
-     Differently to `.target.mean()` function `transform` 
-   will return a dataframe with an index like in `all<sub>data</sub>`.
-   Basically this single line of code is equivalent to the first two lines from of Method 1.
-'''
-all<sub>data</sub>['item<sub>target</sub><sub>enc</sub>'] = all<sub>data.groupby</sub>('item<sub>id</sub>')['target'].transform('mean')
-</p>
-
-<p>
-all<sub>data</sub>['item<sub>target</sub><sub>enc</sub>'].fillna(0.3343, inplace=True) 
-</p>
-
-<p>
-encoded<sub>feature</sub> = all<sub>data</sub>['item<sub>target</sub><sub>enc</sub>'].values
-print(np.corrcoef(all<sub>data</sub>['target'].values, encoded<sub>feature</sub>)[0][1])
-</p>
-
-
-<p>
-grader = Grader()
-</p>
-
-
-<p>
-corr = np.corrcoef(all<sub>data</sub>['target'].values, encoded<sub>feature</sub>)[0][1]
+corr = np.corrcoef(all_data['target'].values, encoded_feature)[0][1]
 print(corr)
-grader.submit<sub>tag</sub>('KFold<sub>scheme</sub>', corr)
+grader.submit_tag('KFold_scheme', corr)
 </p>
 
 
 <p>
-corr = np.corrcoef(all<sub>data</sub>['target'].values, encoded<sub>feature</sub>)[0][1]
+corr = np.corrcoef(all_data['target'].values, encoded_feature)[0][1]
 print(corr)
-grader.submit<sub>tag</sub>('Leave-one-out<sub>scheme</sub>', corr)
+grader.submit_tag('Leave-one-out_scheme', corr)
 </p>
 
 
 <p>
-corr = np.corrcoef(all<sub>data</sub>['target'].values, encoded<sub>feature</sub>)[0][1]
+corr = np.corrcoef(all_data['target'].values, encoded_feature)[0][1]
 print(corr)
-grader.submit<sub>tag</sub>('Smoothing<sub>scheme</sub>', corr)
+grader.submit_tag('Smoothing_scheme', corr)
 </p>
 
 
 <p>
-corr = np.corrcoef(all<sub>data</sub>['target'].values, encoded<sub>feature</sub>)[0][1]
+corr = np.corrcoef(all_data['target'].values, encoded_feature)[0][1]
 print(corr)
-grader.submit<sub>tag</sub>('Expanding<sub>mean</sub><sub>scheme</sub>', corr)
+grader.submit_tag('Expanding_mean_scheme', corr)
 </p>
 
 
 <p>
-STUDENT<sub>EMAIL</sub> = # EMAIL HERE
-STUDENT<sub>TOKEN</sub> = # TOKEN HERE
+STUDENT_EMAIL = # EMAIL HERE
+STUDENT_TOKEN = # TOKEN HERE
 grader.status()
 </p>
 
 
 <p>
-grader.submit(STUDENT<sub>EMAIL</sub>, STUDENT<sub>TOKEN</sub>)
+grader.submit(STUDENT_EMAIL, STUDENT_TOKEN)
 </p>
 </div>
 </div>

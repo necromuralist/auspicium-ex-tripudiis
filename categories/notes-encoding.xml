@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about notes encoding)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/notes-encoding.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Tue, 25 Sep 2018 23:01:14 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Mean Encoding</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-org2984a28" class="outline-2"&gt;
-&lt;h2 id="org2984a28"&gt;Mean Encoding&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org2984a28"&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about notes encoding)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/notes-encoding.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Tue, 25 Sep 2018 21:43:47 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Mean Encoding</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-org4cc9eab" class="outline-2"&gt;
+&lt;h2 id="org4cc9eab"&gt;Mean Encoding&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org4cc9eab"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org21b07cd" class="outline-3"&gt;
-&lt;h3 id="org21b07cd"&gt;Introduction&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org21b07cd"&gt;
+&lt;div id="outline-container-org3e0ad37" class="outline-3"&gt;
+&lt;h3 id="org3e0ad37"&gt;Introduction&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org3e0ad37"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;also called target encoding and likelihood encoding&lt;/li&gt;
 &lt;/ul&gt;
@@ -13,17 +13,17 @@
 It is a way to encode a categorical feature. Uses the fraction of times the feature is 1 out of all the times the feature is in the data set (for binary classification).
 &lt;/p&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org5329564" class="outline-4"&gt;
-&lt;h4 id="org5329564"&gt;Why does it work?&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org5329564"&gt;
+&lt;div id="outline-container-org3ee9e19" class="outline-4"&gt;
+&lt;h4 id="org3ee9e19"&gt;Why does it work?&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org3ee9e19"&gt;
 &lt;p&gt;
 Unlike regular encoding, which has no real meaning to the labels, mean encoding imposes an ordering. This allows you to reduce your loss while using shorter trees.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org70581bc" class="outline-4"&gt;
-&lt;h4 id="org70581bc"&gt;How do you calculate it?&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org70581bc"&gt;
+&lt;div id="outline-container-org5b844a5" class="outline-4"&gt;
+&lt;h4 id="org5b844a5"&gt;How do you calculate it?&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org5b844a5"&gt;
 &lt;p&gt;
 There are multiple ways.
 &lt;/p&gt;
@@ -35,9 +35,9 @@ There are multiple ways.
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org711f025" class="outline-4"&gt;
-&lt;h4 id="org711f025"&gt;When does it fail?&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org711f025"&gt;
+&lt;div id="outline-container-org3be6aa5" class="outline-4"&gt;
+&lt;h4 id="org3be6aa5"&gt;When does it fail?&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org3be6aa5"&gt;
 &lt;p&gt;
 If you have lots of feature instances with few cases it will tend to overfit.
 &lt;/p&gt;
@@ -45,13 +45,13 @@ If you have lots of feature instances with few cases it will tend to overfit.
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org902befa" class="outline-2"&gt;
-&lt;h2 id="org902befa"&gt;Regularization&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org902befa"&gt;
+&lt;div id="outline-container-org352fd35" class="outline-2"&gt;
+&lt;h2 id="org352fd35"&gt;Regularization&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org352fd35"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org25a468d" class="outline-3"&gt;
-&lt;h3 id="org25a468d"&gt;Four Types&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org25a468d"&gt;
+&lt;div id="outline-container-orgc818674" class="outline-3"&gt;
+&lt;h3 id="orgc818674"&gt;Four Types&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgc818674"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;Cross-validation loop inside the training data&lt;/li&gt;
 &lt;li&gt;Smoothing&lt;/li&gt;
@@ -60,9 +60,9 @@ If you have lots of feature instances with few cases it will tend to overfit.
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgb67e225" class="outline-3"&gt;
-&lt;h3 id="orgb67e225"&gt;Cross Validation&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgb67e225"&gt;
+&lt;div id="outline-container-orgb07e97c" class="outline-3"&gt;
+&lt;h3 id="orgb07e97c"&gt;Cross Validation&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgb07e97c"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;Usually 4 or 5 folds are enough&lt;/li&gt;
 &lt;li&gt;Need to watch out for extreme cases like leave-out-one (LOO)&lt;/li&gt;
@@ -92,9 +92,9 @@ Here's an example of this method using sklearn.
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgbcf4a6d" class="outline-3"&gt;
-&lt;h3 id="orgbcf4a6d"&gt;Smoothing&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgbcf4a6d"&gt;
+&lt;div id="outline-container-org4d61d88" class="outline-3"&gt;
+&lt;h3 id="org4d61d88"&gt;Smoothing&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org4d61d88"&gt;
 &lt;p&gt;
 Use a value \(\alpha\) to control the amount of regularization. This isn't a regularization method in and of itself, you use it with other methods.
 &lt;/p&gt;
@@ -107,17 +107,17 @@ Use a value \(\alpha\) to control the amount of regularization. This isn't a reg
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org66d3b01" class="outline-3"&gt;
-&lt;h3 id="org66d3b01"&gt;Noise&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org66d3b01"&gt;
+&lt;div id="outline-container-orgb968ebe" class="outline-3"&gt;
+&lt;h3 id="orgb968ebe"&gt;Noise&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgb968ebe"&gt;
 &lt;p&gt;
 Adding noise degrades the quality of the encoding in the training data. This is usually used with &lt;i&gt;leave-one-out&lt;/i&gt; encoding to prevent overfitting. You have to figure out how much noise to add through experimentation.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org370ffba" class="outline-3"&gt;
-&lt;h3 id="org370ffba"&gt;Expanding Mean&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org370ffba"&gt;
+&lt;div id="outline-container-org3540a36" class="outline-3"&gt;
+&lt;h3 id="org3540a36"&gt;Expanding Mean&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org3540a36"&gt;
 &lt;p&gt;
 This introduces the least amount of leakage from the target variable and doesn't require hyper-parameters for you to tune. The downside is that the encoding quality is irregular. There is a built-in implementation in the &lt;code&gt;CatBoost&lt;/code&gt; library.
 &lt;/p&gt;
@@ -133,39 +133,39 @@ Here's a pandas implementation.
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org7e7bfac" class="outline-3"&gt;
-&lt;h3 id="org7e7bfac"&gt;Which one should you use?&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org7e7bfac"&gt;
+&lt;div id="outline-container-org3dfa2ea" class="outline-3"&gt;
+&lt;h3 id="org3dfa2ea"&gt;Which one should you use?&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org3dfa2ea"&gt;
 &lt;p&gt;
 Cross Validation Loops and Expanding Means are the most practical to use.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orga8a4fc1" class="outline-2"&gt;
-&lt;h2 id="orga8a4fc1"&gt;Generalizations and Extensions&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orga8a4fc1"&gt;
+&lt;div id="outline-container-org282ecdb" class="outline-2"&gt;
+&lt;h2 id="org282ecdb"&gt;Generalizations and Extensions&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org282ecdb"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgeb525c5" class="outline-3"&gt;
-&lt;h3 id="orgeb525c5"&gt;Regression and Multiclass&lt;/h3&gt;
+&lt;div id="outline-container-orgca49111" class="outline-3"&gt;
+&lt;h3 id="orgca49111"&gt;Regression and Multiclass&lt;/h3&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgfe9372f" class="outline-2"&gt;
-&lt;h2 id="orgfe9372f"&gt;Summary&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgfe9372f"&gt;
+&lt;div id="outline-container-orgdd2ab5b" class="outline-2"&gt;
+&lt;h2 id="orgdd2ab5b"&gt;Summary&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgdd2ab5b"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org1f2861b" class="outline-3"&gt;
-&lt;h3 id="org1f2861b"&gt;Advantages&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org1f2861b"&gt;
+&lt;div id="outline-container-org2798f81" class="outline-3"&gt;
+&lt;h3 id="org2798f81"&gt;Advantages&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org2798f81"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;Compact transformation of categorical variables&lt;/li&gt;
 &lt;li&gt;Powerful basis for feature engineering&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org8046592" class="outline-3"&gt;
-&lt;h3 id="org8046592"&gt;Disadvantages&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org8046592"&gt;
+&lt;div id="outline-container-orgae3a24b" class="outline-3"&gt;
+&lt;h3 id="orgae3a24b"&gt;Disadvantages&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgae3a24b"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;Needs careful validation, it's easy to overfit&lt;/li&gt;
 &lt;li&gt;Only certain data sets will show a significant improvement from using it&lt;/li&gt;
@@ -174,13 +174,13 @@ Cross Validation Loops and Expanding Means are the most practical to use.
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org37ba163" class="outline-2"&gt;
-&lt;h2 id="org37ba163"&gt;Quiz&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org37ba163"&gt;
+&lt;div id="outline-container-orgfdb8cbd" class="outline-2"&gt;
+&lt;h2 id="orgfdb8cbd"&gt;Quiz&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgfdb8cbd"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgb6fe7ea" class="outline-3"&gt;
-&lt;h3 id="orgb6fe7ea"&gt;One&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgb6fe7ea"&gt;
+&lt;div id="outline-container-org2cc30be" class="outline-3"&gt;
+&lt;h3 id="org2cc30be"&gt;One&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org2cc30be"&gt;
 &lt;p&gt;
 What might be an indicator that mean encoding would be useful?
 &lt;/p&gt;
@@ -191,9 +191,9 @@ What might be an indicator that mean encoding would be useful?
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org0083d5f" class="outline-3"&gt;
-&lt;h3 id="org0083d5f"&gt;Two&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org0083d5f"&gt;
+&lt;div id="outline-container-org0a6194a" class="outline-3"&gt;
+&lt;h3 id="org0a6194a"&gt;Two&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org0a6194a"&gt;
 &lt;p&gt;
 What is the purpose of regularization in mean encoding?
 &lt;/p&gt;
@@ -204,9 +204,9 @@ What is the purpose of regularization in mean encoding?
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org329a4d2" class="outline-3"&gt;
-&lt;h3 id="org329a4d2"&gt;Three&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org329a4d2"&gt;
+&lt;div id="outline-container-org1c747b8" class="outline-3"&gt;
+&lt;h3 id="org1c747b8"&gt;Three&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org1c747b8"&gt;
 &lt;p&gt;
 What is the correct form of validation when using mean encoding?
 &lt;/p&gt;
@@ -217,9 +217,9 @@ What is the correct form of validation when using mean encoding?
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orge2b0093" class="outline-3"&gt;
-&lt;h3 id="orge2b0093"&gt;Four&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orge2b0093"&gt;
+&lt;div id="outline-container-org6aa27d3" class="outline-3"&gt;
+&lt;h3 id="org6aa27d3"&gt;Four&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org6aa27d3"&gt;
 &lt;p&gt;
 Suppose we have a data frame (&lt;code&gt;df&lt;/code&gt;) with a categorical variable named &lt;code&gt;item_id&lt;/code&gt; and a target variable called &lt;code&gt;target&lt;/code&gt;.
 We create two different mean encodings:
