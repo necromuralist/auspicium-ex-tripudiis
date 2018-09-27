@@ -8,6 +8,8 @@
 .. description: The Mean Encoding method.
 .. type: text
 #+END_COMMENT
+#+OPTIONS: ^:{}
+#+TOC: headlines 1
 
 * Mean Encoding
 ** Introduction
