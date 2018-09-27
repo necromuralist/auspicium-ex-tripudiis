@@ -28,115 +28,151 @@ In this programming assignment you will be working with the /1C/ dataset from th
 - Some encoding schemes depend on sorting order, so in order to avoid confusion, please use the following code snippet to construct the data frame. This snippet also implements mean encoding without regularization.
 
 #+BEGIN_SRC ipython :session encoding :results none
+# python standard library
+from itertools import product
+
+# pypi
 import pandas
 import numpy
-from itertools import product
+
+# this course (github)
 from hse_graders.assignment_3.grader import Grader
+
+# this project
+from kaggler.course.data import Data
 #+END_SRC
 
 * Read In the Data
 
 #+BEGIN_SRC ipython :session encoding :results none
-sales = pd.read_csv('../readonly/final_project_data/sales_train.csv.gz')
+sales = Data().sales_training_data
 #+END_SRC
 
-# # Aggregate data
+* Aggregate data
 
-# Since the competition task is to make a monthly prediction, we need to aggregate the data to montly level before doing any encodings. The following code-cell serves just that purpose.
+Since the competition task is to make a monthly prediction, we need to aggregate the data to montly level before doing any encodings. The following code-cell serves just that purpose.
 
-# In[ ]:
-
-
+#+BEGIN_SRC ipython :session encoding :results none
 index_cols = ['shop_id', 'item_id', 'date_block_num']
+#+END_SRC
 
-# For every month we create a grid from all shops/items combinations from that month
+For every month we create a grid from all shops/items combinations from that month.
+
+#+BEGIN_SRC ipython :session encoding :results none
 grid = [] 
 for block_num in sales['date_block_num'].unique():
     cur_shops = sales[sales['date_block_num']==block_num]['shop_id'].unique()
     cur_items = sales[sales['date_block_num']==block_num]['item_id'].unique()
-    grid.append(np.array(list(product(*[cur_shops, cur_items, [block_num]])),dtype='int32'))
+    grid.append(numpy.array(list(product(*[cur_shops, cur_items, [block_num]])),dtype='int32'))
+#+END_SRC
 
-#turn the grid into pandas dataframe
-grid = pd.DataFrame(np.vstack(grid), columns = index_cols,dtype=np.int32)
+Now turn the grid into a pandas dataframe.
 
-#get aggregated values for (shop_id, item_id, month)
-gb = sales.groupby(index_cols,as_index=False).agg({'item_cnt_day':{'target':'sum'}})
-
-#fix column names
-gb.columns = [col[0] if col[-1]=='' else col[-1] for col in gb.columns.values]
-#join aggregated data to the grid
-all_data = pd.merge(grid,gb,how='left',on=index_cols).fillna(0)
-#sort the data
-all_data.sort_values(['date_block_num','shop_id','item_id'],inplace=True)
+#+BEGIN_SRC ipython :session encoding :results none
+grid = pandas.DataFrame(numpy.vstack(grid), columns = index_cols,dtype=numpy.int32)
+#+END_SRC
 
 
-# # Mean encodings without regularization
+Get the aggregated values for (=shop_id=, =item_id=, and =month=).
 
-# After we did the techinical work, we are ready to actually *mean encode* the desired `item_id` variable. 
-# 
-# Here are two ways to implement mean encoding features *without* any regularization. You can use this code as a starting point to implement regularized techniques. 
+#+BEGIN_SRC ipython :session encoding :results none
+grouped = sales.groupby(index_cols, as_index=False).agg({'item_cnt_day':{'target':'sum'}})
+#+END_SRC
 
-# #### Method 1
+Fix the column names.
 
-# In[ ]:
+#+BEGIN_SRC ipython :session encoding :results none
+grouped.columns = [column[0] if column[-1]=='' else column[-1] for column in grouped.columns.values]
+#+END_SRC
 
+Join the aggregated data to the grid.
 
-# Calculate a mapping: {item_id: target_mean}
+#+BEGIN_SRC ipython :session encoding :results none
+all_data = pandas.merge(grid, grouped, how='left', on=index_cols).fillna(0)
+#+END_SRC
+
+Sort the data.
+
+#+BEGIN_SRC ipython :session encoding :results none
+all_data.sort_values(['date_block_num','shop_id','item_id'], inplace=True)
+#+END_SRC
+
+* Mean encodings without regularization
+
+Now that we have done the techinical work, we are ready to actually *mean encode* the desired =item_id= variable. 
+
+Here are two ways to implement mean encoding features *without* any regularization. You can use this code as a starting point to implement regularized techniques. 
+
+** Method 1:  Calculate a mapping: {item_id: target_mean}
+
+#+BEGIN_SRC ipython :session encoding :results none
 item_id_target_mean = all_data.groupby('item_id').target.mean()
+#+END_SRC
 
-# In our non-regularized case we just *map* the computed means to the `item_id`'s
+In our non-regularized case we just *map* the computed means to the =item_id='s.
+
+#+BEGIN_SRC ipython :session encoding :results none
 all_data['item_target_enc'] = all_data['item_id'].map(item_id_target_mean)
+#+END_SRC
 
-# Fill NaNs
+** Fill NaNs
+
+#+BEGIN_SRC ipython :session encoding :results none
 all_data['item_target_enc'].fillna(0.3343, inplace=True) 
+#+END_SRC
 
-# Print correlation
+** Print correlation
+
+#+BEGIN_SRC ipython :session encoding :results output raw :exports both
 encoded_feature = all_data['item_target_enc'].values
-print(np.corrcoef(all_data['target'].values, encoded_feature)[0][1])
+print(numpy.corrcoef(all_data['target'].values, encoded_feature)[0][1])
+#+END_SRC
 
+#+RESULTS:
+0.48303869886216977
 
-# #### Method 2
+* Method 2
 
-# In[ ]:
+Unlike the  =.target.mean()= function, =transform= will return a dataframe with an index like in =all_data=.
+Basically this single line of code is equivalent to the first two lines from of Method 1.
 
-
-'''
-     Differently to `.target.mean()` function `transform` 
-   will return a dataframe with an index like in `all_data`.
-   Basically this single line of code is equivalent to the first two lines from of Method 1.
-'''
+#+BEGIN_SRC ipython :session encoding :results none
 all_data['item_target_enc'] = all_data.groupby('item_id')['target'].transform('mean')
+#+END_SRC
 
-# Fill NaNs
+** Fill NaNs
+
+#+BEGIN_SRC ipython :session encoding :results none
 all_data['item_target_enc'].fillna(0.3343, inplace=True) 
+#+END_SRC
 
-# Print correlation
+** Print correlation
+
+#+BEGIN_SRC ipython :session encoding :results output raw :exports both
 encoded_feature = all_data['item_target_enc'].values
-print(np.corrcoef(all_data['target'].values, encoded_feature)[0][1])
+print(numpy.corrcoef(all_data['target'].values, encoded_feature)[0][1])
+#+END_SRC
+
+#+RESULTS:
+0.48303869886216977
 
 
-# See the printed value? It is the correlation coefficient between the target variable and your new encoded feature. You need to **compute correlation coefficient** between the encodings, that you will implement and **submit those to coursera**.
+See the printed value? It is the correlation coefficient between the target variable and your new encoded feature. You need to **compute the correlation coefficient** between the encodings that you will implement and **submit those to coursera**.
 
-# In[ ]:
-
-
+#+BEGIN_SRC ipython :session encoding :results none
 grader = Grader()
+#+END_SRC
 
+* 1. KFold scheme
 
-# # 1. KFold scheme
+This is Explained starting at 41 seconds into the [[https://www.coursera.org/learn/competitive-data-science/lecture/LGYQ2/regularization][Regularization lecture]].
 
-# Explained starting at 41 sec of [Regularization video](https://www.coursera.org/learn/competitive-data-science/lecture/LGYQ2/regularization).
+First implement the KFold scheme with five folds. Use KFold(5) from sklearn.model_selection. 
 
-# **Now it's your turn to write the code!** 
-# 
-# You may use 'Regularization' video as a reference for all further tasks.
-# 
-# First, implement KFold scheme with five folds. Use KFold(5) from sklearn.model_selection. 
-# 
-# 1. Split your data in 5 folds with `sklearn.model_selection.KFold` with `shuffle=False` argument.
-# 2. Iterate through folds: use all but the current fold to calculate mean target for each level `item_id`, and  fill the current fold.
-# 
-#     *  See the **Method 1** from the example implementation. In particular learn what `map` and pd.Series.map functions do. They are pretty handy in many situations.
+ 1. Split your data in 5 folds with [[http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.KFold.html][sklearn.model_selection.KFold]] with ~shuffle=False~ (the default).
+ 2. Iterate through folds: use all but the current fold to calculate mean target for each level `item_id`, and  fill the current fold.
+
+See the **Method 1** from the example implementation. In particular learn what `map` and pd.Series.map functions do. They are pretty handy in many situations.
 
 # In[ ]:
 
