@@ -1,0 +1,38 @@
+#+BEGIN_COMMENT
+.. title: Mean Encoding Quiz
+.. slug: mean-encoding-quiz
+.. date: 2018-09-28 16:16:59 UTC-07:00
+.. tags: quiz encoding
+.. category: quiz
+.. status: private
+.. link: 
+.. description: Quiz for the Mean Encodings lectures.
+.. type: text
+#+END_COMMENT
+
+* Quiz
+** One
+   What might be an indicator that mean encoding would be useful?
+   - [ ] a lot of binary variables
+   - [ ] a learning to rank task
+   - [X] categorical variables with lots of levels
+** Two
+   What is the purpose of regularization in mean encoding?
+   - [ ] Regularization allows you to make the feature space more sparse?
+   - [X] Regularization allows us to better utilize mean encoding
+   - [X] regularization reduces target variable leakage during the construction of mean encodings
+** Three
+   What is the correct form of validation when using mean encoding?
+    - [ ] calculate the mean enocding on all training data, regularize, then varidate on a random validation split
+    - [X] split the data into training and validation sets, then estimate the encodings on the training data, then apply them to the validation and validate the model on that split
+    - [ ] Fix the cross-validation split, use that split to calculate mean encodings with cross-validation loop regularization, use the same split to validate the model
+** Four
+   Suppose we have a data frame (=df=) with a categorical variable named =item_id= and a target variable called =target=.
+   We create two different mean encodings:
+
+   1. via df["item_id_encoded1"] = df.groupby("item_id")["target"].transform("mean")
+   2. Via One Hot Encoding =item_id=, fitting a linear regression on the encoding and the calculating =item_id_encoded2= as a prediction from this regression on the same data.
+
+   3. [X] =item_id_encoded1= and =item_id_encoded2= will essentially be the same only if the linear regression was fitted without a regularization
+   4. [ ] =item_id_encoded1= and =item_id_encoded2= will be essentially the same
+   5. [ ] =item_id_encoded1= and =item_id_encoded2= may differ a lot due to rare categories (nope)

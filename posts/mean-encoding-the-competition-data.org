@@ -27,11 +27,18 @@ In this programming assignment you will be working with the /1C/ dataset from th
 - Fill NANs in the encoding with =0.3343=.
 - Some encoding schemes depend on sorting order, so in order to avoid confusion, please use the following code snippet to construct the data frame. This snippet also implements mean encoding without regularization.
 
+#+BEGIN_SRC python :session encoding :results none
+import warnings
+warnings.filterwarnings("ignore", message="numpy.dtype size changed")
+warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
+#+END_SRC
+
 #+BEGIN_SRC ipython :session encoding :results none
 # python standard library
 from itertools import product
 
 # pypi
+from sklearn.model_selection import StratifiedKFold
 import pandas
 import numpy
 
@@ -40,6 +47,10 @@ from hse_graders.assignment_3.grader import Grader
 
 # this project
 from kaggler.course.data import Data
+#+END_SRC
+
+#+BEGIN_SRC ipython :session encoding :results none
+NAN_VALUE = 0.3343
 #+END_SRC
 
 * Read In the Data
@@ -72,18 +83,42 @@ Now turn the grid into a pandas dataframe.
 grid = pandas.DataFrame(numpy.vstack(grid), columns = index_cols,dtype=numpy.int32)
 #+END_SRC
 
+#+BEGIN_SRC ipython :session encoding :results output
+print(grid.head())
+#+END_SRC
+
+#+RESULTS:
+:    shop_id  item_id  date_block_num
+: 0       59    22154               0
+: 1       59     2552               0
+: 2       59     2554               0
+: 3       59     2555               0
+: 4       59     2564               0
 
 Get the aggregated values for (=shop_id=, =item_id=, and =month=).
 
 #+BEGIN_SRC ipython :session encoding :results none
-grouped = sales.groupby(index_cols, as_index=False).agg({'item_cnt_day':{'target':'sum'}})
+grouped = sales.groupby(index_cols, as_index=False)
+grouped = grouped.item_cnt_day.agg('sum')
 #+END_SRC
 
 Fix the column names.
 
 #+BEGIN_SRC ipython :session encoding :results none
-grouped.columns = [column[0] if column[-1]=='' else column[-1] for column in grouped.columns.values]
+grouped.columns = index_cols + ["target"]
 #+END_SRC
+
+#+BEGIN_SRC ipython :session encoding :results output
+print(grouped.head())
+#+END_SRC
+
+#+RESULTS:
+:    shop_id  item_id  date_block_num  target
+: 0        0       30               1    31.0
+: 1        0       31               1    11.0
+: 2        0       32               0     6.0
+: 3        0       32               1    10.0
+: 4        0       33               0     3.0
 
 Join the aggregated data to the grid.
 
@@ -118,7 +153,7 @@ all_data['item_target_enc'] = all_data['item_id'].map(item_id_target_mean)
 ** Fill NaNs
 
 #+BEGIN_SRC ipython :session encoding :results none
-all_data['item_target_enc'].fillna(0.3343, inplace=True) 
+all_data['item_target_enc'].fillna(NAN_VALUE, inplace=True) 
 #+END_SRC
 
 ** Print correlation
@@ -143,7 +178,7 @@ all_data['item_target_enc'] = all_data.groupby('item_id')['target'].transform('m
 ** Fill NaNs
 
 #+BEGIN_SRC ipython :session encoding :results none
-all_data['item_target_enc'].fillna(0.3343, inplace=True) 
+all_data['item_target_enc'].fillna(NAN_VALUE, inplace=True) 
 #+END_SRC
 
 ** Print correlation
@@ -174,10 +209,20 @@ First implement the KFold scheme with five folds. Use KFold(5) from sklearn.mode
 
 See the **Method 1** from the example implementation. In particular learn what `map` and pd.Series.map functions do. They are pretty handy in many situations.
 
-# In[ ]:
+#+BEGIN_SRC ipython :session encoding :results none
+y_train = all_data["target"].values
+folds = StratifiedKFold(y_train, 5, shuffle=True)
+column = "item_id"
+for training_index, validation_index in folds:
+    x_train = all_data.iloc[training_index]
+    x_validation = all_data.iloc[validation_index]
+    means = x_validation[column].map(x_train.groupby(column).target.mean())
+    x_validation[column + "_mean_target"] = means
+    # train_new is a dataframe copy we made of the training data
+    train_new.iloc[validation_index] = x_validation
 
-
-# YOUR CODE GOES HERE
+train_new.fillna(global_mean, inplace=True)
+#+END_SRC
 
 # You will need to compute correlation like that
 corr = np.corrcoef(all_data['target'].values, encoded_feature)[0][1]
