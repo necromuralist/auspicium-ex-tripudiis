@@ -108,22 +108,24 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org8a23b36">Introduction</a></li>
-<li><a href="#org2661788">General tips</a></li>
-<li><a href="#orga40acc0">Read In the Data</a></li>
-<li><a href="#orgb4827ea">Aggregate data</a></li>
-<li><a href="#org01099f4">Mean encodings without regularization</a></li>
-<li><a href="#org939b1a8">Method 2</a></li>
-<li><a href="#orgbd81024">1. KFold scheme</a></li>
+<li><a href="#orgd9ea2a0">Introduction</a></li>
+<li><a href="#org6e1aa15">General tips</a></li>
+<li><a href="#orgd0b5abe">Read In the Data</a></li>
+<li><a href="#orgecb7c6c">The Motivation</a></li>
+<li><a href="#orgccff9c2">Aggregate data</a></li>
+<li><a href="#org2a2326e">Mean encodings without regularization</a></li>
+<li><a href="#org796211e">Method 2</a></li>
+<li><a href="#orge83419d">1. KFold scheme</a></li>
+<li><a href="#orgc21ea92">2. Leave-one-out scheme</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org8a23b36" class="outline-2">
-<h2 id="org8a23b36">Introduction</h2>
-<div class="outline-text-2" id="text-org8a23b36">
+<div id="outline-container-orgd9ea2a0" class="outline-2">
+<h2 id="orgd9ea2a0">Introduction</h2>
+<div class="outline-text-2" id="text-orgd9ea2a0">
 <p>
-In this programming assignment you will be working with the <i>1C</i> dataset from the final competition. You are asked to encode the <code>item_id</code> in 4 different ways:
+In this programming assignment you will be working with the <a href="https://www.kaggle.com/c/competitive-data-science-final-project/data">1C dataset</a> from the final competition. You are asked to encode the <code>item_id</code> in 4 different ways:
 </p>
 
 <ol class="org-ol">
@@ -138,17 +140,25 @@ In this programming assignment you will be working with the <i>1C</i> dataset fr
 </div>
 </div>
 
-<div id="outline-container-org2661788" class="outline-2">
-<h2 id="org2661788">General tips</h2>
-<div class="outline-text-2" id="text-org2661788">
+<div id="outline-container-org6e1aa15" class="outline-2">
+<h2 id="org6e1aa15">General tips</h2>
+<div class="outline-text-2" id="text-org6e1aa15">
 <ul class="org-ul">
 <li>Fill NANs in the encoding with <code>0.3343</code>.</li>
 <li>Some encoding schemes depend on sorting order, so in order to avoid confusion, please use the following code snippet to construct the data frame. This snippet also implements mean encoding without regularization.</li>
 </ul>
+<div class="highlight"><pre><span></span>NAN_VALUE = 0.3343
+</pre></div>
+
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">"ignore"</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">"numpy.dtype size changed"</span><span class="p">)</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">"ignore"</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">"numpy.ufunc size changed"</span><span class="p">)</span>
+</pre></div>
+
 <div class="highlight"><pre><span></span># python standard library
 from itertools import product
 
-# pypi
+from sklearn.model_selection import KFold
 import pandas
 import numpy
 
@@ -157,82 +167,333 @@ from hse_graders.assignment_3.grader import Grader
 
 # this project
 from kaggler.course.data import Data
+from kaggler.helpers.printing import print_table
+</pre></div>
+
+<div class="highlight"><pre><span></span>NAN_VALUE = 0.3343
 </pre></div>
 </div>
 </div>
 
-<div id="outline-container-orga40acc0" class="outline-2">
-<h2 id="orga40acc0">Read In the Data</h2>
-<div class="outline-text-2" id="text-orga40acc0">
+<div id="outline-container-orgd0b5abe" class="outline-2">
+<h2 id="orgd0b5abe">Read In the Data</h2>
+<div class="outline-text-2" id="text-orgd0b5abe">
 <div class="highlight"><pre><span></span>sales = Data().sales_training_data
 </pre></div>
 </div>
 </div>
 
-<div id="outline-container-orgb4827ea" class="outline-2">
-<h2 id="orgb4827ea">Aggregate data</h2>
-<div class="outline-text-2" id="text-orgb4827ea">
+<div id="outline-container-orgecb7c6c" class="outline-2">
+<h2 id="orgecb7c6c">The Motivation</h2>
+<div class="outline-text-2" id="text-orgecb7c6c">
 <p>
-Since the competition task is to make a monthly prediction, we need to aggregate the data to montly level before doing any encodings. The following code-cell serves just that purpose.
+The idea behind this is that we want to convert a categorical value (the item ID) into a numeric one so that we can use non-tree-based methods. But we already have <a href="https://en.wikipedia.org/wiki/One-hot">One Hot Encoding</a>, so why do we need this? Well, lets look at how many items we need to encode.
 </p>
 
-<div class="highlight"><pre><span></span>index_cols = ['shop_id', 'item_id', 'date_block_num']
+<div class="highlight"><pre><span></span>print("{:,}".format(len(sales.item_id.unique())))
+</pre></div>
+
+<pre class="example">
+21,807
+
+</pre>
+
+<p>
+This means we're going to have to add almost twenty-two thousand columns to your table, which brings up the <a href="https://en.wikipedia.org/wiki/Curse_of_dimensionality">Curse of Dimensionality</a> - adding this many columns means we're going to need a lot more data for our model to work and will increase our computation time significantly. Using Mean Encoding means that we will only have to add one column, simplifying our computation and reducing the amount of data we need to fit the model.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgccff9c2" class="outline-2">
+<h2 id="orgccff9c2">Aggregate data</h2>
+<div class="outline-text-2" id="text-orgccff9c2">
+<p>
+Since the competition task is to make a monthly prediction, we need to aggregate the data to the monthly level before doing any encodings. The following code-cells do that for us.
+</p>
+
+<div class="highlight"><pre><span></span>group_by_columns = ['shop_id', 'item_id', 'date_block_num']
 </pre></div>
 
 <p>
-For every month we create a grid from all shops/items combinations from that month.
+For every month we create a grid from all shops/items combinations for that month. This uses <a href="https://docs.python.org/3/library/itertools.html#itertools.product">itertools.product</a> which creates the cartesian product of the collections it's given.
 </p>
 
 <div class="highlight"><pre><span></span>grid = [] 
 for block_num in sales['date_block_num'].unique():
-    cur_shops = sales[sales['date_block_num']==block_num]['shop_id'].unique()
-    cur_items = sales[sales['date_block_num']==block_num]['item_id'].unique()
-    grid.append(numpy.array(list(product(*[cur_shops, cur_items, [block_num]])),dtype='int32'))
+    block = sales[sales['date_block_num']==block_num]
+    cur_shops = block['shop_id'].unique()
+    cur_items = block['item_id'].unique()
+    grid.append(numpy.array(list(product(*[cur_shops, cur_items, [block_num]])), dtype='int32'))
 </pre></div>
 
 <p>
 Now turn the grid into a pandas dataframe.
 </p>
 
-<div class="highlight"><pre><span></span>grid = pandas.DataFrame(numpy.vstack(grid), columns = index_cols,dtype=numpy.int32)
+<div class="highlight"><pre><span></span>grid = pandas.DataFrame(numpy.vstack(grid), columns=group_by_columns, dtype=numpy.int32)
 </pre></div>
 
+<div class="highlight"><pre><span></span>print_table(grid.head())
+</pre></div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-right">shop_id</th>
+<th scope="col" class="org-right">item_id</th>
+<th scope="col" class="org-right">date_block_num</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-right">59</td>
+<td class="org-right">22154</td>
+<td class="org-right">0</td>
+</tr>
+<tr>
+<td class="org-right">59</td>
+<td class="org-right">2552</td>
+<td class="org-right">0</td>
+</tr>
+<tr>
+<td class="org-right">59</td>
+<td class="org-right">2554</td>
+<td class="org-right">0</td>
+</tr>
+<tr>
+<td class="org-right">59</td>
+<td class="org-right">2555</td>
+<td class="org-right">0</td>
+</tr>
+<tr>
+<td class="org-right">59</td>
+<td class="org-right">2564</td>
+<td class="org-right">0</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span>print(grid.shape)
+</pre></div>
+
+<pre class="example">
+(10913850, 3)
+
+</pre>
 
 <p>
-Get the aggregated values for (<code>shop_id</code>, <code>item_id</code>, and <code>month</code>).
+The grid has all the items sold by each shop for each date-block. The number of rows isn't just \(\textit{shops} \times \textit{items} \times \textit{date-blocks}\) because not every shop is in every date-block and not every shop sold every item (or even the same items every block).
 </p>
 
-<div class="highlight"><pre><span></span>grouped = sales.groupby(index_cols, as_index=False).agg({'item_cnt_day':{'target':'sum'}})
-</pre></div>
-
 <p>
-Fix the column names.
+Now we will use <a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.groupby.html">groupby</a> to group the data by <code>shop_id</code>, <code>item_id</code>, and <i>month</i> (<code>date_block_num</code>) and then get the aggregated summed values for the item count per day (we're going to sum up the items sold per day to get a value for the month) and rename the summed item count column to <code>target</code>.
 </p>
 
-<div class="highlight"><pre><span></span>grouped.columns = [column[0] if column[-1]=='' else column[-1] for column in grouped.columns.values]
+<div class="highlight"><pre><span></span>grouped = sales.groupby(group_by_columns, as_index=False)
+grouped = grouped["item_cnt_day"].sum()
+grouped = grouped.rename(dict(item_cnt_day="target"), axis="columns")
 </pre></div>
 
+<div class="highlight"><pre><span></span>print_table(grouped.head())
+</pre></div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-right">shop_id</th>
+<th scope="col" class="org-right">item_id</th>
+<th scope="col" class="org-right">date_block_num</th>
+<th scope="col" class="org-right">target</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-right">0</td>
+<td class="org-right">30</td>
+<td class="org-right">1</td>
+<td class="org-right">31</td>
+</tr>
+<tr>
+<td class="org-right">0</td>
+<td class="org-right">31</td>
+<td class="org-right">1</td>
+<td class="org-right">11</td>
+</tr>
+<tr>
+<td class="org-right">0</td>
+<td class="org-right">32</td>
+<td class="org-right">0</td>
+<td class="org-right">6</td>
+</tr>
+<tr>
+<td class="org-right">0</td>
+<td class="org-right">32</td>
+<td class="org-right">1</td>
+<td class="org-right">10</td>
+</tr>
+<tr>
+<td class="org-right">0</td>
+<td class="org-right">33</td>
+<td class="org-right">0</td>
+<td class="org-right">3</td>
+</tr>
+</tbody>
+</table>
 <p>
-Join the aggregated data to the grid.
+Now join the aggregated data to the grid (with <a href="https://pandas.pydata.org/pandas-docs/stable/merging.html#database-style-dataframe-joining-merging">merge</a>).
 </p>
 
-<div class="highlight"><pre><span></span>all_data = pandas.merge(grid, grouped, how='left', on=index_cols).fillna(0)
+<div class="highlight"><pre><span></span>all_data = pandas.merge(grid, grouped, how='left', on=group_by_columns).fillna(0)
 </pre></div>
 
+<div class="highlight"><pre><span></span>print_table(all_data.head())
+</pre></div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-right">shop_id</th>
+<th scope="col" class="org-right">item_id</th>
+<th scope="col" class="org-right">date_block_num</th>
+<th scope="col" class="org-right">target</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-right">59</td>
+<td class="org-right">22154</td>
+<td class="org-right">0</td>
+<td class="org-right">1</td>
+</tr>
+<tr>
+<td class="org-right">59</td>
+<td class="org-right">2552</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+</tr>
+<tr>
+<td class="org-right">59</td>
+<td class="org-right">2554</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+</tr>
+<tr>
+<td class="org-right">59</td>
+<td class="org-right">2555</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+</tr>
+<tr>
+<td class="org-right">59</td>
+<td class="org-right">2564</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+</tr>
+</tbody>
+</table>
 <p>
-Sort the data.
+Sort the data by the month, shop, and item.
 </p>
 
 <div class="highlight"><pre><span></span>all_data.sort_values(['date_block_num','shop_id','item_id'], inplace=True)
 </pre></div>
+
+<div class="highlight"><pre><span></span>print_table(all_data.head())
+</pre></div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-right">shop_id</th>
+<th scope="col" class="org-right">item_id</th>
+<th scope="col" class="org-right">date_block_num</th>
+<th scope="col" class="org-right">target</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-right">0</td>
+<td class="org-right">19</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+</tr>
+<tr>
+<td class="org-right">0</td>
+<td class="org-right">27</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+</tr>
+<tr>
+<td class="org-right">0</td>
+<td class="org-right">28</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+</tr>
+<tr>
+<td class="org-right">0</td>
+<td class="org-right">29</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+</tr>
+<tr>
+<td class="org-right">0</td>
+<td class="org-right">32</td>
+<td class="org-right">0</td>
+<td class="org-right">6</td>
+</tr>
+</tbody>
+</table>
+<p>
+When we compare <code>all_data</code> to <code>grouped</code>, the difference might not be so obvious, they have the same columns and look pretty similar, but if you look at the <code>all_data.target</code> column you can see that there's a lot of 0s. That's because <code>grouped</code> only has the cases where there were sales but <code>all_data</code> had cases where there weren't any sales for a particular (<code>shop_id</code>, <code>item_id</code>, <code>date_block_num</code>) combination, so it filled in the 0's.
+</p>
+
+<div class="highlight"><pre><span></span>print("{:,}".format(all_data.shape[0] - grouped.shape[0]))
+</pre></div>
+
+<pre class="example">
+9,304,726
+
+</pre>
+
+<p>
+You can see that <code>all_data</code> had over 9 million more rows than grouped did.
+</p>
+
+<div class="highlight"><pre><span></span>print(grouped[(grouped.shop_id==0) &amp; (grouped.item_id==19) &amp; (grouped.date_block_num==0)])
+</pre></div>
+
+<pre class="example">
+Empty DataFrame
+Columns: [shop_id, item_id, date_block_num, target]
+Index: []
+
+</pre>
+
+<p>
+And <code>grouped</code> didn't have any entry for the first item in the previous <code>all_data</code> head-table, which is why the target value is 0.
+</p>
 </div>
 </div>
 
-<div id="outline-container-org01099f4" class="outline-2">
-<h2 id="org01099f4">Mean encodings without regularization</h2>
-<div class="outline-text-2" id="text-org01099f4">
+<div id="outline-container-org2a2326e" class="outline-2">
+<h2 id="org2a2326e">Mean encodings without regularization</h2>
+<div class="outline-text-2" id="text-org2a2326e">
 <p>
-Now that we have done the techinical work, we are ready to actually <b>mean encode</b> the desired <code>item_id</code> variable. 
+Now that we have done the technical work, we are ready to actually <b>mean encode</b> the desired <code>item_id</code> variable. 
 </p>
 
 <p>
@@ -240,74 +501,221 @@ Here are two ways to implement mean encoding features <b>without</b> any regular
 </p>
 </div>
 
-<div id="outline-container-org29096c0" class="outline-3">
-<h3 id="org29096c0">Method 1:  Calculate a mapping: {item_id: target_mean}</h3>
-<div class="outline-text-3" id="text-org29096c0">
+<div id="outline-container-org82a9ee8" class="outline-3">
+<h3 id="org82a9ee8">Method 1:  Calculate a mapping: {item_id: target_mean}</h3>
+<div class="outline-text-3" id="text-org82a9ee8">
+<p>
+First we're going to calculate the mean count for each item.
+</p>
+
 <div class="highlight"><pre><span></span>item_id_target_mean = all_data.groupby('item_id').target.mean()
 </pre></div>
 
 <p>
-In our non-regularized case we just <b>map</b> the computed means to the <code>item_id</code>'s.
+In our non-regularized case we just <a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.Series.map.html">map</a> the computed means to the <code>item_id</code>'s. 
 </p>
 
 <div class="highlight"><pre><span></span>all_data['item_target_enc'] = all_data['item_id'].map(item_id_target_mean)
 </pre></div>
-</div>
-</div>
 
-<div id="outline-container-orgab3291f" class="outline-3">
-<h3 id="orgab3291f">Fill NaNs</h3>
-<div class="outline-text-3" id="text-orgab3291f">
-<div class="highlight"><pre><span></span>all_data['item_target_enc'].fillna(0.3343, inplace=True) 
+<p>
+In our case we are mapping a series (<code>item_id_target_mean</code>) to a column <code>item_id</code> in a data frame <code>all_data</code>. Wherever an item in the <code>item_id</code> column matches the index of our <code>item_id_target_mean</code> Series it will replace the item with the value in the <code>item_id_target_mean</code> that matches the index.
+</p>
+
+<p>
+Here's an example. Let's look at the head of the <code>item_id_target_mean</code> Series.
+</p>
+
+<div class="highlight"><pre><span></span>print_table(dict(target_mean=item_id_target_mean.head()), showindex=True)
 </pre></div>
-</div>
-</div>
 
-<div id="outline-container-orga241e6a" class="outline-3">
-<h3 id="orga241e6a">Print correlation</h3>
-<div class="outline-text-3" id="text-orga241e6a">
-<div class="highlight"><pre><span></span>encoded_feature = all_data['item_target_enc'].values
-print(numpy.corrcoef(all_data['target'].values, encoded_feature)[0][1])
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-right">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-right"> </th>
+<th scope="col" class="org-right">target_mean</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-right">0</td>
+<td class="org-right">0.02</td>
+</tr>
+<tr>
+<td class="org-right">1</td>
+<td class="org-right">0.0238095</td>
+</tr>
+<tr>
+<td class="org-right">2</td>
+<td class="org-right">0.019802</td>
+</tr>
+<tr>
+<td class="org-right">3</td>
+<td class="org-right">0.019802</td>
+</tr>
+<tr>
+<td class="org-right">4</td>
+<td class="org-right">0.02</td>
+</tr>
+</tbody>
+</table>
+<p>
+So, let's look at index 1 - its value is <i>0.0238095</i> so this mean we would expect that all the items with ID 1 would also have this value in the <code>item_target_enc</code> column. Let's double-check this.
+</p>
+
+<div class="highlight"><pre><span></span>print_table(all_data[all_data.item_id==1].head())
+</pre></div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-right">shop_id</th>
+<th scope="col" class="org-right">item_id</th>
+<th scope="col" class="org-right">date_block_num</th>
+<th scope="col" class="org-right">target</th>
+<th scope="col" class="org-right">item_target_enc</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-right">2</td>
+<td class="org-right">1</td>
+<td class="org-right">15</td>
+<td class="org-right">0</td>
+<td class="org-right">0.0238095</td>
+</tr>
+<tr>
+<td class="org-right">3</td>
+<td class="org-right">1</td>
+<td class="org-right">15</td>
+<td class="org-right">0</td>
+<td class="org-right">0.0238095</td>
+</tr>
+<tr>
+<td class="org-right">4</td>
+<td class="org-right">1</td>
+<td class="org-right">15</td>
+<td class="org-right">0</td>
+<td class="org-right">0.0238095</td>
+</tr>
+<tr>
+<td class="org-right">5</td>
+<td class="org-right">1</td>
+<td class="org-right">15</td>
+<td class="org-right">0</td>
+<td class="org-right">0.0238095</td>
+</tr>
+<tr>
+<td class="org-right">6</td>
+<td class="org-right">1</td>
+<td class="org-right">15</td>
+<td class="org-right">0</td>
+<td class="org-right">0.0238095</td>
+</tr>
+</tbody>
+</table>
+<p>
+It looks right. Let's make sure.
+</p>
+
+<div class="highlight"><pre><span></span>assert all(all_data[all_data.item_id==1] == 0.0238095)
 </pre></div>
 
 <p>
+Well, this wasn't exhaustive but at least that one item checks out.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org2c7b0be" class="outline-3">
+<h3 id="org2c7b0be">Fill NaNs</h3>
+<div class="outline-text-3" id="text-org2c7b0be">
+<p>
+We're given the value to fill in for the missing entries (<i>0.3343</i>) without explanation. I don't really know where it comes from. It's around, but not exactly the 84% percentile, but, anyway, let's use it (actually, if you check it there aren't any NaN values, curious).
+</p>
+
+<div class="highlight"><pre><span></span>print(all_data.item_target_enc.hasnans)
+</pre></div>
+
+<pre class="example">
+False
+
+</pre>
+
+<p>
+So this next line doesn't seem to do anything, but is part of the given code.
+</p>
+
+<div class="highlight"><pre><span></span>all_data['item_target_enc'].fillna(NAN_VALUE, inplace=True) 
+</pre></div>
+</div>
+</div>
+
+<div id="outline-container-orgee20667" class="outline-3">
+<h3 id="orgee20667">Print correlation</h3>
+<div class="outline-text-3" id="text-orgee20667">
+<p>
+Now we need to calculate the <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.corrcoef.html">Pearson Correlation</a> between our calculated mean and the target values. This <a href="https://en.wikipedia.org/wiki/Pearson_correlation_coefficient">value</a> ranges from -1 to 1 and represents how much of a linear correlation there is between two variables. Negative one means they are completely negatively correlated and positive one means they are completely positively correlated.
+</p>
+
+<div class="highlight"><pre><span></span>encoded_feature = all_data['item_target_enc'].values
+first_correlation = numpy.corrcoef(all_data['target'].values, encoded_feature)[0][1]
+print(first_correlation)
+</pre></div>
+
+<pre class="example">
 0.48303869886216977
+
+</pre>
+
+<p>
+Since our value is between 0 and 1 it does describe the target to some degree, albeit not perfectly.
 </p>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org939b1a8" class="outline-2">
-<h2 id="org939b1a8">Method 2</h2>
-<div class="outline-text-2" id="text-org939b1a8">
+<div id="outline-container-org796211e" class="outline-2">
+<h2 id="org796211e">Method 2</h2>
+<div class="outline-text-2" id="text-org796211e">
 <p>
 Unlike the  <code>.target.mean()</code> function, <code>transform</code> will return a dataframe with an index like in <code>all_data</code>.
-Basically this single line of code is equivalent to the first two lines from of Method 1.
+Basically this single line of code is equivalent to the first lines from of Method 1.
 </p>
 
 <div class="highlight"><pre><span></span>all_data['item_target_enc'] = all_data.groupby('item_id')['target'].transform('mean')
 </pre></div>
 </div>
 
-<div id="outline-container-org97e2052" class="outline-3">
-<h3 id="org97e2052">Fill NaNs</h3>
-<div class="outline-text-3" id="text-org97e2052">
-<div class="highlight"><pre><span></span>all_data['item_target_enc'].fillna(0.3343, inplace=True) 
+<div id="outline-container-org970fd8c" class="outline-3">
+<h3 id="org970fd8c">Fill NaNs</h3>
+<div class="outline-text-3" id="text-org970fd8c">
+<div class="highlight"><pre><span></span>all_data['item_target_enc'].fillna(NAN_VALUE, inplace=True) 
 </pre></div>
 </div>
 </div>
 
-<div id="outline-container-org7436eae" class="outline-3">
-<h3 id="org7436eae">Print correlation</h3>
-<div class="outline-text-3" id="text-org7436eae">
+<div id="outline-container-org43843f1" class="outline-3">
+<h3 id="org43843f1">Print correlation</h3>
+<div class="outline-text-3" id="text-org43843f1">
 <div class="highlight"><pre><span></span>encoded_feature = all_data['item_target_enc'].values
-print(numpy.corrcoef(all_data['target'].values, encoded_feature)[0][1])
+second_correlation = numpy.corrcoef(all_data['target'].values, encoded_feature)[0][1]
+print(second_correlation)
+print(abs(first_correlation - second_correlation))
 </pre></div>
 
-<p>
+<pre class="example">
 0.48303869886216977
-</p>
+0.0
 
+</pre>
 
 <p>
 See the printed value? It is the correlation coefficient between the target variable and your new encoded feature. You need to <b><b>compute the correlation coefficient</b></b> between the encodings that you will implement and <b><b>submit those to coursera</b></b>.
@@ -319,9 +727,9 @@ See the printed value? It is the correlation coefficient between the target vari
 </div>
 </div>
 
-<div id="outline-container-orgbd81024" class="outline-2">
-<h2 id="orgbd81024">1. KFold scheme</h2>
-<div class="outline-text-2" id="text-orgbd81024">
+<div id="outline-container-orge83419d" class="outline-2">
+<h2 id="orge83419d">1. KFold scheme</h2>
+<div class="outline-text-2" id="text-orge83419d">
 <p>
 This is Explained starting at 41 seconds into the <a href="https://www.coursera.org/learn/competitive-data-science/lecture/LGYQ2/regularization">Regularization lecture</a>.
 </p>
@@ -335,22 +743,69 @@ First implement the KFold scheme with five folds. Use KFold(5) from sklearn.mode
 <li>Iterate through folds: use all but the current fold to calculate mean target for each level `item_id`, and  fill the current fold.</li>
 </ol>
 <p>
-See the <b><b>Method 1</b></b> from the example implementation. In particular learn what `map` and pd.Series.map functions do. They are pretty handy in many situations.
+See the <b><b>Method 1</b></b> from the example implementation. In particular learn what `map` and <a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.Series.map.html">pandas.Series.map</a> functions do. They are pretty handy in many situations.
 </p>
 
+<div class="highlight"><pre><span></span>folder = KFold(n_splits=5, shuffle=False)
+column = "item_id"
+encoded_column = column + "_mean_target"
+train_new = pandas.DataFrame(index=all_data.index, columns=all_data.columns)
+train_new[encoded_column] = numpy.nan
+for training_index, validation_index in folder.split(all_data):
+    x_train = all_data.iloc[training_index].copy()
+    x_validation = all_data.iloc[validation_index].copy()
+    means = x_validation[column].map(x_train.groupby(column).target.mean())
+    x_validation[encoded_column] = means
+    # train_new is a dataframe copy we made of the training data
+    train_new.iloc[validation_index] = x_validation
+train_new.fillna(NAN_VALUE, inplace=True)
+</pre></div>
 
-<p>
-corr = np.corrcoef(all_data['target'].values, encoded_feature)[0][1]
+<div class="highlight"><pre><span></span>encoded_feature = train_new.item_id_mean_target.values
+</pre></div>
+
+<div class="highlight"><pre><span></span>corr = numpy.corrcoef(all_data['target'].values, encoded_feature)[0][1]
 print(corr)
 grader.submit_tag('KFold_scheme', corr)
-</p>
+</pre></div>
+</div>
+</div>
 
+<div id="outline-container-orgc21ea92" class="outline-2">
+<h2 id="orgc21ea92">2. Leave-one-out scheme</h2>
+<div class="outline-text-2" id="text-orgc21ea92">
+<p>
+Now, implement leave-one-out scheme. Note that if you just simply set the number of folds to the number of samples and run the code from the <b><b>KFold scheme</b></b>, you will probably wait for a very long time. 
+</p>
 
 <p>
-corr = np.corrcoef(all_data['target'].values, encoded_feature)[0][1]
-print(corr)
-grader.submit_tag('Leave-one-out_scheme', corr)
+To implement a faster version, note that to calculate the mean target value using all the objects but one <b>given object</b>, you can:
 </p>
+
+<ol class="org-ol">
+<li>Calculate the sum of the target values using all the objects.</li>
+<li>Then subtract the target of the <b>given object</b> and divide the resulting value by <code>n_objects - 1</code>.</li>
+</ol>
+<p>
+Note that you do not need to perform step 1 for every object. And step 2 can be implemented without any <code>for</code> loop.
+</p>
+
+<p>
+It will be most convenient to use the `.transform` function as in <b><b>Method 2</b></b>.
+</p>
+
+<div class="highlight"><pre><span></span>summed = all_data.groupby('item_id')['target'].transform('sum')
+total_sum = summed.sum()
+one_less = len(summed) - 1
+
+left_out = (total_sum - summed)/one_less
+</pre></div>
+
+<pre class="example">
+-0.47032519950821283
+Current answer for task Leave-one-out_scheme is: -0.47032519950821283
+
+</pre>
 
 
 <p>

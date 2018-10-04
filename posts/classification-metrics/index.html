@@ -108,16 +108,16 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org66e8b03">Accuracy</a></li>
-<li><a href="#orgbbe899b">Logarithmic Loss</a></li>
-<li><a href="#orgf4c8f06">Area Under the ROC Curve (AUC)</a></li>
-<li><a href="#orgb8ed4d0">Quadratic Weighted Kappa (Cohen's Kappa)</a></li>
+<li><a href="#orge7d1869">Accuracy</a></li>
+<li><a href="#orgd89e10e">Logarithmic Loss</a></li>
+<li><a href="#org2facf85">Area Under the ROC Curve (AUC)</a></li>
+<li><a href="#orgbb68eb5">Quadratic Weighted Kappa (Cohen's Kappa)</a></li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org66e8b03" class="outline-2">
-<h2 id="org66e8b03">Accuracy</h2>
-<div class="outline-text-2" id="text-org66e8b03">
+<div id="outline-container-orge7d1869" class="outline-2">
+<h2 id="orge7d1869">Accuracy</h2>
+<div class="outline-text-2" id="text-orge7d1869">
 <p>
 This metric measures how frequently our model is correct.
 </p>
@@ -133,13 +133,13 @@ If you were to make a model that just predicted a constant value, the best value
 </p>
 </div>
 </div>
-<div id="outline-container-orgbbe899b" class="outline-2">
-<h2 id="orgbbe899b">Logarithmic Loss</h2>
-<div class="outline-text-2" id="text-orgbbe899b">
+<div id="outline-container-orgd89e10e" class="outline-2">
+<h2 id="orgd89e10e">Logarithmic Loss</h2>
+<div class="outline-text-2" id="text-orgd89e10e">
 </div>
-<div id="outline-container-orgbec5d6c" class="outline-3">
-<h3 id="orgbec5d6c">Binary Version</h3>
-<div class="outline-text-3" id="text-orgbec5d6c">
+<div id="outline-container-orgf72ee7b" class="outline-3">
+<h3 id="orgf72ee7b">Binary Version</h3>
+<div class="outline-text-3" id="text-orgf72ee7b">
 <p>
 \[
 LogLoss = -\frac{1}{N} \sum_{i=1}^N y_i \log (\hat{y}_i) + (1 - y_i) \log (1 - \hat{y}_i)
@@ -147,9 +147,9 @@ LogLoss = -\frac{1}{N} \sum_{i=1}^N y_i \log (\hat{y}_i) + (1 - y_i) \log (1 - \
 </p>
 </div>
 </div>
-<div id="outline-container-orga44400f" class="outline-3">
-<h3 id="orga44400f">Multiclass Version</h3>
-<div class="outline-text-3" id="text-orga44400f">
+<div id="outline-container-orga7bced8" class="outline-3">
+<h3 id="orga7bced8">Multiclass Version</h3>
+<div class="outline-text-3" id="text-orga7bced8">
 <p>
 \[
 LogLoss = -\frac{1}{N} \sum_{i=1}^N \sum_{i=1}^L y_{il} \log (\hat{y}_{il})
@@ -170,9 +170,9 @@ If you wanted to make a constant prediction, the best constant is to set the con
 </div>
 </div>
 </div>
-<div id="outline-container-orgf4c8f06" class="outline-2">
-<h2 id="orgf4c8f06">Area Under the ROC Curve (AUC)</h2>
-<div class="outline-text-2" id="text-orgf4c8f06">
+<div id="outline-container-org2facf85" class="outline-2">
+<h2 id="org2facf85">Area Under the ROC Curve (AUC)</h2>
+<div class="outline-text-2" id="text-org2facf85">
 <ul class="org-ul">
 <li>only for binary classification</li>
 <li>depends only on the ordering of the predictions, not the absolute values</li>
@@ -181,8 +181,8 @@ If you wanted to make a constant prediction, the best constant is to set the con
 </ul>
 </div>
 </div>
-<div id="outline-container-orgb8ed4d0" class="outline-2">
-<h2 id="orgb8ed4d0">Quadratic Weighted Kappa (Cohen's Kappa)</h2>
+<div id="outline-container-orgbb68eb5" class="outline-2">
+<h2 id="orgbb68eb5">Quadratic Weighted Kappa (Cohen's Kappa)</h2>
 </div>
     </div>
     <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">

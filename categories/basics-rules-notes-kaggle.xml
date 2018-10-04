@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about basics rules notes kaggle)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/basics-rules-notes-kaggle.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Wed, 19 Sep 2018 15:19:00 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Kaggle Mechanics</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/kaggle-mechanics/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about basics rules notes kaggle)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/basics-rules-notes-kaggle.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Tue, 18 Sep 2018 19:39:22 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Kaggle Mechanics</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/kaggle-mechanics/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
 &lt;h2&gt;Table of Contents&lt;/h2&gt;
 &lt;div id="text-table-of-contents"&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/kaggle-mechanics/#org536adea"&gt;The Basics&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/kaggle-mechanics/#org39ae473"&gt;Other Competitions&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/kaggle-mechanics/#org8ca5bfb"&gt;The Basics&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/kaggle-mechanics/#org41761f6"&gt;Other Competitions&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org536adea" class="outline-2"&gt;
-&lt;h2 id="org536adea"&gt;The Basics&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org536adea"&gt;
+&lt;div id="outline-container-org8ca5bfb" class="outline-2"&gt;
+&lt;h2 id="org8ca5bfb"&gt;The Basics&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org8ca5bfb"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org3c5e10a" class="outline-3"&gt;
-&lt;h3 id="org3c5e10a"&gt;What is a kaggle competition?&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org3c5e10a"&gt;
+&lt;div id="outline-container-org71776a2" class="outline-3"&gt;
+&lt;h3 id="org71776a2"&gt;What is a kaggle competition?&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org71776a2"&gt;
 &lt;p&gt;
 &lt;a href="https://www.kaggle.com/docs/competitions"&gt;Kaggle competitions&lt;/a&gt; are challenges that let you compete with others to create models to predict something about a given data set.
 &lt;/p&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org75645b0" class="outline-4"&gt;
-&lt;h4 id="org75645b0"&gt;What are the four main types of competitions?&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org75645b0"&gt;
+&lt;div id="outline-container-orgb24e2ad" class="outline-4"&gt;
+&lt;h4 id="orgb24e2ad"&gt;What are the four main types of competitions?&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-orgb24e2ad"&gt;
 &lt;ol class="org-ol"&gt;
 &lt;li&gt;&lt;b&gt;Featured&lt;/b&gt; - These are the main type of kaggle competition, they are sponsored and usually have some kind of commercial orientation to them.&lt;/li&gt;
 &lt;li&gt;&lt;b&gt;Research&lt;/b&gt; - These are competitions that are more experimental in nature. They may not have a prize associated with them but give you an opportunity to work on a problem that doesn't currently have a good solution.&lt;/li&gt;
@@ -32,18 +32,18 @@
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org86beaa7" class="outline-3"&gt;
-&lt;h3 id="org86beaa7"&gt;What does the data look like?&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org86beaa7"&gt;
+&lt;div id="outline-container-org0820cdd" class="outline-3"&gt;
+&lt;h3 id="org0820cdd"&gt;What does the data look like?&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org0820cdd"&gt;
 &lt;p&gt;
 Every competition provides data so you can create a model, but there isn't a standardized format. Sometimes it will be &lt;a href="https://en.wikipedia.org/wiki/Comma-separated_values"&gt;CSVs&lt;/a&gt; sometimes it will be excel spreadsheets, sometimes it might be image files. The sources can vary so you should read the data descriptions and adapt what you do to the competition. You aren't always limited to the data that is provided. If you were creating an image recognition model, for instance, it might be okay to include outside images or pre-trained models, it will depend on the particulars of the competition.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org2874814" class="outline-3"&gt;
-&lt;h3 id="org2874814"&gt;What are you trying to do?&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org2874814"&gt;
+&lt;div id="outline-container-org8de7969" class="outline-3"&gt;
+&lt;h3 id="org8de7969"&gt;What are you trying to do?&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org8de7969"&gt;
 &lt;p&gt;
 You are trying to create a model - a representation of the population based on the data you are given that will allow you to predict outcomes based on inputs not given in the data. The model needs two main features:
 &lt;/p&gt;
@@ -57,34 +57,34 @@ Note that a model is not the same as an algorithm. You might have to combine mul
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org965ddf8" class="outline-3"&gt;
-&lt;h3 id="org965ddf8"&gt;Submission&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org965ddf8"&gt;
+&lt;div id="outline-container-orgd1807ec" class="outline-3"&gt;
+&lt;h3 id="orgd1807ec"&gt;Submission&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgd1807ec"&gt;
 &lt;p&gt;
 Your submission is typically your predictions on a test set. This isn't always the case but it is the most common way that the competitions are run.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgf7d0f2f" class="outline-3"&gt;
-&lt;h3 id="orgf7d0f2f"&gt;Evaluation&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgf7d0f2f"&gt;
+&lt;div id="outline-container-org04f9b94" class="outline-3"&gt;
+&lt;h3 id="org04f9b94"&gt;Evaluation&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org04f9b94"&gt;
 &lt;p&gt;
 How can you tell how well your model does? You need a function that maps your model and a data set to a score that evaluates how well the model does. There are many different metrics to use (accuracy, precision, recall, etc.) but the competition will choose one and tell you what it is in the description so make sure you read the description to get it.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgfe48646" class="outline-3"&gt;
-&lt;h3 id="orgfe48646"&gt;Leaderboard&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgfe48646"&gt;
+&lt;div id="outline-container-org2ec3f49" class="outline-3"&gt;
+&lt;h3 id="org2ec3f49"&gt;Leaderboard&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org2ec3f49"&gt;
 &lt;p&gt;
 This is the relative ranking of the participants in the competition. This is what makes it a competition. Even if your metric tells you your model is doing well, if you are ranked at the bottom, you still won't win. There are actually two leaderboards - public and private. The evaluation dataset is split by kaggle into two sets, public and private, and during the competition the results of testing on the public data are shown on the leaderborad. Once the competition is over the leaderboard is displayed using the evaluations using the private data.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org39ae473" class="outline-2"&gt;
-&lt;h2 id="org39ae473"&gt;Other Competitions&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org39ae473"&gt;
+&lt;div id="outline-container-org41761f6" class="outline-2"&gt;
+&lt;h2 id="org41761f6"&gt;Other Competitions&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org41761f6"&gt;
 &lt;p&gt;
 &lt;a href="https://www.kaggle.com/"&gt;Kaggle&lt;/a&gt; isn't the only one running data-science competititons. Here are some others.
 &lt;/p&gt;

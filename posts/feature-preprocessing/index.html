@@ -108,19 +108,19 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org3266562">Preprocessing</a></li>
-<li><a href="#org717b319">Numeric Feature Preprocessing</a></li>
-<li><a href="#orgce8918c">Categorical And Ordinal Features</a></li>
-<li><a href="#org7d89390">Dates and Times</a></li>
-<li><a href="#orgb36f606">Coordinates</a></li>
-<li><a href="#org2ded975">Missing Data</a></li>
-<li><a href="#orgf2adbd6">Links</a></li>
+<li><a href="#org3b179ea">Preprocessing</a></li>
+<li><a href="#orga780e53">Numeric Feature Preprocessing</a></li>
+<li><a href="#org4ff427b">Categorical And Ordinal Features</a></li>
+<li><a href="#org602aeb2">Dates and Times</a></li>
+<li><a href="#orgec3d360">Coordinates</a></li>
+<li><a href="#orgaa2c940">Missing Data</a></li>
+<li><a href="#orge9338db">Links</a></li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org3266562" class="outline-2">
-<h2 id="org3266562">Preprocessing</h2>
-<div class="outline-text-2" id="text-org3266562">
+<div id="outline-container-org3b179ea" class="outline-2">
+<h2 id="org3b179ea">Preprocessing</h2>
+<div class="outline-text-2" id="text-org3b179ea">
 <p>
 In every competition you need to:
 </p>
@@ -131,17 +131,17 @@ In every competition you need to:
 </ul>
 </div>
 </div>
-<div id="outline-container-org717b319" class="outline-2">
-<h2 id="org717b319">Numeric Feature Preprocessing</h2>
-<div class="outline-text-2" id="text-org717b319">
+<div id="outline-container-orga780e53" class="outline-2">
+<h2 id="orga780e53">Numeric Feature Preprocessing</h2>
+<div class="outline-text-2" id="text-orga780e53">
 <p>
 Some models (e.g. Linear Classification) need you to convert numeric-looking data to categorical data. Tree-based models don't need pre-processing as much as non tree-based models do.
 </p>
 </div>
 
-<div id="outline-container-org5998b1d" class="outline-3">
-<h3 id="org5998b1d">Scaling</h3>
-<div class="outline-text-3" id="text-org5998b1d">
+<div id="outline-container-org09bb1a3" class="outline-3">
+<h3 id="org09bb1a3">Scaling</h3>
+<div class="outline-text-3" id="text-org09bb1a3">
 <p>
 If features have different value ranges then the model will  treat them differently.
 </p>
@@ -155,18 +155,18 @@ Scale the data to have a mean of 0 and a standard deviation of 1</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org70758cc" class="outline-3">
-<h3 id="org70758cc">Outliers</h3>
-<div class="outline-text-3" id="text-org70758cc">
+<div id="outline-container-org9cf21a1" class="outline-3">
+<h3 id="org9cf21a1">Outliers</h3>
+<div class="outline-text-3" id="text-org9cf21a1">
 <ul class="org-ul">
 <li>Clip (<a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.clip.html">numpy.clip</a>)values to get rid of unusual values that mess with the model. (Winsorization)</li>
 <li>Rank Transform them (<a href="https://docs.scipy.org/doc/scipy-0.16.0/reference/generated/scipy.stats.rankdata.html">scipy.stats.rankdata</a>) so that they are ordered and have the same distance between them (they are uniformly distributed)</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org79b2daa" class="outline-3">
-<h3 id="org79b2daa">Transformation</h3>
-<div class="outline-text-3" id="text-org79b2daa">
+<div id="outline-container-org726d89b" class="outline-3">
+<h3 id="org726d89b">Transformation</h3>
+<div class="outline-text-3" id="text-org726d89b">
 <p>
 For linear models and neural networks, transforming the data can sometimes help.
 </p>
@@ -178,9 +178,9 @@ For linear models and neural networks, transforming the data can sometimes help.
 </ul>
 </div>
 </div>
-<div id="outline-container-orga7a0e44" class="outline-3">
-<h3 id="orga7a0e44">Feature Generation</h3>
-<div class="outline-text-3" id="text-orga7a0e44">
+<div id="outline-container-orgee6c30b" class="outline-3">
+<h3 id="orgee6c30b">Feature Generation</h3>
+<div class="outline-text-3" id="text-orgee6c30b">
 <p>
 Sometimes you can convert separate columns to get new ones. This requires exploratory data analysis.
 </p>
@@ -192,18 +192,18 @@ Sometimes you can convert separate columns to get new ones. This requires explor
 </div>
 </div>
 
-<div id="outline-container-orgce8918c" class="outline-2">
-<h2 id="orgce8918c">Categorical And Ordinal Features</h2>
-<div class="outline-text-2" id="text-orgce8918c">
+<div id="outline-container-org4ff427b" class="outline-2">
+<h2 id="org4ff427b">Categorical And Ordinal Features</h2>
+<div class="outline-text-2" id="text-org4ff427b">
 <ul class="org-ul">
 <li>Ordinal Features have an ordering but even if they are labeled numerically (e.g. 1, 2, 3) they aren't numeric because there is no implication about the distance between them</li>
 <li>label and frequency encoding are commonly used for tree-based models</li>
 <li>one-hot encoding is more common for non-tree-based models</li>
 </ul>
 </div>
-<div id="outline-container-org426df30" class="outline-3">
-<h3 id="org426df30">Label Encoding</h3>
-<div class="outline-text-3" id="text-org426df30">
+<div id="outline-container-orge25d071" class="outline-3">
+<h3 id="orge25d071">Label Encoding</h3>
+<div class="outline-text-3" id="text-orge25d071">
 <p>
 Some models need numeric values or numeric values that don't have implied ordering so you want to encode them.
 </p>
@@ -218,9 +218,9 @@ Encodes the labels in the order they appear. This makes more sense if there is a
 </ul>
 </div>
 </div>
-<div id="outline-container-org25feec0" class="outline-3">
-<h3 id="org25feec0">Frequency Encoding</h3>
-<div class="outline-text-3" id="text-org25feec0">
+<div id="outline-container-org2f84a20" class="outline-3">
+<h3 id="org2f84a20">Frequency Encoding</h3>
+<div class="outline-text-3" id="text-org2f84a20">
 <p>
 Encode the values to a fraction of all the labels. Can work with linear models if the frequency is correlated with the target value.
 </p>
@@ -232,9 +232,9 @@ Encode the values to a fraction of all the labels. Can work with linear models i
 </ul>
 </div>
 </div>
-<div id="outline-container-org38bfe58" class="outline-3">
-<h3 id="org38bfe58">One Hot Encoding</h3>
-<div class="outline-text-3" id="text-org38bfe58">
+<div id="outline-container-org371b388" class="outline-3">
+<h3 id="org371b388">One Hot Encoding</h3>
+<div class="outline-text-3" id="text-org371b388">
 <p>
 Creates one column for each label and puts a 1 in the column that matches. Works with both linear and tree-based models, but can be inefficient with tree-based models.
 </p>
@@ -253,39 +253,39 @@ Creates one column for each label and puts a 1 in the column that matches. Works
 </div>
 </div>
 </div>
-<div id="outline-container-org7d89390" class="outline-2">
-<h2 id="org7d89390">Dates and Times</h2>
-<div class="outline-text-2" id="text-org7d89390">
+<div id="outline-container-org602aeb2" class="outline-2">
+<h2 id="org602aeb2">Dates and Times</h2>
+<div class="outline-text-2" id="text-org602aeb2">
 <p>
 When working with seasonal data, sometimes the relative date-stamps are more important than the actual dates (how close to Christmas?).
 Sometimes you want the time between events.
 </p>
 </div>
 </div>
-<div id="outline-container-orgb36f606" class="outline-2">
-<h2 id="orgb36f606">Coordinates</h2>
-<div class="outline-text-2" id="text-orgb36f606">
+<div id="outline-container-orgec3d360" class="outline-2">
+<h2 id="orgec3d360">Coordinates</h2>
+<div class="outline-text-2" id="text-orgec3d360">
 <p>
 Sometimes you want exact coordinates, but most times you want distances to some center.
 </p>
 </div>
 </div>
-<div id="outline-container-org2ded975" class="outline-2">
-<h2 id="org2ded975">Missing Data</h2>
-<div class="outline-text-2" id="text-org2ded975">
+<div id="outline-container-orgaa2c940" class="outline-2">
+<h2 id="orgaa2c940">Missing Data</h2>
+<div class="outline-text-2" id="text-orgaa2c940">
 <ul class="org-ul">
 <li>"missing" data might mean outliers - values that are probably wrong</li>
 <li>avoid replacing missing values before feature engineering - it can throw off what you do</li>
 <li>Gradient Boost Trees can handle isNaN, so you don't have to do anything</li>
 </ul>
 </div>
-<div id="outline-container-org5d08c2f" class="outline-3">
-<h3 id="org5d08c2f">Numeric</h3>
-<div class="outline-text-3" id="text-org5d08c2f">
+<div id="outline-container-orga05c8a1" class="outline-3">
+<h3 id="orga05c8a1">Numeric</h3>
+<div class="outline-text-3" id="text-orga05c8a1">
 </div>
-<div id="outline-container-org0b7c715" class="outline-4">
-<h4 id="org0b7c715">Fill NA Approaches</h4>
-<div class="outline-text-4" id="text-org0b7c715">
+<div id="outline-container-org4b9f89c" class="outline-4">
+<h4 id="org4b9f89c">Fill NA Approaches</h4>
+<div class="outline-text-4" id="text-org4b9f89c">
 <ul class="org-ul">
 <li>-999, -1, other numbers
 <ul class="org-ul">
@@ -306,13 +306,13 @@ Sometimes you want exact coordinates, but most times you want distances to some 
 </div>
 </div>
 </div>
-<div id="outline-container-orgf2adbd6" class="outline-2">
-<h2 id="orgf2adbd6">Links</h2>
-<div class="outline-text-2" id="text-orgf2adbd6">
+<div id="outline-container-orge9338db" class="outline-2">
+<h2 id="orge9338db">Links</h2>
+<div class="outline-text-2" id="text-orge9338db">
 </div>
-<div id="outline-container-org22f207d" class="outline-3">
-<h3 id="org22f207d">Feature Pre-processing</h3>
-<div class="outline-text-3" id="text-org22f207d">
+<div id="outline-container-org2761a50" class="outline-3">
+<h3 id="org2761a50">Feature Pre-processing</h3>
+<div class="outline-text-3" id="text-org2761a50">
 <ul class="org-ul">
 <li><a href="http://scikit-learn.org/stable/modules/preprocessing.html">SKlearn's Preprocessing Documentation</a></li>
 <li><a href="https://www.coursera.org/learn/machine-learning/lecture/xx3Da/gradient-descent-in-practice-i-feature-scaling">Andrew Ng on Feature Scaling and its effect on Gradient Descent</a></li>
@@ -320,9 +320,9 @@ Sometimes you want exact coordinates, but most times you want distances to some 
 </ul>
 </div>
 </div>
-<div id="outline-container-org2be33bc" class="outline-3">
-<h3 id="org2be33bc">Feature Engineering</h3>
-<div class="outline-text-3" id="text-org2be33bc">
+<div id="outline-container-org596abeb" class="outline-3">
+<h3 id="org596abeb">Feature Engineering</h3>
+<div class="outline-text-3" id="text-org596abeb">
 <ul class="org-ul">
 <li><a href="https://machinelearningmastery.com/discover-feature-engineering-how-to-engineer-features-and-how-to-get-good-at-it/">Machine Learning Mastery on Feature Engineering</a></li>
 <li><a href="https://www.quora.com/What-are-some-best-practices-in-Feature-Engineering">Quora: What are some best practices in Feature Engineering?</a></li>

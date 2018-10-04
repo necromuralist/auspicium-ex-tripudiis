@@ -108,19 +108,19 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orga8c89e3">The Tangle</a></li>
-<li><a href="#org8257079">Imports</a></li>
-<li><a href="#orge52586c">Helpers</a></li>
-<li><a href="#orge5f9733">Building Up the Super Set</a></li>
-<li><a href="#org2aa3d6f">Setting up the Training and Validation Data</a></li>
-<li><a href="#org248dce9">Creating the Validation Set</a></li>
+<li><a href="#org8e1ad11">The Tangle</a></li>
+<li><a href="#orgb2fcef9">Imports</a></li>
+<li><a href="#orgbffc8a0">Helpers</a></li>
+<li><a href="#org1ab38d9">Building Up the Super Set</a></li>
+<li><a href="#org119cb96">Setting up the Training and Validation Data</a></li>
+<li><a href="#org29d2424">Creating the Validation Set</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orga8c89e3" class="outline-2">
-<h2 id="orga8c89e3">The Tangle</h2>
-<div class="outline-text-2" id="text-orga8c89e3">
+<div id="outline-container-org8e1ad11" class="outline-2">
+<h2 id="org8e1ad11">The Tangle</h2>
+<div class="outline-text-2" id="text-org8e1ad11">
 <p>
 This is the exporter for stuff to be re-used outside of this post.
 </p>
@@ -170,21 +170,21 @@ This is the exporter for stuff to be re-used outside of this post.
 </div>
 </div>
 
-<div id="outline-container-org8257079" class="outline-2">
-<h2 id="org8257079">Imports</h2>
-<div class="outline-text-2" id="text-org8257079">
+<div id="outline-container-orgb2fcef9" class="outline-2">
+<h2 id="orgb2fcef9">Imports</h2>
+<div class="outline-text-2" id="text-orgb2fcef9">
 </div>
-<div id="outline-container-org67e1887" class="outline-3">
-<h3 id="org67e1887">Python Standard Library</h3>
-<div class="outline-text-3" id="text-org67e1887">
+<div id="outline-container-orgddef621" class="outline-3">
+<h3 id="orgddef621">Python Standard Library</h3>
+<div class="outline-text-3" id="text-orgddef621">
 <div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
 </pre></div>
 </div>
 </div>
 
-<div id="outline-container-org0d42064" class="outline-3">
-<h3 id="org0d42064">Suppressing the Numpy Warnings</h3>
-<div class="outline-text-3" id="text-org0d42064">
+<div id="outline-container-org4b006f7" class="outline-3">
+<h3 id="org4b006f7">Suppressing the Numpy Warnings</h3>
+<div class="outline-text-3" id="text-org4b006f7">
 <p>
 This is to suppress the warnings when we import pandas.
 </p>
@@ -195,18 +195,18 @@ This is to suppress the warnings when we import pandas.
 </div>
 </div>
 
-<div id="outline-container-org7835a2b" class="outline-3">
-<h3 id="org7835a2b">From pypi</h3>
-<div class="outline-text-3" id="text-org7835a2b">
+<div id="outline-container-orgbd28b3c" class="outline-3">
+<h3 id="orgbd28b3c">From pypi</h3>
+<div class="outline-text-3" id="text-orgbd28b3c">
 <div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span>
 <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
 </pre></div>
 </div>
 </div>
 
-<div id="outline-container-orga3571b5" class="outline-3">
-<h3 id="orga3571b5">This Project</h3>
-<div class="outline-text-3" id="text-orga3571b5">
+<div id="outline-container-orge68f599" class="outline-3">
+<h3 id="orge68f599">This Project</h3>
+<div class="outline-text-3" id="text-orge68f599">
 <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">kaggler.helpers.helpers</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">DataKeys</span><span class="p">,</span>
     <span class="n">DataNames</span><span class="p">,</span>
@@ -218,13 +218,13 @@ This is to suppress the warnings when we import pandas.
 </div>
 </div>
 
-<div id="outline-container-orge52586c" class="outline-2">
-<h2 id="orge52586c">Helpers</h2>
-<div class="outline-text-2" id="text-orge52586c">
+<div id="outline-container-orgbffc8a0" class="outline-2">
+<h2 id="orgbffc8a0">Helpers</h2>
+<div class="outline-text-2" id="text-orgbffc8a0">
 </div>
-<div id="outline-container-orgdbc75a6" class="outline-3">
-<h3 id="orgdbc75a6">Pickles</h3>
-<div class="outline-text-3" id="text-orgdbc75a6">
+<div id="outline-container-orgc3ccd44" class="outline-3">
+<h3 id="orgc3ccd44">Pickles</h3>
+<div class="outline-text-3" id="text-orgc3ccd44">
 <p>
 I'm going to pickle the data to re-load them later so this will hold the names.
 </p>
@@ -243,9 +243,9 @@ I'm going to pickle the data to re-load them later so this will hold the names.
 </div>
 
 
-<div id="outline-container-orge5f9733" class="outline-2">
-<h2 id="orge5f9733">Building Up the Super Set</h2>
-<div class="outline-text-2" id="text-orge5f9733">
+<div id="outline-container-org1ab38d9" class="outline-2">
+<h2 id="org1ab38d9">Building Up the Super Set</h2>
+<div class="outline-text-2" id="text-org1ab38d9">
 <p>
 Since we have some variables in separate sets I thought it would be useful to combine them into a single training set.
 </p>
@@ -259,9 +259,9 @@ Since we have some variables in separate sets I thought it would be useful to co
 </pre></div>
 </div>
 
-<div id="outline-container-org86cdaf9" class="outline-3">
-<h3 id="org86cdaf9">The Data Source</h3>
-<div class="outline-text-3" id="text-org86cdaf9">
+<div id="outline-container-orgd9024f3" class="outline-3">
+<h3 id="orgd9024f3">The Data Source</h3>
+<div class="outline-text-3" id="text-orgd9024f3">
 <p>
 I put the paths into a class called DataSource, this is just to instantiate it.
 </p>
@@ -277,9 +277,9 @@ I put the paths into a class called DataSource, this is just to instantiate it.
 </div>
 </div>
 
-<div id="outline-container-org9980119" class="outline-3">
-<h3 id="org9980119">Building the Super Set</h3>
-<div class="outline-text-3" id="text-org9980119">
+<div id="outline-container-orgd8e48f5" class="outline-3">
+<h3 id="orgd8e48f5">Building the Super Set</h3>
+<div class="outline-text-3" id="text-orgd8e48f5">
 <p>
 The <code>super_set</code> will be a combination of the different data-sources.
 </p>
@@ -298,9 +298,9 @@ The <code>super_set</code> will be a combination of the different data-sources.
 </div>
 </div>
 
-<div id="outline-container-org717445a" class="outline-3">
-<h3 id="org717445a">Adding the Category IDs</h3>
-<div class="outline-text-3" id="text-org717445a">
+<div id="outline-container-org19f8616" class="outline-3">
+<h3 id="org19f8616">Adding the Category IDs</h3>
+<div class="outline-text-3" id="text-org19f8616">
 <p>
 The <code>items.csv</code> file holds a map of the item-ids to category-ids so we can <a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.merge.html">merge</a> it in to get the category ids for our data-set.
 </p>
@@ -488,9 +488,9 @@ This is also going to add the name of the item, which I'm thinking won't be as u
 </div>
 </div>
 
-<div id="outline-container-org73f3f8e" class="outline-3">
-<h3 id="org73f3f8e">Splitting the Dates</h3>
-<div class="outline-text-3" id="text-org73f3f8e">
+<div id="outline-container-org0cde19b" class="outline-3">
+<h3 id="org0cde19b">Splitting the Dates</h3>
+<div class="outline-text-3" id="text-org0cde19b">
 <p>
 The <code>date</code> column has a string formatted <code>dd.mm.yy</code>. Since we want sales per month and it might change over time, I'll split the date-stamp up into day, month, and year (although I don't think I'll be keeping day).
 </p>
@@ -704,9 +704,9 @@ Nowe we can see what our <code>super_set</code> looks like.
 </div>
 </div>
 
-<div id="outline-container-orgb5c6eef" class="outline-3">
-<h3 id="orgb5c6eef">Cleaning Up</h3>
-<div class="outline-text-3" id="text-orgb5c6eef">
+<div id="outline-container-orgc54a2f9" class="outline-3">
+<h3 id="orgc54a2f9">Cleaning Up</h3>
+<div class="outline-text-3" id="text-orgc54a2f9">
 <p>
 The <code>date</code> column is now superfluous, and I don't think we need the day, since we are predicting by month. I'm also going to assume that names aren't as useful as the numeric ids. This might not be true, but I think using the text would require pre-processing which is beyond what I'm doing here, so I'm going to leave them out (there is another file with shop names that needs to be loaded if the text turns out to be significant). I'm going to <a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.drop.html">drop</a> the columns that I don't think I'll need.
 </p>
@@ -819,9 +819,9 @@ The <code>date</code> column is now superfluous, and I don't think we need the d
 </div>
 </div>
 
-<div id="outline-container-org30f3f6b" class="outline-3">
-<h3 id="org30f3f6b">Saving the Super Set</h3>
-<div class="outline-text-3" id="text-org30f3f6b">
+<div id="outline-container-org2998eb1" class="outline-3">
+<h3 id="org2998eb1">Saving the Super Set</h3>
+<div class="outline-text-3" id="text-org2998eb1">
 <p>
 Now I'll pickle it up so it can be loaded later.
 </p>
@@ -833,17 +833,17 @@ Now I'll pickle it up so it can be loaded later.
 </div>
 </div>
 
-<div id="outline-container-org2aa3d6f" class="outline-2">
-<h2 id="org2aa3d6f">Setting up the Training and Validation Data</h2>
-<div class="outline-text-2" id="text-org2aa3d6f">
+<div id="outline-container-org119cb96" class="outline-2">
+<h2 id="org119cb96">Setting up the Training and Validation Data</h2>
+<div class="outline-text-2" id="text-org119cb96">
 <p>
 Although I went through the trouble of smashing all the values into one Data Frame, it turns out that I need things grouped by month, and doing the grouping after adding the columns just make it messy, so I'm going to back-track a little here to set up the data we need for training and testing.
 </p>
 </div>
 
-<div id="outline-container-orgfefd143" class="outline-3">
-<h3 id="orgfefd143">The Grouper</h3>
-<div class="outline-text-3" id="text-orgfefd143">
+<div id="outline-container-org11da34b" class="outline-3">
+<h3 id="org11da34b">The Grouper</h3>
+<div class="outline-text-3" id="text-org11da34b">
 <p>
 Since I'm going to aggregate by the month (really the <code>date_block_num</code>), leaving in things like the price doesn't really make sense so I'll make a sub-frame that I can <a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.groupby.html">group</a>.
 </p>
@@ -1006,13 +1006,13 @@ So we're going to <a href="https://pandas.pydata.org/pandas-docs/stable/generate
 </div>
 </div>
 
-<div id="outline-container-orgbeb2bfb" class="outline-3">
-<h3 id="orgbeb2bfb">Adding the Columns Back</h3>
-<div class="outline-text-3" id="text-orgbeb2bfb">
+<div id="outline-container-orgdaa40b6" class="outline-3">
+<h3 id="orgdaa40b6">Adding the Columns Back</h3>
+<div class="outline-text-3" id="text-orgdaa40b6">
 </div>
-<div id="outline-container-org793f2e8" class="outline-4">
-<h4 id="org793f2e8">Group the Super Set</h4>
-<div class="outline-text-4" id="text-org793f2e8">
+<div id="outline-container-orga46ae69" class="outline-4">
+<h4 id="orga46ae69">Group the Super Set</h4>
+<div class="outline-text-4" id="text-orga46ae69">
 <p>
 Back to the super-set. Since there are multiple entries for items in a given month, I'm going to group the items by shop and date-block (month) and then grab the last entry for each group. 
 </p>
@@ -1128,9 +1128,9 @@ Back to the super-set. Since there are multiple entries for items in a given mon
 </div>
 
 
-<div id="outline-container-org9713604" class="outline-4">
-<h4 id="org9713604">Re-add the missing columns</h4>
-<div class="outline-text-4" id="text-org9713604">
+<div id="outline-container-org42f2a23" class="outline-4">
+<h4 id="org42f2a23">Re-add the missing columns</h4>
+<div class="outline-text-4" id="text-org42f2a23">
 <p>
 Now we need to get the category id, price, etc, back into the grouped data by merging it with the de-duplicated one we just created.
 </p>
@@ -1259,9 +1259,9 @@ Now we need to get the category id, price, etc, back into the grouped data by me
 </div>
 </div>
 
-<div id="outline-container-org0aa895b" class="outline-4">
-<h4 id="org0aa895b">Save the grouped-up data</h4>
-<div class="outline-text-4" id="text-org0aa895b">
+<div id="outline-container-org011f37a" class="outline-4">
+<h4 id="org011f37a">Save the grouped-up data</h4>
+<div class="outline-text-4" id="text-org011f37a">
 <p>
 I'm calling it <code>grouped_months_data.pkl</code>, but since the name is in the <code>Pickles</code> class, I'll just have to remember to use <code>grouped</code>.
 </p>
@@ -1270,16 +1270,16 @@ I'm calling it <code>grouped_months_data.pkl</code>, but since the name is in th
 </div>
 </div>
 
-<div id="outline-container-org248dce9" class="outline-2">
-<h2 id="org248dce9">Creating the Validation Set</h2>
-<div class="outline-text-2" id="text-org248dce9">
+<div id="outline-container-org29d2424" class="outline-2">
+<h2 id="org29d2424">Creating the Validation Set</h2>
+<div class="outline-text-2" id="text-org29d2424">
 <p>
 To make my validation and training set I'm going to use sklearn's <a href="http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html">train_test_split</a>. 
 </p>
 </div>
-<div id="outline-container-org1d28386" class="outline-3">
-<h3 id="org1d28386">Targets and Features</h3>
-<div class="outline-text-3" id="text-org1d28386">
+<div id="outline-container-orga02ef70" class="outline-3">
+<h3 id="orga02ef70">Targets and Features</h3>
+<div class="outline-text-3" id="text-orga02ef70">
 <p>
 First we need to split the data up into inputs and targets
 </p>
@@ -1393,9 +1393,9 @@ First we need to split the data up into inputs and targets
 </div>
 </div>
 
-<div id="outline-container-org3bed308" class="outline-3">
-<h3 id="org3bed308">Make Like a Banana</h3>
-<div class="outline-text-3" id="text-org3bed308">
+<div id="outline-container-orgdf6878f" class="outline-3">
+<h3 id="orgdf6878f">Make Like a Banana</h3>
+<div class="outline-text-3" id="text-orgdf6878f">
 <p>
 I'm going to create a training set with 80% of the data and leave the other 20% as the validation data.
 </p>

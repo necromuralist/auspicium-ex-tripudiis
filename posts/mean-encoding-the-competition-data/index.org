@@ -13,7 +13,7 @@
 
 * Introduction
 
-In this programming assignment you will be working with the /1C/ dataset from the final competition. You are asked to encode the =item_id= in 4 different ways:
+In this programming assignment you will be working with the [[https://www.kaggle.com/c/competitive-data-science-final-project/data][1C dataset]] from the final competition. You are asked to encode the =item_id= in 4 different ways:
  
      1) Via KFold scheme;  
      2) Via Leave-one-out scheme;
@@ -28,10 +28,20 @@ In this programming assignment you will be working with the /1C/ dataset from th
 - Some encoding schemes depend on sorting order, so in order to avoid confusion, please use the following code snippet to construct the data frame. This snippet also implements mean encoding without regularization.
 
 #+BEGIN_SRC ipython :session encoding :results none
+NAN_VALUE = 0.3343
+#+END_SRC
+
+#+BEGIN_SRC python :session encoding :results none
+import warnings
+warnings.filterwarnings("ignore", message="numpy.dtype size changed")
+warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
+#+END_SRC
+
+#+BEGIN_SRC ipython :session encoding :results none
 # python standard library
 from itertools import product
 
-# pypi
+from sklearn.model_selection import KFold
 import pandas
 import numpy
 
@@ -40,6 +50,11 @@ from hse_graders.assignment_3.grader import Grader
 
 # this project
 from kaggler.course.data import Data
+from kaggler.helpers.printing import print_table
+#+END_SRC
+
+#+BEGIN_SRC ipython :session encoding :results none
+NAN_VALUE = 0.3343
 #+END_SRC
 
 * Read In the Data
@@ -48,93 +63,240 @@ from kaggler.course.data import Data
 sales = Data().sales_training_data
 #+END_SRC
 
-* Aggregate data
+* The Motivation
+  The idea behind this is that we want to convert a categorical value (the item ID) into a numeric one so that we can use non-tree-based methods. But we already have [[https://en.wikipedia.org/wiki/One-hot][One Hot Encoding]], so why do we need this? Well, lets look at how many items we need to encode.
 
-Since the competition task is to make a monthly prediction, we need to aggregate the data to montly level before doing any encodings. The following code-cell serves just that purpose.
-
-#+BEGIN_SRC ipython :session encoding :results none
-index_cols = ['shop_id', 'item_id', 'date_block_num']
+#+BEGIN_SRC ipython :session encoding :results output :exports both
+print("{:,}".format(len(sales.item_id.unique())))
 #+END_SRC
 
-For every month we create a grid from all shops/items combinations from that month.
+#+RESULTS:
+: 21,807
+
+This means we're going to have to add almost twenty-two thousand columns to your table, which brings up the [[https://en.wikipedia.org/wiki/Curse_of_dimensionality][Curse of Dimensionality]] - adding this many columns means we're going to need a lot more data for our model to work and will increase our computation time significantly. Using Mean Encoding means that we will only have to add one column, simplifying our computation and reducing the amount of data we need to fit the model.
+
+* Aggregate data
+
+Since the competition task is to make a monthly prediction, we need to aggregate the data to the monthly level before doing any encodings. The following code-cells do that for us.
+
+#+BEGIN_SRC ipython :session encoding :results none
+group_by_columns = ['shop_id', 'item_id', 'date_block_num']
+#+END_SRC
+
+For every month we create a grid from all shops/items combinations for that month. This uses [[https://docs.python.org/3/library/itertools.html#itertools.product][itertools.product]] which creates the cartesian product of the collections it's given.
 
 #+BEGIN_SRC ipython :session encoding :results none
 grid = [] 
 for block_num in sales['date_block_num'].unique():
-    cur_shops = sales[sales['date_block_num']==block_num]['shop_id'].unique()
-    cur_items = sales[sales['date_block_num']==block_num]['item_id'].unique()
-    grid.append(numpy.array(list(product(*[cur_shops, cur_items, [block_num]])),dtype='int32'))
+    block = sales[sales['date_block_num']==block_num]
+    cur_shops = block['shop_id'].unique()
+    cur_items = block['item_id'].unique()
+    grid.append(numpy.array(list(product(*[cur_shops, cur_items, [block_num]])), dtype='int32'))
 #+END_SRC
 
 Now turn the grid into a pandas dataframe.
 
 #+BEGIN_SRC ipython :session encoding :results none
-grid = pandas.DataFrame(numpy.vstack(grid), columns = index_cols,dtype=numpy.int32)
+grid = pandas.DataFrame(numpy.vstack(grid), columns=group_by_columns, dtype=numpy.int32)
 #+END_SRC
 
+#+BEGIN_SRC ipython :session encoding :results output raw :exports both
+print_table(grid.head())
+#+END_SRC
 
-Get the aggregated values for (=shop_id=, =item_id=, and =month=).
+#+RESULTS:
+| shop_id | item_id | date_block_num |
+|---------+---------+----------------|
+|      59 |   22154 |              0 |
+|      59 |    2552 |              0 |
+|      59 |    2554 |              0 |
+|      59 |    2555 |              0 |
+|      59 |    2564 |              0 |
+
+#+BEGIN_SRC ipython :session encoding :results output :exports both
+print(grid.shape)
+#+END_SRC
+
+#+RESULTS:
+: (10913850, 3)
+
+The grid has all the items sold by each shop for each date-block. The number of rows isn't just $\textit{shops} \times \textit{items} \times \textit{date-blocks}$ because not every shop is in every date-block and not every shop sold every item (or even the same items every block).
+
+Now we will use [[https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.groupby.html][groupby]] to group the data by =shop_id=, =item_id=, and /month/ (=date_block_num=) and then get the aggregated summed values for the item count per day (we're going to sum up the items sold per day to get a value for the month) and rename the summed item count column to =target=.
 
 #+BEGIN_SRC ipython :session encoding :results none
-grouped = sales.groupby(index_cols, as_index=False).agg({'item_cnt_day':{'target':'sum'}})
+grouped = sales.groupby(group_by_columns, as_index=False)
+grouped = grouped["item_cnt_day"].sum()
+grouped = grouped.rename(dict(item_cnt_day="target"), axis="columns")
 #+END_SRC
 
-Fix the column names.
+#+BEGIN_SRC ipython :session encoding :results output raw :exports both
+print_table(grouped.head())
+#+END_SRC
+
+#+RESULTS:
+| shop_id | item_id | date_block_num | target |
+|---------+---------+----------------+--------|
+|       0 |      30 |              1 |     31 |
+|       0 |      31 |              1 |     11 |
+|       0 |      32 |              0 |      6 |
+|       0 |      32 |              1 |     10 |
+|       0 |      33 |              0 |      3 |
+
+Now join the aggregated data to the grid (with [[https://pandas.pydata.org/pandas-docs/stable/merging.html#database-style-dataframe-joining-merging][merge]]).
 
 #+BEGIN_SRC ipython :session encoding :results none
-grouped.columns = [column[0] if column[-1]=='' else column[-1] for column in grouped.columns.values]
+all_data = pandas.merge(grid, grouped, how='left', on=group_by_columns).fillna(0)
 #+END_SRC
 
-Join the aggregated data to the grid.
-
-#+BEGIN_SRC ipython :session encoding :results none
-all_data = pandas.merge(grid, grouped, how='left', on=index_cols).fillna(0)
+#+BEGIN_SRC ipython :session encoding :results output raw :exports both
+print_table(all_data.head())
 #+END_SRC
 
-Sort the data.
+#+RESULTS:
+| shop_id | item_id | date_block_num | target |
+|---------+---------+----------------+--------|
+|      59 |   22154 |              0 |      1 |
+|      59 |    2552 |              0 |      0 |
+|      59 |    2554 |              0 |      0 |
+|      59 |    2555 |              0 |      0 |
+|      59 |    2564 |              0 |      0 |
+
+Sort the data by the month, shop, and item.
 
 #+BEGIN_SRC ipython :session encoding :results none
 all_data.sort_values(['date_block_num','shop_id','item_id'], inplace=True)
 #+END_SRC
 
+#+BEGIN_SRC ipython :session encoding :results output raw :exports both
+print_table(all_data.head())
+#+END_SRC
+
+#+RESULTS:
+| shop_id | item_id | date_block_num | target |
+|---------+---------+----------------+--------|
+|       0 |      19 |              0 |      0 |
+|       0 |      27 |              0 |      0 |
+|       0 |      28 |              0 |      0 |
+|       0 |      29 |              0 |      0 |
+|       0 |      32 |              0 |      6 |
+
+When we compare =all_data= to =grouped=, the difference might not be so obvious, they have the same columns and look pretty similar, but if you look at the =all_data.target= column you can see that there's a lot of 0s. That's because =grouped= only has the cases where there were sales but =all_data= had cases where there weren't any sales for a particular (=shop_id=, =item_id=, =date_block_num=) combination, so it filled in the 0's.
+
+#+BEGIN_SRC ipython :session encoding :results output :exports both
+print("{:,}".format(all_data.shape[0] - grouped.shape[0]))
+#+END_SRC
+
+#+RESULTS:
+: 9,304,726
+
+You can see that =all_data= had over 9 million more rows than grouped did.
+
+#+BEGIN_SRC ipython :session encoding :results output :exports both
+print(grouped[(grouped.shop_id==0) & (grouped.item_id==19) & (grouped.date_block_num==0)])
+#+END_SRC
+
+#+RESULTS:
+: Empty DataFrame
+: Columns: [shop_id, item_id, date_block_num, target]
+: Index: []
+
+And =grouped= didn't have any entry for the first item in the previous =all_data= head-table, which is why the target value is 0.
+
 * Mean encodings without regularization
 
-Now that we have done the techinical work, we are ready to actually *mean encode* the desired =item_id= variable. 
+Now that we have done the technical work, we are ready to actually *mean encode* the desired =item_id= variable. 
 
 Here are two ways to implement mean encoding features *without* any regularization. You can use this code as a starting point to implement regularized techniques. 
 
 ** Method 1:  Calculate a mapping: {item_id: target_mean}
 
+First we're going to calculate the mean count for each item.
+
 #+BEGIN_SRC ipython :session encoding :results none
 item_id_target_mean = all_data.groupby('item_id').target.mean()
 #+END_SRC
 
-In our non-regularized case we just *map* the computed means to the =item_id='s.
+In our non-regularized case we just [[https://pandas.pydata.org/pandas-docs/stable/generated/pandas.Series.map.html][map]] the computed means to the =item_id='s. 
 
 #+BEGIN_SRC ipython :session encoding :results none
 all_data['item_target_enc'] = all_data['item_id'].map(item_id_target_mean)
 #+END_SRC
 
-** Fill NaNs
+In our case we are mapping a series (=item_id_target_mean=) to a column =item_id= in a data frame =all_data=. Wherever an item in the =item_id= column matches the index of our =item_id_target_mean= Series it will replace the item with the value in the =item_id_target_mean= that matches the index.
 
-#+BEGIN_SRC ipython :session encoding :results none
-all_data['item_target_enc'].fillna(0.3343, inplace=True) 
-#+END_SRC
-
-** Print correlation
+Here's an example. Let's look at the head of the =item_id_target_mean= Series.
 
 #+BEGIN_SRC ipython :session encoding :results output raw :exports both
-encoded_feature = all_data['item_target_enc'].values
-print(numpy.corrcoef(all_data['target'].values, encoded_feature)[0][1])
+print_table(dict(target_mean=item_id_target_mean.head()), showindex=True)
 #+END_SRC
 
 #+RESULTS:
-0.48303869886216977
+|   | target_mean |
+|---+-------------|
+| 0 |        0.02 |
+| 1 |   0.0238095 |
+| 2 |    0.019802 |
+| 3 |    0.019802 |
+| 4 |        0.02 |
+
+So, let's look at index 1 - its value is /0.0238095/ so this mean we would expect that all the items with ID 1 would also have this value in the =item_target_enc= column. Let's double-check this.
+
+#+BEGIN_SRC ipython :session encoding :results output raw :exports both
+print_table(all_data[all_data.item_id==1].head())
+#+END_SRC
+
+#+RESULTS:
+| shop_id | item_id | date_block_num | target | item_target_enc |
+|---------+---------+----------------+--------+-----------------|
+|       2 |       1 |             15 |      0 |       0.0238095 |
+|       3 |       1 |             15 |      0 |       0.0238095 |
+|       4 |       1 |             15 |      0 |       0.0238095 |
+|       5 |       1 |             15 |      0 |       0.0238095 |
+|       6 |       1 |             15 |      0 |       0.0238095 |
+
+It looks right. Let's make sure.
+
+#+BEGIN_SRC ipython :session encoding :results none
+assert all(all_data[all_data.item_id==1] == 0.0238095)
+#+END_SRC
+
+Well, this wasn't exhaustive but at least that one item checks out.
+
+** Fill NaNs
+   We're given the value to fill in for the missing entries (/0.3343/) without explanation. I don't really know where it comes from. It's around, but not exactly the 84% percentile, but, anyway, let's use it (actually, if you check it there aren't any NaN values, curious).
+
+#+BEGIN_SRC ipython :session encoding :results output :exports both
+print(all_data.item_target_enc.hasnans)
+#+END_SRC
+
+#+RESULTS:
+: False
+
+So this next line doesn't seem to do anything, but is part of the given code.
+   
+#+BEGIN_SRC ipython :session encoding :results none
+all_data['item_target_enc'].fillna(NAN_VALUE, inplace=True) 
+#+END_SRC
+
+** Print correlation
+   Now we need to calculate the [[https://docs.scipy.org/doc/numpy/reference/generated/numpy.corrcoef.html][Pearson Correlation]] between our calculated mean and the target values. This [[https://en.wikipedia.org/wiki/Pearson_correlation_coefficient][value]] ranges from -1 to 1 and represents how much of a linear correlation there is between two variables. Negative one means they are completely negatively correlated and positive one means they are completely positively correlated.
+
+#+BEGIN_SRC ipython :session encoding :results output :exports both
+encoded_feature = all_data['item_target_enc'].values
+first_correlation = numpy.corrcoef(all_data['target'].values, encoded_feature)[0][1]
+print(first_correlation)
+#+END_SRC
+
+#+RESULTS:
+: 0.48303869886216977
+
+Since our value is between 0 and 1 it does describe the target to some degree, albeit not perfectly.
 
 * Method 2
 
 Unlike the  =.target.mean()= function, =transform= will return a dataframe with an index like in =all_data=.
-Basically this single line of code is equivalent to the first two lines from of Method 1.
+Basically this single line of code is equivalent to the first lines from of Method 1.
 
 #+BEGIN_SRC ipython :session encoding :results none
 all_data['item_target_enc'] = all_data.groupby('item_id')['target'].transform('mean')
@@ -143,19 +305,21 @@ all_data['item_target_enc'] = all_data.groupby('item_id')['target'].transform('m
 ** Fill NaNs
 
 #+BEGIN_SRC ipython :session encoding :results none
-all_data['item_target_enc'].fillna(0.3343, inplace=True) 
+all_data['item_target_enc'].fillna(NAN_VALUE, inplace=True) 
 #+END_SRC
 
 ** Print correlation
 
-#+BEGIN_SRC ipython :session encoding :results output raw :exports both
+#+BEGIN_SRC ipython :session encoding :results output :exports both
 encoded_feature = all_data['item_target_enc'].values
-print(numpy.corrcoef(all_data['target'].values, encoded_feature)[0][1])
+second_correlation = numpy.corrcoef(all_data['target'].values, encoded_feature)[0][1]
+print(second_correlation)
+print(abs(first_correlation - second_correlation))
 #+END_SRC
 
 #+RESULTS:
-0.48303869886216977
-
+: 0.48303869886216977
+: 0.0
 
 See the printed value? It is the correlation coefficient between the target variable and your new encoded feature. You need to **compute the correlation coefficient** between the encodings that you will implement and **submit those to coursera**.
 
@@ -172,41 +336,64 @@ First implement the KFold scheme with five folds. Use KFold(5) from sklearn.mode
  1. Split your data in 5 folds with [[http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.KFold.html][sklearn.model_selection.KFold]] with ~shuffle=False~ (the default).
  2. Iterate through folds: use all but the current fold to calculate mean target for each level `item_id`, and  fill the current fold.
 
-See the **Method 1** from the example implementation. In particular learn what `map` and pd.Series.map functions do. They are pretty handy in many situations.
+See the **Method 1** from the example implementation. In particular learn what `map` and [[https://pandas.pydata.org/pandas-docs/stable/generated/pandas.Series.map.html][pandas.Series.map]] functions do. They are pretty handy in many situations.
 
-# In[ ]:
+#+BEGIN_SRC ipython :session encoding :results none
+folder = KFold(n_splits=5, shuffle=False)
+column = "item_id"
+encoded_column = column + "_mean_target"
+train_new = pandas.DataFrame(index=all_data.index, columns=all_data.columns)
+train_new[encoded_column] = numpy.nan
+for training_index, validation_index in folder.split(all_data):
+    x_train = all_data.iloc[training_index].copy()
+    x_validation = all_data.iloc[validation_index].copy()
+    means = x_validation[column].map(x_train.groupby(column).target.mean())
+    x_validation[encoded_column] = means
+    # train_new is a dataframe copy we made of the training data
+    train_new.iloc[validation_index] = x_validation
+train_new.fillna(NAN_VALUE, inplace=True)
+#+END_SRC
 
+#+BEGIN_SRC ipython :session encoding :results none
+encoded_feature = train_new.item_id_mean_target.values
+#+END_SRC
 
-# YOUR CODE GOES HERE
-
-# You will need to compute correlation like that
-corr = np.corrcoef(all_data['target'].values, encoded_feature)[0][1]
+#+BEGIN_SRC ipython :session encoding :results none
+corr = numpy.corrcoef(all_data['target'].values, encoded_feature)[0][1]
 print(corr)
 grader.submit_tag('KFold_scheme', corr)
+#+END_SRC
 
+* 2. Leave-one-out scheme
 
-# # 2. Leave-one-out scheme
+Now, implement leave-one-out scheme. Note that if you just simply set the number of folds to the number of samples and run the code from the **KFold scheme**, you will probably wait for a very long time. 
 
-# Now, implement leave-one-out scheme. Note that if you just simply set the number of folds to the number of samples and run the code from the **KFold scheme**, you will probably wait for a very long time. 
-# 
-# To implement a faster version, note, that to calculate mean target value using all the objects but one *given object*, you can:
-# 
-# 1. Calculate sum of the target values using all the objects.
-# 2. Then subtract the target of the *given object* and divide the resulting value by `n_objects - 1`. 
-# 
-# Note that you do not need to perform `1.` for every object. And `2.` can be implemented without any `for` loop.
-# 
-# It is the most convenient to use `.transform` function as in **Method 2**.
+To implement a faster version, note that to calculate the mean target value using all the objects but one *given object*, you can:
+ 
+ 1. Calculate the sum of the target values using all the objects.
+ 2. Then subtract the target of the *given object* and divide the resulting value by =n_objects - 1=. 
 
-# In[ ]:
+Note that you do not need to perform step 1 for every object. And step 2 can be implemented without any =for= loop.
 
+It will be most convenient to use the `.transform` function as in **Method 2**.
 
-# YOUR CODE GOES HERE
+#+BEGIN_SRC ipython :session encoding :results none
+summed = all_data.groupby('item_id')['target'].transform('sum')
+total_sum = summed.sum()
+one_less = len(summed) - 1
 
-corr = np.corrcoef(all_data['target'].values, encoded_feature)[0][1]
+left_out = (total_sum - summed)/one_less
+#+END_SRC
+
+#+BEGIN_SRC ipython :session encoding :results output :exports results
+corr = numpy.corrcoef(all_data['target'].values, left_out.values)[0][1]
 print(corr)
 grader.submit_tag('Leave-one-out_scheme', corr)
+#+END_SRC
 
+#+RESULTS:
+: -0.47032519950821283
+: Current answer for task Leave-one-out_scheme is: -0.47032519950821283
 
 # # 3. Smoothing
 

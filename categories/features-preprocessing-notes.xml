@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about features preprocessing notes)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/features-preprocessing-notes.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Fri, 07 Sep 2018 19:57:42 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Feature Preprocessing</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/feature-preprocessing/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about features preprocessing notes)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/features-preprocessing-notes.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Mon, 17 Sep 2018 22:30:31 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Feature Preprocessing</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/feature-preprocessing/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
 &lt;h2&gt;Table of Contents&lt;/h2&gt;
 &lt;div id="text-table-of-contents"&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/feature-preprocessing/#org3266562"&gt;Preprocessing&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/feature-preprocessing/#org717b319"&gt;Numeric Feature Preprocessing&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/feature-preprocessing/#orgce8918c"&gt;Categorical And Ordinal Features&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/feature-preprocessing/#org7d89390"&gt;Dates and Times&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/feature-preprocessing/#orgb36f606"&gt;Coordinates&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/feature-preprocessing/#org2ded975"&gt;Missing Data&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/feature-preprocessing/#orgf2adbd6"&gt;Links&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/feature-preprocessing/#org3b179ea"&gt;Preprocessing&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/feature-preprocessing/#orga780e53"&gt;Numeric Feature Preprocessing&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/feature-preprocessing/#org4ff427b"&gt;Categorical And Ordinal Features&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/feature-preprocessing/#org602aeb2"&gt;Dates and Times&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/feature-preprocessing/#orgec3d360"&gt;Coordinates&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/feature-preprocessing/#orgaa2c940"&gt;Missing Data&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/feature-preprocessing/#orge9338db"&gt;Links&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org3266562" class="outline-2"&gt;
-&lt;h2 id="org3266562"&gt;Preprocessing&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org3266562"&gt;
+&lt;div id="outline-container-org3b179ea" class="outline-2"&gt;
+&lt;h2 id="org3b179ea"&gt;Preprocessing&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org3b179ea"&gt;
 &lt;p&gt;
 In every competition you need to:
 &lt;/p&gt;
@@ -26,17 +26,17 @@ In every competition you need to:
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org717b319" class="outline-2"&gt;
-&lt;h2 id="org717b319"&gt;Numeric Feature Preprocessing&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org717b319"&gt;
+&lt;div id="outline-container-orga780e53" class="outline-2"&gt;
+&lt;h2 id="orga780e53"&gt;Numeric Feature Preprocessing&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orga780e53"&gt;
 &lt;p&gt;
 Some models (e.g. Linear Classification) need you to convert numeric-looking data to categorical data. Tree-based models don't need pre-processing as much as non tree-based models do.
 &lt;/p&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org5998b1d" class="outline-3"&gt;
-&lt;h3 id="org5998b1d"&gt;Scaling&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org5998b1d"&gt;
+&lt;div id="outline-container-org09bb1a3" class="outline-3"&gt;
+&lt;h3 id="org09bb1a3"&gt;Scaling&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org09bb1a3"&gt;
 &lt;p&gt;
 If features have different value ranges then the model will  treat them differently.
 &lt;/p&gt;
@@ -48,18 +48,18 @@ Scale the data to have a mean of 0 and a standard deviation of 1&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org70758cc" class="outline-3"&gt;
-&lt;h3 id="org70758cc"&gt;Outliers&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org70758cc"&gt;
+&lt;div id="outline-container-org9cf21a1" class="outline-3"&gt;
+&lt;h3 id="org9cf21a1"&gt;Outliers&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org9cf21a1"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;Clip (&lt;a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.clip.html"&gt;numpy.clip&lt;/a&gt;)values to get rid of unusual values that mess with the model. (Winsorization)&lt;/li&gt;
 &lt;li&gt;Rank Transform them (&lt;a href="https://docs.scipy.org/doc/scipy-0.16.0/reference/generated/scipy.stats.rankdata.html"&gt;scipy.stats.rankdata&lt;/a&gt;) so that they are ordered and have the same distance between them (they are uniformly distributed)&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org79b2daa" class="outline-3"&gt;
-&lt;h3 id="org79b2daa"&gt;Transformation&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org79b2daa"&gt;
+&lt;div id="outline-container-org726d89b" class="outline-3"&gt;
+&lt;h3 id="org726d89b"&gt;Transformation&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org726d89b"&gt;
 &lt;p&gt;
 For linear models and neural networks, transforming the data can sometimes help.
 &lt;/p&gt;
@@ -69,9 +69,9 @@ For linear models and neural networks, transforming the data can sometimes help.
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orga7a0e44" class="outline-3"&gt;
-&lt;h3 id="orga7a0e44"&gt;Feature Generation&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orga7a0e44"&gt;
+&lt;div id="outline-container-orgee6c30b" class="outline-3"&gt;
+&lt;h3 id="orgee6c30b"&gt;Feature Generation&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgee6c30b"&gt;
 &lt;p&gt;
 Sometimes you can convert separate columns to get new ones. This requires exploratory data analysis.
 &lt;/p&gt;
@@ -83,18 +83,18 @@ Sometimes you can convert separate columns to get new ones. This requires explor
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgce8918c" class="outline-2"&gt;
-&lt;h2 id="orgce8918c"&gt;Categorical And Ordinal Features&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgce8918c"&gt;
+&lt;div id="outline-container-org4ff427b" class="outline-2"&gt;
+&lt;h2 id="org4ff427b"&gt;Categorical And Ordinal Features&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org4ff427b"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;Ordinal Features have an ordering but even if they are labeled numerically (e.g. 1, 2, 3) they aren't numeric because there is no implication about the distance between them&lt;/li&gt;
 &lt;li&gt;label and frequency encoding are commonly used for tree-based models&lt;/li&gt;
 &lt;li&gt;one-hot encoding is more common for non-tree-based models&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org426df30" class="outline-3"&gt;
-&lt;h3 id="org426df30"&gt;Label Encoding&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org426df30"&gt;
+&lt;div id="outline-container-orge25d071" class="outline-3"&gt;
+&lt;h3 id="orge25d071"&gt;Label Encoding&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orge25d071"&gt;
 &lt;p&gt;
 Some models need numeric values or numeric values that don't have implied ordering so you want to encode them.
 &lt;/p&gt;
@@ -107,9 +107,9 @@ Encodes the labels in the order they appear. This makes more sense if there is a
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org25feec0" class="outline-3"&gt;
-&lt;h3 id="org25feec0"&gt;Frequency Encoding&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org25feec0"&gt;
+&lt;div id="outline-container-org2f84a20" class="outline-3"&gt;
+&lt;h3 id="org2f84a20"&gt;Frequency Encoding&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org2f84a20"&gt;
 &lt;p&gt;
 Encode the values to a fraction of all the labels. Can work with linear models if the frequency is correlated with the target value.
 &lt;/p&gt;
@@ -120,9 +120,9 @@ Encode the values to a fraction of all the labels. Can work with linear models i
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org38bfe58" class="outline-3"&gt;
-&lt;h3 id="org38bfe58"&gt;One Hot Encoding&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org38bfe58"&gt;
+&lt;div id="outline-container-org371b388" class="outline-3"&gt;
+&lt;h3 id="org371b388"&gt;One Hot Encoding&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org371b388"&gt;
 &lt;p&gt;
 Creates one column for each label and puts a 1 in the column that matches. Works with both linear and tree-based models, but can be inefficient with tree-based models.
 &lt;/p&gt;
@@ -138,39 +138,39 @@ Creates one column for each label and puts a 1 in the column that matches. Works
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org7d89390" class="outline-2"&gt;
-&lt;h2 id="org7d89390"&gt;Dates and Times&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org7d89390"&gt;
+&lt;div id="outline-container-org602aeb2" class="outline-2"&gt;
+&lt;h2 id="org602aeb2"&gt;Dates and Times&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org602aeb2"&gt;
 &lt;p&gt;
 When working with seasonal data, sometimes the relative date-stamps are more important than the actual dates (how close to Christmas?).
 Sometimes you want the time between events.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgb36f606" class="outline-2"&gt;
-&lt;h2 id="orgb36f606"&gt;Coordinates&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgb36f606"&gt;
+&lt;div id="outline-container-orgec3d360" class="outline-2"&gt;
+&lt;h2 id="orgec3d360"&gt;Coordinates&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgec3d360"&gt;
 &lt;p&gt;
 Sometimes you want exact coordinates, but most times you want distances to some center.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org2ded975" class="outline-2"&gt;
-&lt;h2 id="org2ded975"&gt;Missing Data&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org2ded975"&gt;
+&lt;div id="outline-container-orgaa2c940" class="outline-2"&gt;
+&lt;h2 id="orgaa2c940"&gt;Missing Data&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgaa2c940"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;"missing" data might mean outliers - values that are probably wrong&lt;/li&gt;
 &lt;li&gt;avoid replacing missing values before feature engineering - it can throw off what you do&lt;/li&gt;
 &lt;li&gt;Gradient Boost Trees can handle isNaN, so you don't have to do anything&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org5d08c2f" class="outline-3"&gt;
-&lt;h3 id="org5d08c2f"&gt;Numeric&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org5d08c2f"&gt;
+&lt;div id="outline-container-orga05c8a1" class="outline-3"&gt;
+&lt;h3 id="orga05c8a1"&gt;Numeric&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orga05c8a1"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org0b7c715" class="outline-4"&gt;
-&lt;h4 id="org0b7c715"&gt;Fill NA Approaches&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org0b7c715"&gt;
+&lt;div id="outline-container-org4b9f89c" class="outline-4"&gt;
+&lt;h4 id="org4b9f89c"&gt;Fill NA Approaches&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org4b9f89c"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;-999, -1, other numbers
 &lt;ul class="org-ul"&gt;
@@ -189,13 +189,13 @@ Sometimes you want exact coordinates, but most times you want distances to some 
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgf2adbd6" class="outline-2"&gt;
-&lt;h2 id="orgf2adbd6"&gt;Links&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgf2adbd6"&gt;
+&lt;div id="outline-container-orge9338db" class="outline-2"&gt;
+&lt;h2 id="orge9338db"&gt;Links&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orge9338db"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org22f207d" class="outline-3"&gt;
-&lt;h3 id="org22f207d"&gt;Feature Pre-processing&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org22f207d"&gt;
+&lt;div id="outline-container-org2761a50" class="outline-3"&gt;
+&lt;h3 id="org2761a50"&gt;Feature Pre-processing&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org2761a50"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;&lt;a href="http://scikit-learn.org/stable/modules/preprocessing.html"&gt;SKlearn's Preprocessing Documentation&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://www.coursera.org/learn/machine-learning/lecture/xx3Da/gradient-descent-in-practice-i-feature-scaling"&gt;Andrew Ng on Feature Scaling and its effect on Gradient Descent&lt;/a&gt;&lt;/li&gt;
@@ -203,9 +203,9 @@ Sometimes you want exact coordinates, but most times you want distances to some 
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org2be33bc" class="outline-3"&gt;
-&lt;h3 id="org2be33bc"&gt;Feature Engineering&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org2be33bc"&gt;
+&lt;div id="outline-container-org596abeb" class="outline-3"&gt;
+&lt;h3 id="org596abeb"&gt;Feature Engineering&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org596abeb"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;&lt;a href="https://machinelearningmastery.com/discover-feature-engineering-how-to-engineer-features-and-how-to-get-good-at-it/"&gt;Machine Learning Mastery on Feature Engineering&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://www.quora.com/What-are-some-best-practices-in-Feature-Engineering"&gt;Quora: What are some best practices in Feature Engineering?&lt;/a&gt;&lt;/li&gt;
