@@ -40,6 +40,7 @@ warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
 #+BEGIN_SRC ipython :session encoding :results none
 # python standard library
 from itertools import product
+import os
 
 from sklearn.model_selection import KFold
 import pandas
@@ -395,51 +396,47 @@ grader.submit_tag('Leave-one-out_scheme', corr)
 : -0.47032519950821283
 : Current answer for task Leave-one-out_scheme is: -0.47032519950821283
 
-# # 3. Smoothing
+* 3. Smoothing
 
-# Explained starting at 4:03 of [Regularization video](https://www.coursera.org/learn/competitive-data-science/lecture/LGYQ2/regularization).
+Explained starting at 4:03 of the [[https://www.coursera.org/learn/competitive-data-science/lecture/LGYQ2/regularization][Regularization video]].
 
-# Next, implement smoothing scheme with $\alpha = 100$. Use the formula from the first slide in the video and $0.3343$ as `globalmean`. Note that `nrows` is the number of objects that belong to a certain category (not the number of rows in the dataset).
+Next, implement a smoothing scheme with $\alpha = 100$. Use the formula from the first slide in the video and $0.3343$ as =globalmean=. Note that =nrows= is the number of objects that belong to a certain category (not the number of rows in the dataset).
 
-# In[ ]:
-
-
+#+BEGIN_SRC ipython :session encoding :results none
 # YOUR CODE GOES HERE
+#+END_SRC
 
+#+BEGIN_SRC ipython :session encoding :results output :exports results
 corr = np.corrcoef(all_data['target'].values, encoded_feature)[0][1]
 print(corr)
 grader.submit_tag('Smoothing_scheme', corr)
+#+END_SRC
 
+* 4. Expanding mean scheme
 
-# # 4. Expanding mean scheme
+This is explained starting at 5:50 of the [[https://www.coursera.org/learn/competitive-data-science/lecture/LGYQ2/regularization][Regularization video]].
 
-# Explained starting at 5:50 of [Regularization video](https://www.coursera.org/learn/competitive-data-science/lecture/LGYQ2/regularization).
+Finally, implement the *expanding mean* scheme. It is basically already implemented for you in the video, but you can challenge yourself and try to implement it yourself. You will need [[https://pandas.pydata.org/pandas-docs/stable/generated/pandas.core.groupby.DataFrameGroupBy.cumsum.html][=cumsum=]] and [[https://pandas.pydata.org/pandas-docs/stable/generated/pandas.core.groupby.GroupBy.cumcount.html][=cumcount=]] functions from pandas.
 
-# Finally, implement the *expanding mean* scheme. It is basically already implemented for you in the video, but you can challenge yourself and try to implement it yourself. You will need [`cumsum`](https://pandas.pydata.org/pandas-docs/stable/generated/pandas.core.groupby.DataFrameGroupBy.cumsum.html) and [`cumcount`](https://pandas.pydata.org/pandas-docs/stable/generated/pandas.core.groupby.GroupBy.cumcount.html) functions from pandas.
-
-# In[ ]:
-
-
+#+BEGIN_SRC ipython :session encoding :results none
 # YOUR CODE GOES HERE
+#+END_SRC
 
+#+BEGIN_SRC ipython :session encoding :results output :exports results
 corr = np.corrcoef(all_data['target'].values, encoded_feature)[0][1]
 print(corr)
 grader.submit_tag('Expanding_mean_scheme', corr)
+#+END_SRC
 
+* Authorization & Submission
+To submit the assignment parts to Cousera platform, please, enter your e-mail and token into variables below. You can generate the token on this programming assignment's page. Note: The Token expires 30 minutes after generation.
 
-# ## Authorization & Submission
-# To submit assignment parts to Cousera platform, please, enter your e-mail and token into variables below. You can generate token on this programming assignment page. Note: Token expires 30 minutes after generation.
-
-# In[ ]:
-
-
-STUDENT_EMAIL = # EMAIL HERE
-STUDENT_TOKEN = # TOKEN HERE
+#+BEGIN_SRC ipython :session encoding :results output :exports results
+STUDENT_EMAIL = os.environ.get("EMAIL")
+STUDENT_TOKEN = os.enivron.get("TOKEN")
 grader.status()
+#+END_SRC
 
-
-# In[ ]:
-
-
+#+BEGIN_SRC ipython :session encoding :results output :exports results
 grader.submit(STUDENT_EMAIL, STUDENT_TOKEN)
-
+#+END_SRC
