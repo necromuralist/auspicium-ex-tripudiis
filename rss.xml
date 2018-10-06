@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description>Notes on studying kaggle.</description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Thu, 04 Oct 2018 01:53:21 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Mean Encoding Quiz</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-quiz/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-orgc98d90c" class="outline-2"&gt;
+<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description>Notes on studying kaggle.</description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Sat, 06 Oct 2018 01:32:17 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Mean Encoding Quiz</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-quiz/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-orgc98d90c" class="outline-2"&gt;
 &lt;h2 id="orgc98d90c"&gt;Quiz&lt;/h2&gt;
 &lt;div class="outline-text-2" id="text-orgc98d90c"&gt;
 &lt;/div&gt;
@@ -347,22 +347,25 @@ print_table(training.head())
 &lt;h2&gt;Table of Contents&lt;/h2&gt;
 &lt;div id="text-table-of-contents"&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/#orgd9ea2a0"&gt;Introduction&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/#org6e1aa15"&gt;General tips&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/#orgd0b5abe"&gt;Read In the Data&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/#orgecb7c6c"&gt;The Motivation&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/#orgccff9c2"&gt;Aggregate data&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/#org2a2326e"&gt;Mean encodings without regularization&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/#org796211e"&gt;Method 2&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/#orge83419d"&gt;1. KFold scheme&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/#orgc21ea92"&gt;2. Leave-one-out scheme&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/#orgce74127"&gt;Introduction&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/#org726cf40"&gt;General tips&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/#org77ddad5"&gt;Read In the Data&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/#orgf8621b9"&gt;The Motivation&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/#orga2e2aeb"&gt;Aggregate data&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/#orgcc815eb"&gt;Mean encodings without regularization&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/#orgd782a3d"&gt;Method 2&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/#org5795172"&gt;1. KFold scheme&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/#orgc9920f9"&gt;2. Leave-one-out scheme&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/#orge0215b7"&gt;3. Smoothing&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/#orgfbfe098"&gt;4. Expanding mean scheme&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/#org34dfe32"&gt;Authorization &amp;amp; Submission&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgd9ea2a0" class="outline-2"&gt;
-&lt;h2 id="orgd9ea2a0"&gt;Introduction&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgd9ea2a0"&gt;
+&lt;div id="outline-container-orgce74127" class="outline-2"&gt;
+&lt;h2 id="orgce74127"&gt;Introduction&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgce74127"&gt;
 &lt;p&gt;
 In this programming assignment you will be working with the &lt;a href="https://www.kaggle.com/c/competitive-data-science-final-project/data"&gt;1C dataset&lt;/a&gt; from the final competition. You are asked to encode the &lt;code&gt;item_id&lt;/code&gt; in 4 different ways:
 &lt;/p&gt;
@@ -380,9 +383,9 @@ In this programming assignment you will be working with the &lt;a href="https://
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org6e1aa15" class="outline-2"&gt;
-&lt;h2 id="org6e1aa15"&gt;General tips&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org6e1aa15"&gt;
+&lt;div id="outline-container-org726cf40" class="outline-2"&gt;
+&lt;h2 id="org726cf40"&gt;General tips&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org726cf40"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;Fill NANs in the encoding with &lt;code&gt;0.3343&lt;/code&gt;.&lt;/li&gt;
 &lt;li&gt;Some encoding schemes depend on sorting order, so in order to avoid confusion, please use the following code snippet to construct the data frame. This snippet also implements mean encoding without regularization.&lt;/li&gt;
@@ -398,6 +401,7 @@ In this programming assignment you will be working with the &lt;a href="https://
 
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# python standard library
 from itertools import product
+import os
 
 from sklearn.model_selection import KFold
 import pandas
@@ -416,17 +420,17 @@ from kaggler.helpers.printing import print_table
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgd0b5abe" class="outline-2"&gt;
-&lt;h2 id="orgd0b5abe"&gt;Read In the Data&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgd0b5abe"&gt;
+&lt;div id="outline-container-org77ddad5" class="outline-2"&gt;
+&lt;h2 id="org77ddad5"&gt;Read In the Data&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org77ddad5"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sales = Data().sales_training_data
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgecb7c6c" class="outline-2"&gt;
-&lt;h2 id="orgecb7c6c"&gt;The Motivation&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgecb7c6c"&gt;
+&lt;div id="outline-container-orgf8621b9" class="outline-2"&gt;
+&lt;h2 id="orgf8621b9"&gt;The Motivation&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgf8621b9"&gt;
 &lt;p&gt;
 The idea behind this is that we want to convert a categorical value (the item ID) into a numeric one so that we can use non-tree-based methods. But we already have &lt;a href="https://en.wikipedia.org/wiki/One-hot"&gt;One Hot Encoding&lt;/a&gt;, so why do we need this? Well, lets look at how many items we need to encode.
 &lt;/p&gt;
@@ -445,9 +449,9 @@ This means we're going to have to add almost twenty-two thousand columns to your
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgccff9c2" class="outline-2"&gt;
-&lt;h2 id="orgccff9c2"&gt;Aggregate data&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgccff9c2"&gt;
+&lt;div id="outline-container-orga2e2aeb" class="outline-2"&gt;
+&lt;h2 id="orga2e2aeb"&gt;Aggregate data&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orga2e2aeb"&gt;
 &lt;p&gt;
 Since the competition task is to make a monthly prediction, we need to aggregate the data to the monthly level before doing any encodings. The following code-cells do that for us.
 &lt;/p&gt;
@@ -777,9 +781,9 @@ And &lt;code&gt;grouped&lt;/code&gt; didn't have any entry for the first item in
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org2a2326e" class="outline-2"&gt;
-&lt;h2 id="org2a2326e"&gt;Mean encodings without regularization&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org2a2326e"&gt;
+&lt;div id="outline-container-orgcc815eb" class="outline-2"&gt;
+&lt;h2 id="orgcc815eb"&gt;Mean encodings without regularization&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgcc815eb"&gt;
 &lt;p&gt;
 Now that we have done the technical work, we are ready to actually &lt;b&gt;mean encode&lt;/b&gt; the desired &lt;code&gt;item_id&lt;/code&gt; variable. 
 &lt;/p&gt;
@@ -789,9 +793,9 @@ Here are two ways to implement mean encoding features &lt;b&gt;without&lt;/b&gt;
 &lt;/p&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org82a9ee8" class="outline-3"&gt;
-&lt;h3 id="org82a9ee8"&gt;Method 1:  Calculate a mapping: {item_id: target_mean}&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org82a9ee8"&gt;
+&lt;div id="outline-container-orgd307060" class="outline-3"&gt;
+&lt;h3 id="orgd307060"&gt;Method 1:  Calculate a mapping: {item_id: target_mean}&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgd307060"&gt;
 &lt;p&gt;
 First we're going to calculate the mean count for each item.
 &lt;/p&gt;
@@ -945,9 +949,9 @@ Well, this wasn't exhaustive but at least that one item checks out.
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org2c7b0be" class="outline-3"&gt;
-&lt;h3 id="org2c7b0be"&gt;Fill NaNs&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org2c7b0be"&gt;
+&lt;div id="outline-container-org99cf917" class="outline-3"&gt;
+&lt;h3 id="org99cf917"&gt;Fill NaNs&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org99cf917"&gt;
 &lt;p&gt;
 We're given the value to fill in for the missing entries (&lt;i&gt;0.3343&lt;/i&gt;) without explanation. I don't really know where it comes from. It's around, but not exactly the 84% percentile, but, anyway, let's use it (actually, if you check it there aren't any NaN values, curious).
 &lt;/p&gt;
@@ -969,9 +973,9 @@ So this next line doesn't seem to do anything, but is part of the given code.
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgee20667" class="outline-3"&gt;
-&lt;h3 id="orgee20667"&gt;Print correlation&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgee20667"&gt;
+&lt;div id="outline-container-orgd9859a7" class="outline-3"&gt;
+&lt;h3 id="orgd9859a7"&gt;Print correlation&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgd9859a7"&gt;
 &lt;p&gt;
 Now we need to calculate the &lt;a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.corrcoef.html"&gt;Pearson Correlation&lt;/a&gt; between our calculated mean and the target values. This &lt;a href="https://en.wikipedia.org/wiki/Pearson_correlation_coefficient"&gt;value&lt;/a&gt; ranges from -1 to 1 and represents how much of a linear correlation there is between two variables. Negative one means they are completely negatively correlated and positive one means they are completely positively correlated.
 &lt;/p&gt;
@@ -993,9 +997,9 @@ Since our value is between 0 and 1 it does describe the target to some degree, a
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org796211e" class="outline-2"&gt;
-&lt;h2 id="org796211e"&gt;Method 2&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org796211e"&gt;
+&lt;div id="outline-container-orgd782a3d" class="outline-2"&gt;
+&lt;h2 id="orgd782a3d"&gt;Method 2&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgd782a3d"&gt;
 &lt;p&gt;
 Unlike the  &lt;code&gt;.target.mean()&lt;/code&gt; function, &lt;code&gt;transform&lt;/code&gt; will return a dataframe with an index like in &lt;code&gt;all_data&lt;/code&gt;.
 Basically this single line of code is equivalent to the first lines from of Method 1.
@@ -1005,17 +1009,17 @@ Basically this single line of code is equivalent to the first lines from of Meth
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org970fd8c" class="outline-3"&gt;
-&lt;h3 id="org970fd8c"&gt;Fill NaNs&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org970fd8c"&gt;
+&lt;div id="outline-container-org80fe6a1" class="outline-3"&gt;
+&lt;h3 id="org80fe6a1"&gt;Fill NaNs&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org80fe6a1"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;all_data['item_target_enc'].fillna(NAN_VALUE, inplace=True) 
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org43843f1" class="outline-3"&gt;
-&lt;h3 id="org43843f1"&gt;Print correlation&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org43843f1"&gt;
+&lt;div id="outline-container-org632cea4" class="outline-3"&gt;
+&lt;h3 id="org632cea4"&gt;Print correlation&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org632cea4"&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;encoded_feature = all_data['item_target_enc'].values
 second_correlation = numpy.corrcoef(all_data['target'].values, encoded_feature)[0][1]
 print(second_correlation)
@@ -1038,9 +1042,9 @@ See the printed value? It is the correlation coefficient between the target vari
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orge83419d" class="outline-2"&gt;
-&lt;h2 id="orge83419d"&gt;1. KFold scheme&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orge83419d"&gt;
+&lt;div id="outline-container-org5795172" class="outline-2"&gt;
+&lt;h2 id="org5795172"&gt;1. KFold scheme&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org5795172"&gt;
 &lt;p&gt;
 This is Explained starting at 41 seconds into the &lt;a href="https://www.coursera.org/learn/competitive-data-science/lecture/LGYQ2/regularization"&gt;Regularization lecture&lt;/a&gt;.
 &lt;/p&gt;
@@ -1083,9 +1087,9 @@ grader.submit_tag('KFold_scheme', corr)
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgc21ea92" class="outline-2"&gt;
-&lt;h2 id="orgc21ea92"&gt;2. Leave-one-out scheme&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgc21ea92"&gt;
+&lt;div id="outline-container-orgc9920f9" class="outline-2"&gt;
+&lt;h2 id="orgc9920f9"&gt;2. Leave-one-out scheme&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgc9920f9"&gt;
 &lt;p&gt;
 Now, implement leave-one-out scheme. Note that if you just simply set the number of folds to the number of samples and run the code from the &lt;b&gt;&lt;b&gt;KFold scheme&lt;/b&gt;&lt;/b&gt;, you will probably wait for a very long time. 
 &lt;/p&gt;
@@ -1119,31 +1123,46 @@ left_out = (total_sum - summed)/one_less
 Current answer for task Leave-one-out_scheme is: -0.47032519950821283
 
 &lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 
-
+&lt;div id="outline-container-orge0215b7" class="outline-2"&gt;
+&lt;h2 id="orge0215b7"&gt;3. Smoothing&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orge0215b7"&gt;
 &lt;p&gt;
-corr = np.corrcoef(all_data['target'].values, encoded_feature)[0][1]
-print(corr)
-grader.submit_tag('Smoothing_scheme', corr)
+Explained starting at 4:03 of the &lt;a href="https://www.coursera.org/learn/competitive-data-science/lecture/LGYQ2/regularization"&gt;Regularization video&lt;/a&gt;.
 &lt;/p&gt;
 
-
 &lt;p&gt;
-corr = np.corrcoef(all_data['target'].values, encoded_feature)[0][1]
-print(corr)
-grader.submit_tag('Expanding_mean_scheme', corr)
+Next, implement a smoothing scheme with \(\alpha = 100\). Use the formula from the first slide in the video and \(0.3343\) as &lt;code&gt;globalmean&lt;/code&gt;. Note that &lt;code&gt;nrows&lt;/code&gt; is the number of objects that belong to a certain category (not the number of rows in the dataset).
 &lt;/p&gt;
 
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# YOUR CODE GOES HERE
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 
+&lt;div id="outline-container-orgfbfe098" class="outline-2"&gt;
+&lt;h2 id="orgfbfe098"&gt;4. Expanding mean scheme&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgfbfe098"&gt;
 &lt;p&gt;
-STUDENT_EMAIL = # EMAIL HERE
-STUDENT_TOKEN = # TOKEN HERE
-grader.status()
+This is explained starting at 5:50 of the &lt;a href="https://www.coursera.org/learn/competitive-data-science/lecture/LGYQ2/regularization"&gt;Regularization video&lt;/a&gt;.
 &lt;/p&gt;
 
-
 &lt;p&gt;
-grader.submit(STUDENT_EMAIL, STUDENT_TOKEN)
+Finally, implement the &lt;b&gt;expanding mean&lt;/b&gt; scheme. It is basically already implemented for you in the video, but you can challenge yourself and try to implement it yourself. You will need &lt;a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.core.groupby.DataFrameGroupBy.cumsum.html"&gt;&lt;code&gt;cumsum&lt;/code&gt;&lt;/a&gt; and &lt;a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.core.groupby.GroupBy.cumcount.html"&gt;&lt;code&gt;cumcount&lt;/code&gt;&lt;/a&gt; functions from pandas.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# YOUR CODE GOES HERE
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-org34dfe32" class="outline-2"&gt;
+&lt;h2 id="org34dfe32"&gt;Authorization &amp;amp; Submission&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org34dfe32"&gt;
+&lt;p&gt;
+To submit the assignment parts to Cousera platform, please, enter your e-mail and token into variables below. You can generate the token on this programming assignment's page. Note: The Token expires 30 minutes after generation.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;</description><category>assignment competition encoding</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/</guid><pubDate>Mon, 24 Sep 2018 01:50:28 GMT</pubDate></item><item><title>Mean Encoding</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
