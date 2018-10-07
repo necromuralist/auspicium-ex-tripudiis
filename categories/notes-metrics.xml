@@ -1,53 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about notes metrics)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/notes-metrics.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Tue, 25 Sep 2018 21:43:47 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Optimizing Metrics</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/optimizing-metrics/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about notes metrics)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/notes-metrics.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Sun, 07 Oct 2018 01:39:02 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Optimizing Metrics</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/optimizing-metrics/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
 &lt;h2&gt;Table of Contents&lt;/h2&gt;
 &lt;div id="text-table-of-contents"&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/optimizing-metrics/#orge68c5a4"&gt;Mean Squared Error&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/optimizing-metrics/#org6ac307e"&gt;Mean Absolute Error&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/optimizing-metrics/#org47aa5a2"&gt;Mean Squared Probability Error and Mean Absolute Probability Error&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/optimizing-metrics/#org8f34da6"&gt;Mean Squared Error&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/optimizing-metrics/#org934cc9c"&gt;Mean Absolute Error&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/optimizing-metrics/#orga547179"&gt;Mean Squared Probability Error and Mean Absolute Probability Error&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orge68c5a4" class="outline-2"&gt;
-&lt;h2 id="orge68c5a4"&gt;Mean Squared Error&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orge68c5a4"&gt;
+&lt;div id="outline-container-org8f34da6" class="outline-2"&gt;
+&lt;h2 id="org8f34da6"&gt;Mean Squared Error&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org8f34da6"&gt;
 &lt;p&gt;
 This works, just use it as the optimization metric.
 Sometimes this will be called &lt;i&gt;L2&lt;/i&gt; loss.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org6ac307e" class="outline-2"&gt;
-&lt;h2 id="org6ac307e"&gt;Mean Absolute Error&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org6ac307e"&gt;
+&lt;div id="outline-container-org934cc9c" class="outline-2"&gt;
+&lt;h2 id="org934cc9c"&gt;Mean Absolute Error&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org934cc9c"&gt;
 &lt;p&gt;
 Once again, this works so just use it.
 Sometimes this will be called &lt;i&gt;L1&lt;/i&gt; loss - it isn't as widely implemented.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org47aa5a2" class="outline-2"&gt;
-&lt;h2 id="org47aa5a2"&gt;Mean Squared Probability Error and Mean Absolute Probability Error&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org47aa5a2"&gt;
+&lt;div id="outline-container-orga547179" class="outline-2"&gt;
+&lt;h2 id="orga547179"&gt;Mean Squared Probability Error and Mean Absolute Probability Error&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orga547179"&gt;
 &lt;p&gt;
 Some libraries will let you use them as `sample_weights`
 Some libraries (like sklearn) will require you to re-sample the data &lt;code&gt;df.sample(weights=sample_weights)&lt;/code&gt;
 Once you re-sample the data you can use any model that optimizes MSE or MAE
 &lt;/p&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description><category>notes metrics</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/optimizing-metrics/</guid><pubDate>Sat, 22 Sep 2018 23:26:49 GMT</pubDate></item><item><title>General Approaches to Metrics Optimization</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/general-approaches-to-metrics-optimization/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-orgb3d5141" class="outline-2"&gt;
-&lt;h2 id="orgb3d5141"&gt;What do we mean by &lt;i&gt;loss&lt;/i&gt; and &lt;i&gt;metric&lt;/i&gt;?&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgb3d5141"&gt;
+&lt;/div&gt;</description><category>notes metrics</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/optimizing-metrics/</guid><pubDate>Sat, 22 Sep 2018 23:26:49 GMT</pubDate></item><item><title>General Approaches to Metrics Optimization</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/general-approaches-to-metrics-optimization/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-orge5aba00" class="outline-2"&gt;
+&lt;h2 id="orge5aba00"&gt;What do we mean by &lt;i&gt;loss&lt;/i&gt; and &lt;i&gt;metric&lt;/i&gt;?&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orge5aba00"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;the &lt;code&gt;metric&lt;/code&gt; is what we &lt;i&gt;want&lt;/i&gt; to optimize - but we sometimes don't really know how to optimize this, this is just how we evaluate the model in the end&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;loss&lt;/code&gt; is what the model actually optimizes&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org3cbfad2" class="outline-2"&gt;
-&lt;h2 id="org3cbfad2"&gt;How do you optimize the target metric?&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org3cbfad2"&gt;
+&lt;div id="outline-container-org1010a11" class="outline-2"&gt;
+&lt;h2 id="org1010a11"&gt;How do you optimize the target metric?&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org1010a11"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;In some cases you can just use them (e.g. &lt;i&gt;MSE&lt;/i&gt;, &lt;i&gt;logloss&lt;/i&gt;)&lt;/li&gt;
 &lt;li&gt;In some cases you need to do a preprocessing training step with another metric
@@ -56,20 +56,20 @@ Once you re-sample the data you can use any model that optimizes MSE or MAE
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org9202920" class="outline-2"&gt;
-&lt;h2 id="org9202920"&gt;Early Stopping&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org9202920"&gt;
+&lt;div id="outline-container-orgd4f9655" class="outline-2"&gt;
+&lt;h2 id="orgd4f9655"&gt;Early Stopping&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgd4f9655"&gt;
 &lt;p&gt;
 To work around these problems, use two metrics &lt;i&gt;m1&lt;/i&gt; and &lt;i&gt;m2&lt;/i&gt; and optimize on metric &lt;i&gt;m1&lt;/i&gt; while monitoring &lt;i&gt;m2&lt;/i&gt;, then stop when &lt;i&gt;m2&lt;/i&gt; is optimal.
 &lt;/p&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description><category>notes metrics</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/general-approaches-to-metrics-optimization/</guid><pubDate>Sat, 22 Sep 2018 23:04:35 GMT</pubDate></item><item><title>Metrics Optimization 2</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/metrics-optimization-2/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-org19e5026" class="outline-2"&gt;
-&lt;h2 id="org19e5026"&gt;(R)MSPE, MAPE, and (R)MSLE&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org19e5026"&gt;
+&lt;/div&gt;</description><category>notes metrics</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/general-approaches-to-metrics-optimization/</guid><pubDate>Sat, 22 Sep 2018 23:04:35 GMT</pubDate></item><item><title>Metrics Optimization 2</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/metrics-optimization-2/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-org9a9e527" class="outline-2"&gt;
+&lt;h2 id="org9a9e527"&gt;(R)MSPE, MAPE, and (R)MSLE&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org9a9e527"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org1cf2c17" class="outline-3"&gt;
-&lt;h3 id="org1cf2c17"&gt;An Off-By-One Example&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org1cf2c17"&gt;
+&lt;div id="outline-container-org2b0a770" class="outline-3"&gt;
+&lt;h3 id="org2b0a770"&gt;An Off-By-One Example&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org2b0a770"&gt;
 &lt;p&gt;
 Suppose we are predicting sales for two shops and the two shops have different sales volumes but our predictions for both cases are off by one. In this case our Mean-Squared-Error (MSE) might be the same, but they have a different significance.
 &lt;/p&gt;
@@ -113,9 +113,9 @@ Suppose we are predicting sales for two shops and the two shops have different s
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgc785c87" class="outline-2"&gt;
-&lt;h2 id="orgc785c87"&gt;Root Mean Squared Percentage Error and Mean Absolute Percentage Error&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgc785c87"&gt;
+&lt;div id="outline-container-org7d129ef" class="outline-2"&gt;
+&lt;h2 id="org7d129ef"&gt;Root Mean Squared Percentage Error and Mean Absolute Percentage Error&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org7d129ef"&gt;
 &lt;p&gt;
 The MSE and Mean-Absolute-Error (MAE) are absolute errors which don't take into account how significant the error is. There are two relative errors,  Mean-Squared-Percentage-Error (MSPE) and Mean-Absolute-Percentage-Error (MAPE) that divide each error term by the actual value to give you a realive error instead of an absolute error.
 &lt;/p&gt;
@@ -137,9 +137,9 @@ The MAPE will be inversely proportional to its target and the MSPE will be inver
 &lt;/p&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgdaad713" class="outline-3"&gt;
-&lt;h3 id="orgdaad713"&gt;Optimal Constant Predictions&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgdaad713"&gt;
+&lt;div id="outline-container-org33dedb3" class="outline-3"&gt;
+&lt;h3 id="org33dedb3"&gt;Optimal Constant Predictions&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org33dedb3"&gt;
 &lt;p&gt;
 The best constant prediction you can make when using the Mean Squared Error is to predict the mean of the target values. The best prediction you can make for the MSPE is to take a weighted mean of the target values. The best constant prediction you can make for the Mean Absolute Percentage Error is the weighted median.
 &lt;/p&gt;
@@ -147,9 +147,9 @@ The best constant prediction you can make when using the Mean Squared Error is t
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org35ea739" class="outline-2"&gt;
-&lt;h2 id="org35ea739"&gt;Root Mean Squared Logarithmic Error (MSLE)&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org35ea739"&gt;
+&lt;div id="outline-container-org72d9283" class="outline-2"&gt;
+&lt;h2 id="org72d9283"&gt;Root Mean Squared Logarithmic Error (MSLE)&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org72d9283"&gt;
 &lt;p&gt;
 \[
 MSLE = \sqrt{\frac{1}{N}\sum_{i=1}^N (\log (y_i + 1) - \log(\hat{y}_i + 1))^2}\\

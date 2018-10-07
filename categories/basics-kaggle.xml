@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about basics kaggle)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/basics-kaggle.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Mon, 17 Sep 2018 22:30:31 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Real-World vs Kaggle</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/real-world-vs-kaggle/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-org0dabd25" class="outline-2"&gt;
-&lt;h2 id="org0dabd25"&gt;A Real World Pipeline&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org0dabd25"&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about basics kaggle)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/basics-kaggle.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Sat, 15 Sep 2018 17:42:26 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Real-World vs Kaggle</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/real-world-vs-kaggle/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-org22d9484" class="outline-2"&gt;
+&lt;h2 id="org22d9484"&gt;A Real World Pipeline&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org22d9484"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;What is the business problem that you are trying to solve?&lt;/li&gt;
 &lt;li&gt;What is the formal version of the problem?&lt;/li&gt;
@@ -21,18 +21,18 @@
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org5a27f54" class="outline-2"&gt;
-&lt;h2 id="org5a27f54"&gt;A Competition Pipeline&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org5a27f54"&gt;
+&lt;div id="outline-container-orgd4f6943" class="outline-2"&gt;
+&lt;h2 id="orgd4f6943"&gt;A Competition Pipeline&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgd4f6943"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;How do you pre-process the data?&lt;/li&gt;
 &lt;li&gt;How do you create the model?&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orga08466c" class="outline-2"&gt;
-&lt;h2 id="orga08466c"&gt;So, how do you use a competition then?&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orga08466c"&gt;
+&lt;div id="outline-container-org401b68b" class="outline-2"&gt;
+&lt;h2 id="org401b68b"&gt;So, how do you use a competition then?&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org401b68b"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;It's good to learn about machine learning&lt;/li&gt;
 &lt;li&gt;It' not just about the algorithms, let the data guide what you do&lt;/li&gt;

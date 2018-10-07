@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about quiz)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/cat_quiz.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Thu, 04 Oct 2018 01:53:21 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Mean Encoding Quiz</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-quiz/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-orgc98d90c" class="outline-2"&gt;
-&lt;h2 id="orgc98d90c"&gt;Quiz&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgc98d90c"&gt;
-&lt;/div&gt;
-&lt;div id="outline-container-org7b693c9" class="outline-3"&gt;
-&lt;h3 id="org7b693c9"&gt;One&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org7b693c9"&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about quiz)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/cat_quiz.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Sun, 07 Oct 2018 01:39:03 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Mean Encoding Quiz</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-quiz/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-orga5edf72" class="outline-2"&gt;
+&lt;h2 id="orga5edf72"&gt;One&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orga5edf72"&gt;
 &lt;p&gt;
 What might be an indicator that mean encoding would be useful?
 &lt;/p&gt;
@@ -16,9 +12,9 @@ What might be an indicator that mean encoding would be useful?
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org658044b" class="outline-3"&gt;
-&lt;h3 id="org658044b"&gt;Two&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org658044b"&gt;
+&lt;div id="outline-container-org60b046f" class="outline-2"&gt;
+&lt;h2 id="org60b046f"&gt;Two&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org60b046f"&gt;
 &lt;p&gt;
 What is the purpose of regularization in mean encoding?
 &lt;/p&gt;
@@ -29,9 +25,9 @@ What is the purpose of regularization in mean encoding?
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org69dae51" class="outline-3"&gt;
-&lt;h3 id="org69dae51"&gt;Three&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org69dae51"&gt;
+&lt;div id="outline-container-org7b7c0cf" class="outline-2"&gt;
+&lt;h2 id="org7b7c0cf"&gt;Three&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org7b7c0cf"&gt;
 &lt;p&gt;
 What is the correct form of validation when using mean encoding?
 &lt;/p&gt;
@@ -42,9 +38,9 @@ What is the correct form of validation when using mean encoding?
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgd06b2c1" class="outline-3"&gt;
-&lt;h3 id="orgd06b2c1"&gt;Four&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgd06b2c1"&gt;
+&lt;div id="outline-container-org708d811" class="outline-2"&gt;
+&lt;h2 id="org708d811"&gt;Four&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org708d811"&gt;
 &lt;p&gt;
 Suppose we have a data frame (&lt;code&gt;df&lt;/code&gt;) with a categorical variable named &lt;code&gt;item_id&lt;/code&gt; and a target variable called &lt;code&gt;target&lt;/code&gt;.
 We create two different mean encodings:
@@ -58,6 +54,5 @@ We create two different mean encodings:
 &lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; &lt;code&gt;item_id_encoded1&lt;/code&gt; and &lt;code&gt;item_id_encoded2&lt;/code&gt; will be essentially the same&lt;/li&gt;
 &lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; &lt;code&gt;item_id_encoded1&lt;/code&gt; and &lt;code&gt;item_id_encoded2&lt;/code&gt; may differ a lot due to rare categories (nope)&lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;</description><category>quiz encoding</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-quiz/</guid><pubDate>Fri, 28 Sep 2018 23:16:59 GMT</pubDate></item></channel></rss>

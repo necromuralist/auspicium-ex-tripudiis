@@ -108,21 +108,21 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org981d2b2">Mean Encoding</a></li>
-<li><a href="#org8c19d2a">Regularization</a></li>
-<li><a href="#orgdd01022">Generalizations and Extensions</a></li>
-<li><a href="#orgc74a70d">Summary</a></li>
+<li><a href="#org01e0376">Mean Encoding</a></li>
+<li><a href="#org95524d8">Regularization</a></li>
+<li><a href="#org5fd0890">Generalizations and Extensions</a></li>
+<li><a href="#org07d67f5">Summary</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org981d2b2" class="outline-2">
-<h2 id="org981d2b2">Mean Encoding</h2>
-<div class="outline-text-2" id="text-org981d2b2">
+<div id="outline-container-org01e0376" class="outline-2">
+<h2 id="org01e0376">Mean Encoding</h2>
+<div class="outline-text-2" id="text-org01e0376">
 </div>
-<div id="outline-container-org9189ad0" class="outline-3">
-<h3 id="org9189ad0">Introduction</h3>
-<div class="outline-text-3" id="text-org9189ad0">
+<div id="outline-container-org11b83a0" class="outline-3">
+<h3 id="org11b83a0">Introduction</h3>
+<div class="outline-text-3" id="text-org11b83a0">
 <ul class="org-ul">
 <li>also called target encoding and likelihood encoding</li>
 </ul>
@@ -130,17 +130,17 @@
 It is a way to encode a categorical feature. Uses the fraction of times the feature is 1 out of all the times the feature is in the data set (for binary classification).
 </p>
 </div>
-<div id="outline-container-orgf79820e" class="outline-4">
-<h4 id="orgf79820e">Why does it work?</h4>
-<div class="outline-text-4" id="text-orgf79820e">
+<div id="outline-container-orgd5dfb59" class="outline-4">
+<h4 id="orgd5dfb59">Why does it work?</h4>
+<div class="outline-text-4" id="text-orgd5dfb59">
 <p>
 Unlike regular encoding, which has no real meaning to the labels, mean encoding imposes an ordering. This allows you to reduce your loss while using shorter trees.
 </p>
 </div>
 </div>
-<div id="outline-container-org0754e80" class="outline-4">
-<h4 id="org0754e80">How do you calculate it?</h4>
-<div class="outline-text-4" id="text-org0754e80">
+<div id="outline-container-org4bd42a6" class="outline-4">
+<h4 id="org4bd42a6">How do you calculate it?</h4>
+<div class="outline-text-4" id="text-org4bd42a6">
 <p>
 There are multiple ways.
 </p>
@@ -152,9 +152,9 @@ There are multiple ways.
 </ul>
 </div>
 </div>
-<div id="outline-container-org5fce97b" class="outline-4">
-<h4 id="org5fce97b">When does it fail?</h4>
-<div class="outline-text-4" id="text-org5fce97b">
+<div id="outline-container-orgb960867" class="outline-4">
+<h4 id="orgb960867">When does it fail?</h4>
+<div class="outline-text-4" id="text-orgb960867">
 <p>
 If you have lots of feature instances with few cases it will tend to overfit.
 </p>
@@ -162,13 +162,13 @@ If you have lots of feature instances with few cases it will tend to overfit.
 </div>
 </div>
 </div>
-<div id="outline-container-org8c19d2a" class="outline-2">
-<h2 id="org8c19d2a">Regularization</h2>
-<div class="outline-text-2" id="text-org8c19d2a">
+<div id="outline-container-org95524d8" class="outline-2">
+<h2 id="org95524d8">Regularization</h2>
+<div class="outline-text-2" id="text-org95524d8">
 </div>
-<div id="outline-container-orgda28dd3" class="outline-3">
-<h3 id="orgda28dd3">Four Types</h3>
-<div class="outline-text-3" id="text-orgda28dd3">
+<div id="outline-container-org2289034" class="outline-3">
+<h3 id="org2289034">Four Types</h3>
+<div class="outline-text-3" id="text-org2289034">
 <ul class="org-ul">
 <li>Cross-validation loop inside the training data</li>
 <li>Smoothing</li>
@@ -177,9 +177,9 @@ If you have lots of feature instances with few cases it will tend to overfit.
 </ul>
 </div>
 </div>
-<div id="outline-container-orgde6b1ee" class="outline-3">
-<h3 id="orgde6b1ee">Cross Validation</h3>
-<div class="outline-text-3" id="text-orgde6b1ee">
+<div id="outline-container-org94e0c5f" class="outline-3">
+<h3 id="org94e0c5f">Cross Validation</h3>
+<div class="outline-text-3" id="text-org94e0c5f">
 <ul class="org-ul">
 <li>Usually 4 or 5 folds are enough</li>
 <li>Need to watch out for extreme cases like leave-out-one (LOO)</li>
@@ -208,9 +208,9 @@ Here's an example of this method using sklearn.
 </pre></div>
 </div>
 </div>
-<div id="outline-container-org59aad2f" class="outline-3">
-<h3 id="org59aad2f">Smoothing</h3>
-<div class="outline-text-3" id="text-org59aad2f">
+<div id="outline-container-org7ee9a96" class="outline-3">
+<h3 id="org7ee9a96">Smoothing</h3>
+<div class="outline-text-3" id="text-org7ee9a96">
 <p>
 Use a value \(\alpha\) to control the amount of regularization. This isn't a regularization method in and of itself, you use it with other methods.
 </p>
@@ -223,17 +223,17 @@ Use a value \(\alpha\) to control the amount of regularization. This isn't a reg
 </div>
 </div>
 
-<div id="outline-container-orgfdf906f" class="outline-3">
-<h3 id="orgfdf906f">Noise</h3>
-<div class="outline-text-3" id="text-orgfdf906f">
+<div id="outline-container-org773f7ae" class="outline-3">
+<h3 id="org773f7ae">Noise</h3>
+<div class="outline-text-3" id="text-org773f7ae">
 <p>
 Adding noise degrades the quality of the encoding in the training data. This is usually used with <i>leave-one-out</i> encoding to prevent overfitting. You have to figure out how much noise to add through experimentation.
 </p>
 </div>
 </div>
-<div id="outline-container-org8d98283" class="outline-3">
-<h3 id="org8d98283">Expanding Mean</h3>
-<div class="outline-text-3" id="text-org8d98283">
+<div id="outline-container-org92848c2" class="outline-3">
+<h3 id="org92848c2">Expanding Mean</h3>
+<div class="outline-text-3" id="text-org92848c2">
 <p>
 This introduces the least amount of leakage from the target variable and doesn't require hyper-parameters for you to tune. The downside is that the encoding quality is irregular. There is a built-in implementation in the <code>CatBoost</code> library.
 </p>
@@ -249,39 +249,39 @@ Here's a pandas implementation.
 </div>
 </div>
 
-<div id="outline-container-org6d57dc7" class="outline-3">
-<h3 id="org6d57dc7">Which one should you use?</h3>
-<div class="outline-text-3" id="text-org6d57dc7">
+<div id="outline-container-org8a972ae" class="outline-3">
+<h3 id="org8a972ae">Which one should you use?</h3>
+<div class="outline-text-3" id="text-org8a972ae">
 <p>
 Cross Validation Loops and Expanding Means are the most practical to use.
 </p>
 </div>
 </div>
 </div>
-<div id="outline-container-orgdd01022" class="outline-2">
-<h2 id="orgdd01022">Generalizations and Extensions</h2>
-<div class="outline-text-2" id="text-orgdd01022">
+<div id="outline-container-org5fd0890" class="outline-2">
+<h2 id="org5fd0890">Generalizations and Extensions</h2>
+<div class="outline-text-2" id="text-org5fd0890">
 </div>
-<div id="outline-container-org187f583" class="outline-3">
-<h3 id="org187f583">Regression and Multiclass</h3>
+<div id="outline-container-org9713263" class="outline-3">
+<h3 id="org9713263">Regression and Multiclass</h3>
 </div>
 </div>
-<div id="outline-container-orgc74a70d" class="outline-2">
-<h2 id="orgc74a70d">Summary</h2>
-<div class="outline-text-2" id="text-orgc74a70d">
+<div id="outline-container-org07d67f5" class="outline-2">
+<h2 id="org07d67f5">Summary</h2>
+<div class="outline-text-2" id="text-org07d67f5">
 </div>
-<div id="outline-container-orgb189648" class="outline-3">
-<h3 id="orgb189648">Advantages</h3>
-<div class="outline-text-3" id="text-orgb189648">
+<div id="outline-container-orgbbf575d" class="outline-3">
+<h3 id="orgbbf575d">Advantages</h3>
+<div class="outline-text-3" id="text-orgbbf575d">
 <ul class="org-ul">
 <li>Compact transformation of categorical variables</li>
 <li>Powerful basis for feature engineering</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org388894b" class="outline-3">
-<h3 id="org388894b">Disadvantages</h3>
-<div class="outline-text-3" id="text-org388894b">
+<div id="outline-container-org28db812" class="outline-3">
+<h3 id="org28db812">Disadvantages</h3>
+<div class="outline-text-3" id="text-org28db812">
 <ul class="org-ul">
 <li>Needs careful validation, it's easy to overfit</li>
 <li>Only certain data sets will show a significant improvement from using it</li>

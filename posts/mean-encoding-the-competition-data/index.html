@@ -22,7 +22,9 @@
 <meta property="og:description" content="Mean encoding applied to the competition data.">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2018-09-23T18:50:28-07:00">
-<meta property="article:tag" content="assignment competition encoding">
+<meta property="article:tag" content="assignment">
+<meta property="article:tag" content="competition">
+<meta property="article:tag" content="encoding">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -108,25 +110,42 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgce74127">Introduction</a></li>
-<li><a href="#org726cf40">General tips</a></li>
-<li><a href="#org77ddad5">Read In the Data</a></li>
-<li><a href="#orgf8621b9">The Motivation</a></li>
-<li><a href="#orga2e2aeb">Aggregate data</a></li>
-<li><a href="#orgcc815eb">Mean encodings without regularization</a></li>
-<li><a href="#orgd782a3d">Method 2</a></li>
-<li><a href="#org5795172">1. KFold scheme</a></li>
-<li><a href="#orgc9920f9">2. Leave-one-out scheme</a></li>
-<li><a href="#orge0215b7">3. Smoothing</a></li>
-<li><a href="#orgfbfe098">4. Expanding mean scheme</a></li>
-<li><a href="#org34dfe32">Authorization &amp; Submission</a></li>
+<li><a href="#orga8409c7">Debugging</a></li>
+<li><a href="#orga81748f">Introduction</a></li>
+<li><a href="#orgb839af9">General tips</a></li>
+<li><a href="#org97cec62">Read In the Data</a></li>
+<li><a href="#org59e1e53">The Motivation</a></li>
+<li><a href="#org28d98d6">Aggregate data</a></li>
+<li><a href="#org56f77d3">Mean encodings without regularization</a></li>
+<li><a href="#org1f5ffee">Method 2</a></li>
+<li><a href="#orgd56ffd7">1. KFold scheme</a></li>
+<li><a href="#org8c35204">2. Leave-one-out scheme</a></li>
+<li><a href="#org2ce6ca4">3. Smoothing</a></li>
+<li><a href="#orga0f0979">4. Expanding mean scheme</a></li>
+<li><a href="#orgddcf4cf">Authorization &amp; Submission</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orgce74127" class="outline-2">
-<h2 id="orgce74127">Introduction</h2>
-<div class="outline-text-2" id="text-orgce74127">
+<div id="outline-container-orga8409c7" class="outline-2">
+<h2 id="orga8409c7">Debugging</h2>
+<div class="outline-text-2" id="text-orga8409c7">
+<p>
+This is only to be able to re-load some of the helpers without having to kill and restart the jupyter server by using the <a href="https://ipython.readthedocs.io/en/stable/config/extensions/autoreload.html?highlight=autoreload">autoreload</a> extension.
+</p>
+
+<div class="highlight"><pre><span></span>%load_ext autoreload
+%autoreload 2
+</pre></div>
+
+<div class="highlight"><pre><span></span>DEBUG = False
+</pre></div>
+</div>
+</div>
+
+<div id="outline-container-orga81748f" class="outline-2">
+<h2 id="orga81748f">Introduction</h2>
+<div class="outline-text-2" id="text-orga81748f">
 <p>
 In this programming assignment you will be working with the <a href="https://www.kaggle.com/c/competitive-data-science-final-project/data">1C dataset</a> from the final competition. You are asked to encode the <code>item_id</code> in 4 different ways:
 </p>
@@ -143,53 +162,88 @@ In this programming assignment you will be working with the <a href="https://www
 </div>
 </div>
 
-<div id="outline-container-org726cf40" class="outline-2">
-<h2 id="org726cf40">General tips</h2>
-<div class="outline-text-2" id="text-org726cf40">
+<div id="outline-container-orgb839af9" class="outline-2">
+<h2 id="orgb839af9">General tips</h2>
+<div class="outline-text-2" id="text-orgb839af9">
 <ul class="org-ul">
 <li>Fill NANs in the encoding with <code>0.3343</code>.</li>
 <li>Some encoding schemes depend on sorting order, so in order to avoid confusion, please use the following code snippet to construct the data frame. This snippet also implements mean encoding without regularization.</li>
 </ul>
+</div>
+<div id="outline-container-org1577d4d" class="outline-3">
+<h3 id="org1577d4d">The NaN Value</h3>
+<div class="outline-text-3" id="text-org1577d4d">
+<p>
+I don't know where this came from, but I guess it's related to the mean somehow (I think I checked and it isn't actually the mean).
+</p>
 <div class="highlight"><pre><span></span>NAN_VALUE = 0.3343
 </pre></div>
-
+</div>
+</div>
+<div id="outline-container-orgc075731" class="outline-3">
+<h3 id="orgc075731">Turn Off the Numpy Warnings</h3>
+<div class="outline-text-3" id="text-orgc075731">
 <div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">warnings</span>
 <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">"ignore"</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">"numpy.dtype size changed"</span><span class="p">)</span>
 <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">"ignore"</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">"numpy.ufunc size changed"</span><span class="p">)</span>
 </pre></div>
-
-<div class="highlight"><pre><span></span># python standard library
-from itertools import product
+</div>
+</div>
+<div id="outline-container-orgd8375e7" class="outline-3">
+<h3 id="orgd8375e7">Python Standard Library</h3>
+<div class="outline-text-3" id="text-orgd8375e7">
+<div class="highlight"><pre><span></span>from itertools import product
 import os
-
+</pre></div>
+</div>
+</div>
+<div id="outline-container-org903cce3" class="outline-3">
+<h3 id="org903cce3">From PyPi</h3>
+<div class="outline-text-3" id="text-org903cce3">
+<div class="highlight"><pre><span></span>from dotenv import load_dotenv
 from sklearn.model_selection import KFold
 import pandas
 import numpy
+</pre></div>
+</div>
+</div>
+<div id="outline-container-orgdbd8da3" class="outline-3">
+<h3 id="orgdbd8da3">This Course (github)</h3>
+<div class="outline-text-3" id="text-orgdbd8da3">
+<div class="highlight"><pre><span></span>from hse_graders.assignment_3.grader import Grader
+</pre></div>
+</div>
+</div>
 
-# this course (github)
-from hse_graders.assignment_3.grader import Grader
-
-# this project
-from kaggler.course.data import Data
+<div id="outline-container-orgff3d9c4" class="outline-3">
+<h3 id="orgff3d9c4">This Project</h3>
+<div class="outline-text-3" id="text-orgff3d9c4">
+<div class="highlight"><pre><span></span>from kaggler.course.data import Data
 from kaggler.helpers.printing import print_table
 </pre></div>
+</div>
+</div>
 
-<div class="highlight"><pre><span></span>NAN_VALUE = 0.3343
+<div id="outline-container-orga77db45" class="outline-3">
+<h3 id="orga77db45">Setup The Environment</h3>
+<div class="outline-text-3" id="text-orga77db45">
+<div class="highlight"><pre><span></span>load_dotenv()
+</pre></div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org97cec62" class="outline-2">
+<h2 id="org97cec62">Read In the Data</h2>
+<div class="outline-text-2" id="text-org97cec62">
+<div class="highlight"><pre><span></span>sales = Data(DEBUG).sales_training_data
 </pre></div>
 </div>
 </div>
 
-<div id="outline-container-org77ddad5" class="outline-2">
-<h2 id="org77ddad5">Read In the Data</h2>
-<div class="outline-text-2" id="text-org77ddad5">
-<div class="highlight"><pre><span></span>sales = Data().sales_training_data
-</pre></div>
-</div>
-</div>
-
-<div id="outline-container-orgf8621b9" class="outline-2">
-<h2 id="orgf8621b9">The Motivation</h2>
-<div class="outline-text-2" id="text-orgf8621b9">
+<div id="outline-container-org59e1e53" class="outline-2">
+<h2 id="org59e1e53">The Motivation</h2>
+<div class="outline-text-2" id="text-org59e1e53">
 <p>
 The idea behind this is that we want to convert a categorical value (the item ID) into a numeric one so that we can use non-tree-based methods. But we already have <a href="https://en.wikipedia.org/wiki/One-hot">One Hot Encoding</a>, so why do we need this? Well, lets look at how many items we need to encode.
 </p>
@@ -208,9 +262,9 @@ This means we're going to have to add almost twenty-two thousand columns to your
 </div>
 </div>
 
-<div id="outline-container-orga2e2aeb" class="outline-2">
-<h2 id="orga2e2aeb">Aggregate data</h2>
-<div class="outline-text-2" id="text-orga2e2aeb">
+<div id="outline-container-org28d98d6" class="outline-2">
+<h2 id="org28d98d6">Aggregate data</h2>
+<div class="outline-text-2" id="text-org28d98d6">
 <p>
 Since the competition task is to make a monthly prediction, we need to aggregate the data to the monthly level before doing any encodings. The following code-cells do that for us.
 </p>
@@ -286,6 +340,7 @@ Now turn the grid into a pandas dataframe.
 (10913850, 3)
 
 </pre>
+
 
 <p>
 The grid has all the items sold by each shop for each date-block. The number of rows isn't just \(\textit{shops} \times \textit{items} \times \textit{date-blocks}\) because not every shop is in every date-block and not every shop sold every item (or even the same items every block).
@@ -493,9 +548,9 @@ And <code>grouped</code> didn't have any entry for the first item in the previou
 </div>
 </div>
 
-<div id="outline-container-orgcc815eb" class="outline-2">
-<h2 id="orgcc815eb">Mean encodings without regularization</h2>
-<div class="outline-text-2" id="text-orgcc815eb">
+<div id="outline-container-org56f77d3" class="outline-2">
+<h2 id="org56f77d3">Mean encodings without regularization</h2>
+<div class="outline-text-2" id="text-org56f77d3">
 <p>
 Now that we have done the technical work, we are ready to actually <b>mean encode</b> the desired <code>item_id</code> variable. 
 </p>
@@ -505,9 +560,9 @@ Here are two ways to implement mean encoding features <b>without</b> any regular
 </p>
 </div>
 
-<div id="outline-container-orgd307060" class="outline-3">
-<h3 id="orgd307060">Method 1:  Calculate a mapping: {item_id: target_mean}</h3>
-<div class="outline-text-3" id="text-orgd307060">
+<div id="outline-container-org3597dd5" class="outline-3">
+<h3 id="org3597dd5">Method 1:  Calculate a mapping: {item_id: target_mean}</h3>
+<div class="outline-text-3" id="text-org3597dd5">
 <p>
 First we're going to calculate the mean count for each item.
 </p>
@@ -638,9 +693,9 @@ Well, this wasn't exhaustive but at least that one item checks out.
 </div>
 </div>
 
-<div id="outline-container-org99cf917" class="outline-3">
-<h3 id="org99cf917">Fill NaNs</h3>
-<div class="outline-text-3" id="text-org99cf917">
+<div id="outline-container-orgafe4853" class="outline-3">
+<h3 id="orgafe4853">Fill NaNs</h3>
+<div class="outline-text-3" id="text-orgafe4853">
 <p>
 We're given the value to fill in for the missing entries (<i>0.3343</i>) without explanation. I don't really know where it comes from. It's around, but not exactly the 84% percentile, but, anyway, let's use it (actually, if you check it there aren't any NaN values, curious).
 </p>
@@ -662,9 +717,9 @@ So this next line doesn't seem to do anything, but is part of the given code.
 </div>
 </div>
 
-<div id="outline-container-orgd9859a7" class="outline-3">
-<h3 id="orgd9859a7">Print correlation</h3>
-<div class="outline-text-3" id="text-orgd9859a7">
+<div id="outline-container-orgfb2870a" class="outline-3">
+<h3 id="orgfb2870a">Print correlation</h3>
+<div class="outline-text-3" id="text-orgfb2870a">
 <p>
 Now we need to calculate the <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.corrcoef.html">Pearson Correlation</a> between our calculated mean and the target values. This <a href="https://en.wikipedia.org/wiki/Pearson_correlation_coefficient">value</a> ranges from -1 to 1 and represents how much of a linear correlation there is between two variables. Negative one means they are completely negatively correlated and positive one means they are completely positively correlated.
 </p>
@@ -675,7 +730,7 @@ print(first_correlation)
 </pre></div>
 
 <pre class="example">
-0.48303869886216977
+0.4830386988621644
 
 </pre>
 
@@ -686,9 +741,9 @@ Since our value is between 0 and 1 it does describe the target to some degree, a
 </div>
 </div>
 
-<div id="outline-container-orgd782a3d" class="outline-2">
-<h2 id="orgd782a3d">Method 2</h2>
-<div class="outline-text-2" id="text-orgd782a3d">
+<div id="outline-container-org1f5ffee" class="outline-2">
+<h2 id="org1f5ffee">Method 2</h2>
+<div class="outline-text-2" id="text-org1f5ffee">
 <p>
 Unlike the  <code>.target.mean()</code> function, <code>transform</code> will return a dataframe with an index like in <code>all_data</code>.
 Basically this single line of code is equivalent to the first lines from of Method 1.
@@ -698,17 +753,17 @@ Basically this single line of code is equivalent to the first lines from of Meth
 </pre></div>
 </div>
 
-<div id="outline-container-org80fe6a1" class="outline-3">
-<h3 id="org80fe6a1">Fill NaNs</h3>
-<div class="outline-text-3" id="text-org80fe6a1">
+<div id="outline-container-orgae09c07" class="outline-3">
+<h3 id="orgae09c07">Fill NaNs</h3>
+<div class="outline-text-3" id="text-orgae09c07">
 <div class="highlight"><pre><span></span>all_data['item_target_enc'].fillna(NAN_VALUE, inplace=True) 
 </pre></div>
 </div>
 </div>
 
-<div id="outline-container-org632cea4" class="outline-3">
-<h3 id="org632cea4">Print correlation</h3>
-<div class="outline-text-3" id="text-org632cea4">
+<div id="outline-container-orgba5cba7" class="outline-3">
+<h3 id="orgba5cba7">Print correlation</h3>
+<div class="outline-text-3" id="text-orgba5cba7">
 <div class="highlight"><pre><span></span>encoded_feature = all_data['item_target_enc'].values
 second_correlation = numpy.corrcoef(all_data['target'].values, encoded_feature)[0][1]
 print(second_correlation)
@@ -716,7 +771,7 @@ print(abs(first_correlation - second_correlation))
 </pre></div>
 
 <pre class="example">
-0.48303869886216977
+0.4830386988621644
 0.0
 
 </pre>
@@ -731,9 +786,9 @@ See the printed value? It is the correlation coefficient between the target vari
 </div>
 </div>
 
-<div id="outline-container-org5795172" class="outline-2">
-<h2 id="org5795172">1. KFold scheme</h2>
-<div class="outline-text-2" id="text-org5795172">
+<div id="outline-container-orgd56ffd7" class="outline-2">
+<h2 id="orgd56ffd7">1. KFold scheme</h2>
+<div class="outline-text-2" id="text-orgd56ffd7">
 <p>
 This is Explained starting at 41 seconds into the <a href="https://www.coursera.org/learn/competitive-data-science/lecture/LGYQ2/regularization">Regularization lecture</a>.
 </p>
@@ -775,9 +830,9 @@ grader.submit_tag('KFold_scheme', corr)
 </div>
 </div>
 
-<div id="outline-container-orgc9920f9" class="outline-2">
-<h2 id="orgc9920f9">2. Leave-one-out scheme</h2>
-<div class="outline-text-2" id="text-orgc9920f9">
+<div id="outline-container-org8c35204" class="outline-2">
+<h2 id="org8c35204">2. Leave-one-out scheme</h2>
+<div class="outline-text-2" id="text-org8c35204">
 <p>
 Now, implement leave-one-out scheme. Note that if you just simply set the number of folds to the number of samples and run the code from the <b><b>KFold scheme</b></b>, you will probably wait for a very long time. 
 </p>
@@ -798,24 +853,69 @@ Note that you do not need to perform step 1 for every object. And step 2 can be 
 It will be most convenient to use the `.transform` function as in <b><b>Method 2</b></b>.
 </p>
 
-<div class="highlight"><pre><span></span>summed = all_data.groupby('item_id')['target'].transform('sum')
-total_sum = summed.sum()
-one_less = len(summed) - 1
+<p>
+First we'll calculate <code>summed</code>, a data frame of the counts of how often each item appears in the data set.
+</p>
+<div class="highlight"><pre><span></span>sums = all_data.groupby('item_id')['target'].sum()
+counts = all_data.groupby("item_id").target.count()
+</pre></div>
 
-left_out = (total_sum - summed)/one_less
+<div class="highlight"><pre><span></span>print_table(means.head().reset_index(), headers=["Item ID", "mean"])
+</pre></div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup>
+<col class="org-right">
+<col class="org-right">
+</colgroup>
+<thead><tr>
+<th scope="col" class="org-right">Item ID</th>
+<th scope="col" class="org-right">mean</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="org-right">139255</td>
+<td class="org-right">0.0222222</td>
+</tr>
+<tr>
+<td class="org-right">141495</td>
+<td class="org-right">0.0568336</td>
+</tr>
+<tr>
+<td class="org-right">144968</td>
+<td class="org-right">0.141176</td>
+</tr>
+<tr>
+<td class="org-right">142661</td>
+<td class="org-right">0.0373832</td>
+</tr>
+<tr>
+<td class="org-right">138947</td>
+<td class="org-right">1.31904</td>
+</tr>
+</tbody>
+</table>
+<p>
+Now we'll calculate the total number of items (the sum of the target values for all the items) and how many items there are once you leave one out.
+</p>
+<div class="highlight"><pre><span></span>total_sum = all_data.target.sum()
+one_less = len(means) - 1
+</pre></div>
+
+<div class="highlight"><pre><span></span>left_out = (total_sum - means)/one_less
 </pre></div>
 
 <pre class="example">
--0.47032519950821283
-Current answer for task Leave-one-out_scheme is: -0.47032519950821283
+-0.48303869886216694
+Current answer for task Leave-one-out_scheme is: -0.48303869886216694
 
 </pre>
 </div>
 </div>
 
-<div id="outline-container-orge0215b7" class="outline-2">
-<h2 id="orge0215b7">3. Smoothing</h2>
-<div class="outline-text-2" id="text-orge0215b7">
+<div id="outline-container-org2ce6ca4" class="outline-2">
+<h2 id="org2ce6ca4">3. Smoothing</h2>
+<div class="outline-text-2" id="text-org2ce6ca4">
 <p>
 Explained starting at 4:03 of the <a href="https://www.coursera.org/learn/competitive-data-science/lecture/LGYQ2/regularization">Regularization video</a>.
 </p>
@@ -829,9 +929,9 @@ Next, implement a smoothing scheme with \(\alpha = 100\). Use the formula from t
 </div>
 </div>
 
-<div id="outline-container-orgfbfe098" class="outline-2">
-<h2 id="orgfbfe098">4. Expanding mean scheme</h2>
-<div class="outline-text-2" id="text-orgfbfe098">
+<div id="outline-container-orga0f0979" class="outline-2">
+<h2 id="orga0f0979">4. Expanding mean scheme</h2>
+<div class="outline-text-2" id="text-orga0f0979">
 <p>
 This is explained starting at 5:50 of the <a href="https://www.coursera.org/learn/competitive-data-science/lecture/LGYQ2/regularization">Regularization video</a>.
 </p>
@@ -845,17 +945,35 @@ Finally, implement the <b>expanding mean</b> scheme. It is basically already imp
 </div>
 </div>
 
-<div id="outline-container-org34dfe32" class="outline-2">
-<h2 id="org34dfe32">Authorization &amp; Submission</h2>
-<div class="outline-text-2" id="text-org34dfe32">
+<div id="outline-container-orgddcf4cf" class="outline-2">
+<h2 id="orgddcf4cf">Authorization &amp; Submission</h2>
+<div class="outline-text-2" id="text-orgddcf4cf">
 <p>
 To submit the assignment parts to Cousera platform, please, enter your e-mail and token into variables below. You can generate the token on this programming assignment's page. Note: The Token expires 30 minutes after generation.
 </p>
+
+<pre class="example">
+Email: necromuralist@protonmail.com
+Token: pjIHK0O25s2NPZMw
+You want to submit these numbers:
+Task KFold_scheme: 0.4164590712798667
+Task Leave-one-out_scheme: -0.48303869886216694
+Task Smoothing_scheme: ----------
+Task Expanding_mean_scheme: ----------
+
+</pre>
+
+<pre class="example">
+Submitted to Coursera platform. See results on assignment page!
+
+</pre>
 </div>
 </div>
     </div>
     <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
-<li><a class="tag p-category" href="../../categories/assignment-competition-encoding/" rel="tag">assignment competition encoding</a></li>
+<li><a class="tag p-category" href="../../categories/assignment/" rel="tag">assignment</a></li>
+            <li><a class="tag p-category" href="../../categories/competition/" rel="tag">competition</a></li>
+            <li><a class="tag p-category" href="../../categories/encoding/" rel="tag">encoding</a></li>
         </ul>
 <ul class="pager hidden-print">
 <li class="previous">

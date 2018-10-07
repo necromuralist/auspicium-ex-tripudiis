@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about basics algorithms notes)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/basics-algorithms-notes.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Mon, 17 Sep 2018 22:30:31 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Machine Learning Recap</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/machine-learning-recap/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-org8455289" class="outline-2"&gt;
-&lt;h2 id="org8455289"&gt;The Main Categories&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org8455289"&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about basics algorithms notes)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/basics-algorithms-notes.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Sat, 15 Sep 2018 17:42:26 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Machine Learning Recap</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/machine-learning-recap/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-org3fe09a4" class="outline-2"&gt;
+&lt;h2 id="org3fe09a4"&gt;The Main Categories&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org3fe09a4"&gt;
 &lt;p&gt;
 These are the four main categories of supervised machine learning algorithms that you'll encounter in kaggle competitions.
 &lt;/p&gt;
@@ -25,9 +25,9 @@ These are the four main categories of supervised machine learning algorithms tha
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org860043b" class="outline-2"&gt;
-&lt;h2 id="org860043b"&gt;The No Free Lunch Theorem&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org860043b"&gt;
+&lt;div id="outline-container-org48f724a" class="outline-2"&gt;
+&lt;h2 id="org48f724a"&gt;The No Free Lunch Theorem&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org48f724a"&gt;
 &lt;blockquote&gt;
 &lt;p&gt;
 There is no method which outperforms all others for all tasks.
@@ -39,9 +39,9 @@ You cannot assume that an algorithm that did well on one set of data will do wel
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org9d2700e" class="outline-2"&gt;
-&lt;h2 id="org9d2700e"&gt;Summary&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org9d2700e"&gt;
+&lt;div id="outline-container-org60a669b" class="outline-2"&gt;
+&lt;h2 id="org60a669b"&gt;Summary&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org60a669b"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;there is no one algorithm to rule them all&lt;/li&gt;
 &lt;li&gt;Linear models split spaces into two sub-spaces&lt;/li&gt;

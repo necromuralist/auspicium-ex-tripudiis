@@ -1,0 +1,947 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about competition)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/competition.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Sun, 07 Oct 2018 01:39:02 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Mean Encoding The Competition Data</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
+&lt;h2&gt;Table of Contents&lt;/h2&gt;
+&lt;div id="text-table-of-contents"&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/#orga8409c7"&gt;Debugging&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/#orga81748f"&gt;Introduction&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/#orgb839af9"&gt;General tips&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/#org97cec62"&gt;Read In the Data&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/#org59e1e53"&gt;The Motivation&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/#org28d98d6"&gt;Aggregate data&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/#org56f77d3"&gt;Mean encodings without regularization&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/#org1f5ffee"&gt;Method 2&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/#orgd56ffd7"&gt;1. KFold scheme&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/#org8c35204"&gt;2. Leave-one-out scheme&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/#org2ce6ca4"&gt;3. Smoothing&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/#orga0f0979"&gt;4. Expanding mean scheme&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/#orgddcf4cf"&gt;Authorization &amp;amp; Submission&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-orga8409c7" class="outline-2"&gt;
+&lt;h2 id="orga8409c7"&gt;Debugging&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orga8409c7"&gt;
+&lt;p&gt;
+This is only to be able to re-load some of the helpers without having to kill and restart the jupyter server by using the &lt;a href="https://ipython.readthedocs.io/en/stable/config/extensions/autoreload.html?highlight=autoreload"&gt;autoreload&lt;/a&gt; extension.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;%load_ext autoreload
+%autoreload 2
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;DEBUG = False
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-orga81748f" class="outline-2"&gt;
+&lt;h2 id="orga81748f"&gt;Introduction&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orga81748f"&gt;
+&lt;p&gt;
+In this programming assignment you will be working with the &lt;a href="https://www.kaggle.com/c/competitive-data-science-final-project/data"&gt;1C dataset&lt;/a&gt; from the final competition. You are asked to encode the &lt;code&gt;item_id&lt;/code&gt; in 4 different ways:
+&lt;/p&gt;
+
+&lt;ol class="org-ol"&gt;
+&lt;li&gt;Via KFold scheme;&lt;/li&gt;
+&lt;li&gt;Via Leave-one-out scheme;&lt;/li&gt;
+&lt;li&gt;Via smoothing scheme;&lt;/li&gt;
+&lt;li&gt;Via expanding mean scheme.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;
+&lt;b&gt;&lt;b&gt;You will need to submit&lt;/b&gt;&lt;/b&gt; the correlation coefficient between the resulting encoding and the target variable up to 4 decimal places.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-orgb839af9" class="outline-2"&gt;
+&lt;h2 id="orgb839af9"&gt;General tips&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgb839af9"&gt;
+&lt;ul class="org-ul"&gt;
+&lt;li&gt;Fill NANs in the encoding with &lt;code&gt;0.3343&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Some encoding schemes depend on sorting order, so in order to avoid confusion, please use the following code snippet to construct the data frame. This snippet also implements mean encoding without regularization.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org1577d4d" class="outline-3"&gt;
+&lt;h3 id="org1577d4d"&gt;The NaN Value&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org1577d4d"&gt;
+&lt;p&gt;
+I don't know where this came from, but I guess it's related to the mean somehow (I think I checked and it isn't actually the mean).
+&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;NAN_VALUE = 0.3343
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgc075731" class="outline-3"&gt;
+&lt;h3 id="orgc075731"&gt;Turn Off the Numpy Warnings&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgc075731"&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;warnings&lt;/span&gt;
+&lt;span class="n"&gt;warnings&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;filterwarnings&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"ignore"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;message&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"numpy.dtype size changed"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;warnings&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;filterwarnings&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"ignore"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;message&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"numpy.ufunc size changed"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgd8375e7" class="outline-3"&gt;
+&lt;h3 id="orgd8375e7"&gt;Python Standard Library&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgd8375e7"&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;from itertools import product
+import os
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-org903cce3" class="outline-3"&gt;
+&lt;h3 id="org903cce3"&gt;From PyPi&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org903cce3"&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;from dotenv import load_dotenv
+from sklearn.model_selection import KFold
+import pandas
+import numpy
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id="outline-container-orgdbd8da3" class="outline-3"&gt;
+&lt;h3 id="orgdbd8da3"&gt;This Course (github)&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgdbd8da3"&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;from hse_graders.assignment_3.grader import Grader
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-orgff3d9c4" class="outline-3"&gt;
+&lt;h3 id="orgff3d9c4"&gt;This Project&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgff3d9c4"&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;from kaggler.course.data import Data
+from kaggler.helpers.printing import print_table
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-orga77db45" class="outline-3"&gt;
+&lt;h3 id="orga77db45"&gt;Setup The Environment&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orga77db45"&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;load_dotenv()
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-org97cec62" class="outline-2"&gt;
+&lt;h2 id="org97cec62"&gt;Read In the Data&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org97cec62"&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sales = Data(DEBUG).sales_training_data
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-org59e1e53" class="outline-2"&gt;
+&lt;h2 id="org59e1e53"&gt;The Motivation&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org59e1e53"&gt;
+&lt;p&gt;
+The idea behind this is that we want to convert a categorical value (the item ID) into a numeric one so that we can use non-tree-based methods. But we already have &lt;a href="https://en.wikipedia.org/wiki/One-hot"&gt;One Hot Encoding&lt;/a&gt;, so why do we need this? Well, lets look at how many items we need to encode.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;print("{:,}".format(len(sales.item_id.unique())))
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;pre class="example"&gt;
+21,807
+
+&lt;/pre&gt;
+
+&lt;p&gt;
+This means we're going to have to add almost twenty-two thousand columns to your table, which brings up the &lt;a href="https://en.wikipedia.org/wiki/Curse_of_dimensionality"&gt;Curse of Dimensionality&lt;/a&gt; - adding this many columns means we're going to need a lot more data for our model to work and will increase our computation time significantly. Using Mean Encoding means that we will only have to add one column, simplifying our computation and reducing the amount of data we need to fit the model.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-org28d98d6" class="outline-2"&gt;
+&lt;h2 id="org28d98d6"&gt;Aggregate data&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org28d98d6"&gt;
+&lt;p&gt;
+Since the competition task is to make a monthly prediction, we need to aggregate the data to the monthly level before doing any encodings. The following code-cells do that for us.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;group_by_columns = ['shop_id', 'item_id', 'date_block_num']
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;
+For every month we create a grid from all shops/items combinations for that month. This uses &lt;a href="https://docs.python.org/3/library/itertools.html#itertools.product"&gt;itertools.product&lt;/a&gt; which creates the cartesian product of the collections it's given.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;grid = [] 
+for block_num in sales['date_block_num'].unique():
+    block = sales[sales['date_block_num']==block_num]
+    cur_shops = block['shop_id'].unique()
+    cur_items = block['item_id'].unique()
+    grid.append(numpy.array(list(product(*[cur_shops, cur_items, [block_num]])), dtype='int32'))
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;
+Now turn the grid into a pandas dataframe.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;grid = pandas.DataFrame(numpy.vstack(grid), columns=group_by_columns, dtype=numpy.int32)
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;print_table(grid.head())
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
+
+
+&lt;colgroup&gt;
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope="col" class="org-right"&gt;shop_id&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;item_id&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;date_block_num&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class="org-right"&gt;59&lt;/td&gt;
+&lt;td class="org-right"&gt;22154&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;59&lt;/td&gt;
+&lt;td class="org-right"&gt;2552&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;59&lt;/td&gt;
+&lt;td class="org-right"&gt;2554&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;59&lt;/td&gt;
+&lt;td class="org-right"&gt;2555&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;59&lt;/td&gt;
+&lt;td class="org-right"&gt;2564&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;print(grid.shape)
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;pre class="example"&gt;
+(10913850, 3)
+
+&lt;/pre&gt;
+
+
+&lt;p&gt;
+The grid has all the items sold by each shop for each date-block. The number of rows isn't just \(\textit{shops} \times \textit{items} \times \textit{date-blocks}\) because not every shop is in every date-block and not every shop sold every item (or even the same items every block).
+&lt;/p&gt;
+
+&lt;p&gt;
+Now we will use &lt;a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.groupby.html"&gt;groupby&lt;/a&gt; to group the data by &lt;code&gt;shop_id&lt;/code&gt;, &lt;code&gt;item_id&lt;/code&gt;, and &lt;i&gt;month&lt;/i&gt; (&lt;code&gt;date_block_num&lt;/code&gt;) and then get the aggregated summed values for the item count per day (we're going to sum up the items sold per day to get a value for the month) and rename the summed item count column to &lt;code&gt;target&lt;/code&gt;.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;grouped = sales.groupby(group_by_columns, as_index=False)
+grouped = grouped["item_cnt_day"].sum()
+grouped = grouped.rename(dict(item_cnt_day="target"), axis="columns")
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;print_table(grouped.head())
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
+
+
+&lt;colgroup&gt;
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope="col" class="org-right"&gt;shop_id&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;item_id&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;date_block_num&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;target&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;30&lt;/td&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;td class="org-right"&gt;31&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;31&lt;/td&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;td class="org-right"&gt;11&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;32&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;6&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;32&lt;/td&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;td class="org-right"&gt;10&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;33&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;3&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;
+Now join the aggregated data to the grid (with &lt;a href="https://pandas.pydata.org/pandas-docs/stable/merging.html#database-style-dataframe-joining-merging"&gt;merge&lt;/a&gt;).
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;all_data = pandas.merge(grid, grouped, how='left', on=group_by_columns).fillna(0)
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;print_table(all_data.head())
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
+
+
+&lt;colgroup&gt;
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope="col" class="org-right"&gt;shop_id&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;item_id&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;date_block_num&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;target&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class="org-right"&gt;59&lt;/td&gt;
+&lt;td class="org-right"&gt;22154&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;59&lt;/td&gt;
+&lt;td class="org-right"&gt;2552&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;59&lt;/td&gt;
+&lt;td class="org-right"&gt;2554&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;59&lt;/td&gt;
+&lt;td class="org-right"&gt;2555&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;59&lt;/td&gt;
+&lt;td class="org-right"&gt;2564&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;
+Sort the data by the month, shop, and item.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;all_data.sort_values(['date_block_num','shop_id','item_id'], inplace=True)
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;print_table(all_data.head())
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
+
+
+&lt;colgroup&gt;
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope="col" class="org-right"&gt;shop_id&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;item_id&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;date_block_num&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;target&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;19&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;27&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;28&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;29&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;32&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;6&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;
+When we compare &lt;code&gt;all_data&lt;/code&gt; to &lt;code&gt;grouped&lt;/code&gt;, the difference might not be so obvious, they have the same columns and look pretty similar, but if you look at the &lt;code&gt;all_data.target&lt;/code&gt; column you can see that there's a lot of 0s. That's because &lt;code&gt;grouped&lt;/code&gt; only has the cases where there were sales but &lt;code&gt;all_data&lt;/code&gt; had cases where there weren't any sales for a particular (&lt;code&gt;shop_id&lt;/code&gt;, &lt;code&gt;item_id&lt;/code&gt;, &lt;code&gt;date_block_num&lt;/code&gt;) combination, so it filled in the 0's.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;print("{:,}".format(all_data.shape[0] - grouped.shape[0]))
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;pre class="example"&gt;
+9,304,726
+
+&lt;/pre&gt;
+
+&lt;p&gt;
+You can see that &lt;code&gt;all_data&lt;/code&gt; had over 9 million more rows than grouped did.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;print(grouped[(grouped.shop_id==0) &amp;amp; (grouped.item_id==19) &amp;amp; (grouped.date_block_num==0)])
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;pre class="example"&gt;
+Empty DataFrame
+Columns: [shop_id, item_id, date_block_num, target]
+Index: []
+
+&lt;/pre&gt;
+
+&lt;p&gt;
+And &lt;code&gt;grouped&lt;/code&gt; didn't have any entry for the first item in the previous &lt;code&gt;all_data&lt;/code&gt; head-table, which is why the target value is 0.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-org56f77d3" class="outline-2"&gt;
+&lt;h2 id="org56f77d3"&gt;Mean encodings without regularization&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org56f77d3"&gt;
+&lt;p&gt;
+Now that we have done the technical work, we are ready to actually &lt;b&gt;mean encode&lt;/b&gt; the desired &lt;code&gt;item_id&lt;/code&gt; variable. 
+&lt;/p&gt;
+
+&lt;p&gt;
+Here are two ways to implement mean encoding features &lt;b&gt;without&lt;/b&gt; any regularization. You can use this code as a starting point to implement regularized techniques. 
+&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-org3597dd5" class="outline-3"&gt;
+&lt;h3 id="org3597dd5"&gt;Method 1:  Calculate a mapping: {item_id: target_mean}&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org3597dd5"&gt;
+&lt;p&gt;
+First we're going to calculate the mean count for each item.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;item_id_target_mean = all_data.groupby('item_id').target.mean()
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;
+In our non-regularized case we just &lt;a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.Series.map.html"&gt;map&lt;/a&gt; the computed means to the &lt;code&gt;item_id&lt;/code&gt;'s. 
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;all_data['item_target_enc'] = all_data['item_id'].map(item_id_target_mean)
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;
+In our case we are mapping a series (&lt;code&gt;item_id_target_mean&lt;/code&gt;) to a column &lt;code&gt;item_id&lt;/code&gt; in a data frame &lt;code&gt;all_data&lt;/code&gt;. Wherever an item in the &lt;code&gt;item_id&lt;/code&gt; column matches the index of our &lt;code&gt;item_id_target_mean&lt;/code&gt; Series it will replace the item with the value in the &lt;code&gt;item_id_target_mean&lt;/code&gt; that matches the index.
+&lt;/p&gt;
+
+&lt;p&gt;
+Here's an example. Let's look at the head of the &lt;code&gt;item_id_target_mean&lt;/code&gt; Series.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;print_table(dict(target_mean=item_id_target_mean.head()), showindex=True)
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
+
+
+&lt;colgroup&gt;
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope="col" class="org-right"&gt; &lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;target_mean&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;0.02&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;td class="org-right"&gt;0.0238095&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;2&lt;/td&gt;
+&lt;td class="org-right"&gt;0.019802&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;3&lt;/td&gt;
+&lt;td class="org-right"&gt;0.019802&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;4&lt;/td&gt;
+&lt;td class="org-right"&gt;0.02&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;
+So, let's look at index 1 - its value is &lt;i&gt;0.0238095&lt;/i&gt; so this mean we would expect that all the items with ID 1 would also have this value in the &lt;code&gt;item_target_enc&lt;/code&gt; column. Let's double-check this.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;print_table(all_data[all_data.item_id==1].head())
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
+
+
+&lt;colgroup&gt;
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope="col" class="org-right"&gt;shop_id&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;item_id&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;date_block_num&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;target&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;item_target_enc&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class="org-right"&gt;2&lt;/td&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;td class="org-right"&gt;15&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;0.0238095&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;3&lt;/td&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;td class="org-right"&gt;15&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;0.0238095&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;4&lt;/td&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;td class="org-right"&gt;15&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;0.0238095&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;5&lt;/td&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;td class="org-right"&gt;15&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;0.0238095&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;6&lt;/td&gt;
+&lt;td class="org-right"&gt;1&lt;/td&gt;
+&lt;td class="org-right"&gt;15&lt;/td&gt;
+&lt;td class="org-right"&gt;0&lt;/td&gt;
+&lt;td class="org-right"&gt;0.0238095&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;
+It looks right. Let's make sure.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;assert all(all_data[all_data.item_id==1] == 0.0238095)
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;
+Well, this wasn't exhaustive but at least that one item checks out.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-orgafe4853" class="outline-3"&gt;
+&lt;h3 id="orgafe4853"&gt;Fill NaNs&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgafe4853"&gt;
+&lt;p&gt;
+We're given the value to fill in for the missing entries (&lt;i&gt;0.3343&lt;/i&gt;) without explanation. I don't really know where it comes from. It's around, but not exactly the 84% percentile, but, anyway, let's use it (actually, if you check it there aren't any NaN values, curious).
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;print(all_data.item_target_enc.hasnans)
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;pre class="example"&gt;
+False
+
+&lt;/pre&gt;
+
+&lt;p&gt;
+So this next line doesn't seem to do anything, but is part of the given code.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;all_data['item_target_enc'].fillna(NAN_VALUE, inplace=True) 
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-orgfb2870a" class="outline-3"&gt;
+&lt;h3 id="orgfb2870a"&gt;Print correlation&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgfb2870a"&gt;
+&lt;p&gt;
+Now we need to calculate the &lt;a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.corrcoef.html"&gt;Pearson Correlation&lt;/a&gt; between our calculated mean and the target values. This &lt;a href="https://en.wikipedia.org/wiki/Pearson_correlation_coefficient"&gt;value&lt;/a&gt; ranges from -1 to 1 and represents how much of a linear correlation there is between two variables. Negative one means they are completely negatively correlated and positive one means they are completely positively correlated.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;encoded_feature = all_data['item_target_enc'].values
+first_correlation = numpy.corrcoef(all_data['target'].values, encoded_feature)[0][1]
+print(first_correlation)
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;pre class="example"&gt;
+0.4830386988621644
+
+&lt;/pre&gt;
+
+&lt;p&gt;
+Since our value is between 0 and 1 it does describe the target to some degree, albeit not perfectly.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-org1f5ffee" class="outline-2"&gt;
+&lt;h2 id="org1f5ffee"&gt;Method 2&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org1f5ffee"&gt;
+&lt;p&gt;
+Unlike the  &lt;code&gt;.target.mean()&lt;/code&gt; function, &lt;code&gt;transform&lt;/code&gt; will return a dataframe with an index like in &lt;code&gt;all_data&lt;/code&gt;.
+Basically this single line of code is equivalent to the first lines from of Method 1.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;all_data['item_target_enc'] = all_data.groupby('item_id')['target'].transform('mean')
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-orgae09c07" class="outline-3"&gt;
+&lt;h3 id="orgae09c07"&gt;Fill NaNs&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgae09c07"&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;all_data['item_target_enc'].fillna(NAN_VALUE, inplace=True) 
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-orgba5cba7" class="outline-3"&gt;
+&lt;h3 id="orgba5cba7"&gt;Print correlation&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgba5cba7"&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;encoded_feature = all_data['item_target_enc'].values
+second_correlation = numpy.corrcoef(all_data['target'].values, encoded_feature)[0][1]
+print(second_correlation)
+print(abs(first_correlation - second_correlation))
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;pre class="example"&gt;
+0.4830386988621644
+0.0
+
+&lt;/pre&gt;
+
+&lt;p&gt;
+See the printed value? It is the correlation coefficient between the target variable and your new encoded feature. You need to &lt;b&gt;&lt;b&gt;compute the correlation coefficient&lt;/b&gt;&lt;/b&gt; between the encodings that you will implement and &lt;b&gt;&lt;b&gt;submit those to coursera&lt;/b&gt;&lt;/b&gt;.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;grader = Grader()
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-orgd56ffd7" class="outline-2"&gt;
+&lt;h2 id="orgd56ffd7"&gt;1. KFold scheme&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgd56ffd7"&gt;
+&lt;p&gt;
+This is Explained starting at 41 seconds into the &lt;a href="https://www.coursera.org/learn/competitive-data-science/lecture/LGYQ2/regularization"&gt;Regularization lecture&lt;/a&gt;.
+&lt;/p&gt;
+
+&lt;p&gt;
+First implement the KFold scheme with five folds. Use KFold(5) from sklearn.model_selection. 
+&lt;/p&gt;
+
+&lt;ol class="org-ol"&gt;
+&lt;li&gt;Split your data in 5 folds with &lt;a href="http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.KFold.html"&gt;sklearn.model_selection.KFold&lt;/a&gt; with &lt;code&gt;shuffle=False&lt;/code&gt; (the default).&lt;/li&gt;
+&lt;li&gt;Iterate through folds: use all but the current fold to calculate mean target for each level `item_id`, and  fill the current fold.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;
+See the &lt;b&gt;&lt;b&gt;Method 1&lt;/b&gt;&lt;/b&gt; from the example implementation. In particular learn what `map` and &lt;a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.Series.map.html"&gt;pandas.Series.map&lt;/a&gt; functions do. They are pretty handy in many situations.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;folder = KFold(n_splits=5, shuffle=False)
+column = "item_id"
+encoded_column = column + "_mean_target"
+train_new = pandas.DataFrame(index=all_data.index, columns=all_data.columns)
+train_new[encoded_column] = numpy.nan
+for training_index, validation_index in folder.split(all_data):
+    x_train = all_data.iloc[training_index].copy()
+    x_validation = all_data.iloc[validation_index].copy()
+    means = x_validation[column].map(x_train.groupby(column).target.mean())
+    x_validation[encoded_column] = means
+    # train_new is a dataframe copy we made of the training data
+    train_new.iloc[validation_index] = x_validation
+train_new.fillna(NAN_VALUE, inplace=True)
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;encoded_feature = train_new.item_id_mean_target.values
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;corr = numpy.corrcoef(all_data['target'].values, encoded_feature)[0][1]
+print(corr)
+grader.submit_tag('KFold_scheme', corr)
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-org8c35204" class="outline-2"&gt;
+&lt;h2 id="org8c35204"&gt;2. Leave-one-out scheme&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org8c35204"&gt;
+&lt;p&gt;
+Now, implement leave-one-out scheme. Note that if you just simply set the number of folds to the number of samples and run the code from the &lt;b&gt;&lt;b&gt;KFold scheme&lt;/b&gt;&lt;/b&gt;, you will probably wait for a very long time. 
+&lt;/p&gt;
+
+&lt;p&gt;
+To implement a faster version, note that to calculate the mean target value using all the objects but one &lt;b&gt;given object&lt;/b&gt;, you can:
+&lt;/p&gt;
+
+&lt;ol class="org-ol"&gt;
+&lt;li&gt;Calculate the sum of the target values using all the objects.&lt;/li&gt;
+&lt;li&gt;Then subtract the target of the &lt;b&gt;given object&lt;/b&gt; and divide the resulting value by &lt;code&gt;n_objects - 1&lt;/code&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;
+Note that you do not need to perform step 1 for every object. And step 2 can be implemented without any &lt;code&gt;for&lt;/code&gt; loop.
+&lt;/p&gt;
+
+&lt;p&gt;
+It will be most convenient to use the `.transform` function as in &lt;b&gt;&lt;b&gt;Method 2&lt;/b&gt;&lt;/b&gt;.
+&lt;/p&gt;
+
+&lt;p&gt;
+First we'll calculate &lt;code&gt;summed&lt;/code&gt;, a data frame of the counts of how often each item appears in the data set.
+&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sums = all_data.groupby('item_id')['target'].sum()
+counts = all_data.groupby("item_id").target.count()
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;print_table(means.head().reset_index(), headers=["Item ID", "mean"])
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"&gt;
+
+
+&lt;colgroup&gt;
+&lt;col class="org-right"&gt;
+
+&lt;col class="org-right"&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th scope="col" class="org-right"&gt;Item ID&lt;/th&gt;
+&lt;th scope="col" class="org-right"&gt;mean&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class="org-right"&gt;139255&lt;/td&gt;
+&lt;td class="org-right"&gt;0.0222222&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;141495&lt;/td&gt;
+&lt;td class="org-right"&gt;0.0568336&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;144968&lt;/td&gt;
+&lt;td class="org-right"&gt;0.141176&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;142661&lt;/td&gt;
+&lt;td class="org-right"&gt;0.0373832&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td class="org-right"&gt;138947&lt;/td&gt;
+&lt;td class="org-right"&gt;1.31904&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;
+Now we'll calculate the total number of items (the sum of the target values for all the items) and how many items there are once you leave one out.
+&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;total_sum = all_data.target.sum()
+one_less = len(means) - 1
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;left_out = (total_sum - means)/one_less
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;pre class="example"&gt;
+-0.48303869886216694
+Current answer for task Leave-one-out_scheme is: -0.48303869886216694
+
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-org2ce6ca4" class="outline-2"&gt;
+&lt;h2 id="org2ce6ca4"&gt;3. Smoothing&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org2ce6ca4"&gt;
+&lt;p&gt;
+Explained starting at 4:03 of the &lt;a href="https://www.coursera.org/learn/competitive-data-science/lecture/LGYQ2/regularization"&gt;Regularization video&lt;/a&gt;.
+&lt;/p&gt;
+
+&lt;p&gt;
+Next, implement a smoothing scheme with \(\alpha = 100\). Use the formula from the first slide in the video and \(0.3343\) as &lt;code&gt;globalmean&lt;/code&gt;. Note that &lt;code&gt;nrows&lt;/code&gt; is the number of objects that belong to a certain category (not the number of rows in the dataset).
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# YOUR CODE GOES HERE
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-orga0f0979" class="outline-2"&gt;
+&lt;h2 id="orga0f0979"&gt;4. Expanding mean scheme&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orga0f0979"&gt;
+&lt;p&gt;
+This is explained starting at 5:50 of the &lt;a href="https://www.coursera.org/learn/competitive-data-science/lecture/LGYQ2/regularization"&gt;Regularization video&lt;/a&gt;.
+&lt;/p&gt;
+
+&lt;p&gt;
+Finally, implement the &lt;b&gt;expanding mean&lt;/b&gt; scheme. It is basically already implemented for you in the video, but you can challenge yourself and try to implement it yourself. You will need &lt;a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.core.groupby.DataFrameGroupBy.cumsum.html"&gt;&lt;code&gt;cumsum&lt;/code&gt;&lt;/a&gt; and &lt;a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.core.groupby.GroupBy.cumcount.html"&gt;&lt;code&gt;cumcount&lt;/code&gt;&lt;/a&gt; functions from pandas.
+&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# YOUR CODE GOES HERE
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="outline-container-orgddcf4cf" class="outline-2"&gt;
+&lt;h2 id="orgddcf4cf"&gt;Authorization &amp;amp; Submission&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgddcf4cf"&gt;
+&lt;p&gt;
+To submit the assignment parts to Cousera platform, please, enter your e-mail and token into variables below. You can generate the token on this programming assignment's page. Note: The Token expires 30 minutes after generation.
+&lt;/p&gt;
+
+&lt;pre class="example"&gt;
+Email: necromuralist@protonmail.com
+Token: pjIHK0O25s2NPZMw
+You want to submit these numbers:
+Task KFold_scheme: 0.4164590712798667
+Task Leave-one-out_scheme: -0.48303869886216694
+Task Smoothing_scheme: ----------
+Task Expanding_mean_scheme: ----------
+
+&lt;/pre&gt;
+
+&lt;pre class="example"&gt;
+Submitted to Coursera platform. See results on assignment page!
+
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description><category>assignment</category><category>competition</category><category>encoding</category><guid>https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding-the-competition-data/</guid><pubDate>Mon, 24 Sep 2018 01:50:28 GMT</pubDate></item></channel></rss>

@@ -108,10 +108,10 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org81101ac">Install the Command</a></li>
-<li><a href="#orgd2306fc">Get Your Credentials</a></li>
-<li><a href="#orgbaffde6">Test it out</a></li>
-<li><a href="#orge10ca65">The Actual API</a></li>
+<li><a href="#org305bbbb">Install the Command</a></li>
+<li><a href="#org7aa36dc">Get Your Credentials</a></li>
+<li><a href="#org6a5cc2c">Test it out</a></li>
+<li><a href="#org85f6bbc">The Actual API</a></li>
 </ul>
 </div>
 </div>
@@ -120,9 +120,9 @@
 These are my notes as I set up the command-line interface. The official instructions are in the <a href="https://github.com/Kaggle/kaggle-api">README on github</a>.
 </p>
 
-<div id="outline-container-org81101ac" class="outline-2">
-<h2 id="org81101ac">Install the Command</h2>
-<div class="outline-text-2" id="text-org81101ac">
+<div id="outline-container-org305bbbb" class="outline-2">
+<h2 id="org305bbbb">Install the Command</h2>
+<div class="outline-text-2" id="text-org305bbbb">
 <p>
 The code is available through <a href="https://pypi.org/project/kaggle/">pypi</a> so you can install it through pip. Their instructions say to install it at the user-level but I'm doing it in a <code>virtualenv</code> so that actually doesn't work for me, instead I did a regular <code>pip</code> install (after installing <code>wheel</code>).
 </p>
@@ -133,13 +133,13 @@ pip install kaggle
 </div>
 </div>
 
-<div id="outline-container-orgd2306fc" class="outline-2">
-<h2 id="orgd2306fc">Get Your Credentials</h2>
-<div class="outline-text-2" id="text-orgd2306fc">
+<div id="outline-container-org7aa36dc" class="outline-2">
+<h2 id="org7aa36dc">Get Your Credentials</h2>
+<div class="outline-text-2" id="text-org7aa36dc">
 </div>
-<div id="outline-container-orgb3cbfc8" class="outline-3">
-<h3 id="orgb3cbfc8">Download the JSON File From Kaggle</h3>
-<div class="outline-text-3" id="text-orgb3cbfc8">
+<div id="outline-container-org92ceca5" class="outline-3">
+<h3 id="org92ceca5">Download the JSON File From Kaggle</h3>
+<div class="outline-text-3" id="text-org92ceca5">
 <p>
 Log in to your kaggle account and click on the <i>Account</i> menu (it's hidden until you hover over the drop-down widget).
 </p>
@@ -169,9 +169,9 @@ This will start a file download, if it prompts you save it to your computer.
 </div>
 </div>
 
-<div id="outline-container-org3ac9318" class="outline-3">
-<h3 id="org3ac9318">Set Up the File</h3>
-<div class="outline-text-3" id="text-org3ac9318">
+<div id="outline-container-orgab81d5e" class="outline-3">
+<h3 id="orgab81d5e">Set Up the File</h3>
+<div class="outline-text-3" id="text-orgab81d5e">
 <p>
 Store this file in a folder named <code>.kaggle</code>.
 </p>
@@ -204,9 +204,9 @@ The instructions say you could also export the values as environment variables, 
 </div>
 </div>
 
-<div id="outline-container-orgbaffde6" class="outline-2">
-<h2 id="orgbaffde6">Test it out</h2>
-<div class="outline-text-2" id="text-orgbaffde6">
+<div id="outline-container-org6a5cc2c" class="outline-2">
+<h2 id="org6a5cc2c">Test it out</h2>
+<div class="outline-text-2" id="text-org6a5cc2c">
 <p>
 It's a python command that uses the basic help system you would expect if you've used python command-line programs before.
 </p>
@@ -242,17 +242,17 @@ kaggle competitions download -c competitive-data-science-final-project data
 </pre>
 </div>
 </div>
-<div id="outline-container-orge10ca65" class="outline-2">
-<h2 id="orge10ca65">The Actual API</h2>
-<div class="outline-text-2" id="text-orge10ca65">
+<div id="outline-container-org85f6bbc" class="outline-2">
+<h2 id="org85f6bbc">The Actual API</h2>
+<div class="outline-text-2" id="text-org85f6bbc">
 <p>
 If you look under the hood the command is just doing REST calls. To make it programattic you could probably use <a href="http://docs.python-requests.org/en/master/">requests</a> or something similar to interact with it directly. You can see the calls you need to make by looking at the <a href="https://github.com/Kaggle/kaggle-api/blob/master/KaggleSwagger.yaml">swagger file</a>.
 </p>
 </div>
 
-<div id="outline-container-orgd69ed54" class="outline-3">
-<h3 id="orgd69ed54">How the CLI does it</h3>
-<div class="outline-text-3" id="text-orgd69ed54">
+<div id="outline-container-org3bf41e9" class="outline-3">
+<h3 id="org3bf41e9">How the CLI does it</h3>
+<div class="outline-text-3" id="text-org3bf41e9">
 <p>
 If you look in the <code>kaggle.__init__.py</code> file in the repository you'll see these imports.
 </p>

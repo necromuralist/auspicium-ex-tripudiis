@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about notes encoding)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/notes-encoding.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Thu, 04 Oct 2018 01:53:21 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Mean Encoding</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about notes encoding)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/notes-encoding.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Sun, 07 Oct 2018 01:39:02 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Mean Encoding</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
 &lt;h2&gt;Table of Contents&lt;/h2&gt;
 &lt;div id="text-table-of-contents"&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding/#org981d2b2"&gt;Mean Encoding&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding/#org8c19d2a"&gt;Regularization&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding/#orgdd01022"&gt;Generalizations and Extensions&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding/#orgc74a70d"&gt;Summary&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding/#org01e0376"&gt;Mean Encoding&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding/#org95524d8"&gt;Regularization&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding/#org5fd0890"&gt;Generalizations and Extensions&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/mean-encoding/#org07d67f5"&gt;Summary&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org981d2b2" class="outline-2"&gt;
-&lt;h2 id="org981d2b2"&gt;Mean Encoding&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org981d2b2"&gt;
+&lt;div id="outline-container-org01e0376" class="outline-2"&gt;
+&lt;h2 id="org01e0376"&gt;Mean Encoding&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org01e0376"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org9189ad0" class="outline-3"&gt;
-&lt;h3 id="org9189ad0"&gt;Introduction&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org9189ad0"&gt;
+&lt;div id="outline-container-org11b83a0" class="outline-3"&gt;
+&lt;h3 id="org11b83a0"&gt;Introduction&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org11b83a0"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;also called target encoding and likelihood encoding&lt;/li&gt;
 &lt;/ul&gt;
@@ -25,17 +25,17 @@
 It is a way to encode a categorical feature. Uses the fraction of times the feature is 1 out of all the times the feature is in the data set (for binary classification).
 &lt;/p&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgf79820e" class="outline-4"&gt;
-&lt;h4 id="orgf79820e"&gt;Why does it work?&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-orgf79820e"&gt;
+&lt;div id="outline-container-orgd5dfb59" class="outline-4"&gt;
+&lt;h4 id="orgd5dfb59"&gt;Why does it work?&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-orgd5dfb59"&gt;
 &lt;p&gt;
 Unlike regular encoding, which has no real meaning to the labels, mean encoding imposes an ordering. This allows you to reduce your loss while using shorter trees.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org0754e80" class="outline-4"&gt;
-&lt;h4 id="org0754e80"&gt;How do you calculate it?&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org0754e80"&gt;
+&lt;div id="outline-container-org4bd42a6" class="outline-4"&gt;
+&lt;h4 id="org4bd42a6"&gt;How do you calculate it?&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org4bd42a6"&gt;
 &lt;p&gt;
 There are multiple ways.
 &lt;/p&gt;
@@ -47,9 +47,9 @@ There are multiple ways.
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org5fce97b" class="outline-4"&gt;
-&lt;h4 id="org5fce97b"&gt;When does it fail?&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org5fce97b"&gt;
+&lt;div id="outline-container-orgb960867" class="outline-4"&gt;
+&lt;h4 id="orgb960867"&gt;When does it fail?&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-orgb960867"&gt;
 &lt;p&gt;
 If you have lots of feature instances with few cases it will tend to overfit.
 &lt;/p&gt;
@@ -57,13 +57,13 @@ If you have lots of feature instances with few cases it will tend to overfit.
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org8c19d2a" class="outline-2"&gt;
-&lt;h2 id="org8c19d2a"&gt;Regularization&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org8c19d2a"&gt;
+&lt;div id="outline-container-org95524d8" class="outline-2"&gt;
+&lt;h2 id="org95524d8"&gt;Regularization&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org95524d8"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgda28dd3" class="outline-3"&gt;
-&lt;h3 id="orgda28dd3"&gt;Four Types&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgda28dd3"&gt;
+&lt;div id="outline-container-org2289034" class="outline-3"&gt;
+&lt;h3 id="org2289034"&gt;Four Types&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org2289034"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;Cross-validation loop inside the training data&lt;/li&gt;
 &lt;li&gt;Smoothing&lt;/li&gt;
@@ -72,9 +72,9 @@ If you have lots of feature instances with few cases it will tend to overfit.
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgde6b1ee" class="outline-3"&gt;
-&lt;h3 id="orgde6b1ee"&gt;Cross Validation&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgde6b1ee"&gt;
+&lt;div id="outline-container-org94e0c5f" class="outline-3"&gt;
+&lt;h3 id="org94e0c5f"&gt;Cross Validation&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org94e0c5f"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;Usually 4 or 5 folds are enough&lt;/li&gt;
 &lt;li&gt;Need to watch out for extreme cases like leave-out-one (LOO)&lt;/li&gt;
@@ -104,9 +104,9 @@ Here's an example of this method using sklearn.
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org59aad2f" class="outline-3"&gt;
-&lt;h3 id="org59aad2f"&gt;Smoothing&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org59aad2f"&gt;
+&lt;div id="outline-container-org7ee9a96" class="outline-3"&gt;
+&lt;h3 id="org7ee9a96"&gt;Smoothing&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org7ee9a96"&gt;
 &lt;p&gt;
 Use a value \(\alpha\) to control the amount of regularization. This isn't a regularization method in and of itself, you use it with other methods.
 &lt;/p&gt;
@@ -119,17 +119,17 @@ Use a value \(\alpha\) to control the amount of regularization. This isn't a reg
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgfdf906f" class="outline-3"&gt;
-&lt;h3 id="orgfdf906f"&gt;Noise&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgfdf906f"&gt;
+&lt;div id="outline-container-org773f7ae" class="outline-3"&gt;
+&lt;h3 id="org773f7ae"&gt;Noise&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org773f7ae"&gt;
 &lt;p&gt;
 Adding noise degrades the quality of the encoding in the training data. This is usually used with &lt;i&gt;leave-one-out&lt;/i&gt; encoding to prevent overfitting. You have to figure out how much noise to add through experimentation.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org8d98283" class="outline-3"&gt;
-&lt;h3 id="org8d98283"&gt;Expanding Mean&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org8d98283"&gt;
+&lt;div id="outline-container-org92848c2" class="outline-3"&gt;
+&lt;h3 id="org92848c2"&gt;Expanding Mean&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org92848c2"&gt;
 &lt;p&gt;
 This introduces the least amount of leakage from the target variable and doesn't require hyper-parameters for you to tune. The downside is that the encoding quality is irregular. There is a built-in implementation in the &lt;code&gt;CatBoost&lt;/code&gt; library.
 &lt;/p&gt;
@@ -145,39 +145,39 @@ Here's a pandas implementation.
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org6d57dc7" class="outline-3"&gt;
-&lt;h3 id="org6d57dc7"&gt;Which one should you use?&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org6d57dc7"&gt;
+&lt;div id="outline-container-org8a972ae" class="outline-3"&gt;
+&lt;h3 id="org8a972ae"&gt;Which one should you use?&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org8a972ae"&gt;
 &lt;p&gt;
 Cross Validation Loops and Expanding Means are the most practical to use.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgdd01022" class="outline-2"&gt;
-&lt;h2 id="orgdd01022"&gt;Generalizations and Extensions&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgdd01022"&gt;
+&lt;div id="outline-container-org5fd0890" class="outline-2"&gt;
+&lt;h2 id="org5fd0890"&gt;Generalizations and Extensions&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org5fd0890"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org187f583" class="outline-3"&gt;
-&lt;h3 id="org187f583"&gt;Regression and Multiclass&lt;/h3&gt;
+&lt;div id="outline-container-org9713263" class="outline-3"&gt;
+&lt;h3 id="org9713263"&gt;Regression and Multiclass&lt;/h3&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgc74a70d" class="outline-2"&gt;
-&lt;h2 id="orgc74a70d"&gt;Summary&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgc74a70d"&gt;
+&lt;div id="outline-container-org07d67f5" class="outline-2"&gt;
+&lt;h2 id="org07d67f5"&gt;Summary&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org07d67f5"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgb189648" class="outline-3"&gt;
-&lt;h3 id="orgb189648"&gt;Advantages&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgb189648"&gt;
+&lt;div id="outline-container-orgbbf575d" class="outline-3"&gt;
+&lt;h3 id="orgbbf575d"&gt;Advantages&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgbbf575d"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;Compact transformation of categorical variables&lt;/li&gt;
 &lt;li&gt;Powerful basis for feature engineering&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org388894b" class="outline-3"&gt;
-&lt;h3 id="org388894b"&gt;Disadvantages&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org388894b"&gt;
+&lt;div id="outline-container-org28db812" class="outline-3"&gt;
+&lt;h3 id="org28db812"&gt;Disadvantages&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org28db812"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;Needs careful validation, it's easy to overfit&lt;/li&gt;
 &lt;li&gt;Only certain data sets will show a significant improvement from using it&lt;/li&gt;

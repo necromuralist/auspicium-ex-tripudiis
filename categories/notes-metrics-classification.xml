@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about notes metrics classification)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/notes-metrics-classification.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Tue, 25 Sep 2018 21:43:47 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Optimizing Classification Metrics</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/optimizing-classification-metrics/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-org9dc917b" class="outline-2"&gt;
-&lt;h2 id="org9dc917b"&gt;Introduction&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org9dc917b"&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about notes metrics classification)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/notes-metrics-classification.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Sun, 07 Oct 2018 01:39:02 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Optimizing Classification Metrics</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/optimizing-classification-metrics/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="outline-container-org1ed19de" class="outline-2"&gt;
+&lt;h2 id="org1ed19de"&gt;Introduction&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org1ed19de"&gt;
 &lt;p&gt;
 The &lt;i&gt;target metric&lt;/i&gt; is what the competition scores you on, but it isn't always the easiest metric to tune your model on. Sometimes you need to pick and &lt;i&gt;optimization metric&lt;/i&gt; to tune your model that isn't exactly the same but works well enough.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgb733e2f" class="outline-2"&gt;
-&lt;h2 id="orgb733e2f"&gt;LogLoss&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgb733e2f"&gt;
+&lt;div id="outline-container-org7234689" class="outline-2"&gt;
+&lt;h2 id="org7234689"&gt;LogLoss&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org7234689"&gt;
 &lt;p&gt;
 To optimize log-loss you just have to match it to the right model.
 &lt;/p&gt;
@@ -23,32 +23,32 @@ To optimize log-loss you just have to match it to the right model.
 Random Forests turn out to do poorly with Log Loss.
 &lt;/p&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org89db9fa" class="outline-3"&gt;
-&lt;h3 id="org89db9fa"&gt;Probability Calibration&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org89db9fa"&gt;
+&lt;div id="outline-container-orgbd53945" class="outline-3"&gt;
+&lt;h3 id="orgbd53945"&gt;Probability Calibration&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgbd53945"&gt;
 &lt;p&gt;
 If you take all the rows with the same score, then the fraction of them that have a class of 1 should match the score (so if they all have a score of 0.8, then 80% of them should be 1 and 20% should be 0). If the fraction is off, then you need to calibrate the probabilities. To do this take your model and then send its outputs to a model that does better with Log Loss. So if you want to use a Random Forest, you would train your model using AUC as the metric then use the predictions to train another model like a neural net and have it use Log Loss as the metric.
 &lt;/p&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org336306c" class="outline-4"&gt;
-&lt;h4 id="org336306c"&gt;Platt Scaling&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org336306c"&gt;
+&lt;div id="outline-container-orgd9944e7" class="outline-4"&gt;
+&lt;h4 id="orgd9944e7"&gt;Platt Scaling&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-orgd9944e7"&gt;
 &lt;p&gt;
 Fit a Logistic Regression to your predictions
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org636f8a8" class="outline-4"&gt;
-&lt;h4 id="org636f8a8"&gt;Isotonic Regression&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org636f8a8"&gt;
+&lt;div id="outline-container-org0fc89fd" class="outline-4"&gt;
+&lt;h4 id="org0fc89fd"&gt;Isotonic Regression&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org0fc89fd"&gt;
 &lt;p&gt;
 Fit an Isotonic Regression to your predictions
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgf6afab3" class="outline-4"&gt;
-&lt;h4 id="orgf6afab3"&gt;Stacking&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-orgf6afab3"&gt;
+&lt;div id="outline-container-org57e9759" class="outline-4"&gt;
+&lt;h4 id="org57e9759"&gt;Stacking&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org57e9759"&gt;
 &lt;p&gt;
 Fit XGBoost or a neural net to your predictions
 &lt;/p&gt;
@@ -56,18 +56,18 @@ Fit XGBoost or a neural net to your predictions
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgb75ed53" class="outline-2"&gt;
-&lt;h2 id="orgb75ed53"&gt;Accuracy&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgb75ed53"&gt;
+&lt;div id="outline-container-orgbb94aaa" class="outline-2"&gt;
+&lt;h2 id="orgbb94aaa"&gt;Accuracy&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgbb94aaa"&gt;
 &lt;p&gt;
 Accuracy is a difficult metric to optimize because it isn't differentiable. To optimize the accuracy metric you need to use a different metric (a proxy metric) like log-loss and then tune the threshold.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org87b89a4" class="outline-2"&gt;
-&lt;h2 id="org87b89a4"&gt;Area Under the Curve (AUC)&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org87b89a4"&gt;
+&lt;div id="outline-container-org7c88824" class="outline-2"&gt;
+&lt;h2 id="org7c88824"&gt;Area Under the Curve (AUC)&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org7c88824"&gt;
 &lt;p&gt;
 Some models work with it so if you can choose one of these models.
 &lt;/p&gt;
@@ -82,21 +82,21 @@ In practice you can optimize the model to log-loss.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgb8d2c5a" class="outline-2"&gt;
-&lt;h2 id="orgb8d2c5a"&gt;Quadratic Weighted Kappa&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgb8d2c5a"&gt;
+&lt;div id="outline-container-org573fd40" class="outline-2"&gt;
+&lt;h2 id="org573fd40"&gt;Quadratic Weighted Kappa&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org573fd40"&gt;
 &lt;ol class="org-ol"&gt;
 &lt;li&gt;Optimize on the Mean Squared Error then optimize the thresholds.&lt;/li&gt;
 &lt;/ol&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org324445f" class="outline-2"&gt;
-&lt;h2 id="org324445f"&gt;Other Sources&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org324445f"&gt;
+&lt;div id="outline-container-org51ec19c" class="outline-2"&gt;
+&lt;h2 id="org51ec19c"&gt;Other Sources&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org51ec19c"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orged729be" class="outline-3"&gt;
-&lt;h3 id="orged729be"&gt;Classification&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orged729be"&gt;
+&lt;div id="outline-container-org2912366" class="outline-3"&gt;
+&lt;h3 id="org2912366"&gt;Classification&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org2912366"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;&lt;a href="http://queirozf.com/entries/evaluation-metrics-for-classification-quick-examples-references"&gt;Evaluation Metrics for Classification Problems&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://www.garysieling.com/blog/sklearn-gini-vs-entropy-criteria"&gt;Descision Trees: &lt;i&gt;Gini&lt;/i&gt; vs &lt;i&gt;Entropy&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
@@ -104,9 +104,9 @@ In practice you can optimize the model to log-loss.
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org91978e5" class="outline-3"&gt;
-&lt;h3 id="org91978e5"&gt;Ranking&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org91978e5"&gt;
+&lt;div id="outline-container-orgb184bd5" class="outline-3"&gt;
+&lt;h3 id="orgb184bd5"&gt;Ranking&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgb184bd5"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;&lt;a href="https://icml.cc/2015/wp-content/uploads/2015/06/icml_ranking.pdf"&gt;Learning to Rank Using Gradient Descent&lt;/a&gt; - source of pairwise AUC optimization&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/MSR-TR-2010-82.pdf"&gt;From RankNet to LambdaRank&lt;/a&gt;&lt;/li&gt;
@@ -115,18 +115,18 @@ In practice you can optimize the model to log-loss.
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org82e5d75" class="outline-3"&gt;
-&lt;h3 id="org82e5d75"&gt;Clustering&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org82e5d75"&gt;
+&lt;div id="outline-container-orgbc4493f" class="outline-3"&gt;
+&lt;h3 id="orgbc4493f"&gt;Clustering&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgbc4493f"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;&lt;a href="http://nlp.uned.es/docs/amigo2007a.pdf"&gt;Comparison of clustering metrics&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgce36bdf" class="outline-2"&gt;
-&lt;h2 id="orgce36bdf"&gt;Practice Quiz&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgce36bdf"&gt;
+&lt;div id="outline-container-orgeaad512" class="outline-2"&gt;
+&lt;h2 id="orgeaad512"&gt;Practice Quiz&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgeaad512"&gt;
 &lt;ol class="org-ol"&gt;
 &lt;li&gt;What would be a logloss value for a binary classification task if we use a constant predictor \(f(x)=0.5\)? Round to two decimal places.&lt;/li&gt;
 &lt;/ol&gt;
@@ -221,13 +221,13 @@ print(roc_auc_score(y_true, y_score))
 &lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org8885982" class="outline-2"&gt;
-&lt;h2 id="org8885982"&gt;Quiz&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org8885982"&gt;
+&lt;div id="outline-container-org2df8792" class="outline-2"&gt;
+&lt;h2 id="org2df8792"&gt;Quiz&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org2df8792"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org24e1008" class="outline-3"&gt;
-&lt;h3 id="org24e1008"&gt;One&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org24e1008"&gt;
+&lt;div id="outline-container-org6f8a96f" class="outline-3"&gt;
+&lt;h3 id="org6f8a96f"&gt;One&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org6f8a96f"&gt;
 &lt;p&gt;
 Suppose we solve a binary classification task and our solution is scored with Log Loss. What predictions are preferable if all the true target values are 0?
 &lt;/p&gt;
@@ -258,9 +258,9 @@ inf
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org7f5bef6" class="outline-3"&gt;
-&lt;h3 id="org7f5bef6"&gt;Two&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org7f5bef6"&gt;
+&lt;div id="outline-container-org632c6a9" class="outline-3"&gt;
+&lt;h3 id="org632c6a9"&gt;Two&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org632c6a9"&gt;
 &lt;p&gt;
 Suppose we solve a regression task and we optimize MSE. If we manage to lower MSE loss on either the training set or the test set, how would this affect the Pearson Correlation coefficient between the target vector and the predictions on the same set.
 &lt;/p&gt;
@@ -276,9 +276,9 @@ The correlation will not change.
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgb4de534" class="outline-3"&gt;
-&lt;h3 id="orgb4de534"&gt;Three&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgb4de534"&gt;
+&lt;div id="outline-container-orgee20baa" class="outline-3"&gt;
+&lt;h3 id="orgee20baa"&gt;Three&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgee20baa"&gt;
 &lt;p&gt;
 What would be a best constant prediction for a multi-class classification with four classes? The solution is scored with multi-class Log Loss. The number of objects in each class in the training set is 18, 3, 15, 24.
 &lt;/p&gt;
@@ -298,9 +298,9 @@ print(counts/counts.sum())
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orged3cab1" class="outline-3"&gt;
-&lt;h3 id="orged3cab1"&gt;Four&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orged3cab1"&gt;
+&lt;div id="outline-container-org51a35f1" class="outline-3"&gt;
+&lt;h3 id="org51a35f1"&gt;Four&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org51a35f1"&gt;
 &lt;p&gt;
 What is the best constant predictor for the r-squared metric?
 &lt;/p&gt;
@@ -311,9 +311,9 @@ What is the best constant predictor for the r-squared metric?
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org3852398" class="outline-3"&gt;
-&lt;h3 id="org3852398"&gt;Five&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org3852398"&gt;
+&lt;div id="outline-container-org27205b7" class="outline-3"&gt;
+&lt;h3 id="org27205b7"&gt;Five&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org27205b7"&gt;
 &lt;p&gt;
 Select the Correct statements
 &lt;/p&gt;
@@ -326,9 +326,9 @@ Select the Correct statements
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-orgfea6e6f" class="outline-3"&gt;
-&lt;h3 id="orgfea6e6f"&gt;Six&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgfea6e6f"&gt;
+&lt;div id="outline-container-orgbea42f8" class="outline-3"&gt;
+&lt;h3 id="orgbea42f8"&gt;Six&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgbea42f8"&gt;
 &lt;p&gt;
 Suppose the target metric is &lt;b&gt;M1&lt;/b&gt; and the optimization loss is &lt;b&gt;M2&lt;/b&gt;. We train a model and monitor its quality on a holdout set using the metrics &lt;b&gt;M1&lt;/b&gt; and &lt;b&gt;M2&lt;/b&gt;.
 &lt;/p&gt;

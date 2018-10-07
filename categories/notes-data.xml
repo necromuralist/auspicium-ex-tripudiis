@@ -1,68 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about notes data)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/notes-data.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Mon, 17 Sep 2018 22:30:31 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Exploratory Data Analysis</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes on Kaggle (Posts about notes data)</title><link>https://necromuralist.github.io/Kaggle-Competitions/</link><description></description><atom:link href="https://necromuralist.github.io/Kaggle-Competitions/categories/notes-data.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Sat, 15 Sep 2018 17:42:26 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Exploratory Data Analysis</title><link>https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/</link><dc:creator>Cloistered Monkey</dc:creator><description>&lt;div id="table-of-contents"&gt;
 &lt;h2&gt;Table of Contents&lt;/h2&gt;
 &lt;div id="text-table-of-contents"&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/#org34aeac3"&gt;Building Your Intuition About the Data&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/#org58a45f9"&gt;Exploring Anonymized Data&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/#org964784e"&gt;Visualizations&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/#orgd36fdd7"&gt;Data Set Cleaning&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/#org7a22654"&gt;Quiz&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/#orgab031c9"&gt;Links&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/#orga7ca7b0"&gt;Building Your Intuition About the Data&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/#org6ae1a4e"&gt;Exploring Anonymized Data&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/#orga42a7b7"&gt;Visualizations&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/#org70345c8"&gt;Data Set Cleaning&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/#orgf6f6742"&gt;Quiz&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://necromuralist.github.io/Kaggle-Competitions/posts/exploratory-data-analysis/#orgeedcf2a"&gt;Links&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id="outline-container-org34aeac3" class="outline-2"&gt;
-&lt;h2 id="org34aeac3"&gt;Building Your Intuition About the Data&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org34aeac3"&gt;
+&lt;div id="outline-container-orga7ca7b0" class="outline-2"&gt;
+&lt;h2 id="orga7ca7b0"&gt;Building Your Intuition About the Data&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orga7ca7b0"&gt;
 &lt;p&gt;
 The first thing to do is to see if you can build up a mental model of what the data is about.
 &lt;/p&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orge290e37" class="outline-3"&gt;
-&lt;h3 id="orge290e37"&gt;Get Domain Knowledge&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orge290e37"&gt;
+&lt;div id="outline-container-org0a1a14d" class="outline-3"&gt;
+&lt;h3 id="org0a1a14d"&gt;Get Domain Knowledge&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org0a1a14d"&gt;
 &lt;p&gt;
 Find out something about the topic that the data describes.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org1ec5444" class="outline-3"&gt;
-&lt;h3 id="org1ec5444"&gt;Check if the Data is intuitive&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org1ec5444"&gt;
+&lt;div id="outline-container-orge4755c2" class="outline-3"&gt;
+&lt;h3 id="orge4755c2"&gt;Check if the Data is intuitive&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orge4755c2"&gt;
 &lt;p&gt;
 See if there are any strange values and see if it makes sense given the data description.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgfd5e207" class="outline-3"&gt;
-&lt;h3 id="orgfd5e207"&gt;Understand how the data was generated&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgfd5e207"&gt;
+&lt;div id="outline-container-org4a6688e" class="outline-3"&gt;
+&lt;h3 id="org4a6688e"&gt;Understand how the data was generated&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org4a6688e"&gt;
 &lt;p&gt;
 Is any of it synthetic? Was the training data generated the same way as the testing data?
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org58a45f9" class="outline-2"&gt;
-&lt;h2 id="org58a45f9"&gt;Exploring Anonymized Data&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org58a45f9"&gt;
+&lt;div id="outline-container-org6ae1a4e" class="outline-2"&gt;
+&lt;h2 id="org6ae1a4e"&gt;Exploring Anonymized Data&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org6ae1a4e"&gt;
 &lt;p&gt;
 Organizers sometimes encode data so you can't tell what it is.
 &lt;/p&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org63adc49" class="outline-3"&gt;
-&lt;h3 id="org63adc49"&gt;Try To Decode the Data&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org63adc49"&gt;
+&lt;div id="outline-container-org6c5093d" class="outline-3"&gt;
+&lt;h3 id="org6c5093d"&gt;Try To Decode the Data&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org6c5093d"&gt;
 &lt;p&gt;
 You generally won't be able to figure out what the data is if it's encoded, but sometimes they were created using simple shifting schemes that will let you figure out their original values.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgb285210" class="outline-3"&gt;
-&lt;h3 id="orgb285210"&gt;Explore Individual Features&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgb285210"&gt;
+&lt;div id="outline-container-org3a18170" class="outline-3"&gt;
+&lt;h3 id="org3a18170"&gt;Explore Individual Features&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org3a18170"&gt;
 &lt;p&gt;
 Even if you don't know what the data is, it's important to know what type of data it is so that you can use the right data preprocessing for your model.
 &lt;/p&gt;
@@ -75,17 +75,17 @@ Even if you don't know what the data is, it's important to know what type of dat
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org964784e" class="outline-2"&gt;
-&lt;h2 id="org964784e"&gt;Visualizations&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org964784e"&gt;
+&lt;div id="outline-container-orga42a7b7" class="outline-2"&gt;
+&lt;h2 id="orga42a7b7"&gt;Visualizations&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orga42a7b7"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org8abebf3" class="outline-3"&gt;
-&lt;h3 id="org8abebf3"&gt;Features&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org8abebf3"&gt;
+&lt;div id="outline-container-org0a8d1b7" class="outline-3"&gt;
+&lt;h3 id="org0a8d1b7"&gt;Features&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org0a8d1b7"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org73e5197" class="outline-4"&gt;
-&lt;h4 id="org73e5197"&gt;Histograms&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org73e5197"&gt;
+&lt;div id="outline-container-org0324b8b" class="outline-4"&gt;
+&lt;h4 id="org0324b8b"&gt;Histograms&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org0324b8b"&gt;
 &lt;p&gt;
 This is useful for seeing the shape of the data.
 &lt;/p&gt;
@@ -94,9 +94,9 @@ This is useful for seeing the shape of the data.
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgfcd7453" class="outline-4"&gt;
-&lt;h4 id="orgfcd7453"&gt;Index vs Value&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-orgfcd7453"&gt;
+&lt;div id="outline-container-orge6ca6ac" class="outline-4"&gt;
+&lt;h4 id="orge6ca6ac"&gt;Index vs Value&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-orge6ca6ac"&gt;
 &lt;p&gt;
 This will show you how well distributed the data is within the data frame. Horizontal lines indicate repeated values and empty bands show areas where none of the data had this value. If you don't have vertical lines then the data was probably shuffled.
 &lt;/p&gt;
@@ -105,9 +105,9 @@ This will show you how well distributed the data is within the data frame. Horiz
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org594802b" class="outline-4"&gt;
-&lt;h4 id="org594802b"&gt;Index vs Value Colored By Class Label&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org594802b"&gt;
+&lt;div id="outline-container-org9059dc9" class="outline-4"&gt;
+&lt;h4 id="org9059dc9"&gt;Index vs Value Colored By Class Label&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org9059dc9"&gt;
 &lt;p&gt;
 If you plot the classes with different colors you can see if there are clusters and clear separations between them. (&lt;code&gt;y&lt;/code&gt; in the function call has the target values).
 &lt;/p&gt;
@@ -116,9 +116,9 @@ If you plot the classes with different colors you can see if there are clusters 
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org148847a" class="outline-4"&gt;
-&lt;h4 id="org148847a"&gt;Plot Other Things&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org148847a"&gt;
+&lt;div id="outline-container-orgf7a10aa" class="outline-4"&gt;
+&lt;h4 id="orgf7a10aa"&gt;Plot Other Things&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-orgf7a10aa"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;Row vs Feature&lt;/li&gt;
 &lt;li&gt;Nan-values&lt;/li&gt;
@@ -127,17 +127,17 @@ If you plot the classes with different colors you can see if there are clusters 
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgfe49d8e" class="outline-3"&gt;
-&lt;h3 id="orgfe49d8e"&gt;Relationships&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgfe49d8e"&gt;
+&lt;div id="outline-container-org90bcaff" class="outline-3"&gt;
+&lt;h3 id="org90bcaff"&gt;Relationships&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org90bcaff"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgbdae5b1" class="outline-4"&gt;
-&lt;h4 id="orgbdae5b1"&gt;Scatter Plots&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-orgbdae5b1"&gt;
+&lt;div id="outline-container-org5fbfc32" class="outline-4"&gt;
+&lt;h4 id="org5fbfc32"&gt;Scatter Plots&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org5fbfc32"&gt;
 &lt;/div&gt;
 &lt;ul class="org-ul"&gt;
-&lt;li&gt;&lt;a id="orge6bcb3a"&gt;&lt;/a&gt;Pairwise Relationships&lt;br&gt;
-&lt;div class="outline-text-5" id="text-orge6bcb3a"&gt;
+&lt;li&gt;&lt;a id="org2ba358a"&gt;&lt;/a&gt;Pairwise Relationships&lt;br&gt;
+&lt;div class="outline-text-5" id="text-org2ba358a"&gt;
 &lt;p&gt;
 To make it eaiser to see relationships, you can plot them in pairs.
 &lt;/p&gt;
@@ -146,15 +146,15 @@ To make it eaiser to see relationships, you can plot them in pairs.
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/li&gt;
-&lt;li&gt;&lt;a id="orgb75b450"&gt;&lt;/a&gt;Compare the Test Set&lt;br&gt;
-&lt;div class="outline-text-5" id="text-orgb75b450"&gt;
+&lt;li&gt;&lt;a id="org0c1ba14"&gt;&lt;/a&gt;Compare the Test Set&lt;br&gt;
+&lt;div class="outline-text-5" id="text-org0c1ba14"&gt;
 &lt;p&gt;
 Plot the features and the test-set (using different colors) to see how well your training data matches your test data.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/li&gt;
-&lt;li&gt;&lt;a id="org55ad28c"&gt;&lt;/a&gt;Scatter Matrix&lt;br&gt;
-&lt;div class="outline-text-5" id="text-org55ad28c"&gt;
+&lt;li&gt;&lt;a id="orgd7983ec"&gt;&lt;/a&gt;Scatter Matrix&lt;br&gt;
+&lt;div class="outline-text-5" id="text-orgd7983ec"&gt;
 &lt;p&gt;
 Pandas has a convenience function that will plot all the pairwise scatter-plots for you.
 &lt;/p&gt;
@@ -165,9 +165,9 @@ Pandas has a convenience function that will plot all the pairwise scatter-plots 
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org2764dde" class="outline-4"&gt;
-&lt;h4 id="org2764dde"&gt;Corellation&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org2764dde"&gt;
+&lt;div id="outline-container-orge4c5609" class="outline-4"&gt;
+&lt;h4 id="orge4c5609"&gt;Corellation&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-orge4c5609"&gt;
 &lt;p&gt;
 Plot the corellation matrix to see if there are feature-pairs that are related so you can make a new feature out of them and see if they help.
 &lt;/p&gt;
@@ -180,9 +180,9 @@ A straight correllation matrix might give you a sense of how correllated the fea
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org154ea12" class="outline-4"&gt;
-&lt;h4 id="org154ea12"&gt;Plot Statistics&lt;/h4&gt;
-&lt;div class="outline-text-4" id="text-org154ea12"&gt;
+&lt;div id="outline-container-org0f78f2b" class="outline-4"&gt;
+&lt;h4 id="org0f78f2b"&gt;Plot Statistics&lt;/h4&gt;
+&lt;div class="outline-text-4" id="text-org0f78f2b"&gt;
 &lt;p&gt;
 Try plotting mean, differences, combination counts, etc. and see if you can create groups out of them.
 &lt;/p&gt;
@@ -190,13 +190,13 @@ Try plotting mean, differences, combination counts, etc. and see if you can crea
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgd36fdd7" class="outline-2"&gt;
-&lt;h2 id="orgd36fdd7"&gt;Data Set Cleaning&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgd36fdd7"&gt;
+&lt;div id="outline-container-org70345c8" class="outline-2"&gt;
+&lt;h2 id="org70345c8"&gt;Data Set Cleaning&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-org70345c8"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org94aa88c" class="outline-3"&gt;
-&lt;h3 id="org94aa88c"&gt;Duplicated and Constant Features&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org94aa88c"&gt;
+&lt;div id="outline-container-orgae0f01b" class="outline-3"&gt;
+&lt;h3 id="orgae0f01b"&gt;Duplicated and Constant Features&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgae0f01b"&gt;
 &lt;p&gt;
 Sometimes a feature will have the same value in all the rows. If it's this way in both the training and test sets you can just remove it, but if there are different values in the test set you have to figure out how to handle them.
 &lt;/p&gt;
@@ -217,22 +217,22 @@ This can happen with rows as well, but it can be harder to decide whether this i
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org5638e7a" class="outline-3"&gt;
-&lt;h3 id="org5638e7a"&gt;Non-shuffled Data&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org5638e7a"&gt;
+&lt;div id="outline-container-org601f9d8" class="outline-3"&gt;
+&lt;h3 id="org601f9d8"&gt;Non-shuffled Data&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org601f9d8"&gt;
 &lt;p&gt;
 If you plot the mean as a horizontal line the data should be evenly distributed around it, if not it might not have been shuffled and there could be an inadvertent pattern in the data. You might not be able to use it, but you should understand all the things about the data that you can find out.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org7a22654" class="outline-2"&gt;
-&lt;h2 id="org7a22654"&gt;Quiz&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-org7a22654"&gt;
+&lt;div id="outline-container-orgf6f6742" class="outline-2"&gt;
+&lt;h2 id="orgf6f6742"&gt;Quiz&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgf6f6742"&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgf4f7ea1" class="outline-3"&gt;
-&lt;h3 id="orgf4f7ea1"&gt;One&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-orgf4f7ea1"&gt;
+&lt;div id="outline-container-orgfb0f911" class="outline-3"&gt;
+&lt;h3 id="orgfb0f911"&gt;One&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-orgfb0f911"&gt;
 &lt;p&gt;
 Suppose we are given a data set with features &lt;i&gt;X&lt;/i&gt;, &lt;i&gt;Y&lt;/i&gt;, and &lt;i&gt;Z&lt;/i&gt;. Can you recover &lt;i&gt;z&lt;/i&gt; as a function of &lt;i&gt;x&lt;/i&gt; and &lt;i&gt;y&lt;/i&gt;?
 &lt;/p&gt;
@@ -244,9 +244,9 @@ Suppose we are given a data set with features &lt;i&gt;X&lt;/i&gt;, &lt;i&gt;Y&l
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org341a38f" class="outline-3"&gt;
-&lt;h3 id="org341a38f"&gt;Two&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org341a38f"&gt;
+&lt;div id="outline-container-org2f5a3ba" class="outline-3"&gt;
+&lt;h3 id="org2f5a3ba"&gt;Two&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org2f5a3ba"&gt;
 &lt;p&gt;
 What value do the red dots have?
 0.5 (wrong)
@@ -254,9 +254,9 @@ What value do the red dots have?
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org8f74676" class="outline-3"&gt;
-&lt;h3 id="org8f74676"&gt;Three&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org8f74676"&gt;
+&lt;div id="outline-container-org3c2f040" class="outline-3"&gt;
+&lt;h3 id="org3c2f040"&gt;Three&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org3c2f040"&gt;
 &lt;p&gt;
 What hypothesis about X can we not reject based on the plots?
 &lt;/p&gt;
@@ -269,9 +269,9 @@ What hypothesis about X can we not reject based on the plots?
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-org709ea18" class="outline-3"&gt;
-&lt;h3 id="org709ea18"&gt;Four&lt;/h3&gt;
-&lt;div class="outline-text-3" id="text-org709ea18"&gt;
+&lt;div id="outline-container-org4560230" class="outline-3"&gt;
+&lt;h3 id="org4560230"&gt;Four&lt;/h3&gt;
+&lt;div class="outline-text-3" id="text-org4560230"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li class="off"&gt;&lt;code&gt;[ ]&lt;/code&gt; Target is completely determined by coordinates (x,y)(x,y)(x,y), i.e. the label of the point is completely determined by point's position (x,y)(x,y)(x,y). Saying the same in other words: if we only had two features (x,y)(x,y)(x,y), we could build a classifier, that is accurate 100% of time.&lt;/li&gt;
 &lt;li class="on"&gt;&lt;code&gt;[X]&lt;/code&gt; The top right plot is better than the top left in that everything you get from the top left can also be gotten from the top right, but not the other way around.&lt;/li&gt;
@@ -280,9 +280,9 @@ What hypothesis about X can we not reject based on the plots?
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id="outline-container-orgab031c9" class="outline-2"&gt;
-&lt;h2 id="orgab031c9"&gt;Links&lt;/h2&gt;
-&lt;div class="outline-text-2" id="text-orgab031c9"&gt;
+&lt;div id="outline-container-orgeedcf2a" class="outline-2"&gt;
+&lt;h2 id="orgeedcf2a"&gt;Links&lt;/h2&gt;
+&lt;div class="outline-text-2" id="text-orgeedcf2a"&gt;
 &lt;ul class="org-ul"&gt;
 &lt;li&gt;&lt;a href="http://scikit-learn.org/stable/auto_examples/bicluster/plot_spectral_biclustering.html"&gt;Sorting Correlation Plots&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;

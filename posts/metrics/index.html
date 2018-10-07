@@ -108,44 +108,44 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orga4dac78">About Metrics</a></li>
-<li><a href="#org1c58ab3">The Most Common Metrics</a></li>
+<li><a href="#orgbde6720">About Metrics</a></li>
+<li><a href="#org7b29f8e">The Most Common Metrics</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orga4dac78" class="outline-2">
-<h2 id="orga4dac78">About Metrics</h2>
-<div class="outline-text-2" id="text-orga4dac78">
+<div id="outline-container-orgbde6720" class="outline-2">
+<h2 id="orgbde6720">About Metrics</h2>
+<div class="outline-text-2" id="text-orgbde6720">
 </div>
-<div id="outline-container-org3f23f45" class="outline-3">
-<h3 id="org3f23f45">What are metrics?</h3>
-<div class="outline-text-3" id="text-org3f23f45">
+<div id="outline-container-org765cc81" class="outline-3">
+<h3 id="org765cc81">What are metrics?</h3>
+<div class="outline-text-3" id="text-org765cc81">
 <p>
 Metrics are numeric values that you are trying to optimize - they are how your model is graded.
 </p>
 </div>
 </div>
-<div id="outline-container-orge0acf78" class="outline-3">
-<h3 id="orge0acf78">Why are there so many metrics?</h3>
-<div class="outline-text-3" id="text-orge0acf78">
+<div id="outline-container-orgf9a7966" class="outline-3">
+<h3 id="orgf9a7966">Why are there so many metrics?</h3>
+<div class="outline-text-3" id="text-orgf9a7966">
 <p>
 Each metric can tell you something different, so what metric you need depends on the problem you are trying to solve. For competitions, it is sometimes possible to do metrics probing just like you can sometimes do leaderboard probing to find peculiarities created by the chosen metric.
 </p>
 </div>
 </div>
 </div>
-<div id="outline-container-org1c58ab3" class="outline-2">
-<h2 id="org1c58ab3">The Most Common Metrics</h2>
-<div class="outline-text-2" id="text-org1c58ab3">
+<div id="outline-container-org7b29f8e" class="outline-2">
+<h2 id="org7b29f8e">The Most Common Metrics</h2>
+<div class="outline-text-2" id="text-org7b29f8e">
 </div>
-<div id="outline-container-orgd104bd3" class="outline-3">
-<h3 id="orgd104bd3">Regression</h3>
-<div class="outline-text-3" id="text-orgd104bd3">
+<div id="outline-container-org164f8c4" class="outline-3">
+<h3 id="org164f8c4">Regression</h3>
+<div class="outline-text-3" id="text-org164f8c4">
 </div>
-<div id="outline-container-orgdb9a946" class="outline-4">
-<h4 id="orgdb9a946">Mean Squared Error</h4>
-<div class="outline-text-4" id="text-orgdb9a946">
+<div id="outline-container-orgb9efe3b" class="outline-4">
+<h4 id="orgb9efe3b">Mean Squared Error</h4>
+<div class="outline-text-4" id="text-orgb9efe3b">
 <p>
 This is the average of the square of the errors.
 \[
@@ -158,9 +158,9 @@ The target mean value is the best constant prediction.
 </p>
 </div>
 </div>
-<div id="outline-container-org5248025" class="outline-4">
-<h4 id="org5248025">Root Mean Squared Error</h4>
-<div class="outline-text-4" id="text-org5248025">
+<div id="outline-container-org5e1ff14" class="outline-4">
+<h4 id="org5e1ff14">Root Mean Squared Error</h4>
+<div class="outline-text-4" id="text-org5e1ff14">
 <p>
 This is the square root of the mean squared error.
 </p>
@@ -171,17 +171,17 @@ This is the square root of the mean squared error.
 </ul>
 </div>
 </div>
-<div id="outline-container-orgf96fba4" class="outline-4">
-<h4 id="orgf96fba4">R-squared</h4>
-<div class="outline-text-4" id="text-orgf96fba4">
+<div id="outline-container-org3eab4b7" class="outline-4">
+<h4 id="org3eab4b7">R-squared</h4>
+<div class="outline-text-4" id="text-org3eab4b7">
 <ul class="org-ul">
 <li>Optimizing r-squared is equivalent to optimizing MSE</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orge8653a1" class="outline-4">
-<h4 id="orge8653a1">Mean Absolute Error</h4>
-<div class="outline-text-4" id="text-orge8653a1">
+<div id="outline-container-org6351935" class="outline-4">
+<h4 id="org6351935">Mean Absolute Error</h4>
+<div class="outline-text-4" id="text-org6351935">
 <p>
 This is more common when you are explaining it to a non-statistician. It is also more robust. Mathematically, it isn't something that you can calculate the derivate for.
 </p>
@@ -191,9 +191,9 @@ The target median is the best constant prediction.
 </p>
 </div>
 </div>
-<div id="outline-container-org6b02d49" class="outline-4">
-<h4 id="org6b02d49">MAE vs MSE</h4>
-<div class="outline-text-4" id="text-org6b02d49">
+<div id="outline-container-orgc9c8a24" class="outline-4">
+<h4 id="orgc9c8a24">MAE vs MSE</h4>
+<div class="outline-text-4" id="text-orgc9c8a24">
 <ul class="org-ul">
 <li>Outliers: use MAE</li>
 <li>Unexpected Values that we should still care about (not true outliers (mistakes), just rare): use MSE</li>
