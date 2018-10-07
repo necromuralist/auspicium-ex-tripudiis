@@ -10,23 +10,22 @@
 .. type: text
 #+END_COMMENT
 
-* Quiz
-** One
+* One
    What might be an indicator that mean encoding would be useful?
    - [ ] a lot of binary variables
    - [ ] a learning to rank task
    - [X] categorical variables with lots of levels
-** Two
+* Two
    What is the purpose of regularization in mean encoding?
    - [ ] Regularization allows you to make the feature space more sparse?
    - [X] Regularization allows us to better utilize mean encoding
    - [X] regularization reduces target variable leakage during the construction of mean encodings
-** Three
+* Three
    What is the correct form of validation when using mean encoding?
     - [ ] calculate the mean enocding on all training data, regularize, then varidate on a random validation split
     - [X] split the data into training and validation sets, then estimate the encodings on the training data, then apply them to the validation and validate the model on that split
     - [ ] Fix the cross-validation split, use that split to calculate mean encodings with cross-validation loop regularization, use the same split to validate the model
-** Four
+* Four
    Suppose we have a data frame (=df=) with a categorical variable named =item_id= and a target variable called =target=.
    We create two different mean encodings:
 
