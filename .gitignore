@@ -4,7 +4,6 @@ cache/
 output/
 .doit.db
 .ipynb_checkpoints/
-data/
 pickles/
 *.egg-info/
 .venv

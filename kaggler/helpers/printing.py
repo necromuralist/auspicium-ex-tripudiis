@@ -10,6 +10,6 @@ def print_table(frame, headers="keys", showindex=False):
      headers: list of table to headers to use instead of coulmns
      showindex (bool): whether to print the index
     """
-    print(tabulate(frame, headers="keys", tablefmt="orgtbl",
+    print(tabulate(frame, headers=headers, tablefmt="orgtbl",
                    showindex=showindex))
     return

@@ -2,7 +2,7 @@
 .. title: Mean Encoding The Competition Data
 .. slug: mean-encoding-the-competition-data
 .. date: 2018-09-23 18:50:28 UTC-07:00
-.. tags: assignment competition encoding
+.. tags: assignment, competition, encoding
 .. category: assignment
 .. link: 
 .. description: Mean encoding applied to the competition data.
@@ -10,6 +10,18 @@
 #+END_COMMENT
 #+OPTIONS: ^:{}
 #+TOC: headlines 1
+
+* Debugging
+  This is only to be able to re-load some of the helpers without having to kill and restart the jupyter server by using the [[https://ipython.readthedocs.io/en/stable/config/extensions/autoreload.html?highlight=autoreload][autoreload]] extension.
+
+#+BEGIN_SRC ipython :session encoding :results none
+%load_ext autoreload
+%autoreload 2
+#+END_SRC
+
+#+BEGIN_SRC ipython :session encoding :results none
+DEBUG = False
+#+END_SRC
 
 * Introduction
 
@@ -26,42 +38,50 @@ In this programming assignment you will be working with the [[https://www.kaggle
 
 - Fill NANs in the encoding with =0.3343=.
 - Some encoding schemes depend on sorting order, so in order to avoid confusion, please use the following code snippet to construct the data frame. This snippet also implements mean encoding without regularization.
-
+** The NaN Value
+   I don't know where this came from, but I guess it's related to the mean somehow (I think I checked and it isn't actually the mean).
 #+BEGIN_SRC ipython :session encoding :results none
 NAN_VALUE = 0.3343
 #+END_SRC
-
+** Turn Off the Numpy Warnings
 #+BEGIN_SRC python :session encoding :results none
 import warnings
 warnings.filterwarnings("ignore", message="numpy.dtype size changed")
 warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
 #+END_SRC
-
+** Python Standard Library
 #+BEGIN_SRC ipython :session encoding :results none
-# python standard library
 from itertools import product
 import os
-
+#+END_SRC
+** From PyPi
+#+BEGIN_SRC ipython :session encoding :results none
+from dotenv import load_dotenv
 from sklearn.model_selection import KFold
 import pandas
 import numpy
-
-# this course (github)
+#+END_SRC
+** This Course (github)
+#+BEGIN_SRC ipython :session encoding :results none
 from hse_graders.assignment_3.grader import Grader
+#+END_SRC
 
-# this project
+** This Project
+#+BEGIN_SRC ipython :session encoding :results none
 from kaggler.course.data import Data
 from kaggler.helpers.printing import print_table
 #+END_SRC
 
+** Setup The Environment
+
 #+BEGIN_SRC ipython :session encoding :results none
-NAN_VALUE = 0.3343
+load_dotenv()
 #+END_SRC
 
 * Read In the Data
 
 #+BEGIN_SRC ipython :session encoding :results none
-sales = Data().sales_training_data
+sales = Data(DEBUG).sales_training_data
 #+END_SRC
 
 * The Motivation
@@ -120,6 +140,7 @@ print(grid.shape)
 
 #+RESULTS:
 : (10913850, 3)
+
 
 The grid has all the items sold by each shop for each date-block. The number of rows isn't just $\textit{shops} \times \textit{items} \times \textit{date-blocks}$ because not every shop is in every date-block and not every shop sold every item (or even the same items every block).
 
@@ -290,7 +311,7 @@ print(first_correlation)
 #+END_SRC
 
 #+RESULTS:
-: 0.48303869886216977
+: 0.4830386988621644
 
 Since our value is between 0 and 1 it does describe the target to some degree, albeit not perfectly.
 
@@ -319,7 +340,7 @@ print(abs(first_correlation - second_correlation))
 #+END_SRC
 
 #+RESULTS:
-: 0.48303869886216977
+: 0.4830386988621644
 : 0.0
 
 See the printed value? It is the correlation coefficient between the target variable and your new encoded feature. You need to **compute the correlation coefficient** between the encodings that you will implement and **submit those to coursera**.
@@ -378,12 +399,33 @@ Note that you do not need to perform step 1 for every object. And step 2 can be 
 
 It will be most convenient to use the `.transform` function as in **Method 2**.
 
+First we'll calculate =summed=, a data frame of the counts of how often each item appears in the data set.
 #+BEGIN_SRC ipython :session encoding :results none
-summed = all_data.groupby('item_id')['target'].transform('sum')
-total_sum = summed.sum()
-one_less = len(summed) - 1
+sums = all_data.groupby('item_id')['target'].sum()
+counts = all_data.groupby("item_id").target.count()
+#+END_SRC
 
-left_out = (total_sum - summed)/one_less
+#+BEGIN_SRC ipython :session encoding :results output raw :exports both
+print_table(means.head().reset_index(), headers=["Item ID", "mean"])
+#+END_SRC
+
+#+RESULTS:
+| Item ID |      mean |
+|---------+-----------|
+|  139255 | 0.0222222 |
+|  141495 | 0.0568336 |
+|  144968 |  0.141176 |
+|  142661 | 0.0373832 |
+|  138947 |   1.31904 |
+
+Now we'll calculate the total number of items (the sum of the target values for all the items) and how many items there are once you leave one out.
+#+BEGIN_SRC ipython :session encoding :results none
+total_sum = all_data.target.sum()
+one_less = len(means) - 1
+#+END_SRC
+
+#+BEGIN_SRC ipython :session encoding :results none
+left_out = (total_sum - means)/one_less
 #+END_SRC
 
 #+BEGIN_SRC ipython :session encoding :results output :exports results
@@ -393,8 +435,8 @@ grader.submit_tag('Leave-one-out_scheme', corr)
 #+END_SRC
 
 #+RESULTS:
-: -0.47032519950821283
-: Current answer for task Leave-one-out_scheme is: -0.47032519950821283
+: -0.48303869886216694
+: Current answer for task Leave-one-out_scheme is: -0.48303869886216694
 
 * 3. Smoothing
 
@@ -433,10 +475,24 @@ To submit the assignment parts to Cousera platform, please, enter your e-mail an
 
 #+BEGIN_SRC ipython :session encoding :results output :exports results
 STUDENT_EMAIL = os.environ.get("EMAIL")
-STUDENT_TOKEN = os.enivron.get("TOKEN")
+STUDENT_TOKEN = os.environ.get("TOKEN")
+print("Email: {}".format(STUDENT_EMAIL))
+print("Token: {}".format(STUDENT_TOKEN))
 grader.status()
 #+END_SRC
+
+#+RESULTS:
+: Email: necromuralist@protonmail.com
+: Token: pjIHK0O25s2NPZMw
+: You want to submit these numbers:
+: Task KFold_scheme: 0.4164590712798667
+: Task Leave-one-out_scheme: -0.48303869886216694
+: Task Smoothing_scheme: ----------
+: Task Expanding_mean_scheme: ----------
 
 #+BEGIN_SRC ipython :session encoding :results output :exports results
 grader.submit(STUDENT_EMAIL, STUDENT_TOKEN)
 #+END_SRC
+
+#+RESULTS:
+: Submitted to Coursera platform. See results on assignment page!
