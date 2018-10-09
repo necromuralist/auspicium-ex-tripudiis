@@ -2,7 +2,7 @@
 .. title: The Competition
 .. slug: the-competition
 .. date: 2018-08-11 13:14:17 UTC-07:00
-.. tags: kaggle competition about
+.. tags: kaggle competition, about
 .. category: competition
 .. link: 
 .. description: About the kaggle competition.

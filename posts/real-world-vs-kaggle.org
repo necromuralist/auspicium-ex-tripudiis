@@ -2,7 +2,7 @@
 .. title: Real-World vs Kaggle
 .. slug: real-world-vs-kaggle
 .. date: 2018-08-04 18:02:24 UTC-07:00
-.. tags: basics kaggle
+.. tags: basics, kaggle
 .. category: notes
 .. link: 
 .. description: How kaggle competitions differ from real-world deployments.

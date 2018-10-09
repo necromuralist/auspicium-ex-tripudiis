@@ -2,7 +2,7 @@
 .. title: Revisiting Pandas (Yet Again)
 .. slug: pandas-basics
 .. date: 2018-08-05 12:56:23 UTC-07:00
-.. tags: pandas basics
+.. tags: pandas, basics
 .. category: practice
 .. link: 
 .. description: Some introductory pandas stuff.

@@ -2,7 +2,7 @@
 .. title: Preprocessing the Kaggle Data
 .. slug: preprocessing-the-kaggle-data
 .. date: 2018-08-25 13:05:56 UTC-07:00
-.. tags: preprocessing data kaggle
+.. tags: preprocessing, data, kaggle
 .. category: competition
 .. link: 
 .. description: 

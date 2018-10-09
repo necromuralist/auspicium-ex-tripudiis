@@ -2,7 +2,7 @@
 .. title: Predicting the Mean
 .. slug: predicting-the-mean
 .. date: 2018-09-24 16:00:05 UTC-07:00
-.. tags: submission baselining competition
+.. tags: submission, baselining, competition
 .. category: competition
 .. link: 
 .. description: Predicting the Mean for all values.

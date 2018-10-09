@@ -2,7 +2,7 @@
 .. title: Building The Training Set
 .. slug: building-the-training-set
 .. date: 2018-08-25 09:31:43 UTC-07:00
-.. tags: data preprocessing competition
+.. tags: data, preprocessing, competition
 .. category: competition
 .. link: 
 .. description: Creating the training and validation data set.

@@ -2,7 +2,7 @@
 .. title: Data Leaks
 .. slug: data-leaks
 .. date: 2018-09-08 16:11:07 UTC-07:00
-.. tags: dataleaks notes
+.. tags: data leaks, notes
 .. category: notes
 .. link: 
 .. description: Notes about data leaks in competitions.

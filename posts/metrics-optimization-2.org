@@ -2,8 +2,7 @@
 .. title: Metrics Optimization 2
 .. slug: metrics-optimization-2
 .. date: 2018-09-19 08:04:33 UTC-07:00
-.. tags: notes metrics
-.. status: private
+.. tags: notes, metrics
 .. category: notes
 .. link: 
 .. description: Measuring model performance.

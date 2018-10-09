@@ -2,7 +2,7 @@
 .. title: Springleaf Competition
 .. slug: springleaf-competition
 .. date: 2018-09-04 06:35:25 UTC-07:00
-.. tags: example competition notes
+.. tags: example, competition, notes
 .. category: notes
 .. link: 
 .. description: Exploratory Data Analysis with the Springleaf competition.

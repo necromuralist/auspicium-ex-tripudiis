@@ -2,7 +2,7 @@
 .. title: Validation
 .. slug: validation
 .. date: 2018-09-04 08:01:59 UTC-07:00
-.. tags: notes validation
+.. tags: notes, validation
 .. category: notes
 .. link: 
 .. description: Validating your model.

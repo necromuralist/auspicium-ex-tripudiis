@@ -25,19 +25,17 @@ DEBUG = False
 
 * Introduction
 
-In this programming assignment you will be working with the [[https://www.kaggle.com/c/competitive-data-science-final-project/data][1C dataset]] from the final competition. You are asked to encode the =item_id= in 4 different ways:
+This post will encode the =item_id= feature from the [[https://www.kaggle.com/c/competitive-data-science-final-project/data][1C dataset]] from the final competition using four methods.
  
-     1) Via KFold scheme;  
-     2) Via Leave-one-out scheme;
-     3) Via smoothing scheme;
-     4) Via expanding mean scheme.
+     1. K-Fold
+     2. Leave-One-Out
+     3. Smoothing
+     4. Expanding Mean
 
-**You will need to submit** the correlation coefficient between the resulting encoding and the target variable up to 4 decimal places.
-
-* General tips
-
-- Fill NANs in the encoding with =0.3343=.
-- Some encoding schemes depend on sorting order, so in order to avoid confusion, please use the following code snippet to construct the data frame. This snippet also implements mean encoding without regularization.
+The be graded we  will submit the correlation coefficient between the resulting encoding and the target variable up to four decimal places.
+** General tips
+ - Fill NANs in the encoding with =0.3343=.
+ - Some encoding schemes depend on sorting order, so use the provided code to construct the data frame. This code also implements mean encoding /without/ regularization.
 ** The NaN Value
    I don't know where this came from, but I guess it's related to the mean somehow (I think I checked and it isn't actually the mean).
 #+BEGIN_SRC ipython :session encoding :results none
@@ -70,12 +68,6 @@ from hse_graders.assignment_3.grader import Grader
 #+BEGIN_SRC ipython :session encoding :results none
 from kaggler.course.data import Data
 from kaggler.helpers.printing import print_table
-#+END_SRC
-
-** Setup The Environment
-
-#+BEGIN_SRC ipython :session encoding :results none
-load_dotenv()
 #+END_SRC
 
 * Read In the Data
@@ -311,11 +303,11 @@ print(first_correlation)
 #+END_SRC
 
 #+RESULTS:
-: 0.4830386988621644
+: 0.4830386988621699
 
 Since our value is between 0 and 1 it does describe the target to some degree, albeit not perfectly.
 
-* Method 2
+** Method 2
 
 Unlike the  =.target.mean()= function, =transform= will return a dataframe with an index like in =all_data=.
 Basically this single line of code is equivalent to the first lines from of Method 1.
@@ -340,7 +332,7 @@ print(abs(first_correlation - second_correlation))
 #+END_SRC
 
 #+RESULTS:
-: 0.4830386988621644
+: 0.4830386988621699
 : 0.0
 
 See the printed value? It is the correlation coefficient between the target variable and your new encoded feature. You need to **compute the correlation coefficient** between the encodings that you will implement and **submit those to coursera**.
@@ -380,11 +372,15 @@ train_new.fillna(NAN_VALUE, inplace=True)
 encoded_feature = train_new.item_id_mean_target.values
 #+END_SRC
 
-#+BEGIN_SRC ipython :session encoding :results none
+#+BEGIN_SRC ipython :session encoding :results output
 corr = numpy.corrcoef(all_data['target'].values, encoded_feature)[0][1]
 print(corr)
 grader.submit_tag('KFold_scheme', corr)
 #+END_SRC
+
+#+RESULTS:
+: 0.4164590712798811
+: Current answer for task KFold_scheme is: 0.4164590712798811
 
 * 2. Leave-one-out scheme
 
@@ -405,6 +401,10 @@ sums = all_data.groupby('item_id')['target'].sum()
 counts = all_data.groupby("item_id").target.count()
 #+END_SRC
 
+#+BEGIN_SRC ipython :session encoding :results none
+means = sums/counts
+#+END_SRC
+
 #+BEGIN_SRC ipython :session encoding :results output raw :exports both
 print_table(means.head().reset_index(), headers=["Item ID", "mean"])
 #+END_SRC
@@ -412,11 +412,11 @@ print_table(means.head().reset_index(), headers=["Item ID", "mean"])
 #+RESULTS:
 | Item ID |      mean |
 |---------+-----------|
-|  139255 | 0.0222222 |
-|  141495 | 0.0568336 |
-|  144968 |  0.141176 |
-|  142661 | 0.0373832 |
-|  138947 |   1.31904 |
+|       0 |      0.02 |
+|       1 | 0.0238095 |
+|       2 |  0.019802 |
+|       3 |  0.019802 |
+|       4 |      0.02 |
 
 Now we'll calculate the total number of items (the sum of the target values for all the items) and how many items there are once you leave one out.
 #+BEGIN_SRC ipython :session encoding :results none
@@ -425,7 +425,7 @@ one_less = len(means) - 1
 #+END_SRC
 
 #+BEGIN_SRC ipython :session encoding :results none
-left_out = (total_sum - means)/one_less
+left_out = total_sum - all_data.item_target_enc
 #+END_SRC
 
 #+BEGIN_SRC ipython :session encoding :results output :exports results
@@ -435,14 +435,18 @@ grader.submit_tag('Leave-one-out_scheme', corr)
 #+END_SRC
 
 #+RESULTS:
-: -0.48303869886216694
-: Current answer for task Leave-one-out_scheme is: -0.48303869886216694
+: -0.4830386988621734
+: Current answer for task Leave-one-out_scheme is: -0.4830386988621734
 
 * 3. Smoothing
 
 Explained starting at 4:03 of the [[https://www.coursera.org/learn/competitive-data-science/lecture/LGYQ2/regularization][Regularization video]].
 
 Next, implement a smoothing scheme with $\alpha = 100$. Use the formula from the first slide in the video and $0.3343$ as =globalmean=. Note that =nrows= is the number of objects that belong to a certain category (not the number of rows in the dataset).
+
+\[
+encoding = \frac{mean(target) \times n_{rows} + \textit{global mean}\times \alpha}{n_{rows} + \alpha}
+\]
 
 #+BEGIN_SRC ipython :session encoding :results none
 # YOUR CODE GOES HERE
@@ -460,8 +464,13 @@ This is explained starting at 5:50 of the [[https://www.coursera.org/learn/compe
 
 Finally, implement the *expanding mean* scheme. It is basically already implemented for you in the video, but you can challenge yourself and try to implement it yourself. You will need [[https://pandas.pydata.org/pandas-docs/stable/generated/pandas.core.groupby.DataFrameGroupBy.cumsum.html][=cumsum=]] and [[https://pandas.pydata.org/pandas-docs/stable/generated/pandas.core.groupby.GroupBy.cumcount.html][=cumcount=]] functions from pandas.
 
+#+BEGIN_EXAMPLE
+cumulative_sum = df_tr.groupby(col)["target"].cumsum() - df_tr["target"]
+cumulative_count = df_tr.groupby(col).cumcount()
+train_new[col+"mean_encoding"] = cumulative_sum / cumulative_count
+#+END_EXAMPLE
 #+BEGIN_SRC ipython :session encoding :results none
-# YOUR CODE GOES HERE
+
 #+END_SRC
 
 #+BEGIN_SRC ipython :session encoding :results output :exports results
@@ -472,6 +481,12 @@ grader.submit_tag('Expanding_mean_scheme', corr)
 
 * Authorization & Submission
 To submit the assignment parts to Cousera platform, please, enter your e-mail and token into variables below. You can generate the token on this programming assignment's page. Note: The Token expires 30 minutes after generation.
+** Setup The Environment
+
+#+BEGIN_SRC ipython :session encoding :results none
+load_dotenv()
+#+END_SRC
+
 
 #+BEGIN_SRC ipython :session encoding :results output :exports results
 STUDENT_EMAIL = os.environ.get("EMAIL")
@@ -483,10 +498,10 @@ grader.status()
 
 #+RESULTS:
 : Email: necromuralist@protonmail.com
-: Token: pjIHK0O25s2NPZMw
+: Token: 2qygHxfwVXECAImK
 : You want to submit these numbers:
-: Task KFold_scheme: 0.4164590712798667
-: Task Leave-one-out_scheme: -0.48303869886216694
+: Task KFold_scheme: 0.4164590712798811
+: Task Leave-one-out_scheme: -0.4830386988621734
 : Task Smoothing_scheme: ----------
 : Task Expanding_mean_scheme: ----------
 

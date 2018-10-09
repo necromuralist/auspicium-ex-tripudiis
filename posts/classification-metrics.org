@@ -2,7 +2,7 @@
 .. title: Classification Metrics
 .. slug: classification-metrics
 .. date: 2018-09-22 15:35:29 UTC-07:00
-.. tags: metrics classification notes
+.. tags: metrics, classification, notes
 .. category: notes
 .. link: 
 .. description: Notes on classification metrics.

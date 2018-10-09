@@ -2,7 +2,7 @@
 .. title: Mean Encoding
 .. slug: mean-encoding
 .. date: 2018-09-23 17:56:27 UTC-07:00
-.. tags: notes encoding
+.. tags: notes, encoding
 .. category: notes
 .. link: 
 .. description: The Mean Encoding method.
