@@ -2,7 +2,7 @@
 .. title: Exploring The Data
 .. slug: exploring-the-data
 .. date: 2018-08-11 15:26:40 UTC-07:00
-.. tags: kaggle data exploration competition
+.. tags: kaggle, data exploration, competition
 .. category: competition
 .. link: 
 .. description: Looking at the data.

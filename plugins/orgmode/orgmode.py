@@ -73,7 +73,7 @@ class CompileOrgmode(PageCompiler):
 
             subprocess.check_call(command)
             with io.open(dest, 'r', encoding='utf-8') as inf:
-                output, shortcode_deps = self.site.apply_shortcodes(inf.read(), with_dependencies=True)
+                output, shortcode_deps = self.site.apply_shortcodes(inf.read())
             with io.open(dest, 'w', encoding='utf-8') as outf:
                 outf.write(output)
             if post is None:
@@ -93,20 +93,8 @@ class CompileOrgmode(PageCompiler):
                                 'configuration (return code {1})'.format(
                                     source, e.returncode))
 
-    def compile_html(self, source, dest, is_two_file=True):
-        """Compile the post into HTML (deprecated API)."""
-        try:
-            post = self.site.post_per_input_file[source]
-        except KeyError:
-            post = None
-
-        return compile(source, dest, is_two_file, post, None)
-
-    def create_post(self, path, **kw):
-        content = kw.pop('content', None)
-        onefile = kw.pop('onefile', False)
-        kw.pop('is_page', False)
-
+    def create_post(self, path, content=None, onefile=False, is_page=False, **kw):
+        """Create post file with optional metadata."""
         metadata = OrderedDict()
         metadata.update(self.default_metadata)
         metadata.update(kw)

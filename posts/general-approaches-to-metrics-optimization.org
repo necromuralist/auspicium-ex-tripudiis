@@ -2,7 +2,7 @@
 .. title: General Approaches to Metrics Optimization
 .. slug: general-approaches-to-metrics-optimization
 .. date: 2018-09-22 16:04:35 UTC-07:00
-.. tags: notes metrics
+.. tags: notes, metrics
 .. category: notes
 .. link: 
 .. description: Notes on metrics optimization.

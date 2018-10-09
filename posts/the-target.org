@@ -2,7 +2,7 @@
 .. title: The Target
 .. slug: the-target
 .. date: 2018-08-31 13:29:42 UTC-07:00
-.. tags: competition data target
+.. tags: competition, data, target
 .. category: competition
 .. link: 
 .. description: Information about the what we are trying to predict.

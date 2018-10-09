@@ -2,9 +2,9 @@
 .. title: Data Leakages
 .. slug: data-leakages
 .. date: 2018-09-08 18:31:29 UTC-07:00
-.. tags: assignment dataleaks
+.. tags: assignment, dataleaks
 .. category: assignment
-.. status: private draft
+.. status: draft
 .. link: 
 .. description: Data Leakage example.
 .. type: text

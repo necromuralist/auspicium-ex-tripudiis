@@ -2,7 +2,7 @@
 .. title: Machine Learning Recap
 .. slug: machine-learning-recap
 .. date: 2018-08-04 18:13:44 UTC-07:00
-.. tags: basics algorithms notes
+.. tags: basics, algorithms, notes
 .. category: notes
 .. link: 
 .. description: A review of the most common machine learning algorithms.

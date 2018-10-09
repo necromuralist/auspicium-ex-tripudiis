@@ -2,7 +2,7 @@
 .. title: Feature Preprocessing
 .. slug: feature-preprocessing
 .. date: 2018-08-07 21:41:10 UTC-07:00
-.. tags: features preprocessing notes
+.. tags: feature-preprocessing, notes
 .. category: notes
 .. link: 
 .. description: Preprocessing data features.

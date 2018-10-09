@@ -2,7 +2,7 @@
 .. title: References
 .. slug: references
 .. date: 2018-09-01 12:16:46 UTC-07:00
-.. tags: bilbiography references
+.. tags: bibliography, references
 .. category: references
 .. link: 
 .. description: Things I've referred to along the way.

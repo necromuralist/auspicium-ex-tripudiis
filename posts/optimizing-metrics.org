@@ -2,7 +2,7 @@
 .. title: Optimizing Metrics
 .. slug: optimizing-metrics
 .. date: 2018-09-22 16:26:49 UTC-07:00
-.. tags: notes metrics
+.. tags: notes, metrics
 .. category: notes
 .. link: 
 .. description: Practical ideas for optimizing metrics.

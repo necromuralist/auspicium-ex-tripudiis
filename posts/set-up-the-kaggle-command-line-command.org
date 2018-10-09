@@ -2,7 +2,7 @@
 .. title: Set Up the Kaggle Command-Line Command
 .. slug: set-up-the-kaggle-command-line-command
 .. date: 2018-08-11 13:37:44 UTC-07:00
-.. tags: kaggle howto
+.. tags: kaggle, how-to
 .. category: howto
 .. link: 
 .. description: How to set up the command-line interface for the kaggle API.

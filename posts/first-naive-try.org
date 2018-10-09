@@ -2,7 +2,7 @@
 .. title: First Naive Try
 .. slug: first-naive-try
 .. date: 2018-08-11 19:37:37 UTC-07:00
-.. tags: naive model competition
+.. tags: naive, model, competition
 .. category: competition
 .. link: 
 .. description: A first naive model.

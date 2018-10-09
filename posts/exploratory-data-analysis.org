@@ -2,7 +2,7 @@
 .. title: Exploratory Data Analysis
 .. slug: exploratory-data-analysis
 .. date: 2018-09-03 21:24:53 UTC-07:00
-.. tags: notes data
+.. tags: notes, data analysis
 .. category: notes
 .. link: 
 .. description: Notes on exploratorry data analysis.
