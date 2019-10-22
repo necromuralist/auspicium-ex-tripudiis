@@ -51,7 +51,7 @@ parso==0.3.1              # via jedi
 pexpect==4.6.0            # via ipython
 pickleshare==0.7.4        # via ipython
 piexif==1.0.13            # via nikola
-pillow==5.2.0             # via nikola
+pillow==6.2.0             # via nikola
 prometheus-client==0.3.1  # via notebook
 prompt-toolkit==1.0.15    # via ipython, jupyter-console
 ptyprocess==0.6.0         # via pexpect, terminado
