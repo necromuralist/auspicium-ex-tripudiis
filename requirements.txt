@@ -6,7 +6,7 @@
 #
 autopep8==1.3.5
 backcall==0.1.0           # via ipython
-bleach==2.1.3             # via nbconvert
+bleach==3.1.1             # via nbconvert
 blinker==1.4              # via nikola
 certifi==2018.4.16        # via kaggle, requests
 chardet==3.0.4            # via requests
@@ -17,7 +17,6 @@ docutils==0.14            # via nikola
 doit==0.31.1              # via nikola
 entrypoints==0.2.3        # via nbconvert
 ghp-import2==1.0.1
-html5lib==1.0.1           # via bleach
 idna==2.7                 # via requests
 ipykernel==4.8.2          # via ipywidgets, jupyter, jupyter-console, notebook, qtconsole
 ipython-genutils==0.2.0   # via nbformat, notebook, qtconsole, traitlets
@@ -70,7 +69,7 @@ scipy==1.1.0              # via seaborn
 seaborn==0.9.0
 send2trash==1.5.0         # via notebook
 simplegeneric==0.8.1      # via ipython
-six==1.11.0               # via bleach, cycler, html5lib, kaggle, matplotlib, prompt-toolkit, python-dateutil, traitlets
+six==1.11.0               # via bleach, cycler, kaggle, matplotlib, prompt-toolkit, python-dateutil, traitlets
 sklearn==0.0
 tabulate==0.8.2
 terminado==0.8.1          # via notebook
@@ -84,7 +83,7 @@ virtualenv==16.0.0        # via virtualfish
 virtualfish==1.0.6
 wcwidth==0.1.7            # via prompt-toolkit
 webassets==0.12.1
-webencodings==0.5.1       # via html5lib
+webencodings==0.5.1       # via bleach
 wheel==0.31.1
 widgetsnbextension==3.3.1  # via ipywidgets
 yapsy==1.11.223           # via nikola
