@@ -4,36 +4,42 @@
 #
 #    pip-compile --output-file requirements.txt requirements.in
 #
-autopep8==1.3.5
-backcall==0.1.0           # via ipython
+autopep8==1.3.5           # via -r requirements.in
+backports-abc==0.5        # via tornado
+backports.functools-lru-cache==1.6.1  # via matplotlib
+backports.shutil-get-terminal-size==1.0.0  # via ipython
 bleach==2.1.3             # via nbconvert
 blinker==1.4              # via nikola
 certifi==2018.4.16        # via kaggle, requests
 chardet==3.0.4            # via requests
 cloudpickle==0.5.3        # via doit
+configparser==4.0.2       # via doit, entrypoints
 cycler==0.10.0            # via matplotlib
 decorator==4.3.0          # via ipython, traitlets
 docutils==0.14            # via nikola
-doit==0.31.1              # via nikola
+doit==0.29.0              # via nikola
 entrypoints==0.2.3        # via nbconvert
-ghp-import2==1.0.1
+enum34==1.1.10            # via traitlets
+functools32==3.2.3.post2  # via jsonschema
+futures==3.3.0            # via tornado
+ghp-import2==1.0.1        # via -r requirements.in
 html5lib==1.0.1           # via bleach
 idna==2.7                 # via requests
+ipaddress==1.0.23         # via notebook
 ipykernel==4.8.2          # via ipywidgets, jupyter, jupyter-console, notebook, qtconsole
 ipython-genutils==0.2.0   # via nbformat, notebook, qtconsole, traitlets
-ipython==6.5.0            # via ipykernel, ipywidgets, jupyter-console
+ipython==5.10.0           # via ipykernel, ipywidgets, jupyter-console
 ipywidgets==7.3.2         # via jupyter
-jedi==0.12.1              # via ipython
 jinja2==2.10              # via nbconvert, notebook
 jsonschema==2.6.0         # via nbformat
 jupyter-client==5.2.3     # via ipykernel, jupyter-console, notebook, qtconsole
 jupyter-console==5.2.0    # via jupyter
 jupyter-core==4.4.0       # via jupyter-client, nbconvert, nbformat, notebook, qtconsole
-jupyter==1.0.0
-kaggle==1.4.6
+jupyter==1.0.0            # via -r requirements.in
+kaggle==1.4.6             # via -r requirements.in
 kiwisolver==1.0.1         # via matplotlib
 logbook==1.4.0            # via nikola
-lxml==4.2.4               # via nikola
+lxml==4.6.2               # via nikola
 mako==1.0.7               # via nikola
 markdown==2.6.11          # via nikola
 markupsafe==1.0           # via jinja2, mako
@@ -42,12 +48,12 @@ mistune==0.8.3            # via nbconvert
 natsort==5.3.3            # via nikola
 nbconvert==5.3.1          # via jupyter, notebook
 nbformat==4.4.0           # via ipywidgets, nbconvert, notebook
-nikola==7.8.15
+nikola==7.8.15            # via -r requirements.in
 notebook==5.6.0           # via jupyter, widgetsnbextension
 numpy==1.15.0             # via matplotlib, pandas, scipy, seaborn
 pandas==0.23.4            # via seaborn
 pandocfilters==1.4.2      # via nbconvert
-parso==0.3.1              # via jedi
+pathlib2==2.3.5           # via ipython, pickleshare
 pexpect==4.6.0            # via ipython
 pickleshare==0.7.4        # via ipython
 piexif==1.0.13            # via nikola
@@ -65,14 +71,17 @@ pytz==2018.5              # via matplotlib, pandas
 pyzmq==17.1.0             # via jupyter-client, notebook
 qtconsole==4.3.1          # via jupyter
 requests==2.19.1          # via kaggle, nikola
+scandir==1.10.0           # via pathlib2
 scikit-learn==0.19.2      # via sklearn
 scipy==1.1.0              # via seaborn
-seaborn==0.9.0
+seaborn==0.9.0            # via -r requirements.in
 send2trash==1.5.0         # via notebook
 simplegeneric==0.8.1      # via ipython
-six==1.11.0               # via bleach, cycler, html5lib, kaggle, matplotlib, prompt-toolkit, python-dateutil, traitlets
-sklearn==0.0
-tabulate==0.8.2
+singledispatch==3.4.0.3   # via tornado
+six==1.11.0               # via bleach, cycler, doit, html5lib, kaggle, matplotlib, pathlib2, prompt-toolkit, python-dateutil, singledispatch, traitlets
+sklearn==0.0              # via -r requirements.in
+subprocess32==3.5.4       # via matplotlib
+tabulate==0.8.2           # via -r requirements.in
 terminado==0.8.1          # via notebook
 testpath==0.3.1           # via nbconvert
 tornado==5.1              # via ipykernel, jupyter-client, notebook, terminado
@@ -81,10 +90,10 @@ traitlets==4.3.2          # via ipykernel, ipython, ipywidgets, jupyter-client, 
 unidecode==1.0.22         # via nikola
 urllib3==1.22             # via kaggle, requests
 virtualenv==16.0.0        # via virtualfish
-virtualfish==1.0.6
+virtualfish==1.0.6        # via -r requirements.in
 wcwidth==0.1.7            # via prompt-toolkit
-webassets==0.12.1
+webassets==0.12.1         # via -r requirements.in
 webencodings==0.5.1       # via html5lib
-wheel==0.31.1
+wheel==0.31.1             # via -r requirements.in
 widgetsnbextension==3.3.1  # via ipywidgets
 yapsy==1.11.223           # via nikola
