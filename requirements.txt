@@ -74,7 +74,8 @@ ipython==5.10.0
     #   jupyter-console
 ipywidgets==7.3.2
     # via jupyter
-jinja2==2.10
+
+jinja2==2.11.3
     # via
     #   nbconvert
     #   notebook
