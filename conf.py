@@ -17,14 +17,14 @@ import time
 
 # Data about this site
 BLOG_AUTHOR = "Cloistered Monkey"  # (translatable)
-BLOG_TITLE = "The Cloistered Monkey"  # (translatable)
+BLOG_TITLE = "Auspicium Ex Tripudiis"  # (translatable)
 # This is the main URL for your site. It will be used
 # in a prominent link. Don't forget the protocol (http/https)!
 SITE_URL = "https://necromuralist.github.io/kaggle-competitions/"
 # This is the URL where Nikola's output will be deployed.
 # If not set, defaults to SITE_URL
 # BASE_URL = "https://necromuralist.github.io/"
-BLOG_EMAIL = "necromuralist@protonmail.com"
+BLOG_EMAIL = "cloisteredmonkey.jmark@slmail.me"
 BLOG_DESCRIPTION = "Notes on kaggle."  # (translatable)
 
 # Nikola is multilingual!

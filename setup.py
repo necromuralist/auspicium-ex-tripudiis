@@ -17,6 +17,6 @@ setup(name='kaggler',
       author="russell",
       platforms=['linux'],
       url='https://github.com/necromuralist/kaggle-competitions',
-      author_email="necromuralist@protonmail.com",
+      author_email="cloisteredmonkey.jmark@slmail.me",
       packages=find_packages(),
       )
