@@ -6,12 +6,8 @@
 #
 autopep8==1.3.5
     # via -r requirements.in
-backports-abc==0.5
-    # via tornado
-backports.functools-lru-cache==1.6.3
-    # via matplotlib
-backports.shutil-get-terminal-size==1.0.0
-    # via ipython
+beautifulsoup4==4.11.1
+    # via nbconvert
 bleach==2.1.3
     # via nbconvert
 blinker==1.4
@@ -24,36 +20,28 @@ chardet==3.0.4
     # via requests
 cloudpickle==0.5.3
     # via doit
-configparser==4.0.2
-    # via
-    #   doit
-    #   entrypoints
 cycler==0.10.0
     # via matplotlib
 decorator==4.3.0
-    # via
-    #   ipython
-    #   traitlets
+    # via ipython
+defusedxml==0.7.1
+    # via nbconvert
 docutils==0.14
     # via nikola
 doit==0.29.0
     # via nikola
 entrypoints==0.2.3
-    # via nbconvert
-enum34==1.1.10
-    # via traitlets
-functools32==3.2.3.post2
-    # via jsonschema
-futures==3.3.0
-    # via tornado
+    # via
+    #   jupyter-client
+    #   nbconvert
+fastjsonschema==2.16.1
+    # via nbformat
 ghp-import2==1.0.1
     # via -r requirements.in
 html5lib==1.0.1
     # via bleach
 idna==2.7
     # via requests
-ipaddress==1.0.23
-    # via notebook
 ipykernel==4.8.2
     # via
     #   ipywidgets
@@ -61,43 +49,43 @@ ipykernel==4.8.2
     #   jupyter-console
     #   notebook
     #   qtconsole
-ipython-genutils==0.2.0
-    # via
-    #   nbformat
-    #   notebook
-    #   qtconsole
-    #   traitlets
 ipython==5.10.0
     # via
     #   ipykernel
     #   ipywidgets
     #   jupyter-console
+ipython-genutils==0.2.0
+    # via
+    #   notebook
+    #   qtconsole
 ipywidgets==7.3.2
     # via jupyter
-
-jinja2==2.11.3
+jinja2==3.1.2
     # via
     #   nbconvert
     #   notebook
 jsonschema==2.6.0
     # via nbformat
-jupyter-client==5.2.3
+jupyter==1.0.0
+    # via -r requirements.in
+jupyter-client==7.3.4
     # via
     #   ipykernel
     #   jupyter-console
+    #   nbclient
     #   notebook
     #   qtconsole
 jupyter-console==5.2.0
     # via jupyter
-jupyter-core==4.4.0
+jupyter-core==4.11.1
     # via
     #   jupyter-client
     #   nbconvert
     #   nbformat
     #   notebook
     #   qtconsole
-jupyter==1.0.0
-    # via -r requirements.in
+jupyterlab-pygments==0.2.2
+    # via nbconvert
 kaggle==1.4.6
     # via -r requirements.in
 kiwisolver==1.0.1
@@ -105,30 +93,40 @@ kiwisolver==1.0.1
 logbook==1.4.0
     # via nikola
 lxml==4.6.3
-    # via nikola
+    # via
+    #   nbconvert
+    #   nikola
 mako==1.0.7
     # via nikola
 markdown==2.6.11
     # via nikola
-markupsafe==1.0
+markupsafe==2.1.1
     # via
     #   jinja2
     #   mako
+    #   nbconvert
 matplotlib==2.2.2
     # via seaborn
 mistune==0.8.3
     # via nbconvert
 natsort==5.3.3
     # via nikola
-nbconvert==5.3.1
+nbclient==0.6.7
+    # via nbconvert
+nbconvert==6.5.1
     # via
     #   jupyter
     #   notebook
-nbformat==4.4.0
+nbformat==5.4.0
     # via
     #   ipywidgets
+    #   nbclient
     #   nbconvert
     #   notebook
+nest-asyncio==1.5.5
+    # via
+    #   jupyter-client
+    #   nbclient
 nikola==7.8.15
     # via -r requirements.in
 notebook==5.6.0
@@ -141,14 +139,12 @@ numpy==1.15.0
     #   pandas
     #   scipy
     #   seaborn
+packaging==21.3
+    # via nbconvert
 pandas==0.23.4
     # via seaborn
 pandocfilters==1.4.2
     # via nbconvert
-pathlib2==2.3.5
-    # via
-    #   ipython
-    #   pickleshare
 pexpect==4.6.0
     # via ipython
 pickleshare==0.7.4
@@ -169,7 +165,7 @@ ptyprocess==0.6.0
     #   terminado
 pycodestyle==2.4.0
     # via autopep8
-pygments==2.2.0
+pygments==2.5.2
     # via
     #   ipython
     #   jupyter-console
@@ -179,10 +175,12 @@ pygments==2.2.0
 pyinotify==0.9.6
     # via doit
 pyparsing==2.2.0
-    # via matplotlib
+    # via
+    #   matplotlib
+    #   packaging
 pyrss2gen==1.1
     # via nikola
-python-dateutil==2.7.3
+python-dateutil==2.8.2
     # via
     #   jupyter-client
     #   kaggle
@@ -193,7 +191,7 @@ pytz==2018.5
     # via
     #   matplotlib
     #   pandas
-pyzmq==17.1.0
+pyzmq==23.2.1
     # via
     #   jupyter-client
     #   notebook
@@ -203,8 +201,6 @@ requests==2.19.1
     # via
     #   kaggle
     #   nikola
-scandir==1.10.0
-    # via pathlib2
 scikit-learn==0.19.2
     # via sklearn
 scipy==1.1.0
@@ -215,8 +211,6 @@ send2trash==1.5.0
     # via notebook
 simplegeneric==0.8.1
     # via ipython
-singledispatch==3.6.1
-    # via tornado
 six==1.11.0
     # via
     #   bleach
@@ -225,22 +219,19 @@ six==1.11.0
     #   html5lib
     #   kaggle
     #   matplotlib
-    #   pathlib2
     #   prompt-toolkit
     #   python-dateutil
-    #   singledispatch
-    #   traitlets
 sklearn==0.0
     # via -r requirements.in
-subprocess32==3.5.4
-    # via matplotlib
+soupsieve==2.3.2.post1
+    # via beautifulsoup4
 tabulate==0.8.2
     # via -r requirements.in
 terminado==0.8.1
     # via notebook
-testpath==0.3.1
+tinycss2==1.1.1
     # via nbconvert
-tornado==5.1
+tornado==6.2
     # via
     #   ipykernel
     #   jupyter-client
@@ -248,13 +239,14 @@ tornado==5.1
     #   terminado
 tqdm==4.25.0
     # via kaggle
-traitlets==4.3.2
+traitlets==5.3.0
     # via
     #   ipykernel
     #   ipython
     #   ipywidgets
     #   jupyter-client
     #   jupyter-core
+    #   nbclient
     #   nbconvert
     #   nbformat
     #   notebook
@@ -274,7 +266,9 @@ wcwidth==0.1.7
 webassets==0.12.1
     # via -r requirements.in
 webencodings==0.5.1
-    # via html5lib
+    # via
+    #   html5lib
+    #   tinycss2
 wheel==0.31.1
     # via -r requirements.in
 widgetsnbextension==3.3.1
